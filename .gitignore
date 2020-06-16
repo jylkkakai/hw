@@ -6,7 +6,11 @@
 *txn.raw
 out.txt
 vmod/dw_components/
-outdir/
+#outdir/
+outdir/*
+#outdir/nv_small
+!outdir/nv_sochub/
+outdir/**/verilator/*
 .nvprojectname
 tree.make
 .cleaned

@@ -37,11 +37,6 @@ module NV_NVDLA_csb_master (
   ,csb2mcif_req_pd //|> o
   ,mcif2csb_resp_valid //|< i
   ,mcif2csb_resp_pd //|< i
-  ,csb2bdma_req_pvld //|> o
-  ,csb2bdma_req_prdy //|< i
-  ,csb2bdma_req_pd //|> o
-  ,bdma2csb_resp_valid //|< i
-  ,bdma2csb_resp_pd //|< i
   ,csb2cdma_req_pvld //|> o
   ,csb2cdma_req_prdy //|< i
   ,csb2cdma_req_pd //|> o
@@ -135,11 +130,6 @@ input csb2mcif_req_prdy; /* data return handshake */
 output [62:0] csb2mcif_req_pd;
 input mcif2csb_resp_valid; /* data valid */
 input [33:0] mcif2csb_resp_pd; /* pkt_id_width=1 pkt_widths=33,33  */
-output csb2bdma_req_pvld; /* data valid */
-input csb2bdma_req_prdy; /* data return handshake */
-output [62:0] csb2bdma_req_pd;
-input bdma2csb_resp_valid; /* data valid */
-input [33:0] bdma2csb_resp_pd; /* pkt_id_width=1 pkt_widths=33,33  */
 output csb2cdma_req_pvld; /* data valid */
 input csb2cdma_req_prdy; /* data return handshake */
 output [62:0] csb2cdma_req_pd;
@@ -225,14 +215,6 @@ reg mcif_resp_valid;
 wire csb2mcif_req_en;
 wire csb2mcif_req_pvld_w;
 wire mcif_req_pvld_w;
-reg [49:0] csb2bdma_req_pd_tmp;
-reg csb2bdma_req_pvld;
-reg bdma_req_pvld;
-reg [33:0] bdma_resp_pd;
-reg bdma_resp_valid;
-wire csb2bdma_req_en;
-wire csb2bdma_req_pvld_w;
-wire bdma_req_pvld_w;
 reg [49:0] csb2cdma_req_pd_tmp;
 reg csb2cdma_req_pvld;
 reg cdma_req_pvld;
@@ -578,47 +560,7 @@ always @(posedge nvdla_core_clk) begin
         mcif_resp_pd <= mcif2csb_resp_pd;
     end
 end
-//////////////// for BDMA ////////////////
-assign select_bdma = ((core_byte_addr & addr_mask) == 32'h00010000);
-assign bdma_req_pvld_w = (core_req_pop_valid & select_bdma) ? 1'b1 :
-                         (csb2bdma_req_prdy | ~csb2bdma_req_pvld) ? 1'b0 :
-                         bdma_req_pvld;
-assign csb2bdma_req_pvld_w = bdma_req_pvld ? 1'b1 :
-                             csb2bdma_req_prdy ? 1'b0 :
-                             csb2bdma_req_pvld;
-assign csb2bdma_req_en = bdma_req_pvld & (csb2bdma_req_prdy | ~csb2bdma_req_pvld);
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-    if (!nvdla_core_rstn) begin
-        bdma_req_pvld <= 1'b0;
-    end else begin
-        bdma_req_pvld <= bdma_req_pvld_w;
-    end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-    if (!nvdla_core_rstn) begin
-        csb2bdma_req_pvld <= 1'b0;
-    end else begin
-        csb2bdma_req_pvld <= csb2bdma_req_pvld_w;
-    end
-end
-always @(posedge nvdla_core_clk) begin
-    if ((csb2bdma_req_en) == 1'b1) begin
-        csb2bdma_req_pd_tmp <= core_req_pd_d1;
-    end
-end
-assign csb2bdma_req_pd ={7'h0,csb2bdma_req_pd_tmp[49:16],6'h0,csb2bdma_req_pd_tmp[15:0]};
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-    if (!nvdla_core_rstn) begin
-        bdma_resp_valid <= 1'b0;
-    end else begin
-        bdma_resp_valid <= bdma2csb_resp_valid;
-    end
-end
-always @(posedge nvdla_core_clk) begin
-    if ((bdma2csb_resp_valid) == 1'b1) begin
-        bdma_resp_pd <= bdma2csb_resp_pd;
-    end
-end
+assign select_bdma = 1'b0;
 //////////////// for CDMA ////////////////
 //#ifdef BASEADDR_FOR_FULL
 //assign select_cdma = ((core_byte_addr & addr_mask) == 32'h00005000);
@@ -1222,7 +1164,6 @@ end
 assign core_resp_pd = ( ({34 {cfgrom_resp_valid}} & cfgrom_resp_pd)
                       | ({34 {glb_resp_valid}} & glb_resp_pd)
                       | ({34 {mcif_resp_valid}} & mcif_resp_pd)
-                      | ({34 {bdma_resp_valid}} & bdma_resp_pd)
                       | ({34 {cdma_resp_valid}} & cdma_resp_pd)
                       | ({34 {csc_resp_valid}} & csc_resp_pd)
                       | ({34 {cmac_a_resp_valid}} & cmac_a_resp_pd)
@@ -1239,7 +1180,6 @@ assign core_resp_pd = ( ({34 {cfgrom_resp_valid}} & cfgrom_resp_pd)
 assign core_resp_pvld = cfgrom_resp_valid |
                         glb_resp_valid |
                         mcif_resp_valid |
-                        bdma_resp_valid |
                         cdma_resp_valid |
                         csc_resp_valid |
                         cmac_a_resp_valid |

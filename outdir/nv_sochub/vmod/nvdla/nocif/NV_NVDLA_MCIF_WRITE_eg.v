@@ -23,7 +23,7 @@ module NV_NVDLA_MCIF_WRITE_eg (
 //:print"  ,cq_rd${i}_pd   \n";
 //:print"  ,cq_rd${i}_prdy \n";
 //:}
-//:my @wdma_name = ("sdp", "pdp","cdp","rbk","bdma");
+//:my @wdma_name = ("sdp", "pdp","cdp","rbk");
 //:foreach my $client (@wdma_name) {
 //:print"  ,mcif2${client}_wr_rsp_complete\n";
 //:}
@@ -47,7 +47,6 @@ module NV_NVDLA_MCIF_WRITE_eg (
   ,mcif2pdp_wr_rsp_complete
   ,mcif2cdp_wr_rsp_complete
   ,mcif2rbk_wr_rsp_complete
-  ,mcif2bdma_wr_rsp_complete
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,eg2ig_axi_len
@@ -93,7 +92,7 @@ output eg2ig_axi_vld;
 input noc2mcif_axi_b_bvalid;
 output noc2mcif_axi_b_bready;
 input [7:0] noc2mcif_axi_b_bid;
-//:my @wdma_name = ("sdp", "pdp","cdp","rbk","bdma");
+//:my @wdma_name = ("sdp", "pdp","cdp","rbk");
 //:foreach my $client (@wdma_name) {
 //:print"output reg  mcif2${client}_wr_rsp_complete;\n";
 //:}
@@ -102,7 +101,6 @@ output reg  mcif2sdp_wr_rsp_complete;
 output reg  mcif2pdp_wr_rsp_complete;
 output reg  mcif2cdp_wr_rsp_complete;
 output reg  mcif2rbk_wr_rsp_complete;
-output reg  mcif2bdma_wr_rsp_complete;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 reg [1:0] eg2ig_axi_len;
@@ -207,7 +205,7 @@ or cq_rd4_len
 //spyglass enable_block W171 W226
 end
 //:my $i;
-//:my @wdma_name = ("sdp", "pdp","cdp","rbk","bdma");
+//:my @wdma_name = ("sdp", "pdp","cdp","rbk");
 //:foreach my $client (@wdma_name) {
 //:print "wire  ${client}_cq_rd_pvld = (`tieoff_axid_${client} == 0 ) ? cq_rd0_pvld ";
 //:for($i=1;$i<5;$i++) {
@@ -285,18 +283,6 @@ if (!nvdla_core_rstn) begin
 mcif2rbk_wr_rsp_complete <= 1'b0;
 end else begin
 mcif2rbk_wr_rsp_complete <= rbk_axi_vld & rbk_cq_rd_ack & rbk_cq_rd_pvld; //dma5_vld & cq_rd5_pvld & cq_rd5_require_ack;
-end
-end
-
-wire  bdma_cq_rd_pvld = (`tieoff_axid_bdma == 0 ) ? cq_rd0_pvld : (`tieoff_axid_bdma == 1) ? cq_rd1_pvld : (`tieoff_axid_bdma == 2) ? cq_rd2_pvld : (`tieoff_axid_bdma == 3) ? cq_rd3_pvld : cq_rd4_pvld;
-wire  bdma_cq_rd_ack = (`tieoff_axid_bdma == 0 ) ? cq_rd0_pd[0] : (`tieoff_axid_bdma == 1) ? cq_rd1_pd[0] : (`tieoff_axid_bdma == 2) ? cq_rd2_pd[0] : (`tieoff_axid_bdma == 3) ? cq_rd3_pd[0] : cq_rd4_pd[0];
-
-wire bdma_axi_vld = iflop_axi_vld & (iflop_axi_axid == `tieoff_axid_bdma);
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-if (!nvdla_core_rstn) begin
-mcif2bdma_wr_rsp_complete <= 1'b0;
-end else begin
-mcif2bdma_wr_rsp_complete <= bdma_axi_vld & bdma_cq_rd_ack & bdma_cq_rd_pvld; //dma5_vld & cq_rd5_pvld & cq_rd5_require_ack;
 end
 end
 

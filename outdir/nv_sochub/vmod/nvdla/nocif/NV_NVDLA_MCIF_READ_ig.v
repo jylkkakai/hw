@@ -19,7 +19,7 @@ module NV_NVDLA_MCIF_READ_ig (
   ,nvdla_core_rstn //|< i
   ,pwrbus_ram_pd
   ,reg2dp_rd_os_cnt
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk","bdma");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
 //: foreach my $client (@rdma_name) {
 //: print("  ,reg2dp_rd_weight_${client}\n");
 //: }
@@ -39,7 +39,6 @@ module NV_NVDLA_MCIF_READ_ig (
   ,reg2dp_rd_weight_pdp
   ,reg2dp_rd_weight_cdp
   ,reg2dp_rd_weight_rbk
-  ,reg2dp_rd_weight_bdma
   ,cdma_dat2mcif_rd_cdt_lat_fifo_pop
   ,cdma_dat2mcif_rd_req_valid
   ,cdma_dat2mcif_rd_req_ready
@@ -76,10 +75,6 @@ module NV_NVDLA_MCIF_READ_ig (
   ,rbk2mcif_rd_req_valid
   ,rbk2mcif_rd_req_ready
   ,rbk2mcif_rd_req_pd
-  ,bdma2mcif_rd_cdt_lat_fifo_pop
-  ,bdma2mcif_rd_req_valid
-  ,bdma2mcif_rd_req_ready
-  ,bdma2mcif_rd_req_pd
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,eg2ig_axi_vld
@@ -93,7 +88,7 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input [31:0] pwrbus_ram_pd;
 input [7:0] reg2dp_rd_os_cnt;
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk","bdma");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
 //: foreach my $client (@rdma_name) {
 //: print("input  [7:0] reg2dp_rd_weight_${client};\n");
 //: }
@@ -113,7 +108,6 @@ input  [7:0] reg2dp_rd_weight_sdp_e;
 input  [7:0] reg2dp_rd_weight_pdp;
 input  [7:0] reg2dp_rd_weight_cdp;
 input  [7:0] reg2dp_rd_weight_rbk;
-input  [7:0] reg2dp_rd_weight_bdma;
 input  cdma_dat2mcif_rd_cdt_lat_fifo_pop;
 input  cdma_dat2mcif_rd_req_valid;
 output cdma_dat2mcif_rd_req_ready;
@@ -150,10 +144,6 @@ input  rbk2mcif_rd_cdt_lat_fifo_pop;
 input  rbk2mcif_rd_req_valid;
 output rbk2mcif_rd_req_ready;
 input [79 -1:0] rbk2mcif_rd_req_pd;
-input  bdma2mcif_rd_cdt_lat_fifo_pop;
-input  bdma2mcif_rd_req_valid;
-output bdma2mcif_rd_req_ready;
-input [79 -1:0] bdma2mcif_rd_req_pd;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 output mcif2noc_axi_ar_arvalid;
@@ -199,7 +189,7 @@ wire spt2cvt_req_valid;
 wire spt2cvt_req_ready;
 //---------------------read_bpt inst--------------------------------//
 //: my $i = 0;
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk","bdma");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
 //: foreach my $client (@rdma_name) {
 //: print("NV_NVDLA_MCIF_READ_IG_bpt u_bpt${i} (\n");
 //: print ("   .nvdla_core_clk(nvdla_core_clk)\n");
@@ -334,26 +324,13 @@ NV_NVDLA_MCIF_READ_IG_bpt u_bpt8 (
   ,.tieoff_axid(`tieoff_axid_rbk)
   ,.tieoff_lat_fifo_depth(`tieoff_depth_rbk)
 );
-NV_NVDLA_MCIF_READ_IG_bpt u_bpt9 (
-   .nvdla_core_clk(nvdla_core_clk)
-  ,.nvdla_core_rstn(nvdla_core_rstn)
-  ,.dma2bpt_cdt_lat_fifo_pop(bdma2mcif_rd_cdt_lat_fifo_pop)
-  ,.dma2bpt_req_valid(bdma2mcif_rd_req_valid)
-  ,.dma2bpt_req_ready(bdma2mcif_rd_req_ready)
-  ,.dma2bpt_req_pd(bdma2mcif_rd_req_pd)
-  ,.bpt2arb_req_valid(bpt2arb_req9_valid)
-  ,.bpt2arb_req_ready(bpt2arb_req9_ready)
-  ,.bpt2arb_req_pd(bpt2arb_req9_pd)
-  ,.tieoff_axid(`tieoff_axid_bdma)
-  ,.tieoff_lat_fifo_depth(`tieoff_depth_bdma)
-);
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 NV_NVDLA_MCIF_READ_IG_arb u_arb (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
 //: my $i = 0;
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk","bdma");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
 //: foreach my $client (@rdma_name) {
 //: print("  ,.reg2dp_rd_weight${i}(reg2dp_rd_weight_${client})\n");
 //: $i++;
@@ -375,7 +352,6 @@ NV_NVDLA_MCIF_READ_IG_arb u_arb (
   ,.reg2dp_rd_weight6(reg2dp_rd_weight_pdp)
   ,.reg2dp_rd_weight7(reg2dp_rd_weight_cdp)
   ,.reg2dp_rd_weight8(reg2dp_rd_weight_rbk)
-  ,.reg2dp_rd_weight9(reg2dp_rd_weight_bdma)
   ,.bpt2arb_req0_valid(bpt2arb_req0_valid)
   ,.bpt2arb_req0_ready(bpt2arb_req0_ready)
   ,.bpt2arb_req0_pd(bpt2arb_req0_pd)
@@ -403,9 +379,6 @@ NV_NVDLA_MCIF_READ_IG_arb u_arb (
   ,.bpt2arb_req8_valid(bpt2arb_req8_valid)
   ,.bpt2arb_req8_ready(bpt2arb_req8_ready)
   ,.bpt2arb_req8_pd(bpt2arb_req8_pd)
-  ,.bpt2arb_req9_valid(bpt2arb_req9_valid)
-  ,.bpt2arb_req9_ready(bpt2arb_req9_ready)
-  ,.bpt2arb_req9_pd(bpt2arb_req9_pd)
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.arb2spt_req_valid (arb2spt_req_valid) //|> w

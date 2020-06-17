@@ -503,11 +503,6 @@ NV_NVDLA_csb_master u_NV_NVDLA_csb_master (
   ,.csb2mcif_req_pd (csb2mcif_req_pd)
   ,.mcif2csb_resp_valid (mcif2csb_resp_valid)
   ,.mcif2csb_resp_pd (mcif2csb_resp_pd)
-  ,.csb2bdma_req_pvld (csb2bdma_req_pvld)
-  ,.csb2bdma_req_prdy (csb2bdma_req_prdy)
-  ,.csb2bdma_req_pd (csb2bdma_req_pd)
-  ,.bdma2csb_resp_valid (bdma2csb_resp_valid)
-  ,.bdma2csb_resp_pd (bdma2csb_resp_pd)
   ,.csb2cdma_req_pvld (csb2cdma_req_pvld)
   ,.csb2cdma_req_prdy (csb2cdma_req_prdy)
   ,.csb2cdma_req_pd (csb2cdma_req_pd)
@@ -664,17 +659,6 @@ NV_NVDLA_mcif u_NV_NVDLA_mcif (
   ,.mcif2rbk_rd_rsp_ready (mcif2rbk_rd_rsp_ready) //|< w
   ,.mcif2rbk_rd_rsp_pd (mcif2rbk_rd_rsp_pd ) //|> w
   ,.mcif2rbk_wr_rsp_complete (mcif2rbk_wr_rsp_complete) //|> w
-  ,.bdma2mcif_rd_cdt_lat_fifo_pop (bdma2mcif_rd_cdt_lat_fifo_pop) //|< w
-  ,.bdma2mcif_rd_req_valid (bdma2mcif_rd_req_valid) //|< w
-  ,.bdma2mcif_rd_req_ready (bdma2mcif_rd_req_ready) //|> w
-  ,.bdma2mcif_rd_req_pd (bdma2mcif_rd_req_pd) //|< w
-  ,.bdma2mcif_wr_req_valid (bdma2mcif_wr_req_valid) //|< w
-  ,.bdma2mcif_wr_req_ready (bdma2mcif_wr_req_ready) //|> w
-  ,.bdma2mcif_wr_req_pd (bdma2mcif_wr_req_pd ) //|< w
-  ,.mcif2bdma_rd_rsp_valid (mcif2bdma_rd_rsp_valid) //|> w
-  ,.mcif2bdma_rd_rsp_ready (mcif2bdma_rd_rsp_ready) //|< w
-  ,.mcif2bdma_rd_rsp_pd (mcif2bdma_rd_rsp_pd ) //|> w
-  ,.mcif2bdma_wr_rsp_complete (mcif2bdma_wr_rsp_complete) //|> w
   ,.mcif2noc_axi_ar_arvalid (mcif2noc_axi_ar_arvalid) //|> o
   ,.mcif2noc_axi_ar_arready (mcif2noc_axi_ar_arready) //|< i
   ,.mcif2noc_axi_ar_arid (mcif2noc_axi_ar_arid[7:0]) //|> o
@@ -705,31 +689,6 @@ NV_NVDLA_mcif u_NV_NVDLA_mcif (
 ////////////////////////////////////////////////////////////////////////
 // NVDLA Partition O: Bridge DMA //
 ////////////////////////////////////////////////////////////////////////
-NV_NVDLA_bdma u_NV_NVDLA_bdma (
-   .nvdla_core_clk (nvdla_core_clk) //|< i
-  ,.nvdla_core_rstn (nvdla_core_rstn) //|< o
-  ,.bdma2csb_resp_valid (bdma2csb_resp_valid) //|> w
-  ,.bdma2csb_resp_pd (bdma2csb_resp_pd[33:0]) //|> w
-  ,.bdma2glb_done_intr_pd (bdma2glb_done_intr_pd[1:0]) //|> w
-  ,.bdma2mcif_rd_cdt_lat_fifo_pop (bdma2mcif_rd_cdt_lat_fifo_pop) //|> w
-  ,.bdma2mcif_rd_req_valid (bdma2mcif_rd_req_valid) //|> w
-  ,.bdma2mcif_rd_req_ready (bdma2mcif_rd_req_ready) //|< w
-  ,.bdma2mcif_rd_req_pd (bdma2mcif_rd_req_pd ) //|> w
-  ,.bdma2mcif_wr_req_valid (bdma2mcif_wr_req_valid) //|> w
-  ,.bdma2mcif_wr_req_ready (bdma2mcif_wr_req_ready) //|< w
-  ,.bdma2mcif_wr_req_pd (bdma2mcif_wr_req_pd ) //|> w
-  ,.csb2bdma_req_pvld (csb2bdma_req_pvld) //|< w
-  ,.csb2bdma_req_prdy (csb2bdma_req_prdy) //|> w
-  ,.csb2bdma_req_pd (csb2bdma_req_pd[62:0]) //|< w
-  ,.mcif2bdma_rd_rsp_valid (mcif2bdma_rd_rsp_valid) //|< w
-  ,.mcif2bdma_rd_rsp_ready (mcif2bdma_rd_rsp_ready) //|> w
-  ,.mcif2bdma_rd_rsp_pd (mcif2bdma_rd_rsp_pd ) //|< w
-  ,.mcif2bdma_wr_rsp_complete (mcif2bdma_wr_rsp_complete) //|< w
-  ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0]) //|< i
-  ,.dla_clk_ovr_on_sync (dla_clk_ovr_on_sync) //|< w
-  ,.global_clk_ovr_on_sync (global_clk_ovr_on_sync) //|< w
-  ,.tmc2slcg_disable_clock_gating (tmc2slcg_disable_clock_gating) //|< i
-  );
 ////////////////////////////////////////////////////////////////////////
 // NVDLA Partition O: Rubik engine //
 ////////////////////////////////////////////////////////////////////////
@@ -840,7 +799,6 @@ NV_NVDLA_glb u_NV_NVDLA_glb (
   ,.sdp2glb_done_intr_pd (sdp2glb_done_intr_pd[1:0]) //|< i
   ,.cdp2glb_done_intr_pd (cdp2glb_done_intr_pd[1:0]) //|< w
   ,.pdp2glb_done_intr_pd (pdp2glb_done_intr_pd[1:0]) //|< w
-  ,.bdma2glb_done_intr_pd (bdma2glb_done_intr_pd[1:0]) //|< w
   ,.rubik2glb_done_intr_pd (rubik2glb_done_intr_pd[1:0]) //|< w
   ,.cdma_wt2glb_done_intr_pd (cdma_wt2glb_done_intr_pd[1:0]) //|< i
   ,.cdma_dat2glb_done_intr_pd (cdma_dat2glb_done_intr_pd[1:0]) //|< i

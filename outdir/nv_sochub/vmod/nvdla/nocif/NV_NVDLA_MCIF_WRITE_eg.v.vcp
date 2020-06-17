@@ -23,7 +23,7 @@ module NV_NVDLA_MCIF_WRITE_eg (
 //:print"  ,cq_rd${i}_pd   \n";
 //:print"  ,cq_rd${i}_prdy \n";
 //:}
-//:my @wdma_name = ("sdp", "pdp","cdp","rbk","bdma");
+//:my @wdma_name = ("sdp", "pdp","cdp","rbk");
 //:foreach my $client (@wdma_name) {
 //:print"  ,mcif2${client}_wr_rsp_complete\n";
 //:}
@@ -47,7 +47,7 @@ output eg2ig_axi_vld;
 input noc2mcif_axi_b_bvalid;
 output noc2mcif_axi_b_bready;
 input [7:0] noc2mcif_axi_b_bid;
-//:my @wdma_name = ("sdp", "pdp","cdp","rbk","bdma");
+//:my @wdma_name = ("sdp", "pdp","cdp","rbk");
 //:foreach my $client (@wdma_name) {
 //:print"output reg  mcif2${client}_wr_rsp_complete;\n";
 //:}
@@ -102,7 +102,7 @@ cq_rd0_len
 //spyglass enable_block W171 W226
 end
 //:my $i;
-//:my @wdma_name = ("sdp", "pdp","cdp","rbk","bdma");
+//:my @wdma_name = ("sdp", "pdp","cdp","rbk");
 //:foreach my $client (@wdma_name) {
 //:print "wire  ${client}_cq_rd_pvld = (`tieoff_axid_${client} == 0 ) ? cq_rd0_pvld ";
 //:for($i=1;$i<5;$i++) {

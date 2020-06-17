@@ -155,7 +155,7 @@ end
 `endif // SPYGLASS_ASSERT_ON
 // EG===Contect Qeueu
 //:my $i;
-//:my @dma_index = (1, 1,1, 1,1, 0, 0, 0, 0,0,0,0,0,0,0);
+//:my @dma_index = (0, 1,1, 1,1, 0, 0, 0, 0,0,0,0,0,0,0);
 //:my @client_id = (0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0);
 //:my @remap_clientid = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 //:my $nindex = 0;

@@ -19,7 +19,7 @@ module NV_NVDLA_MCIF_WRITE_ig (
   ,nvdla_core_rstn //|< i
   ,pwrbus_ram_pd
   ,reg2dp_wr_os_cnt
-//: my @wdma_name = ("sdp", "pdp","cdp","rbk","bdma");
+//: my @wdma_name = ("sdp", "pdp","cdp","rbk");
 //: foreach my $client (@wdma_name) {
 //: print"  ,reg2dp_wr_weight_${client}\n";
 //: }
@@ -65,7 +65,7 @@ input mcif2noc_axi_w_wready;
 output [64 -1:0] mcif2noc_axi_w_wdata;
 output [16 -1:0] mcif2noc_axi_w_wstrb;
 output mcif2noc_axi_w_wlast;
-//: my @wdma_name = ("sdp", "pdp","cdp","rbk","bdma");
+//: my @wdma_name = ("sdp", "pdp","cdp","rbk");
 //: foreach my $client (@wdma_name) {
 //: print qq(
 //: input ${client}2mcif_wr_req_valid;
@@ -101,7 +101,7 @@ wire [NVDLA_MEMIF_WIDTH+1:0] spt2cvt_dat_pd;
 //: );
 //: }
 //: my $i = 0;
-//: my @wdma_name = ("sdp", "pdp","cdp","rbk","bdma");
+//: my @wdma_name = ("sdp", "pdp","cdp","rbk");
 //: foreach my $client (@wdma_name) {
 //: print "NV_NVDLA_MCIF_WRITE_IG_bpt u_bpt${i} ( \n";
 //: print "  .nvdla_core_clk         (nvdla_core_clk)\n";
@@ -133,7 +133,7 @@ NV_NVDLA_MCIF_WRITE_IG_arb u_arb (
 //: print "  ,.bpt2arb_dat${i}_pd        (bpt2arb_dat${i}_pd)\n";
 //: }
 //: my $i=0;
-//: my @wdma_name = ("sdp", "pdp","cdp","rbk","bdma");
+//: my @wdma_name = ("sdp", "pdp","cdp","rbk");
 //: foreach my $client (@wdma_name) {
 //: print "  ,.reg2dp_wr_weight${i}      (reg2dp_wr_weight_${client}[7:0])\n";
 //: $i++;

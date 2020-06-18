@@ -1,0 +1,17 @@
+{
+    "dump_trace_only": "False",
+    "farm_type": "Local",
+    "is_official": 1,
+    "metrics_result": {
+        "code_coverage": 0,
+        "functional_coverage": 0,
+        "passing_rate": 0,
+        "planned_test_number": 9,
+        "running_test_number": 9,
+        "unwrittern_test_number": 0
+    },
+    "plan_seed": 1592458470,
+    "start_time": "2020-06-18-08-34-40",
+    "status": "running",
+    "unique_id": "c55a8d52f465cc4badf9e789cb9526bc62b7af90"
+}

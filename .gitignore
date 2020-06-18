@@ -12,5 +12,5 @@ outdir/*
 !outdir/nv_sochub/
 outdir/**/verilator/*
 .nvprojectname
-tree.make
+#tree.make
 .cleaned

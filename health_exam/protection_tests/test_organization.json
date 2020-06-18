@@ -1,0 +1,100 @@
+{
+    "0": {
+        "dir": "/home/student/git/hw/health_exam/protection_tests/nvdla_utb/nvdla_reg_accessing",
+        "job_id": "",
+        "name": "nvdla_reg_accessing",
+        "tags": [
+            "L0",
+            "protection"
+        ],
+        "test_bench": "nvdla_utb"
+    },
+    "1": {
+        "dir": "/home/student/git/hw/health_exam/protection_tests/nvdla_utb/pdp_8x8x32_1x1_int8_1",
+        "job_id": "",
+        "name": "pdp_8x8x32_1x1_int8_1",
+        "tags": [
+            "L0",
+            "pdp",
+            "protection"
+        ],
+        "test_bench": "nvdla_utb"
+    },
+    "2": {
+        "dir": "/home/student/git/hw/health_exam/protection_tests/nvdla_utb/pdp_7x9x10_3x3_int8",
+        "job_id": "",
+        "name": "pdp_7x9x10_3x3_int8",
+        "tags": [
+            "L0",
+            "pdp",
+            "protection"
+        ],
+        "test_bench": "nvdla_utb"
+    },
+    "3": {
+        "dir": "/home/student/git/hw/health_exam/protection_tests/nvdla_utb/sdp_8x8x32_bypass_int8_1",
+        "job_id": "",
+        "name": "sdp_8x8x32_bypass_int8_1",
+        "tags": [
+            "L0",
+            "sdp",
+            "protection"
+        ],
+        "test_bench": "nvdla_utb"
+    },
+    "4": {
+        "dir": "/home/student/git/hw/health_exam/protection_tests/nvdla_utb/sdp_8x8x32_bypass_int8_0",
+        "job_id": "",
+        "name": "sdp_8x8x32_bypass_int8_0",
+        "tags": [
+            "L0",
+            "sdp",
+            "protection"
+        ],
+        "test_bench": "nvdla_utb"
+    },
+    "5": {
+        "dir": "/home/student/git/hw/health_exam/protection_tests/nvdla_utb/sdp_4x22x42_bypass_int8",
+        "job_id": "",
+        "name": "sdp_4x22x42_bypass_int8",
+        "tags": [
+            "L0",
+            "sdp",
+            "protection"
+        ],
+        "test_bench": "nvdla_utb"
+    },
+    "6": {
+        "dir": "/home/student/git/hw/health_exam/protection_tests/nvdla_utb/cdp_8x8x32_lrn3_int8_1",
+        "job_id": "",
+        "name": "cdp_8x8x32_lrn3_int8_1",
+        "tags": [
+            "L0",
+            "cdp",
+            "protection"
+        ],
+        "test_bench": "nvdla_utb"
+    },
+    "7": {
+        "dir": "/home/student/git/hw/health_exam/protection_tests/nvdla_utb/cdp_8x8x64_lrn9_int8",
+        "job_id": "",
+        "name": "cdp_8x8x64_lrn9_int8",
+        "tags": [
+            "L0",
+            "cdp",
+            "protection"
+        ],
+        "test_bench": "nvdla_utb"
+    },
+    "8": {
+        "dir": "/home/student/git/hw/health_exam/protection_tests/nvdla_utb/dc_24x33x55_5x5x55x25_int8_0",
+        "job_id": "",
+        "name": "dc_24x33x55_5x5x55x25_int8_0",
+        "tags": [
+            "L0",
+            "cc",
+            "protection"
+        ],
+        "test_bench": "nvdla_utb"
+    }
+}

@@ -39,7 +39,7 @@ module NV_NVDLA_CDP_DP_sum (
 /////////////////////////////////////////////////////
 input nvdla_core_clk;
 input nvdla_core_rstn;
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: my $k = ${icvto}*(${tp}+8)+17;
 //: print qq(
@@ -48,8 +48,8 @@ input nvdla_core_rstn;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-input [107-1:0] normalz_buf_data;
-output [2*(9*2+3)-1:0] sum2itp_pd;
+input [98-1:0] normalz_buf_data;
+output [1*(9*2+3)-1:0] sum2itp_pd;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input normalz_buf_data_pvld;
@@ -68,7 +68,7 @@ wire buf2sum_din_prdy;
 wire buf2sum_rdy_f;
 wire cdp_buf2sum_ready;
 //: my $icvto=(8 +1);
-//: my $tp=2 +8;
+//: my $tp=1 +8;
 //: foreach my $i (0..${tp}-1) {
 //: print qq(
 //: wire [${icvto}-1:0] buf2sum_int8_$i;
@@ -134,12 +134,6 @@ wire [9-1:0] int8_abs_8;
 reg [9*2-2:0] int8_sq_8;
 reg mon_int8_sq_8;
 
-wire [9-1:0] buf2sum_int8_9;
-wire [9-1:0] inv_9;
-wire [9-1:0] int8_abs_9;
-reg [9*2-2:0] int8_sq_9;
-reg mon_int8_sq_9;
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire [7:0] int8_inv_2;
 wire [7:0] int8_inv_3;
@@ -149,7 +143,7 @@ wire [7:0] int8_inv_6;
 wire [7:0] int8_inv_7;
 wire [7:0] int8_inv_8;
 wire [7:0] int8_inv_9;
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: my $k = ${tp}*(${icvto}*2+3);
 //: print qq(
@@ -163,12 +157,10 @@ wire [7:0] int8_inv_9;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-wire [42-1:0] sum_out_pd;
-wire [42-1:0] sum2itp_data;
+wire [21-1:0] sum_out_pd;
+wire [21-1:0] sum2itp_data;
 
 wire [9*2-1+4-1:0] int8_sum_0;
-
-wire [9*2-1+4-1:0] int8_sum_1;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire [41:0] int8_sum_1st;
@@ -212,19 +204,19 @@ wire sum_out_pvld;
 ///////////////////////////////////////////
 //==========================================
 //----------------------------------------
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: my $k = ${icvto}*(${tp}+8)+17;
 //: &eperl::pipe(" -wid $k -do cdp_buf2sum_pd -vo cdp_buf2sum_valid -ri cdp_buf2sum_ready -di normalz_buf_data -vi normalz_buf_data_pvld -ro normalz_buf_data_prdy ");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 // Reg
 reg pipe_normalz_buf_data_pvld;
-reg [107-1:0] pipe_normalz_buf_data;
+reg [98-1:0] pipe_normalz_buf_data;
 // Wire
 wire normalz_buf_data_prdy;
 wire pipe_normalz_buf_data_prdy;
 wire cdp_buf2sum_valid;
-wire [107-1:0] cdp_buf2sum_pd;
+wire [98-1:0] cdp_buf2sum_pd;
 // Code
 // PIPE READY
 assign normalz_buf_data_prdy = pipe_normalz_buf_data_prdy || !pipe_normalz_buf_data_pvld;
@@ -243,7 +235,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (normalz_buf_data_prdy && normalz_buf_data_pvld) begin
-        pipe_normalz_buf_data[107-1:0] <= normalz_buf_data[107-1:0];
+        pipe_normalz_buf_data[98-1:0] <= normalz_buf_data[98-1:0];
     end
 end
 
@@ -260,7 +252,7 @@ assign cdp_buf2sum_ready = buf2sum_rdy_f;
 assign buf2sum_rdy_f = buf2sum_din_prdy;
 //==========================================
 //: my $icvto=(8 +1);
-//: my $tp=2 +8;
+//: my $tp=1 +8;
 //: foreach my $i (0..${tp}-1) {
 //: print qq(
 //: assign buf2sum_int8_$i = cdp_buf2sum_pd[${icvto}*${i}+${icvto}-1:${icvto}*${i}];
@@ -286,13 +278,11 @@ assign buf2sum_int8_7 = cdp_buf2sum_pd[9*7+9-1:9*7];
 
 assign buf2sum_int8_8 = cdp_buf2sum_pd[9*8+9-1:9*8];
 
-assign buf2sum_int8_9 = cdp_buf2sum_pd[9*9+9-1:9*9];
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //========================================================
 //int mode
 //--------------------------------------------------------
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: foreach my $i (0..${tp}+8-1) {
 //: print qq(
@@ -362,9 +352,6 @@ assign int8_abs_7 = buf2sum_int8_7[9-1] ? (inv_7[9-2:0] + {{(9-2){1'b0}},1'b1}) 
 assign inv_8 = buf2sum_int8_8[9-1] ? (~buf2sum_int8_8[9-2:0]) : {(9-1){1'b0}};
 assign int8_abs_8 = buf2sum_int8_8[9-1] ? (inv_8[9-2:0] + {{(9-2){1'b0}},1'b1}) : buf2sum_int8_8;
 
-assign inv_9 = buf2sum_int8_9[9-1] ? (~buf2sum_int8_9[9-2:0]) : {(9-1){1'b0}};
-assign int8_abs_9 = buf2sum_int8_9[9-1] ? (inv_9[9-2:0] + {{(9-2){1'b0}},1'b1}) : buf2sum_int8_9;
-
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 if (!nvdla_core_rstn) begin
 
@@ -386,20 +373,17 @@ if (!nvdla_core_rstn) begin
 
 {mon_int8_sq_8,int8_sq_8} <= {(9*2-1){1'b0}};
 
-{mon_int8_sq_9,int8_sq_9} <= {(9*2-1){1'b0}};
-
 end else if(load_din) begin
 {mon_int8_sq_0,int8_sq_0} <= len9 ? (int8_abs_0 * int8_abs_0) : {(9*2){1'b0}};
 {mon_int8_sq_1,int8_sq_1} <= ( len7|len9)? (int8_abs_1 * int8_abs_1) : {(9*2){1'b0}};
 {mon_int8_sq_2,int8_sq_2} <= (len5|len7|len9)? (int8_abs_2 * int8_abs_2) : {(9*2){1'b0}};
 {mon_int8_sq_3,int8_sq_3} <= (int8_abs_3 * int8_abs_3);
 {mon_int8_sq_4,int8_sq_4} <= (int8_abs_4 * int8_abs_4);  
-{mon_int8_sq_5,int8_sq_5} <= (int8_abs_5 * int8_abs_5);  
 
-{mon_int8_sq_6,int8_sq_6} <= (int8_abs_6 * int8_abs_6);
-{mon_int8_sq_7,int8_sq_7} <= (len5|len7|len9)? (int8_abs_7 * int8_abs_7) : {(9*2){1'b0}};
-{mon_int8_sq_8,int8_sq_8} <= ( len7|len9)? (int8_abs_8 * int8_abs_8) : {(9*2){1'b0}};
-{mon_int8_sq_9,int8_sq_9} <= len9 ? (int8_abs_9 * int8_abs_9) : {(9*2){1'b0}};
+{mon_int8_sq_5,int8_sq_5} <= (int8_abs_5 * int8_abs_5);
+{mon_int8_sq_6,int8_sq_6} <= (len5|len7|len9)? (int8_abs_6 * int8_abs_6) : {(9*2){1'b0}};
+{mon_int8_sq_7,int8_sq_7} <= ( len7|len9)? (int8_abs_7 * int8_abs_7) : {(9*2){1'b0}};
+{mon_int8_sq_8,int8_sq_8} <= len9 ? (int8_abs_8 * int8_abs_8) : {(9*2){1'b0}};
 end
 end
 
@@ -436,7 +420,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 assign buf2sum_2d_rdy = ~buf2sum_3d_vld | buf2sum_3d_rdy ;
 assign load_din_2d = buf2sum_2d_vld & buf2sum_2d_rdy;
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: foreach my $i (0..${tp}-1) {
 //: print "int_sum_block_tp1 u_sum_block_$i ( \n";
@@ -483,28 +467,6 @@ int_sum_block_tp1 u_sum_block_0 (
 
 ,.int8_sum (int8_sum_0)
     ); 
-int_sum_block_tp1 u_sum_block_1 ( 
-
-.nvdla_core_clk (nvdla_core_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.len5 (len5)
-,.len7 (len7)
-,.len9 (len9)
-,.load_din_2d (load_din_2d)
-,.load_din_d (load_din_d)
-,.reg2dp_normalz_len (reg2dp_normalz_len[1:0])
- ,.sq_pd_int8_0       (int8_sq_1)  
- ,.sq_pd_int8_1       (int8_sq_2)  
- ,.sq_pd_int8_2       (int8_sq_3)  
- ,.sq_pd_int8_3       (int8_sq_4)  
- ,.sq_pd_int8_4       (int8_sq_5)  
- ,.sq_pd_int8_5       (int8_sq_6)  
- ,.sq_pd_int8_6       (int8_sq_7)  
- ,.sq_pd_int8_7       (int8_sq_8)  
- ,.sq_pd_int8_8       (int8_sq_9)  
-
-,.int8_sum (int8_sum_1)
-    ); 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -522,7 +484,7 @@ assign buf2sum_3d_rdy = sum_out_prdy;
 //data output select
 //-------------------------------------------------------
 assign sum_out_pd = {
-//: my $tp=2;
+//: my $tp=1;
 //: if($tp > 1){
 //: foreach my $i (0..${tp}-2) {
 //: my $j = ${tp} - $i -1;
@@ -530,7 +492,7 @@ assign sum_out_pd = {
 //: }
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-int8_sum_1, 
+
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 int8_sum_0};
 assign sum_out_pvld = buf2sum_3d_vld;
@@ -541,23 +503,23 @@ assign sum2itp_valid = sum_out_pvld;
 assign sum2itp_data = sum_out_pd;
 //=======================================================
 ////////::pipe -bc -is sum2itp_pd (sum2itp_pvld,sum2itp_prdy) <= sum2itp_data (sum2itp_valid,sum2itp_ready);
-//: my $k = 2*21;
+//: my $k = 1*21;
 //: &eperl::pipe("-wid $k -is -do sum2itp_pd -vo sum2itp_pvld -ri sum2itp_prdy -di sum2itp_data -vi sum2itp_valid -ro sum2itp_ready ");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 // Reg
 reg sum2itp_ready;
 reg skid_flop_sum2itp_ready;
 reg skid_flop_sum2itp_valid;
-reg [42-1:0] skid_flop_sum2itp_data;
+reg [21-1:0] skid_flop_sum2itp_data;
 reg pipe_skid_sum2itp_valid;
-reg [42-1:0] pipe_skid_sum2itp_data;
+reg [21-1:0] pipe_skid_sum2itp_data;
 // Wire
 wire skid_sum2itp_valid;
-wire [42-1:0] skid_sum2itp_data;
+wire [21-1:0] skid_sum2itp_data;
 wire skid_sum2itp_ready;
 wire pipe_skid_sum2itp_ready;
 wire sum2itp_pvld;
-wire [42-1:0] sum2itp_pd;
+wire [21-1:0] sum2itp_pd;
 // Code
 // SKID READY
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -585,10 +547,10 @@ assign skid_sum2itp_valid = (skid_flop_sum2itp_ready) ? sum2itp_valid : skid_flo
 // SKID DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_flop_sum2itp_ready & sum2itp_valid) begin
-        skid_flop_sum2itp_data[42-1:0] <= sum2itp_data[42-1:0];
+        skid_flop_sum2itp_data[21-1:0] <= sum2itp_data[21-1:0];
     end
 end
-assign skid_sum2itp_data[42-1:0] = (skid_flop_sum2itp_ready) ? sum2itp_data[42-1:0] : skid_flop_sum2itp_data[42-1:0];
+assign skid_sum2itp_data[21-1:0] = (skid_flop_sum2itp_ready) ? sum2itp_data[21-1:0] : skid_flop_sum2itp_data[21-1:0];
 
 
 // PIPE READY
@@ -608,7 +570,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_sum2itp_ready && skid_sum2itp_valid) begin
-        pipe_skid_sum2itp_data[42-1:0] <= skid_sum2itp_data[42-1:0];
+        pipe_skid_sum2itp_data[21-1:0] <= skid_sum2itp_data[21-1:0];
     end
 end
 

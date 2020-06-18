@@ -26,7 +26,7 @@
     //atomK*4
 //notice, for image case, first atom OP within one strip OP must fetch from entry align place, in the middle of an entry is not supported.
 //thus, when atomC/atomK=4, stripe=4*atomK, feature data still keeps atomK*2
-    `define CC_ATOMC_DIV_ATOMK_EQUAL_2
+    `define CC_ATOMC_DIV_ATOMK_EQUAL_1
 //batch keep 1
 module NV_NVDLA_CSC_sg (
    nvdla_core_clk //|< i
@@ -153,7 +153,6 @@ reg dp2reg_done;
 reg [7:0] flush_cycles;
 reg [9:0] group_up_cnt;
 reg is_img_d1;
-reg is_winograd_d1;
 reg [14:0] kernels_avl;
 reg [4:0] last_data_bank;
 reg [13:0] last_kernels;
@@ -264,7 +263,6 @@ wire is_pixel;
 wire is_running;
 wire is_stripe_be_2x;
 wire is_stripe_le_1x;
-wire is_winograd;
 wire [13:0] kernels_avl_add;
 wire [13:0] kernels_avl_sub;
 wire [14:0] kernels_avl_w;
@@ -646,17 +644,14 @@ end
 assign is_pixel = (reg2dp_datain_format == 1'h1 );
 assign is_conv = (reg2dp_conv_mode == 1'h0 );
 assign is_dc = is_conv & ~is_pixel;
-assign is_winograd = (reg2dp_conv_mode == 1'h1 );
-assign cur_mode = {is_img, is_winograd, is_dc};
-assign data_out_atomic_w= is_img ? reg2dp_dataout_width + 1'b1 :
-                           is_winograd ? ({2'b0, reg2dp_atomics[20:2]} + 1'b1) :
-                           reg2dp_atomics + 1'b1;
-assign weight_width_cmp_w = (is_winograd | is_img) ? 5'b0 : reg2dp_weight_width_ext;
-assign weight_height_cmp_w = is_winograd ? 5'b0 : reg2dp_weight_height_ext;
+assign cur_mode = {is_img, 1'b0, is_dc};
+assign data_out_atomic_w = is_img ? reg2dp_dataout_width + 1'b1 : reg2dp_atomics + 1'b1;
+assign weight_width_cmp_w = (is_img) ? 5'b0 : reg2dp_weight_width_ext;
+assign weight_height_cmp_w = reg2dp_weight_height_ext;
 assign is_img = is_conv & is_pixel;
 assign data_in_height_w = reg2dp_datain_height_ext + 1'b1;
 assign weight_channel_w = reg2dp_weight_channel_ext + 1'b1;
-assign weight_groups_w = reg2dp_weight_kernel[12:4] + 1'b1;
+assign weight_groups_w = reg2dp_weight_kernel[12:3] + 1'b1;
 assign {weight_r_add_w, mon_weight_r_add_w} = (6'h9 << reg2dp_y_extension);
 assign weight_r_last_w = weight_r_add_w[0] ? 2'b0 :
                          weight_r_add_w[1] ? {1'b0, reg2dp_weight_height_ext[0]} :
@@ -665,18 +660,14 @@ assign {mon_rls_slices_w, rls_slices_w} = reg2dp_rls_slices + 1'b1;
 assign {mon_slice_left_w, slice_left_w} = reg2dp_skip_data_rls ? (reg2dp_datain_height_ext + 1'b1) : reg2dp_datain_height_ext - reg2dp_rls_slices;
 //In opensource, DC batching only support fully connected layer. In this case stripe operation length is always 1
 //upper_limit = 2*lower_limit or upper_limit = lower_limit
-assign lower_limit_w = is_img ? 7'h20 :
-                       is_winograd ? 7'h10 :
-                       (reg2dp_batches != 5'd0) ? 7'h1 :
+assign lower_limit_w = is_img ? 7'h10 :
+                       7'h8;
+assign upper_limit_w = is_img ? 7'h10 :
                        7'h10;
-assign upper_limit_w = is_img ? 7'h20 :
-                       is_winograd ? 7'h20 :
-                       (reg2dp_batches != 5'd0) ? 7'h1 :
-                       7'h20;
-assign c_fetch_size = is_winograd ? 8'h4 : 8'h20  ;
-assign data_batch_w = reg2dp_batches + 1'b1;
-//: my $kk="\"7'h10\"";
-//: my $jj="\"7'h20\"";
+assign c_fetch_size = 8'h08  ;
+assign data_batch_w = 6'b0;
+//: my $kk="\"7'h8\"";
+//: my $jj="\"7'h10\"";
 //: &eperl::flop("-nodeclare   -rval \"{14{1'b0}}\"  -en \"layer_st\" -d \"data_in_height_w\" -q data_in_height");
 //: &eperl::flop("-nodeclare   -rval \"{22{1'b0}}\"  -en \"layer_st\" -d \"data_out_atomic_w\" -q data_out_atomic");
 //: &eperl::flop("-nodeclare   -rval \"{6{1'b0}}\"  -en \"layer_st\" -d \"data_batch_w\" -q data_batch");
@@ -691,7 +682,6 @@ assign data_batch_w = reg2dp_batches + 1'b1;
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"  -en \"layer_st\" -d \"is_img\" -q is_img_d1");
 //: &eperl::flop("-nodeclare   -rval ${kk}  -en \"layer_st\" -d \"lower_limit_w\" -q lower_limit");
 //: &eperl::flop("-nodeclare   -rval ${jj}  -en \"layer_st\" -d \"upper_limit_w\" -q upper_limit");
-//: &eperl::flop("-nodeclare   -rval \"1'b0\"  -en \"layer_st\" -d \"is_winograd\" -q is_winograd_d1");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
@@ -863,7 +853,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       lower_limit <= 7'h10;
+       lower_limit <= 7'h8;
    end else begin
        if ((layer_st) == 1'b1) begin
            lower_limit <= lower_limit_w;
@@ -877,7 +867,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       upper_limit <= 7'h20;
+       upper_limit <= 7'h10;
    end else begin
        if ((layer_st) == 1'b1) begin
            upper_limit <= upper_limit_w;
@@ -885,20 +875,6 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        end else if ((layer_st) == 1'b0) begin
        end else begin
            upper_limit <= 'bx;
-       // VCS coverage on
-       end
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       is_winograd_d1 <= 1'b0;
-   end else begin
-       if ((layer_st) == 1'b1) begin
-           is_winograd_d1 <= is_winograd;
-       // VCS coverage off
-       end else if ((layer_st) == 1'b0) begin
-       end else begin
-           is_winograd_d1 <= 'bx;
        // VCS coverage on
        end
    end
@@ -932,7 +908,7 @@ end
 assign {mon_group_up_cnt_inc, group_up_cnt_inc} = group_up_cnt + 1'b1;
 assign is_last_group = (group_up_cnt_inc == weight_groups);
 assign group_up_cnt_w = layer_st ? 10'b0 : group_up_cnt_inc;
-assign cur_kernel = ~is_last_group ? 7'h10 : (reg2dp_weight_kernel[4 -1:0] + 1'b1) ;
+assign cur_kernel = ~is_last_group ? 7'h8 : (reg2dp_weight_kernel[3 -1:0] + 1'b1) ;
 //: &eperl::flop("-nodeclare   -rval \"{10{1'b0}}\"  -en \"layer_st | op_group_en\" -d \"group_up_cnt_w\" -q group_up_cnt");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -1008,7 +984,7 @@ end
 assign {mon_channel_up_cnt_inc, channel_up_cnt_inc} = channel_up_cnt + c_fetch_size[6:0];
 assign is_last_channel = (channel_up_cnt_inc >= weight_channel);
 assign channel_up_cnt_w = layer_st ? 14'b0 : is_last_channel ? 14'b0 : channel_up_cnt_inc;
-assign cur_channel = (is_winograd_d1 | ~is_last_channel) ? c_fetch_size[6:0] : (reg2dp_weight_channel_ext[5 -1:0] + 1'b1);
+assign cur_channel = (~is_last_channel) ? c_fetch_size[6:0] : (reg2dp_weight_channel_ext[3 -1:0] + 1'b1);
 //: &eperl::flop("-nodeclare   -rval \"{14{1'b0}}\"  -en \"layer_st | op_channel_en\" -d \"channel_up_cnt_w\" -q channel_up_cnt");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -1123,7 +1099,7 @@ end
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //--------------------------- package registers -----------------------------//
 assign {mon_pkg_idx_w, pkg_idx_w} = layer_st ? 2'h3 : (pkg_idx + 2'b1);
-assign pkg_weight_size_w = (is_winograd_d1) ? 8'h20   : cur_channel;
+assign pkg_weight_size_w = cur_channel;
 assign stripe_length_w = cur_stripe;
 assign pkg_block_end_w = is_last_block;
 assign pkg_channel_end_w = is_last_block & is_last_channel;
@@ -1435,7 +1411,7 @@ assign sg2wt_channel_end = wt_pop_pd[15];
 assign sg2wt_group_end = wt_pop_pd[16];
 assign sg2wt_wt_release = wt_pop_pd[17];
 assign {mon_sg2wt_kernel_size_inc, sg2wt_kernel_size_inc} = sg2wt_kernel_size + 1'b1;
-assign {mon_dat_stripe_batch_size_w, dat_stripe_batch_size_w} = sg2dat_stripe_length * data_batch;
+assign dat_stripe_batch_size_w = sg2dat_stripe_length;
 assign dat_stripe_img_size_w = sg2dat_stripe_length;
 assign dat_stripe_size_w = is_img_d1 ? dat_stripe_img_size_w : dat_stripe_batch_size_w;
 assign {mon_dat_stripe_img_length_w,
@@ -1446,7 +1422,7 @@ assign {mon_dat_stripe_img_length_w,
 assign dat_stripe_length_w = is_img_d1 ? dat_stripe_img_length_w : dat_stripe_batch_size_w;
 //delay for one cycle
 assign dat_max_cycles = ~dat_pop_ready ? 7'b0 :
-                        (dat_stripe_length < 7'd16 ) ? 7'd16 :
+                        (dat_stripe_length < 7'd8 ) ? 7'd8 :
                         dat_stripe_length;
 assign wt_cycles = sg2wt_kernel_size[5:0];
 assign wt_max_cycles = ~wt_pop_ready ? 6'b0 :
@@ -1580,21 +1556,18 @@ always @(posedge nvdla_core_ng_clk) begin
 end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-assign dat_impact_cnt = is_winograd_d1 ? {dat_stripe_size[5:0], 3'b0} :
-                        is_winograd_d1 ? {1'b0, dat_stripe_size[5:0], 2'b0} :
-                        ~is_winograd_d1 ? {1'b0, dat_stripe_size, 1'b0} :
-                        {2'b0, dat_stripe_size};
+assign dat_impact_cnt = {2'b0, dat_stripe_size};
 assign credit_req_size = dat_impact_cnt;
 assign credit_cnt_add = credit_vld ? credit_size : 4'b0;
 assign credit_cnt_dec = (dat_pop_ready & sg2dat_channel_end) ? dat_impact_cnt : 9'b0;
 assign {mon_credit_cnt_w, credit_cnt_w} = credit_cnt + credit_cnt_add - credit_cnt_dec;
 assign credit_ready = ~sg2dat_channel_end | (credit_cnt >= credit_req_size);
-//: my $credit_size = 16*2;
+//: my $credit_size = 8*2;
 //: &eperl::flop("-nodeclare -clk nvdla_core_ng_clk  -rval $credit_size  -en \"dat_pop_ready | credit_vld\" -d \"credit_cnt_w\" -q credit_cnt");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 always @(posedge nvdla_core_ng_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       credit_cnt <= 32;
+       credit_cnt <= 16;
    end else begin
        if ((dat_pop_ready | credit_vld) == 1'b1) begin
            credit_cnt <= credit_cnt_w;

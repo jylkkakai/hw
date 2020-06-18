@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 typedef struct cacc2sdp_if_s {
-    sc_int<32> pd[4] ;
+    sc_int<32> pd ;
     sc_int<1> pd_batch_end ;
     sc_int<1> pd_layer_end ;
 } cacc2sdp_if_t;

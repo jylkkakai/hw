@@ -43,15 +43,15 @@ module NV_NVDLA_CDP_DP_cvtout (
 input nvdla_core_clk;
 input nvdla_core_rstn;
 input cvtout_prdy;
-//: my $k = 2;
+//: my $k = 1;
 //: my $icvto = (8 +1);
 //: my $ocvti = $icvto + 16;
 //: my $ocvto = 8;
 //: print "input  [${k}*${ocvti}-1:0] mul2ocvt_pd;  \n";
 //: print "output  [${k}*${ocvto}+16:0] cvtout_pd;  \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-input  [2*25-1:0] mul2ocvt_pd;  
-output  [2*8+16:0] cvtout_pd;  
+input  [1*25-1:0] mul2ocvt_pd;  
+output  [1*8+16:0] cvtout_pd;  
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input mul2ocvt_pvld;
@@ -70,7 +70,7 @@ reg [15:0] reg2dp_datout_scale_use;
 reg [5:0] reg2dp_datout_shifter_use;
 wire cdp_cvtout_in_ready;
 wire cdp_cvtout_in_valid;
-//: my $k = 2;
+//: my $k = 1;
 //: my $icvto = (8 +1);
 //: my $ocvti = $icvto + 16;
 //: my $ocvto = 8;
@@ -85,17 +85,14 @@ wire cdp_cvtout_in_valid;
 wire [25-1:0] cdp_cvtout_input_pd_0;
 wire [8-1:0] cdp_cvtout_output_pd_0;
 
-wire [25-1:0] cdp_cvtout_input_pd_1;
-wire [8-1:0] cdp_cvtout_output_pd_1;
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire cdp_cvtout_input_rdy;
 wire cdp_cvtout_input_vld;
-wire [2 -1:0] cdp_cvtout_input_rdys;
-wire [2 -1:0] cdp_cvtout_input_vlds;
-wire [2*8 -1:0] cdp_cvtout_output_pd;
-wire [2 -1:0] cdp_cvtout_output_rdys;
-wire [2 -1:0] cdp_cvtout_output_vlds;
+wire [1 -1:0] cdp_cvtout_input_rdys;
+wire [1 -1:0] cdp_cvtout_input_vlds;
+wire [1*8 -1:0] cdp_cvtout_output_pd;
+wire [1 -1:0] cdp_cvtout_output_rdys;
+wire [1 -1:0] cdp_cvtout_output_vlds;
 wire cdp_cvtout_output_rdy;
 wire cdp_cvtout_output_vld;
 wire [16:0] data_info_in_pd;
@@ -455,7 +452,7 @@ assign cdp_cvtout_input_vld = cdp_cvtout_in_valid & data_info_in_rdy;
 assign cdp_cvtout_input_rdy = &cdp_cvtout_input_rdys;
 //cvt sub-unit valid in
 //cvt sub-unit data in
-//: my $k = 2;
+//: my $k = 1;
 //: my $icvto = (8 +1);
 //: my $ocvti = $icvto + 16;
 //: my $ocvto = 8;
@@ -479,17 +476,6 @@ assign cdp_cvtout_input_pd_0 = mul2ocvt_pd[0*25+25-1:0*25];
 assign cdp_cvtout_input_vlds[0] = cdp_cvtout_input_vld
 
 & cdp_cvtout_input_rdys[0]
-
-& cdp_cvtout_input_rdys[1]
-
-;
-
-assign cdp_cvtout_input_pd_1 = mul2ocvt_pd[1*25+25-1:1*25];
-assign cdp_cvtout_input_vlds[1] = cdp_cvtout_input_vld
-
-& cdp_cvtout_input_rdys[0]
-
-& cdp_cvtout_input_rdys[1]
 
 ;
 
@@ -516,7 +502,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   reg2dp_datout_shifter_use[5:0] <= reg2dp_datout_shifter[5:0];
   end
 end
-//: my $k = 2;
+//: my $k = 1;
 //: my $icvto = (8 +1);
 //: my $ocvti = $icvto + 16;
 //: my $ocvto = 8;
@@ -553,23 +539,9 @@ HLS_cdp_ocvt u_HLS_cdp_ocvt_0 (
 ,.chn_data_out_rsc_lz (cdp_cvtout_output_vlds[0]) //|> w
 );
 
-HLS_cdp_ocvt u_HLS_cdp_ocvt_1 (
-.nvdla_core_clk (nvdla_core_clk) //|< i
-,.nvdla_core_rstn (nvdla_core_rstn) //|< i
-,.chn_data_in_rsc_z (cdp_cvtout_input_pd_1) //|< w
-,.chn_data_in_rsc_vz (cdp_cvtout_input_vlds[1]) //|< w
-,.chn_data_in_rsc_lz (cdp_cvtout_input_rdys[1]) //|> w
-,.cfg_alu_in_rsc_z (reg2dp_datout_offset_use[25-1:0]) //|< r
-,.cfg_mul_in_rsc_z (reg2dp_datout_scale_use[15:0]) //|< r
-,.cfg_truncate_rsc_z (reg2dp_datout_shifter_use[5:0]) //|< r
-,.chn_data_out_rsc_z (cdp_cvtout_output_pd_1) //|> ?
-,.chn_data_out_rsc_vz (cdp_cvtout_output_rdys[1]) //|< w
-,.chn_data_out_rsc_lz (cdp_cvtout_output_vlds[1]) //|> w
-);
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //sub-unit output ready
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: assign cdp_cvtout_output_rdys[$m] = cdp_cvtout_output_rdy
@@ -589,16 +561,6 @@ assign cdp_cvtout_output_rdys[0] = cdp_cvtout_output_rdy
 
 & cdp_cvtout_output_vlds[0]
 
-& cdp_cvtout_output_vlds[1]
-
-;
-
-assign cdp_cvtout_output_rdys[1] = cdp_cvtout_output_rdy
-
-& cdp_cvtout_output_vlds[0]
-
-& cdp_cvtout_output_vlds[1]
-
 ;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
@@ -608,7 +570,7 @@ assign cdp_cvtout_output_vld = &cdp_cvtout_output_vlds;
 assign cdp_cvtout_output_rdy = cvtout_prdy & data_info_out_vld;
 //output data
 assign cdp_cvtout_output_pd = {
-//: my $k = 2;
+//: my $k = 1;
 //: if($k > 1) {
 //: foreach my $m (0..$k-2) {
 //: my $i = $k -$m -1;
@@ -618,8 +580,6 @@ assign cdp_cvtout_output_pd = {
 //: }
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-
-cdp_cvtout_output_pd_1,
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 cdp_cvtout_output_pd_0};

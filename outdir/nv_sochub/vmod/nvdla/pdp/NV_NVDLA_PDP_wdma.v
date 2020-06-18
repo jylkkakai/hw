@@ -69,11 +69,11 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 output pdp2mcif_wr_req_valid; /* data valid */
 input pdp2mcif_wr_req_ready; /* data return handshake */
-output [( 128 + (128/8/16) + 1 )-1:0] pdp2mcif_wr_req_pd;
+output [( 64 + (64/8/8) + 1 )-1:0] pdp2mcif_wr_req_pd;
 input mcif2pdp_wr_rsp_complete;
 input pdp_dp2wdma_valid;
 output pdp_dp2wdma_ready;
-input [8*2 -1:0] pdp_dp2wdma_pd;
+input [8*1 -1:0] pdp_dp2wdma_pd;
 input [31:0] pwrbus_ram_pd;
 output [1:0] pdp2glb_done_intr_pd;
 input rdma2wdma_done;
@@ -112,7 +112,7 @@ reg cv_pending;
 reg dat0_fifo_rd_pvld;
 reg dat1_fifo_rd_pvld;
 reg dat_en;
-reg [( 128 + (128/8/16) + 1 )-1:0] dma_wr_req_pd;
+reg [( 64 + (64/8/8) + 1 )-1:0] dma_wr_req_pd;
 wire dma_wr_rsp_complete;
 reg [31:0] dp2reg_d0_perf_write_stall;
 reg [31:0] dp2reg_d1_perf_write_stall;
@@ -161,9 +161,9 @@ wire [12:0] cmd_fifo_rd_size;
 wire cnt_cen;
 wire cnt_clr;
 wire cnt_inc;
-//: my $dmaifBW = 128;
-//: my $atomicm = 16*8;
-//: my $pdpbw = 2*8;
+//: my $dmaifBW = 64;
+//: my $atomicm = 8*8;
+//: my $pdpbw = 1*8;
 //: my $Wnum = int( $dmaifBW/$atomicm );
 //: my $Bnum = int($atomicm/$pdpbw);
 //: foreach my $posw (0..$Wnum-1) { ##High...low atomic_m
@@ -177,54 +177,54 @@ wire cnt_inc;
 //: }
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-wire   [16*8-1:0] dat0_data; 
+wire   [8*8-1:0] dat0_data; 
 
-wire [16-1:0]dat0_fifo0_rd_pd;
+wire [8-1:0]dat0_fifo0_rd_pd;
 wire dat0_fifo0_rd_prdy;
 wire dat0_fifo0_rd_pvld;
 
-wire [16-1:0]dat0_fifo1_rd_pd;
+wire [8-1:0]dat0_fifo1_rd_pd;
 wire dat0_fifo1_rd_prdy;
 wire dat0_fifo1_rd_pvld;
 
-wire [16-1:0]dat0_fifo2_rd_pd;
+wire [8-1:0]dat0_fifo2_rd_pd;
 wire dat0_fifo2_rd_prdy;
 wire dat0_fifo2_rd_pvld;
 
-wire [16-1:0]dat0_fifo3_rd_pd;
+wire [8-1:0]dat0_fifo3_rd_pd;
 wire dat0_fifo3_rd_prdy;
 wire dat0_fifo3_rd_pvld;
 
-wire [16-1:0]dat0_fifo4_rd_pd;
+wire [8-1:0]dat0_fifo4_rd_pd;
 wire dat0_fifo4_rd_prdy;
 wire dat0_fifo4_rd_pvld;
 
-wire [16-1:0]dat0_fifo5_rd_pd;
+wire [8-1:0]dat0_fifo5_rd_pd;
 wire dat0_fifo5_rd_prdy;
 wire dat0_fifo5_rd_pvld;
 
-wire [16-1:0]dat0_fifo6_rd_pd;
+wire [8-1:0]dat0_fifo6_rd_pd;
 wire dat0_fifo6_rd_prdy;
 wire dat0_fifo6_rd_pvld;
 
-wire [16-1:0]dat0_fifo7_rd_pd;
+wire [8-1:0]dat0_fifo7_rd_pd;
 wire dat0_fifo7_rd_prdy;
 wire dat0_fifo7_rd_pvld;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire dat_accept;
-wire [128 -1:0] dat_data;
+wire [64 -1:0] dat_data;
 reg dat_fifo_rd_last_pvld;
 wire dat_rdy;
 wire dma_wr_cmd_accept;
 wire [63:0] dma_wr_cmd_addr;
-wire [64 +13:0] dma_wr_cmd_pd;
+wire [32 +13:0] dma_wr_cmd_pd;
 wire dma_wr_cmd_require_ack;
 wire [22:0] dma_wr_cmd_size;
 wire dma_wr_cmd_vld;
-wire [128 -1:0] dma_wr_dat_data;
+wire [64 -1:0] dma_wr_dat_data;
 wire [1:0] dma_wr_dat_mask;
-wire [128 + (128/8/16)-1:0] dma_wr_dat_pd;
+wire [64 + (64/8/8)-1:0] dma_wr_dat_pd;
 wire dma_wr_dat_vld;
 wire dma_wr_req_rdy;
 wire dma_wr_req_type;
@@ -307,23 +307,23 @@ end
 //==============
 // Data INPUT pipe and Unpack
 //==============
-//: my $k = 2*8;
+//: my $k = 1*8;
 //: &eperl::pipe("-wid $k -is -do dp2wdma_pd -vo dp2wdma_vld -ri dp2wdma_rdy -di pdp_dp2wdma_pd -vi pdp_dp2wdma_valid -ro pdp_dp2wdma_ready_ff ");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 // Reg
 reg pdp_dp2wdma_ready_ff;
 reg skid_flop_pdp_dp2wdma_ready_ff;
 reg skid_flop_pdp_dp2wdma_valid;
-reg [16-1:0] skid_flop_pdp_dp2wdma_pd;
+reg [8-1:0] skid_flop_pdp_dp2wdma_pd;
 reg pipe_skid_pdp_dp2wdma_valid;
-reg [16-1:0] pipe_skid_pdp_dp2wdma_pd;
+reg [8-1:0] pipe_skid_pdp_dp2wdma_pd;
 // Wire
 wire skid_pdp_dp2wdma_valid;
-wire [16-1:0] skid_pdp_dp2wdma_pd;
+wire [8-1:0] skid_pdp_dp2wdma_pd;
 wire skid_pdp_dp2wdma_ready_ff;
 wire pipe_skid_pdp_dp2wdma_ready_ff;
 wire dp2wdma_vld;
-wire [16-1:0] dp2wdma_pd;
+wire [8-1:0] dp2wdma_pd;
 // Code
 // SKID READY
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -351,10 +351,10 @@ assign skid_pdp_dp2wdma_valid = (skid_flop_pdp_dp2wdma_ready_ff) ? pdp_dp2wdma_v
 // SKID DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_flop_pdp_dp2wdma_ready_ff & pdp_dp2wdma_valid) begin
-        skid_flop_pdp_dp2wdma_pd[16-1:0] <= pdp_dp2wdma_pd[16-1:0];
+        skid_flop_pdp_dp2wdma_pd[8-1:0] <= pdp_dp2wdma_pd[8-1:0];
     end
 end
-assign skid_pdp_dp2wdma_pd[16-1:0] = (skid_flop_pdp_dp2wdma_ready_ff) ? pdp_dp2wdma_pd[16-1:0] : skid_flop_pdp_dp2wdma_pd[16-1:0];
+assign skid_pdp_dp2wdma_pd[8-1:0] = (skid_flop_pdp_dp2wdma_ready_ff) ? pdp_dp2wdma_pd[8-1:0] : skid_flop_pdp_dp2wdma_pd[8-1:0];
 
 
 // PIPE READY
@@ -374,7 +374,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_pdp_dp2wdma_ready_ff && skid_pdp_dp2wdma_valid) begin
-        pipe_skid_pdp_dp2wdma_pd[16-1:0] <= skid_pdp_dp2wdma_pd[16-1:0];
+        pipe_skid_pdp_dp2wdma_pd[8-1:0] <= skid_pdp_dp2wdma_pd[8-1:0];
     end
 end
 
@@ -404,9 +404,9 @@ NV_NVDLA_PDP_WDMA_dat u_dat (
   ,.nvdla_core_clk (nvdla_core_clk)
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0])
-//: my $dmaifBW = 128;
-//: my $atomicm = 16*8;
-//: my $pdpbw = 2*8;
+//: my $dmaifBW = 64;
+//: my $atomicm = 8*8;
+//: my $pdpbw = 1*8;
 //: my $Wnum = int( $dmaifBW/$atomicm );
 //: my $Bnum = int($atomicm/$pdpbw);
 //: foreach my $posw (0..$Wnum-1) { ##High...low atomic_m
@@ -458,9 +458,9 @@ NV_NVDLA_PDP_WDMA_dat u_dat (
   );
 /////////////////////////////////////////
 // DATA FIFO: READ SIDE
-//: my $dmaifBW = 128;
-//: my $atomicm = 16*8;
-//: my $pdpbw = 2*8;
+//: my $dmaifBW = 64;
+//: my $atomicm = 8*8;
+//: my $pdpbw = 1*8;
 //: my $Wnum = int( $dmaifBW/$atomicm );
 //: my $Bnum = int($atomicm/$pdpbw);
 //: ##my $p = int( log(${Wnum}) / log(2) );
@@ -589,9 +589,9 @@ end
 // assign dat0_data= {dat0_fifo3_rd_pd, dat0_fifo2_rd_pd, dat0_fifo1_rd_pd, dat0_fifo0_rd_pd};
 // assign dat1_data= {dat1_fifo3_rd_pd, dat1_fifo2_rd_pd, dat1_fifo1_rd_pd, dat1_fifo0_rd_pd};
 // assign dat_data = {dat1_data,dat0_data};
-//: my $dmaifBW = 128;
-//: my $atomicm = 16*8;
-//: my $pdpbw = 2*8;
+//: my $dmaifBW = 64;
+//: my $atomicm = 8*8;
+//: my $pdpbw = 1*8;
 //: my $Wnum = int( $dmaifBW/$atomicm );
 //: my $Bnum = int($atomicm/$pdpbw);
 //: foreach my $posw (0..$Wnum-1) {
@@ -818,8 +818,8 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     reg_lenb <= 0;
   end else begin
   if ((dma_wr_cmd_accept) == 1'b1) begin
-//: my $atomicm = 16*8;
-//: my $pdpbw = 2*8;
+//: my $atomicm = 8*8;
+//: my $pdpbw = 1*8;
 //: my $Bnum = int($atomicm/$pdpbw);
 //: print "reg_lenb <= ${Bnum} - 1;";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -863,7 +863,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     if (dma_wr_cmd_accept) begin
         count_w <= 0;
     end else if (dat_accept) begin
-//: my $Wnum= 128/16/8;
+//: my $Wnum= 64/8/8;
 //: print "    count_w <= count_w + ${Wnum};   \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
     count_w <= count_w + 1;   
@@ -872,7 +872,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     end
   end
 end
-//: my $Wnum= 128/16/8;
+//: my $Wnum= 64/8/8;
 //: if($Wnum == 1) {
 //: print qq(
 //: assign is_last_beat = (count_w==reg_size);
@@ -914,9 +914,9 @@ assign dma_wr_cmd_addr = cmd_fifo_rd_addr;
 assign dma_wr_cmd_size = {10'b0, cmd_fifo_rd_size};
 assign dma_wr_cmd_require_ack = cmd_fifo_rd_cube_end;
 // PKT_PACK_WIRE( dma_write_cmd , dma_wr_cmd_ , dma_wr_cmd_pd )
-assign dma_wr_cmd_pd[64 -1:0] = dma_wr_cmd_addr[64 -1:0];
-assign dma_wr_cmd_pd[64 +12:64] = dma_wr_cmd_size[12:0];
-assign dma_wr_cmd_pd[64 +13] = dma_wr_cmd_require_ack ;
+assign dma_wr_cmd_pd[32 -1:0] = dma_wr_cmd_addr[32 -1:0];
+assign dma_wr_cmd_pd[32 +12:32] = dma_wr_cmd_size[12:0];
+assign dma_wr_cmd_pd[32 +13] = dma_wr_cmd_require_ack ;
 // packet: data
 assign dma_wr_dat_data = dat_data;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -980,7 +980,7 @@ end
 // spyglass enable_block WRN_58
 // spyglass enable_block WRN_61
 `endif // SPYGLASS_ASSERT_ON
-//: my $msk = (128/8/16);
+//: my $msk = (64/8/8);
 //: if($msk == 1) {
 //: print " assign dma_wr_dat_mask = 2'b1;  \n";
 //: } elsif($msk == 2) {
@@ -995,21 +995,21 @@ end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 // PKT_PACK_WIRE( dma_write_data , dma_wr_dat_ , dma_wr_dat_pd )
-assign dma_wr_dat_pd[128 -1:0] = dma_wr_dat_data[128 -1:0];
-assign dma_wr_dat_pd[128 +(128/8/16)-1:128] = dma_wr_dat_mask[(128/8/16)-1:0];
+assign dma_wr_dat_pd[64 -1:0] = dma_wr_dat_data[64 -1:0];
+assign dma_wr_dat_pd[64 +(64/8/8)-1:64] = dma_wr_dat_mask[(64/8/8)-1:0];
 // pack cmd & dat
 assign dma_wr_req_vld = dma_wr_cmd_vld | dma_wr_dat_vld;
 always @(*) begin
 // init to 0
-    dma_wr_req_pd[128 + (128/8/16)-1:0] = 0;
+    dma_wr_req_pd[64 + (64/8/8)-1:0] = 0;
 // cmd or dat
     if (cmd_en) begin
-        dma_wr_req_pd[64 +13:0] = dma_wr_cmd_pd;
+        dma_wr_req_pd[32 +13:0] = dma_wr_cmd_pd;
     end else begin
-        dma_wr_req_pd[128 + (128/8/16)-1:0] = dma_wr_dat_pd;
+        dma_wr_req_pd[64 + (64/8/8)-1:0] = dma_wr_dat_pd;
     end
 // pkt id
-    dma_wr_req_pd[( 128 + (128/8/16) + 1 )-1] = cmd_en ? 1'd0 /* PKT_nvdla_dma_wr_req_dma_write_cmd_ID  */ : 1'd1 /* PKT_nvdla_dma_wr_req_dma_write_data_ID  */ ;
+    dma_wr_req_pd[( 64 + (64/8/8) + 1 )-1] = cmd_en ? 1'd0 /* PKT_nvdla_dma_wr_req_dma_write_cmd_ID  */ : 1'd1 /* PKT_nvdla_dma_wr_req_dma_write_data_ID  */ ;
 end
 //==============
 // reading stall counter before DMA_if

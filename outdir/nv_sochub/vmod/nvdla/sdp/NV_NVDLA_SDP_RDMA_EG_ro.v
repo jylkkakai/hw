@@ -22,8 +22,6 @@ module NV_NVDLA_SDP_RDMA_EG_ro (
   ,cfg_dp_8 //|< i
   ,cfg_dp_size_1byte //|< i
   ,cfg_mode_per_element //|< i
-  ,cfg_mode_multi_batch //|< i
-  ,reg2dp_batch_number //|< i
   ,reg2dp_channel //|< i
   ,reg2dp_height //|< i
   ,reg2dp_width //|< i
@@ -47,11 +45,11 @@ input nvdla_core_rstn;
 input [31:0] pwrbus_ram_pd;
 output sdp_rdma2dp_valid;
 input sdp_rdma2dp_ready;
-output [16*16:0] sdp_rdma2dp_pd;
-input [16*8 -1:0] rod0_wr_pd;
-input [16*8 -1:0] rod1_wr_pd;
-input [16*8 -1:0] rod2_wr_pd;
-input [16*8 -1:0] rod3_wr_pd;
+output [8*16:0] sdp_rdma2dp_pd;
+input [8*8 -1:0] rod0_wr_pd;
+input [8*8 -1:0] rod1_wr_pd;
+input [8*8 -1:0] rod2_wr_pd;
+input [8*8 -1:0] rod3_wr_pd;
 input [3:0] rod_wr_mask;
 input rod_wr_vld;
 output rod_wr_rdy;
@@ -61,24 +59,19 @@ output roc_wr_rdy;
 input cfg_dp_8;
 input cfg_dp_size_1byte;
 input cfg_mode_per_element;
-input cfg_mode_multi_batch;
-input [4:0] reg2dp_batch_number;
 input [12:0] reg2dp_channel;
 input [12:0] reg2dp_height;
 input [12:0] reg2dp_width;
 output layer_end;
 wire [2:0] size_of_beat;
 wire [12:0] size_of_width;
-wire [13-4:0] size_of_surf;
+wire [13-3:0] size_of_surf;
 reg [1:0] beat_cnt;
 wire [2:0] beat_cnt_nxt;
 reg mon_beat_cnt;
-reg [4:0] count_b;
-wire is_last_b;
-wire is_batch_end;
 reg [12:0] count_h;
 reg [12:0] count_w;
-reg [13-4:0] count_c;
+reg [13-3:0] count_c;
 wire is_last_beat;
 wire is_cube_end;
 wire is_last_c;
@@ -91,22 +84,22 @@ wire [1:0] roc_rd_pd;
 wire roc_rd_prdy;
 wire roc_rd_pvld;
 reg rodx_rd_en;
-wire [16*8 -1:0] rod0_rd_pd;
+wire [8*8 -1:0] rod0_rd_pd;
 wire rod0_rd_prdy;
 wire rod0_rd_pvld;
 wire rod0_wr_prdy;
 wire rod0_wr_pvld;
-wire [16*8 -1:0] rod1_rd_pd;
+wire [8*8 -1:0] rod1_rd_pd;
 wire rod1_rd_prdy;
 wire rod1_rd_pvld;
 wire rod1_wr_prdy;
 wire rod1_wr_pvld;
-wire [16*8 -1:0] rod2_rd_pd;
+wire [8*8 -1:0] rod2_rd_pd;
 wire rod2_rd_prdy;
 wire rod2_rd_pvld;
 wire rod2_wr_prdy;
 wire rod2_wr_pvld;
-wire [16*8 -1:0] rod3_rd_pd;
+wire [8*8 -1:0] rod3_rd_pd;
 wire rod3_rd_prdy;
 wire rod3_rd_pvld;
 wire rod3_wr_prdy;
@@ -116,15 +109,15 @@ wire rod0_sel;
 wire rod1_sel;
 wire rod2_sel;
 wire rod3_sel;
-reg [16*8 -1:0] out_data_1bpe;
-wire [16*16 -1:0] out_data_1bpe_ext;
-reg [16*16 -1:0] out_data_2bpe;
+reg [8*8 -1:0] out_data_1bpe;
+wire [8*16 -1:0] out_data_1bpe_ext;
+reg [8*16 -1:0] out_data_2bpe;
 reg out_vld_1bpe;
 reg out_vld_2bpe;
 wire out_accept;
 wire out_rdy;
 wire out_vld;
-wire [16*16:0] out_pd;
+wire [8*16:0] out_pd;
 //=======================================================
 // DATA FIFO: WRITE SIDE
 //=======================================================
@@ -138,58 +131,49 @@ NV_NVDLA_SDP_RDMA_EG_RO_dfifo u_rod0 (
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.rod_wr_prdy (rod0_wr_prdy)
   ,.rod_wr_pvld (rod0_wr_pvld)
-  ,.rod_wr_pd (rod0_wr_pd[16*8 -1:0])
+  ,.rod_wr_pd (rod0_wr_pd[8*8 -1:0])
   ,.rod_rd_prdy (rod0_rd_prdy)
   ,.rod_rd_pvld (rod0_rd_pvld)
-  ,.rod_rd_pd (rod0_rd_pd[16*8 -1:0])
+  ,.rod_rd_pd (rod0_rd_pd[8*8 -1:0])
   );
 NV_NVDLA_SDP_RDMA_EG_RO_dfifo u_rod1 (
    .nvdla_core_clk (nvdla_core_clk)
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.rod_wr_prdy (rod1_wr_prdy)
   ,.rod_wr_pvld (rod1_wr_pvld)
-  ,.rod_wr_pd (rod1_wr_pd[16*8 -1:0])
+  ,.rod_wr_pd (rod1_wr_pd[8*8 -1:0])
   ,.rod_rd_prdy (rod1_rd_prdy)
   ,.rod_rd_pvld (rod1_rd_pvld)
-  ,.rod_rd_pd (rod1_rd_pd[16*8 -1:0])
+  ,.rod_rd_pd (rod1_rd_pd[8*8 -1:0])
   );
 NV_NVDLA_SDP_RDMA_EG_RO_dfifo u_rod2 (
    .nvdla_core_clk (nvdla_core_clk)
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.rod_wr_prdy (rod2_wr_prdy)
   ,.rod_wr_pvld (rod2_wr_pvld)
-  ,.rod_wr_pd (rod2_wr_pd[16*8 -1:0])
+  ,.rod_wr_pd (rod2_wr_pd[8*8 -1:0])
   ,.rod_rd_prdy (rod2_rd_prdy)
   ,.rod_rd_pvld (rod2_rd_pvld)
-  ,.rod_rd_pd (rod2_rd_pd[16*8 -1:0])
+  ,.rod_rd_pd (rod2_rd_pd[8*8 -1:0])
   );
 NV_NVDLA_SDP_RDMA_EG_RO_dfifo u_rod3 (
    .nvdla_core_clk (nvdla_core_clk)
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.rod_wr_prdy (rod3_wr_prdy)
   ,.rod_wr_pvld (rod3_wr_pvld)
-  ,.rod_wr_pd (rod3_wr_pd[16*8 -1:0])
+  ,.rod_wr_pd (rod3_wr_pd[8*8 -1:0])
   ,.rod_rd_prdy (rod3_rd_prdy)
   ,.rod_rd_pvld (rod3_rd_pvld)
-  ,.rod_rd_pd (rod3_rd_pd[16*8 -1:0])
+  ,.rod_rd_pd (rod3_rd_pd[8*8 -1:0])
   );
 //=======================================================
 // DATA FIFO: READ SIDE
 //=======================================================
 always @(
   cfg_mode_per_element
-  or cfg_mode_multi_batch
-  or is_last_b
   or is_last_h
   or is_last_w
   ) begin
-   if (cfg_mode_multi_batch) begin
-       if (cfg_mode_per_element) begin
-          rodx_rd_en = is_last_b;
-       end else begin
-          rodx_rd_en = is_last_b & is_last_h & is_last_w;
-       end
-   end else
    begin
        if (cfg_mode_per_element) begin
            rodx_rd_en = 1'b1;
@@ -219,14 +203,9 @@ NV_NVDLA_SDP_RDMA_EG_RO_cfifo u_roc (
   );
 always @(
   cfg_mode_per_element
-  or cfg_mode_multi_batch
-  or is_batch_end
   or is_surf_end
   or is_last_beat
   ) begin
-    if (cfg_mode_multi_batch) begin
-        roc_rd_en = is_batch_end & is_last_beat & (is_surf_end | cfg_mode_per_element);
-    end else
     begin
         roc_rd_en = is_last_beat & (is_surf_end | cfg_mode_per_element);
     end
@@ -236,29 +215,9 @@ assign size_of_beat = roc_rd_pvld ? (roc_rd_pd[1:0] + 1) : 3'b0;
 //==============
 // END
 //==============
-assign is_batch_end = is_last_b;
-assign is_line_end = is_last_w & is_last_b;
+assign is_line_end = is_last_w;
 assign is_surf_end = is_line_end & is_last_h;
 assign is_cube_end = is_surf_end & is_last_c;
-//==============
-//Batch Count
-//==============
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-  if (!nvdla_core_rstn) begin
-    count_b <= {5{1'b0}};
-  end else begin
-    if (cfg_mode_multi_batch) begin
-        if (out_accept) begin
-            if (is_last_b) begin
-                count_b <= 0;
-            end else begin
-                count_b <= count_b + 1;
-            end
-        end
-    end
-  end
-end
-assign is_last_b = (count_b == reg2dp_batch_number);
 //==============
 // Width Count
 //==============
@@ -268,15 +227,6 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     count_w <= {13{1'b0}};
   end else begin
     if (out_accept) begin
-        if (cfg_mode_multi_batch) begin
-            if (is_batch_end) begin
-                if (is_line_end) begin
-                    count_w <= 0;
-                end else begin
-                    count_w <= count_w + 1;
-                end
-            end
-        end else
         begin
             if (is_line_end) begin
                 count_w <= 0;
@@ -308,10 +258,10 @@ assign is_last_h = (count_h==reg2dp_height);
 //==============
 // SURF Count
 //==============
-assign size_of_surf = cfg_dp_8 ? {1'b0,reg2dp_channel[12:4]} : reg2dp_channel[12:4 -1];
+assign size_of_surf = cfg_dp_8 ? {1'b0,reg2dp_channel[12:3]} : reg2dp_channel[12:3 -1];
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-    count_c <= {(14-4){1'b0}};
+    count_c <= {(14-3){1'b0}};
   end else begin
     if (out_accept) begin
         if (is_cube_end) begin
@@ -368,7 +318,7 @@ always @(
     2'd1: out_data_1bpe = rod1_rd_pd;
     2'd2: out_data_1bpe = rod2_rd_pd;
     2'd3: out_data_1bpe = rod3_rd_pd;
-    default : out_data_1bpe[16*8 -1:0] = {16*8{`x_or_0}};
+    default : out_data_1bpe[8*8 -1:0] = {8*8{`x_or_0}};
     endcase
 end
 always @(
@@ -386,7 +336,7 @@ always @(
     default : out_vld_1bpe = {1{`x_or_0}};
     endcase
 end
-//: my $m = 16;
+//: my $m = 8;
 //: foreach my $i (0..${m}-1) {
 //: print "assign out_data_1bpe_ext[16*${i}+15:16*${i}] = {{8{out_data_1bpe[8*${i}+7]}}, out_data_1bpe[8*${i}+7:8*${i}]}; \n";
 //: }
@@ -399,14 +349,6 @@ assign out_data_1bpe_ext[16*4+15:16*4] = {{8{out_data_1bpe[8*4+7]}}, out_data_1b
 assign out_data_1bpe_ext[16*5+15:16*5] = {{8{out_data_1bpe[8*5+7]}}, out_data_1bpe[8*5+7:8*5]}; 
 assign out_data_1bpe_ext[16*6+15:16*6] = {{8{out_data_1bpe[8*6+7]}}, out_data_1bpe[8*6+7:8*6]}; 
 assign out_data_1bpe_ext[16*7+15:16*7] = {{8{out_data_1bpe[8*7+7]}}, out_data_1bpe[8*7+7:8*7]}; 
-assign out_data_1bpe_ext[16*8+15:16*8] = {{8{out_data_1bpe[8*8+7]}}, out_data_1bpe[8*8+7:8*8]}; 
-assign out_data_1bpe_ext[16*9+15:16*9] = {{8{out_data_1bpe[8*9+7]}}, out_data_1bpe[8*9+7:8*9]}; 
-assign out_data_1bpe_ext[16*10+15:16*10] = {{8{out_data_1bpe[8*10+7]}}, out_data_1bpe[8*10+7:8*10]}; 
-assign out_data_1bpe_ext[16*11+15:16*11] = {{8{out_data_1bpe[8*11+7]}}, out_data_1bpe[8*11+7:8*11]}; 
-assign out_data_1bpe_ext[16*12+15:16*12] = {{8{out_data_1bpe[8*12+7]}}, out_data_1bpe[8*12+7:8*12]}; 
-assign out_data_1bpe_ext[16*13+15:16*13] = {{8{out_data_1bpe[8*13+7]}}, out_data_1bpe[8*13+7:8*13]}; 
-assign out_data_1bpe_ext[16*14+15:16*14] = {{8{out_data_1bpe[8*14+7]}}, out_data_1bpe[8*14+7:8*14]}; 
-assign out_data_1bpe_ext[16*15+15:16*15] = {{8{out_data_1bpe[8*15+7]}}, out_data_1bpe[8*15+7:8*15]}; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 ////dp int8 two byte per element/////////// 
@@ -420,7 +362,7 @@ always @(
     case (rod_sel)
     2'd0: out_data_2bpe = {rod1_rd_pd,rod0_rd_pd};
     2'd2: out_data_2bpe = {rod3_rd_pd,rod2_rd_pd};
-    default : out_data_2bpe[16*16 -1:0] = {16*16{`x_or_0}};
+    default : out_data_2bpe[8*16 -1:0] = {8*16{`x_or_0}};
     endcase
 end
 always @(
@@ -438,23 +380,23 @@ always @(
 end
 ////mux out data ////
 assign out_vld = (cfg_dp_size_1byte | !cfg_dp_8) ? out_vld_1bpe : out_vld_2bpe;
-assign out_pd[16*16 -1:0] = !cfg_dp_8 ? {{16*8{1'b0}},out_data_1bpe[16*8 -1:0]} : cfg_dp_size_1byte ? out_data_1bpe_ext[16*16 -1:0] : out_data_2bpe[16*16 -1:0];
-assign out_pd[16*16] = is_cube_end;
+assign out_pd[8*16 -1:0] = !cfg_dp_8 ? {{8*8{1'b0}},out_data_1bpe[8*8 -1:0]} : cfg_dp_size_1byte ? out_data_1bpe_ext[8*16 -1:0] : out_data_2bpe[8*16 -1:0];
+assign out_pd[8*16] = is_cube_end;
 assign out_accept = out_vld & out_rdy;
 NV_NVDLA_SDP_RDMA_EG_RO_pipe_p1 pipe_p1 (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
-  ,.out_pd (out_pd[16*16:0]) //|< w
+  ,.out_pd (out_pd[8*16:0]) //|< w
   ,.out_vld (out_vld) //|< r
   ,.out_rdy (out_rdy) //|> w
   ,.sdp_rdma2dp_ready (sdp_rdma2dp_ready) //|< i
-  ,.sdp_rdma2dp_pd (sdp_rdma2dp_pd[16*16:0]) //|> o
+  ,.sdp_rdma2dp_pd (sdp_rdma2dp_pd[8*16:0]) //|> o
   ,.sdp_rdma2dp_valid (sdp_rdma2dp_valid) //|> o
   );
-assign layer_end = sdp_rdma2dp_valid & sdp_rdma2dp_ready & sdp_rdma2dp_pd[16*16];
+assign layer_end = sdp_rdma2dp_valid & sdp_rdma2dp_ready & sdp_rdma2dp_pd[8*16];
 endmodule // NV_NVDLA_SDP_RDMA_EG_ro
 // **************************************************************************************************************
-// Generated by ::pipe -m -bc sdp_rdma2dp_pd (sdp_rdma2dp_valid,sdp_rdma2dp_ready) <= out_pd[16*8:0] (out_vld, out_rdy)
+// Generated by ::pipe -m -bc sdp_rdma2dp_pd (sdp_rdma2dp_valid,sdp_rdma2dp_ready) <= out_pd[8*8:0] (out_vld, out_rdy)
 // **************************************************************************************************************
 module NV_NVDLA_SDP_RDMA_EG_RO_pipe_p1 (
    nvdla_core_clk
@@ -470,27 +412,27 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input out_vld;
 output out_rdy;
-input [16*16:0] out_pd;
-output [16*16:0] sdp_rdma2dp_pd;
+input [8*16:0] out_pd;
+output [8*16:0] sdp_rdma2dp_pd;
 output sdp_rdma2dp_valid;
 input sdp_rdma2dp_ready;
-//: my $dw = 1 + 16*16;
+//: my $dw = 1 + 8*16;
 //: &eperl::pipe("-is -wid $dw -do sdp_rdma2dp_pd -vo sdp_rdma2dp_valid -ri sdp_rdma2dp_ready -di out_pd -vi out_vld -ro out_rdy");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 // Reg
 reg out_rdy;
 reg skid_flop_out_rdy;
 reg skid_flop_out_vld;
-reg [257-1:0] skid_flop_out_pd;
+reg [129-1:0] skid_flop_out_pd;
 reg pipe_skid_out_vld;
-reg [257-1:0] pipe_skid_out_pd;
+reg [129-1:0] pipe_skid_out_pd;
 // Wire
 wire skid_out_vld;
-wire [257-1:0] skid_out_pd;
+wire [129-1:0] skid_out_pd;
 wire skid_out_rdy;
 wire pipe_skid_out_rdy;
 wire sdp_rdma2dp_valid;
-wire [257-1:0] sdp_rdma2dp_pd;
+wire [129-1:0] sdp_rdma2dp_pd;
 // Code
 // SKID READY
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -518,10 +460,10 @@ assign skid_out_vld = (skid_flop_out_rdy) ? out_vld : skid_flop_out_vld;
 // SKID DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_flop_out_rdy & out_vld) begin
-        skid_flop_out_pd[257-1:0] <= out_pd[257-1:0];
+        skid_flop_out_pd[129-1:0] <= out_pd[129-1:0];
     end
 end
-assign skid_out_pd[257-1:0] = (skid_flop_out_rdy) ? out_pd[257-1:0] : skid_flop_out_pd[257-1:0];
+assign skid_out_pd[129-1:0] = (skid_flop_out_rdy) ? out_pd[129-1:0] : skid_flop_out_pd[129-1:0];
 
 
 // PIPE READY
@@ -541,7 +483,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_out_rdy && skid_out_vld) begin
-        pipe_skid_out_pd[257-1:0] <= skid_out_pd[257-1:0];
+        pipe_skid_out_pd[129-1:0] <= skid_out_pd[129-1:0];
     end
 end
 
@@ -567,27 +509,27 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 output rod_wr_prdy;
 input rod_wr_pvld;
-input [16*8 -1:0] rod_wr_pd;
+input [8*8 -1:0] rod_wr_pd;
 input rod_rd_prdy;
 output rod_rd_pvld;
-output [16*8 -1:0] rod_rd_pd;
-//: my $dw = 16*8;
+output [8*8 -1:0] rod_rd_pd;
+//: my $dw = 8*8;
 //: &eperl::pipe("-is -wid $dw -do rod_rd_pd -vo rod_rd_pvld -ri rod_rd_prdy -di rod_wr_pd -vi rod_wr_pvld -ro rod_wr_prdy");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 // Reg
 reg rod_wr_prdy;
 reg skid_flop_rod_wr_prdy;
 reg skid_flop_rod_wr_pvld;
-reg [128-1:0] skid_flop_rod_wr_pd;
+reg [64-1:0] skid_flop_rod_wr_pd;
 reg pipe_skid_rod_wr_pvld;
-reg [128-1:0] pipe_skid_rod_wr_pd;
+reg [64-1:0] pipe_skid_rod_wr_pd;
 // Wire
 wire skid_rod_wr_pvld;
-wire [128-1:0] skid_rod_wr_pd;
+wire [64-1:0] skid_rod_wr_pd;
 wire skid_rod_wr_prdy;
 wire pipe_skid_rod_wr_prdy;
 wire rod_rd_pvld;
-wire [128-1:0] rod_rd_pd;
+wire [64-1:0] rod_rd_pd;
 // Code
 // SKID READY
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -615,10 +557,10 @@ assign skid_rod_wr_pvld = (skid_flop_rod_wr_prdy) ? rod_wr_pvld : skid_flop_rod_
 // SKID DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_flop_rod_wr_prdy & rod_wr_pvld) begin
-        skid_flop_rod_wr_pd[128-1:0] <= rod_wr_pd[128-1:0];
+        skid_flop_rod_wr_pd[64-1:0] <= rod_wr_pd[64-1:0];
     end
 end
-assign skid_rod_wr_pd[128-1:0] = (skid_flop_rod_wr_prdy) ? rod_wr_pd[128-1:0] : skid_flop_rod_wr_pd[128-1:0];
+assign skid_rod_wr_pd[64-1:0] = (skid_flop_rod_wr_prdy) ? rod_wr_pd[64-1:0] : skid_flop_rod_wr_pd[64-1:0];
 
 
 // PIPE READY
@@ -638,7 +580,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_rod_wr_prdy && skid_rod_wr_pvld) begin
-        pipe_skid_rod_wr_pd[128-1:0] <= skid_rod_wr_pd[128-1:0];
+        pipe_skid_rod_wr_pd[64-1:0] <= skid_rod_wr_pd[64-1:0];
     end
 end
 

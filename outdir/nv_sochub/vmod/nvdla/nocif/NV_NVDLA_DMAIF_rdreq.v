@@ -22,10 +22,10 @@ module NV_NVDLA_DMAIF_rdreq (
 input nvdla_core_clk;
 input nvdla_core_rstn;
 input reg2dp_src_ram_type;
-output [64 +14:0] mcif_rd_req_pd;
+output [32 +14:0] mcif_rd_req_pd;
 output mcif_rd_req_valid;
 input mcif_rd_req_ready;
-input [64 +14:0] dmaif_rd_req_pd;
+input [32 +14:0] dmaif_rd_req_pd;
 input dmaif_rd_req_vld;
 output dmaif_rd_req_rdy;
 //////////////////////////////////////////////
@@ -39,23 +39,23 @@ assign dma_rd_req_ram_type = reg2dp_src_ram_type;
 assign mc_dma_rd_req_vld = dmaif_rd_req_vld & (dma_rd_req_ram_type == 1'b1);
 assign mc_rd_req_rdyi = mc_dma_rd_req_rdy & (dma_rd_req_ram_type == 1'b1);
 assign dmaif_rd_req_rdy= rd_req_rdyi;
-//: my $dmabw = ( 64 + 15 );
+//: my $dmabw = ( 32 + 15 );
 //: &eperl::pipe(" -wid $dmabw -is -do mcif_rd_req_pd -vo mcif_rd_req_valid -ri mcif_rd_req_ready -di dmaif_rd_req_pd -vi mc_dma_rd_req_vld -ro mc_dma_rd_req_rdy_f  ");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 // Reg
 reg mc_dma_rd_req_rdy_f;
 reg skid_flop_mc_dma_rd_req_rdy_f;
 reg skid_flop_mc_dma_rd_req_vld;
-reg [79-1:0] skid_flop_dmaif_rd_req_pd;
+reg [47-1:0] skid_flop_dmaif_rd_req_pd;
 reg pipe_skid_mc_dma_rd_req_vld;
-reg [79-1:0] pipe_skid_dmaif_rd_req_pd;
+reg [47-1:0] pipe_skid_dmaif_rd_req_pd;
 // Wire
 wire skid_mc_dma_rd_req_vld;
-wire [79-1:0] skid_dmaif_rd_req_pd;
+wire [47-1:0] skid_dmaif_rd_req_pd;
 wire skid_mc_dma_rd_req_rdy_f;
 wire pipe_skid_mc_dma_rd_req_rdy_f;
 wire mcif_rd_req_valid;
-wire [79-1:0] mcif_rd_req_pd;
+wire [47-1:0] mcif_rd_req_pd;
 // Code
 // SKID READY
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -83,10 +83,10 @@ assign skid_mc_dma_rd_req_vld = (skid_flop_mc_dma_rd_req_rdy_f) ? mc_dma_rd_req_
 // SKID DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_flop_mc_dma_rd_req_rdy_f & mc_dma_rd_req_vld) begin
-        skid_flop_dmaif_rd_req_pd[79-1:0] <= dmaif_rd_req_pd[79-1:0];
+        skid_flop_dmaif_rd_req_pd[47-1:0] <= dmaif_rd_req_pd[47-1:0];
     end
 end
-assign skid_dmaif_rd_req_pd[79-1:0] = (skid_flop_mc_dma_rd_req_rdy_f) ? dmaif_rd_req_pd[79-1:0] : skid_flop_dmaif_rd_req_pd[79-1:0];
+assign skid_dmaif_rd_req_pd[47-1:0] = (skid_flop_mc_dma_rd_req_rdy_f) ? dmaif_rd_req_pd[47-1:0] : skid_flop_dmaif_rd_req_pd[47-1:0];
 
 
 // PIPE READY
@@ -106,7 +106,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_mc_dma_rd_req_rdy_f && skid_mc_dma_rd_req_vld) begin
-        pipe_skid_dmaif_rd_req_pd[79-1:0] <= skid_dmaif_rd_req_pd[79-1:0];
+        pipe_skid_dmaif_rd_req_pd[47-1:0] <= skid_dmaif_rd_req_pd[47-1:0];
     end
 end
 

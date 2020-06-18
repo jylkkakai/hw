@@ -20,7 +20,7 @@ module NV_NVDLA_MCIF_READ_eg (
   ,nvdla_core_rstn //|< i
   ,pwrbus_ram_pd //|< i
   ,eg2ig_axi_vld //|> o
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","pdp","cdp");
 //: foreach my $client (@rdma_name) {
 //: print"  ,mcif2${client}_rd_rsp_pd    \n";
 //: print"  ,mcif2${client}_rd_rsp_valid \n";
@@ -36,12 +36,12 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input [31:0] pwrbus_ram_pd;
 output eg2ig_axi_vld;
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","pdp","cdp");
 //: foreach my $client (@rdma_name) {
 //: print qq(
 //: output mcif2${client}_rd_rsp_valid;
 //: input mcif2${client}_rd_rsp_ready;
-//: output [129 -1:0] mcif2${client}_rd_rsp_pd;
+//: output [65 -1:0] mcif2${client}_rd_rsp_pd;
 //: );
 //: }
 input noc2mcif_axi_r_rvalid;
@@ -67,7 +67,7 @@ wire ipipe_axi_vld;
 //: }
 //: for(my $i=0;$i<7;$i++) {
 //: print qq(
-//: wire [129 -1:0] dma${i}_pd;
+//: wire [65 -1:0] dma${i}_pd;
 //: wire [64 -1:0] dma${i}_data;
 //: wire [1 -1:0] dma${i}_mask;
 //: wire dma${i}_rdy;
@@ -94,7 +94,7 @@ assign {ipipe_axi_axid,ipipe_axi_data} = ipipe_axi_pd;
 //: print ";\n";
 //: print "\n";
 //: my $i = 0;
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","pdp","cdp");
 //: foreach my $client (@rdma_name) {
 //: print qq (
 //: assign rq${i}_wr_pvld = ipipe_axi_vld & (ipipe_axi_axid == `tieoff_axid_${client});
@@ -124,7 +124,7 @@ assign {ipipe_axi_axid,ipipe_axi_data} = ipipe_axi_pd;
 //: );
 //: }
 //: my $i = 0;
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","pdp","cdp");
 //: foreach my $client (@rdma_name) {
 //: print qq (
 //: NV_NVDLA_MCIF_READ_EG_OUT_pipe pipe_p${i} (
@@ -177,13 +177,13 @@ module NV_NVDLA_MCIF_READ_EG_OUT_pipe (
   );
 input nvdla_core_clk;
 input nvdla_core_rstn;
-input [129 -1:0] dma_pd;
+input [65 -1:0] dma_pd;
 input dma_vld;
 output dma_rdy;
-output [129 -1:0] mcif_rd_rsp_pd;
+output [65 -1:0] mcif_rd_rsp_pd;
 output mcif_rd_rsp_valid;
 input mcif_rd_rsp_ready;
-//: my $k = 129;
+//: my $k = 65;
 //: &eperl::pipe(" -wid $k -do mcif_rd_rsp_pd -vo mcif_rd_rsp_valid -ri mcif_rd_rsp_ready -di dma_pd -vi dma_vld -ro dma_rdy ");
 endmodule
 `define FORCE_CONTENTION_ASSERTION_RESET_ACTIVE 1'b1

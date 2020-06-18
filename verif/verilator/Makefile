@@ -33,7 +33,7 @@ $(DEPTH)/$(OUTDIR)/$(PROJECT)/verilator/test/%/trace.bin: $(DEPTH)/verif/tests/t
 	rm -rf $@
 	mkdir -p $(dir $@)
 	cd $(dir $@) && $(abspath $(DEPTH))/verif/tools/nvdla_trace_parser.py --file_path $(abspath $</$*.cfg)
-	PYTHONPATH=$(DEPTH)/outdir/nv_small/spec/manual $(PYTHON) new_trace_to_verilator.py $(dir $@) $@
+	PYTHONPATH=$(DEPTH)/outdir/$(PROJECT)/spec/manual $(PYTHON) new_trace_to_verilator.py $(dir $@) $@
 
 run: $(DEPTH)/$(OUTDIR)/$(PROJECT)/verilator/test/$(TEST)/trace.bin $(DEPTH)/$(OUTDIR)/$(PROJECT)/verilator/VNV_nvdla
 	cd $(DEPTH)/$(OUTDIR)/$(PROJECT)/verilator/test/$(TEST) && ../../VNV_nvdla trace.bin

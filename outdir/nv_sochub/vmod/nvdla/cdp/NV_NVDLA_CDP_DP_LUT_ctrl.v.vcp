@@ -39,7 +39,7 @@ module NV_NVDLA_CDP_DP_LUT_ctrl (
   ,sum2itp_pd //|< i
   ,sum2itp_pvld //|< i
   ,sum2sync_prdy //|< i
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,dp2lut_X_entry_${m}
@@ -68,14 +68,14 @@ input [7:0] reg2dp_lut_lo_index_select;
 input [5:0] reg2dp_lut_lo_start_high;
 input [31:0] reg2dp_lut_lo_start_low;
 input reg2dp_sqsum_bypass;
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: my $sqsumo = $icvto *2 -1+4; ##(${tp}*2) -1 is for x^2, +4 is after 9 lrn
 //: print "input  [${tp}*${sqsumo}-1:0] sum2itp_pd;  \n";
 //: print "output [${tp}*${sqsumo}-1:0] sum2sync_pd; \n";
 input sum2itp_pvld;
 output sum2itp_prdy;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: output [9:0] dp2lut_X_entry_${m};
@@ -89,7 +89,7 @@ input dp2lut_prdy;
 output sum2sync_pvld;
 input sum2sync_prdy;
 ////////////////////////////////////////////////////////////////////////////////////////
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: my $sqsumo = $icvto *2 -1+4;
 //: foreach my $m (0..${tp}-1) {
@@ -101,10 +101,10 @@ input sum2sync_prdy;
 //: wire [${sqsumo}-1:0] sum2itp_pd_$m;
 //: );
 //: }
-wire [2 -1:0] dp2lut_rdy;
-wire [2 -1:0] dp2lut_vld;
-wire [2 -1:0] sum2itp_rdy;
-wire [2 -1:0] sum2itp_vld;
+wire [1 -1:0] dp2lut_rdy;
+wire [1 -1:0] dp2lut_vld;
+wire [1 -1:0] sum2itp_rdy;
+wire [1 -1:0] sum2itp_vld;
 ////////////////////////////////////////////////////////////////////////////////////////
 assign sum2itp_prdy = (&sum2itp_rdy) & sum2sync_prdy;
 //////////////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ assign sum2itp_prdy = (&sum2itp_rdy) & sum2sync_prdy;
 assign sum2sync_pvld = sum2itp_pvld & (&sum2itp_rdy);
 assign sum2sync_pd = sum2itp_pd;
 ///////////////////////////////////////////
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: my $sqsumo = $icvto *2 -1+4;
 //: foreach my $m (0..${tp} -1) {
@@ -155,7 +155,7 @@ assign sum2sync_pd = sum2itp_pd;
 //: );
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k -1) {
 //: print qq(
 //: assign dp2lut_X_entry_$m = dp2lut_X_pd_$m;
@@ -165,7 +165,7 @@ assign sum2sync_pd = sum2itp_pd;
 //: );
 //: }
 assign dp2lut_pvld = &dp2lut_vld;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k -1) {
 //: print qq(
 //: assign dp2lut_rdy[${m}] = dp2lut_prdy

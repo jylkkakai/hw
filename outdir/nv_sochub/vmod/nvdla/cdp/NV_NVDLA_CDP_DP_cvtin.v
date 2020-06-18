@@ -42,23 +42,23 @@ module NV_NVDLA_CDP_DP_cvtin (
 ////////////////////////////////////////////////////////////////////////
 input nvdla_core_clk;
 input nvdla_core_rstn;
-input [2*8 +24:0] cdp_rdma2dp_pd;
+input [1*8 +24:0] cdp_rdma2dp_pd;
 input cdp_rdma2dp_valid;
 output cdp_rdma2dp_ready;
 input [15:0] reg2dp_datin_offset;// need fix to bw, 8bits at int8 mode
 input [15:0] reg2dp_datin_scale;
 input [4:0] reg2dp_datin_shifter;
-output [2*(8 +1)+16:0] cvt2buf_pd;
+output [1*(8 +1)+16:0] cvt2buf_pd;
 output cvt2buf_pvld;
 input cvt2buf_prdy;
-output [2*(8 +1)+16:0] cvt2sync_pd;
+output [1*(8 +1)+16:0] cvt2sync_pd;
 output cvt2sync_pvld;
 input cvt2sync_prdy;
 ////////////////////////////////////////////////////////////////////////
 reg [15:0] reg2dp_datin_offset_use;
 reg [15:0] reg2dp_datin_scale_use;
 reg [4:0] reg2dp_datin_shifter_use;
-//: my $k=2;
+//: my $k=1;
 //: my $icvti=8;
 //: my $icvto=(8 +1);
 //: foreach my $m (0..$k-1) {
@@ -74,14 +74,12 @@ reg [4:0] reg2dp_datin_shifter_use;
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 wire   [8-1:0] cdp_cvtin_input_pd_0;  
 wire   [9-1:0] cdp_cvtin_output_pd_0;// bw   
-wire   [8-1:0] cdp_cvtin_input_pd_1;  
-wire   [9-1:0] cdp_cvtin_output_pd_1;// bw   
-wire   [2-1:0]      cdp_cvtin_input_rdy;  
-wire   [2-1:0]      cdp_cvtin_input_vld;  
-wire   [2-1:0]      cdp_cvtin_output_rdy;  
-wire   [2-1:0]      cdp_cvtin_output_vld;  
-wire   [2*9-1:0]    cdp_cvtin_output_pd;  
-wire   [2*9-1:0]    icvt_out_pd;  
+wire   [1-1:0]      cdp_cvtin_input_rdy;  
+wire   [1-1:0]      cdp_cvtin_input_vld;  
+wire   [1-1:0]      cdp_cvtin_output_rdy;  
+wire   [1-1:0]      cdp_cvtin_output_vld;  
+wire   [1*9-1:0]    cdp_cvtin_output_pd;  
+wire   [1*9-1:0]    icvt_out_pd;  
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire cdp_cvtin_input_rdy_f;
@@ -110,7 +108,7 @@ wire data_info_in_vld_d0;
 wire [24:0] data_info_out_pd;
 wire data_info_out_rdy;
 wire data_info_out_vld;
-wire [2 -1:0] invalid_flag;
+wire [1 -1:0] invalid_flag;
 //////////////////////////////////
 assign cdp_rdma2dp_ready = cdp_cvtin_input_rdy_f & data_info_in_rdy;
 //===============================================
@@ -118,7 +116,7 @@ assign cdp_rdma2dp_ready = cdp_cvtin_input_rdy_f & data_info_in_rdy;
 //-----------------------------------------------
 //data info valid in
 assign data_info_in_vld = cdp_rdma2dp_valid & cdp_cvtin_input_rdy_f;
-assign data_info_in_pd = cdp_rdma2dp_pd[2*8 +24:2*8];
+assign data_info_in_pd = cdp_rdma2dp_pd[1*8 +24:1*8];
 assign data_info_in_vld_d0 = data_info_in_vld;
 //assign data_info_in_rdy = data_info_in_rdy_d0;
 assign data_info_in_pd_d0[24:0] = data_info_in_pd[24:0];
@@ -359,9 +357,9 @@ assign data_info_out_pd[24:0] = data_info_in_pd_d3[24:0];
 //cvtin valid input
 assign cdp_cvtin_input_vld_f = cdp_rdma2dp_valid & data_info_in_rdy;
 //cvtin ready input
-assign cdp_cvtin_input_rdy_f = &cdp_cvtin_input_rdy[2 -1:0];
+assign cdp_cvtin_input_rdy_f = &cdp_cvtin_input_rdy[1 -1:0];
 //cvt sub-unit valid in
-//: my $k=2;
+//: my $k=1;
 //: if(${k}>1) {
 //: foreach my $m (0..$k-1) {
 //: print "assign cdp_cvtin_input_vld[${m}] = cdp_cvtin_input_vld_f ";
@@ -377,19 +375,17 @@ assign cdp_cvtin_input_rdy_f = &cdp_cvtin_input_rdy[2 -1:0];
 //: print "assign cdp_cvtin_input_vld = cdp_cvtin_input_vld_f;    \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign cdp_cvtin_input_vld[0] = cdp_cvtin_input_vld_f & cdp_cvtin_input_rdy[1] ;   
-assign cdp_cvtin_input_vld[1] = cdp_cvtin_input_vld_f & cdp_cvtin_input_rdy[0] ;   
+assign cdp_cvtin_input_vld = cdp_cvtin_input_vld_f;    
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //cvt sub-unit data in
-//: my $k=2;
+//: my $k=1;
 //: my $cdpbw=8;
 //: foreach my $m (0..$k-1) {
 //: print "assign cdp_cvtin_input_pd_${m} = cdp_rdma2dp_pd[${cdpbw}*${m}+${cdpbw}-1:${cdpbw}*${m}];  \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 assign cdp_cvtin_input_pd_0 = cdp_rdma2dp_pd[8*0+8-1:8*0];  
-assign cdp_cvtin_input_pd_1 = cdp_rdma2dp_pd[8*1+8-1:8*1];  
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -413,7 +409,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   reg2dp_datin_shifter_use <= reg2dp_datin_shifter[4:0];
   end
 end
-//: my $k=2;
+//: my $k=1;
 //: my $icvti=8;
 //: my $icvto=(8 +1);
 //: foreach my $m (0..$k-1) {
@@ -449,23 +445,9 @@ HLS_cdp_icvt u_HLS_cdp_icvt_0 (
 ,.chn_data_out_rsc_lz (cdp_cvtin_output_vld[0])
 );
 
-HLS_cdp_icvt u_HLS_cdp_icvt_1 (
-.nvdla_core_clk (nvdla_core_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.chn_data_in_rsc_z (cdp_cvtin_input_pd_1)
-,.chn_data_in_rsc_vz (cdp_cvtin_input_vld[1])
-,.chn_data_in_rsc_lz (cdp_cvtin_input_rdy[1])
-,.cfg_alu_in_rsc_z (reg2dp_datin_offset_use[7:0]) // need change bw 
-,.cfg_mul_in_rsc_z (reg2dp_datin_scale_use[15:0])
-,.cfg_truncate_rsc_z (reg2dp_datin_shifter_use[4:0])
-,.chn_data_out_rsc_z (cdp_cvtin_output_pd_1)
-,.chn_data_out_rsc_vz (cdp_cvtin_output_rdy[1])
-,.chn_data_out_rsc_lz (cdp_cvtin_output_vld[1])
-);
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //sub-unit output ready
-//: my $k=2;
+//: my $k=1;
 //: if(${k}>1) {
 //: foreach my $m (0..$k-1) {
 //: print "assign cdp_cvtin_output_rdy[${m}] = cdp_cvtin_output_rdy_f ";
@@ -481,8 +463,7 @@ HLS_cdp_icvt u_HLS_cdp_icvt_1 (
 //: print "assign cdp_cvtin_output_rdy = cdp_cvtin_output_rdy_f;    \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign cdp_cvtin_output_rdy[0] = cdp_cvtin_output_rdy_f & cdp_cvtin_output_vld[1] ;   
-assign cdp_cvtin_output_rdy[1] = cdp_cvtin_output_rdy_f & cdp_cvtin_output_vld[0] ;   
+assign cdp_cvtin_output_rdy = cdp_cvtin_output_rdy_f;    
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //output valid
@@ -490,7 +471,7 @@ assign cdp_cvtin_output_vld_f = &cdp_cvtin_output_vld;
 //output ready
 assign cdp_cvtin_output_rdy_f = cvtin_o_prdy & data_info_out_vld;
 //output data
-//: my $k=2;
+//: my $k=1;
 //: print "assign cdp_cvtin_output_pd  = { ";
 //: if(${k}>1) {
 //: foreach my $n (0..$k-2) {
@@ -500,7 +481,7 @@ assign cdp_cvtin_output_rdy_f = cvtin_o_prdy & data_info_out_vld;
 //: }
 //: print "cdp_cvtin_output_pd_0};   \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign cdp_cvtin_output_pd  = { cdp_cvtin_output_pd_1, cdp_cvtin_output_pd_0};   
+assign cdp_cvtin_output_pd  = { cdp_cvtin_output_pd_0};   
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //===============================================
@@ -513,8 +494,8 @@ assign data_info_out_rdy = cvtin_o_prdy & cdp_cvtin_output_vld_f;
 //-----------------------------------------------
 assign cvtin_o_prdy = cvt2buf_prdy & cvt2sync_prdy;
 assign cvtin_o_pvld = cdp_cvtin_output_vld_f & data_info_out_vld;
-assign invalid_flag = data_info_out_pd[17+2 -1:17];
-//: my $k=2;
+assign invalid_flag = data_info_out_pd[17+1 -1:17];
+//: my $k=1;
 //: my $cdpbw=(8 +1);
 //: print "assign icvt_out_pd = {   ";
 //: if(${k}>1) {
@@ -525,8 +506,7 @@ assign invalid_flag = data_info_out_pd[17+2 -1:17];
 //: }
 //: print " ({${cdpbw}{(~invalid_flag[0])}} & cdp_cvtin_output_pd[${cdpbw}-1:0])};  \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign icvt_out_pd = {   (invalid_flag[1] ? {9{1'b0}} : cdp_cvtin_output_pd[9*1+9-1:9*1]), 
- ({9{(~invalid_flag[0])}} & cdp_cvtin_output_pd[9-1:0])};  
+assign icvt_out_pd = {    ({9{(~invalid_flag[0])}} & cdp_cvtin_output_pd[9-1:0])};  
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign cvt2buf_pd = {data_info_out_pd[16:0],icvt_out_pd};

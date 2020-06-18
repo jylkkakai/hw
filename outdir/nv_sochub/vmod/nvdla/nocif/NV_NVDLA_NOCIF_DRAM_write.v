@@ -79,7 +79,7 @@ module NV_NVDLA_NOCIF_DRAM_write (
 //:my $i;
 //:for($i=0;$i<3;$i++) {
 //:print qq(
-//:input [128 +(( 128 )/8/16):0] client${i}2mcif_wr_req_pd;
+//:input [64 +(( 64 )/8/8):0] client${i}2mcif_wr_req_pd;
 //:input client${i}2mcif_wr_req_valid;
 //:output client${i}2mcif_wr_req_ready;
 //:input [7:0] client${i}2mcif_wr_wt;
@@ -89,21 +89,21 @@ module NV_NVDLA_NOCIF_DRAM_write (
 //:}
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-input [128 +(( 128 )/8/16):0] client02mcif_wr_req_pd;
+input [64 +(( 64 )/8/8):0] client02mcif_wr_req_pd;
 input client02mcif_wr_req_valid;
 output client02mcif_wr_req_ready;
 input [7:0] client02mcif_wr_wt;
 input [3:0] client02mcif_wr_axid;
 output mcif2client0_wr_rsp_complete;
 
-input [128 +(( 128 )/8/16):0] client12mcif_wr_req_pd;
+input [64 +(( 64 )/8/8):0] client12mcif_wr_req_pd;
 input client12mcif_wr_req_valid;
 output client12mcif_wr_req_ready;
 input [7:0] client12mcif_wr_wt;
 input [3:0] client12mcif_wr_axid;
 output mcif2client1_wr_rsp_complete;
 
-input [128 +(( 128 )/8/16):0] client22mcif_wr_req_pd;
+input [64 +(( 64 )/8/8):0] client22mcif_wr_req_pd;
 input client22mcif_wr_req_valid;
 output client22mcif_wr_req_ready;
 input [7:0] client22mcif_wr_wt;
@@ -117,7 +117,7 @@ input nvdla_core_rstn;
 input mcif2noc_axi_aw_awready; /* data return handshake */
 output [7:0] mcif2noc_axi_aw_awid;
 output [3:0] mcif2noc_axi_aw_awlen;
-output [64 -1:0] mcif2noc_axi_aw_awaddr;
+output [32 -1:0] mcif2noc_axi_aw_awaddr;
 output mcif2noc_axi_w_wvalid; /* data valid */
 input mcif2noc_axi_w_wready; /* data return handshake */
 output [64 -1:0] mcif2noc_axi_w_wdata;
@@ -177,7 +177,7 @@ NV_NVDLA_NOCIF_DRAM_WRITE_ig u_ig (
   ,.mcif2noc_axi_aw_awready (mcif2noc_axi_aw_awready) //|< i
   ,.mcif2noc_axi_aw_awid (mcif2noc_axi_aw_awid[7:0]) //|> o
   ,.mcif2noc_axi_aw_awlen (mcif2noc_axi_aw_awlen[3:0]) //|> o
-  ,.mcif2noc_axi_aw_awaddr (mcif2noc_axi_aw_awaddr[64 -1:0]) //|> o
+  ,.mcif2noc_axi_aw_awaddr (mcif2noc_axi_aw_awaddr[32 -1:0]) //|> o
   ,.mcif2noc_axi_w_wvalid (mcif2noc_axi_w_wvalid) //|> o
   ,.mcif2noc_axi_w_wready (mcif2noc_axi_w_wready) //|< i
   ,.mcif2noc_axi_w_wdata (mcif2noc_axi_w_wdata) //|> o

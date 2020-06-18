@@ -42,23 +42,23 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input arb2spt_req_ready;
 output arb2spt_req_valid;
-output [64 +10:0] arb2spt_req_pd;
+output [32 +10:0] arb2spt_req_pd;
 //:my $k=7;
 //:my $i;
 //:for ($i=0;$i<$k;$i++) {
 //:print("input bpt2arb_req${i}_valid;\n");
 //:print("output bpt2arb_req${i}_ready;\n");
 //:print qq(
-//:input [64 +10:0] bpt2arb_req${i}_pd;
+//:input [32 +10:0] bpt2arb_req${i}_pd;
 //:);
 //:print("input [7:0] client${i}2mcif_rd_wt;\n");
 //:}
-reg [64 +10:0] arb_pd;
+reg [32 +10:0] arb_pd;
 wire [15:0] arb_gnt;
 wire gnt_busy;
 //:my $k=7;
 //:my $i;
-//:my $w=eval(64 +10);
+//:my $w=eval(32 +10);
 //:for ($i=0;$i<$k;$i++) {
 //:print("wire  src${i}_req;\n");
 //:print("wire  src${i}_gnt;\n");
@@ -68,7 +68,7 @@ wire gnt_busy;
 //
 //:my $k=7;
 //:my $i;
-//:my $w=eval(64 +10);
+//:my $w=eval(32 +10);
 //:for ($i=7;$i<16;$i++) {
 //: print("wire [$w:0] arb_src${i}_pd;\n");
 //: print("wire  src${i}_req;\n");
@@ -77,7 +77,7 @@ wire gnt_busy;
 //:my $k=7;
 //:my $i;
 //:for ($i=0;$i<$k;$i++) {
-//:my $wid = 64 +11;
+//:my $wid = 32 +11;
 //:print qq(
 //:wire arb_src${i}_rdy, arb_src${i}_vld;
 //:NV_NVDLA_NOCIF_DRAM_READ_IG_ARB_pipe_p1 pipe_p1_${i} (
@@ -217,7 +217,7 @@ always @(
        src15_gnt: arb_pd = arb_src15_pd;
 //VCS coverage off
     default : begin
-                arb_pd[64 +10:0] = {64 +11{`x_or_0}};
+                arb_pd[32 +10:0] = {32 +11{`x_or_0}};
               end
 //VCS coverage on
     endcase
@@ -244,23 +244,23 @@ module NV_NVDLA_NOCIF_DRAM_READ_IG_ARB_pipe_p1 (
 input nvdla_core_clk;
 input nvdla_core_rstn;
 input arb_src0_rdy;
-input [64 +10:0] bpt2arb_req0_pd;
+input [32 +10:0] bpt2arb_req0_pd;
 input bpt2arb_req0_valid;
-output [64 +10:0] arb_src0_pd;
+output [32 +10:0] arb_src0_pd;
 output arb_src0_vld;
 output bpt2arb_req0_ready;
-reg [64 +10:0] arb_src0_pd;
+reg [32 +10:0] arb_src0_pd;
 reg arb_src0_vld;
 reg bpt2arb_req0_ready;
-reg [64 +10:0] p1_pipe_data;
+reg [32 +10:0] p1_pipe_data;
 reg p1_pipe_ready;
 reg p1_pipe_ready_bc;
-reg [64 +10:0] p1_pipe_skid_data;
+reg [32 +10:0] p1_pipe_skid_data;
 reg p1_pipe_skid_ready;
 reg p1_pipe_skid_valid;
 reg p1_pipe_valid;
 reg p1_skid_catch;
-reg [64 +10:0] p1_skid_data;
+reg [32 +10:0] p1_skid_data;
 reg p1_skid_ready;
 reg p1_skid_ready_flop;
 reg p1_skid_valid;
@@ -280,7 +280,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk) begin
 // VCS sop_coverage_off start
-  p1_pipe_data <= (p1_pipe_ready_bc && bpt2arb_req0_valid)? bpt2arb_req0_pd[64 +10:0] : p1_pipe_data;
+  p1_pipe_data <= (p1_pipe_ready_bc && bpt2arb_req0_valid)? bpt2arb_req0_pd[32 +10:0] : p1_pipe_data;
 // VCS sop_coverage_off end
 end
 always @(

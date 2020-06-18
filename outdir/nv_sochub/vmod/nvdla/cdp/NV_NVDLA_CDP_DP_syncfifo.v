@@ -46,29 +46,29 @@ module NV_NVDLA_CDP_DP_syncfifo (
 ///////////////////////////////////////////////////
 input nvdla_core_clk;
 input nvdla_core_rstn;
-input [2*(8 +1)+16:0] cvt2sync_pd;
+input [1*(8 +1)+16:0] cvt2sync_pd;
 input cvt2sync_pvld;
 input [31:0] pwrbus_ram_pd;
-input [2*((8 +1)*2+3)-1:0] sum2sync_pd;
+input [1*((8 +1)*2+3)-1:0] sum2sync_pd;
 input sum2sync_pvld;
 input sync2itp_prdy;
 input sync2mul_prdy;
 input sync2ocvt_prdy;
 output cvt2sync_prdy;
 output sum2sync_prdy;
-output [2*((8 +1)*2+3)-1:0] sync2itp_pd;
+output [1*((8 +1)*2+3)-1:0] sync2itp_pd;
 output sync2itp_pvld;
-output [2*(8 +1)-1:0] sync2mul_pd;
+output [1*(8 +1)-1:0] sync2mul_pd;
 output sync2mul_pvld;
 output [16:0] sync2ocvt_pd;
 output sync2ocvt_pvld;
 ///////////////////////////////////////////////////
-//reg [2 * (8 +1)-1:0] data_sync_wr_pd;
+//reg [1 * (8 +1)-1:0] data_sync_wr_pd;
 //reg data_sync_wr_pvld;
 //reg [14:0] info_sync_wr_pd;
 //reg info_sync_wr_pvld;
-wire [2 * (8 +1)-1:0] data_pd;
-wire [2 * (8 +1)-1:0] data_sync_rd_pd;
+wire [1 * (8 +1)-1:0] data_pd;
+wire [1 * (8 +1)-1:0] data_sync_rd_pd;
 wire data_sync_rd_prdy;
 wire data_sync_rd_pvld;
 wire data_sync_wr_prdy;
@@ -82,18 +82,18 @@ wire info_vld;
 //////////////////////////////////////////////
 //////////////////////////////////////////////
 //## pipe (1) randomizer
-//: my $dbw = 2 * (8 +1);
+//: my $dbw = 1 * (8 +1);
 //: &eperl::pipe(" -wid $dbw -do data_sync_wr_pd -vo data_sync_wr_pvld -ri data_sync_wr_prdy -di data_pd -vi data_vld -ro data_rdy ");
 //: &eperl::pipe(" -wid 17   -do info_sync_wr_pd -vo info_sync_wr_pvld -ri info_sync_wr_prdy -di info_pd -vi info_vld -ro info_rdy ");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 // Reg
 reg pipe_data_vld;
-reg [18-1:0] pipe_data_pd;
+reg [9-1:0] pipe_data_pd;
 // Wire
 wire data_rdy;
 wire pipe_data_rdy;
 wire data_sync_wr_pvld;
-wire [18-1:0] data_sync_wr_pd;
+wire [9-1:0] data_sync_wr_pd;
 // Code
 // PIPE READY
 assign data_rdy = pipe_data_rdy || !pipe_data_vld;
@@ -112,7 +112,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (data_rdy && data_vld) begin
-        pipe_data_pd[18-1:0] <= data_pd[18-1:0];
+        pipe_data_pd[9-1:0] <= data_pd[9-1:0];
     end
 end
 
@@ -163,14 +163,14 @@ assign info_sync_wr_pd = pipe_info_pd;
 assign cvt2sync_prdy = data_rdy & info_rdy;
 assign data_vld = cvt2sync_pvld & info_rdy;
 assign info_vld = cvt2sync_pvld & data_rdy;
-assign data_pd = cvt2sync_pd[2 * (8 +1)-1:0];
-assign info_pd = cvt2sync_pd[2 * (8 +1)+16:2 * (8 +1)];
+assign data_pd = cvt2sync_pd[1 * (8 +1)-1:0];
+assign info_pd = cvt2sync_pd[1 * (8 +1)+16:1 * (8 +1)];
 //////////////////////////////////////////////
 //////////////////////////////////////////////
-//: my $dbw = 2 * (8 +1);
+//: my $dbw = 1 * (8 +1);
 //: print " NV_NVDLA_CDP_DP_data_fifo_80x${dbw} u_data_sync_fifo (    \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
- NV_NVDLA_CDP_DP_data_fifo_80x18 u_data_sync_fifo (    
+ NV_NVDLA_CDP_DP_data_fifo_80x9 u_data_sync_fifo (    
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
    .nvdla_core_clk (nvdla_core_clk) //|< i
@@ -201,10 +201,10 @@ assign sync2ocvt_pd = info_sync_rd_pd[16:0];
 assign sync2ocvt_pvld = info_sync_rd_pvld;
 assign info_sync_rd_prdy = sync2ocvt_prdy;
 ///////////////////////////////////////////
-//: my $bw=2*((8 +1)*2+3);
+//: my $bw=1*((8 +1)*2+3);
 //: print " NV_NVDLA_CDP_DP_sumpd_fifo_60x${bw} u_sumpd_sync_fifo ( \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
- NV_NVDLA_CDP_DP_sumpd_fifo_60x42 u_sumpd_sync_fifo ( 
+ NV_NVDLA_CDP_DP_sumpd_fifo_60x21 u_sumpd_sync_fifo ( 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
    .nvdla_core_clk (nvdla_core_clk) //|< i

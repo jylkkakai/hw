@@ -26,7 +26,7 @@
     //atomK*4
 //notice, for image case, first atom OP within one strip OP must fetch from entry align place, in the middle of an entry is not supported.
 //thus, when atomC/atomK=4, stripe=4*atomK, feature data still keeps atomK*2
-    `define CC_ATOMC_DIV_ATOMK_EQUAL_2
+    `define CC_ATOMC_DIV_ATOMK_EQUAL_1
 //batch keep 1
 module NV_NVDLA_CSC_WL_dec (
    nvdla_core_clk
@@ -38,7 +38,7 @@ module NV_NVDLA_CSC_WL_dec (
   ,input_sel
   ,is_fp16
   ,is_int8
-//: for(my $i = 0; $i < 32; $i ++) {
+//: for(my $i = 0; $i < 8; $i ++) {
 //: print qq( ,output_data${i}\n);
 //: }
   ,output_mask
@@ -47,41 +47,41 @@ module NV_NVDLA_CSC_WL_dec (
   );
 input nvdla_core_clk;
 input nvdla_core_rstn;
-input [32*8 -1:0] input_data;
-input [32 -1:0] input_mask;
+input [8*8 -1:0] input_data;
+input [8 -1:0] input_mask;
 input [9:0] input_mask_en;
 input input_pipe_valid;
-input [16 -1:0] input_sel;
+input [8 -1:0] input_sel;
 input is_fp16;
 input is_int8;
-//: for(my $i = 0; $i < 32; $i ++) {
+//: for(my $i = 0; $i < 8; $i ++) {
 //: print qq(output [8 -1:0] output_data${i};\n);
 //: }
-output [32 -1:0] output_mask;
+output [8 -1:0] output_mask;
 output output_pvld;
-output [16 -1:0] output_sel;
-wire [32 -1:0] input_mask_gated;
-reg [32*8 -1:0] data_d1;
-reg [32 -1:0] mask_d1;
-//reg [32 -1:0] mask_d2_fp16_w;
-//reg [32 -1:0] mask_d2_int16_w;
-wire [32 -1:0] mask_d2_int8_w;
-wire [32 -1:0] mask_d2_w;
-reg [32 -1:0] mask_d3;
-reg [16 -1:0] sel_d1;
-reg [16 -1:0] sel_d2;
-reg [16 -1:0] sel_d3;
+output [8 -1:0] output_sel;
+wire [8 -1:0] input_mask_gated;
+reg [8*8 -1:0] data_d1;
+reg [8 -1:0] mask_d1;
+//reg [8 -1:0] mask_d2_fp16_w;
+//reg [8 -1:0] mask_d2_int16_w;
+wire [8 -1:0] mask_d2_int8_w;
+wire [8 -1:0] mask_d2_w;
+reg [8 -1:0] mask_d3;
+reg [8 -1:0] sel_d1;
+reg [8 -1:0] sel_d2;
+reg [8 -1:0] sel_d3;
 reg valid_d1;
 reg valid_d2;
 reg valid_d3;
 //: my $kk=8;
-//: for(my $i = 0; $i < 32; $i ++) {
+//: for(my $i = 0; $i < 8; $i ++) {
 //: my $series_no = sprintf("%02d", $i);
 //: print qq(reg [8 -1:0] vec_data_${series_no};\n);
 //: print qq(reg [8 -1:0] vec_data_${series_no}_d2;\n);
 //: print qq(reg [8 -1:0] vec_data_${series_no}_d3;\n);
 //: }
-//: for(my $i = 0; $i < 32; $i ++) {
+//: for(my $i = 0; $i < 8; $i ++) {
 //: my $j = 1;
 //: while(2**$j <= ($i + 1)) {
 //: $j ++;
@@ -115,7 +115,7 @@ reg valid_d3;
 //: my $end;
 //: my @bit_width_list;
 //: $width = 8;
-//: for($i = 0; $i < 32; $i ++) {
+//: for($i = 0; $i < 8; $i ++) {
 //: $j = 0;
 //: while(2**$j <= ($i + 1)) {
 //: $j ++;
@@ -125,7 +125,7 @@ reg valid_d3;
 //: print "////////////////////////////////// phase I: calculate sums for mux //////////////////////////////////\n";
 //: print "assign input_mask_gated = ~input_mask_en[8] ? {${width}{1'b0}} : input_mask;\n\n";
 //:
-//: for($i = 0; $i < 32; $i ++) {
+//: for($i = 0; $i < 8; $i ++) {
 //: $series_no = sprintf("%02d", $i);
 //: print "assign vec_sum_${series_no} = ";
 //: for($j = 0; $j < $i + 1; $j ++) {
@@ -148,7 +148,7 @@ reg valid_d3;
 //: &eperl::flop("-nodeclare -norst -q mask_d1 -en input_pipe_valid -d input_mask ");
 //: &eperl::flop("-nodeclare -q sel_d1 -en input_pipe_valid -d input_sel ");
 //:
-//: for($i = 0; $i < 32; $i ++) {
+//: for($i = 0; $i < 8; $i ++) {
 //: $series_no = sprintf("%02d", $i);
 //: my $j = int($i / 8);
 //: my $wid = $bit_width_list[$i];
@@ -157,7 +157,7 @@ reg valid_d3;
 //: print "\n\n";
 //:
 //: print "////////////////////////////////// phase II: mux //////////////////////////////////\n";
-//: for($i = 0; $i < 32; $i ++) {
+//: for($i = 0; $i < 8; $i ++) {
 //: $series_no = sprintf("%02d", $i);
 //: $name = "vec_data_${series_no}";
 //: $k = $bit_width_list[$i];
@@ -179,7 +179,7 @@ reg valid_d3;
 //: print "////////////////////////////////// phase II: registers //////////////////////////////////\n";
 //: &eperl::flop("-nodeclare -rval \"1'b0\" -q valid_d2 -d valid_d1 ");
 //: &eperl::flop("-nodeclare -q sel_d2 -en valid_d1 -d sel_d1 ");
-//: for($i = 0; $i < 32; $i ++) {
+//: for($i = 0; $i < 8; $i ++) {
 //: $series_no = sprintf("%02d", $i);
 //: $name = "vec_data_${series_no}";
 //: &eperl::flop("-nodeclare -norst -q ${name}_d2 -en \"valid_d1\" -d \"(${name} & {${width}{mask_d1[${i}]}})\" ");
@@ -187,14 +187,14 @@ reg valid_d3;
 //: print "\n\n";
 //:
 //: print "////////////////////////////////// phase III: registers //////////////////////////////////\n";
-//: for($i = 0; $i < 32; $i ++) {
+//: for($i = 0; $i < 8; $i ++) {
 //: $series_no = sprintf("%02d", $i);
 //: $name = "vec_data_${series_no}_d2";
 //: print "assign mask_d2_int8_w[${i}] = (|${name});\n";
 //: }
 //: print "\n\n\n";
 //:
-//: #for($i = 0; $i < 32; $i += 2) {
+//: #for($i = 0; $i < 8; $i += 2) {
 //: # $j = $i + 1;
 //: # $series_no = sprintf("%02d", $i);
 //: # $series_no_1 = sprintf("%02d", $j);
@@ -204,7 +204,7 @@ reg valid_d3;
 //: #}
 //: #print "\n\n\n";
 //:
-//: #for($i = 0; $i < 32; $i += 2) {
+//: #for($i = 0; $i < 8; $i += 2) {
 //: # $j = $i + 1;
 //: # $series_no = sprintf("%02d", $i);
 //: # $series_no_1 = sprintf("%02d", $j);
@@ -223,7 +223,7 @@ reg valid_d3;
 //: &eperl::flop("-nodeclare -rval \"1'b0\" -q valid_d3 -d valid_d2 ");
 //: &eperl::flop("-nodeclare -norst -q mask_d3 -en valid_d2 -d mask_d2_w ");
 //: &eperl::flop("-nodeclare -q sel_d3 -en valid_d2 -d sel_d2 ");
-//: for($i = 0; $i < 32; $i ++) {
+//: for($i = 0; $i < 8; $i ++) {
 //: $series_no = sprintf("%02d", $i);
 //: $name = "vec_data_${series_no}";
 //: &eperl::flop("-nodeclare -q ${name}_d3 -en valid_d2 -d ${name}_d2 ");
@@ -234,7 +234,7 @@ reg valid_d3;
 //: print "assign output_pvld = valid_d3;\n";
 //: print "assign output_mask = mask_d3;\n";
 //: print "assign output_sel = sel_d3;\n";
-//: for($i = 0; $i < 32; $i ++) {
+//: for($i = 0; $i < 8; $i ++) {
 //: $series_no = sprintf("%02d", $i);
 //: $name = "vec_data_${series_no}";
 //: print "assign output_data${i} = ${name}_d3;\n";

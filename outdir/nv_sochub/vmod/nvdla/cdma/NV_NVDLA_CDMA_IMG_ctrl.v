@@ -101,15 +101,15 @@ output pixel_packed_10b;
 output pixel_planar;
 output [3:0] pixel_planar0_bundle_limit;
 output [3:0] pixel_planar0_bundle_limit_1st;
-//: my $atmmbw = int( log(16) / log(2) );
+//: my $atmmbw = int( log(8) / log(2) );
 //: print qq(
 //: output [${atmmbw}-1:0] pixel_planar0_byte_sft;
 //: output [${atmmbw}-1:0] pixel_planar1_byte_sft;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-output [4-1:0] pixel_planar0_byte_sft;
-output [4-1:0] pixel_planar1_byte_sft;
+output [3-1:0] pixel_planar0_byte_sft;
+output [3-1:0] pixel_planar1_byte_sft;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 output [3:0] pixel_planar0_lp_burst;
@@ -229,7 +229,7 @@ wire pending_req_end;
 wire pixel_data_expand_nxt;
 wire pixel_data_shrink_nxt;
 wire pixel_early_end_w;
-//: my $atmmbw = int( log(16) / log(2) );
+//: my $atmmbw = int( log(8) / log(2) );
 //: print qq(
 //: wire [${atmmbw}-1:0] pixel_element_sft_w ;
 //: wire [${atmmbw}-1:0] pixel_planar0_byte_sft_w;
@@ -239,11 +239,11 @@ wire pixel_early_end_w;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-wire [4-1:0] pixel_element_sft_w ;
-wire [4-1:0] pixel_planar0_byte_sft_w;
-wire [4-1:0] pixel_planar1_byte_sft_w;
-reg [4-1:0] pixel_planar0_byte_sft;
-reg [4-1:0] pixel_planar1_byte_sft;
+wire [3-1:0] pixel_element_sft_w ;
+wire [3-1:0] pixel_planar0_byte_sft_w;
+wire [3-1:0] pixel_planar1_byte_sft_w;
+reg [3-1:0] pixel_planar0_byte_sft;
+reg [3-1:0] pixel_planar1_byte_sft;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire [3:0] pixel_planar0_bundle_limit_1st_w;
@@ -267,15 +267,15 @@ wire [2:0] pixel_planar1_rp_burst_w;
 wire pixel_planar1_rp_vld_w;
 wire [2:0] pixel_planar1_tail_width_w;
 wire [1:0] pixel_planar1_total_burst_w;
-//: my $dmaif_bw = int( log(int(128/8)) / log(2) );
+//: my $dmaif_bw = int( log(int(64/8)) / log(2) );
 //: print qq(
 //: wire [${dmaif_bw}-1:0] pixel_planar1_total_width_w;
 //: wire [${dmaif_bw}-1:0] mon_pixel_planar1_tail_width_w;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-wire [4-1:0] pixel_planar1_total_width_w;
-wire [4-1:0] mon_pixel_planar1_tail_width_w;
+wire [3-1:0] pixel_planar1_total_width_w;
+wire [3-1:0] mon_pixel_planar1_tail_width_w;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire [13:0] pixel_planar1_width_burst_w;
@@ -519,7 +519,7 @@ always @(*) begin
 //pixel_planar1_sft_nxt // log2(atmm/BytePerPixel(useless in RGB, 2 in YUV))
 //pixel_planar0_mask_nxt // atmm/BytePerPixel -1
 //pixel_planar1_mask_nxt // atmm/BytePerPixel -1
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $Byte_Per_Pixle = 4;
 //: my $p0_sft = int( log($atmm/$Byte_Per_Pixle)/log(2) );
 //: my $p0_mask = int( ($atmm/$Byte_Per_Pixle)-1 );
@@ -531,9 +531,9 @@ always @(*) begin
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-pixel_planar0_sft_nxt = 3'd2;
+pixel_planar0_sft_nxt = 3'd1;
 pixel_planar1_sft_nxt = 3'd3;
-pixel_planar0_mask_nxt = 5'd3;
+pixel_planar0_mask_nxt = 5'd1;
 pixel_planar1_mask_nxt = 5'd7;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
@@ -541,7 +541,7 @@ pixel_planar1_mask_nxt = 5'd7;
     6'h0 :
 // 0 T_R8,
     begin
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $Byte_Per_Pixle = 1;
 //: my $p0_sft = int( log($atmm/$Byte_Per_Pixle)/log(2) );
 //: my $p0_mask = int( ($atmm/$Byte_Per_Pixle)-1 );
@@ -551,8 +551,8 @@ pixel_planar1_mask_nxt = 5'd7;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-pixel_planar0_sft_nxt = 3'd4;
-pixel_planar0_mask_nxt = 5'd15;
+pixel_planar0_sft_nxt = 3'd3;
+pixel_planar0_mask_nxt = 5'd7;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //pixel_planar0_sft_nxt = 3'h3;
@@ -589,7 +589,7 @@ pixel_planar0_mask_nxt = 5'd15;
     begin
         pixel_planar_nxt = 1'h1;
         pixel_order_nxt = 11'h200;
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $Byte_Per_Pixle_p0 = 1;
 //: my $Byte_Per_Pixle_p1 = 2;
 //: my $p0_sft = int( log($atmm/$Byte_Per_Pixle_p0)/log(2) );
@@ -604,10 +604,10 @@ pixel_planar0_mask_nxt = 5'd15;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-pixel_planar0_sft_nxt = 3'd4;
-pixel_planar1_sft_nxt = 3'd3;
-pixel_planar0_mask_nxt = 5'd15;
-pixel_planar1_mask_nxt = 5'd7;
+pixel_planar0_sft_nxt = 3'd3;
+pixel_planar1_sft_nxt = 3'd2;
+pixel_planar0_mask_nxt = 5'd7;
+pixel_planar1_mask_nxt = 5'd3;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //pixel_planar0_sft_nxt = 3'h3;
@@ -619,7 +619,7 @@ pixel_planar1_mask_nxt = 5'd7;
 // 1d T_Y8___V8U8_N444,
     begin
         pixel_planar_nxt = 1'h1;
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $Byte_Per_Pixle_p0 = 1;
 //: my $Byte_Per_Pixle_p1 = 2;
 //: my $p0_sft = int( log($atmm/$Byte_Per_Pixle_p0)/log(2) );
@@ -634,10 +634,10 @@ pixel_planar1_mask_nxt = 5'd7;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-pixel_planar0_sft_nxt = 3'd4;
-pixel_planar1_sft_nxt = 3'd3;
-pixel_planar0_mask_nxt = 5'd15;
-pixel_planar1_mask_nxt = 5'd7;
+pixel_planar0_sft_nxt = 3'd3;
+pixel_planar1_sft_nxt = 3'd2;
+pixel_planar0_mask_nxt = 5'd7;
+pixel_planar1_mask_nxt = 5'd3;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //pixel_planar0_sft_nxt = 3'h3;
@@ -685,7 +685,7 @@ assign byte_per_pixel = ~(|pixel_precision_nxt) ? 3'h3 : 3'h6;
 ////////////////////////////////////////////////
 // early end control
 ////////////////////////////////////////////////
-//: my $dmaif_bw = int( log(int(128/8)) / log(2) );
+//: my $dmaif_bw = int( log(int(64/8)) / log(2) );
 //: print qq(
 //: assign {mon_pixel_planar1_total_width_w,
 //: pixel_planar1_total_width_w} = reg2dp_pad_left + reg2dp_datain_width[${dmaif_bw}-1:0] + reg2dp_pad_right + 1;
@@ -695,14 +695,14 @@ assign byte_per_pixel = ~(|pixel_precision_nxt) ? 3'h3 : 3'h6;
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
 assign {mon_pixel_planar1_total_width_w,
-pixel_planar1_total_width_w} = reg2dp_pad_left + reg2dp_datain_width[4-1:0] + reg2dp_pad_right + 1;
+pixel_planar1_total_width_w} = reg2dp_pad_left + reg2dp_datain_width[3-1:0] + reg2dp_pad_right + 1;
 assign {pixel_planar1_tail_width_w,
-mon_pixel_planar1_tail_width_w} = pixel_planar1_total_width_w * byte_per_pixel + {4{1'b1}};
+mon_pixel_planar1_tail_width_w} = pixel_planar1_total_width_w * byte_per_pixel + {3{1'b1}};
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 /////////////////////////////
-//: my $dmaif = 128/8;
-//: my $atmm = 16;
+//: my $dmaif = 64/8;
+//: my $atmm = 8;
 //: if($dmaif/$atmm == 1 ) {
 //: print qq(
 //: assign pixel_early_end_w = pixel_planar_nxt & ((pixel_planar1_tail_width_w==3'd1) | (pixel_planar1_tail_width_w==3'd4) | ((pixel_planar1_tail_width_w==3'd2) & {pixel_planar1_total_width_w,1'b0} > $dmaif) );
@@ -719,7 +719,7 @@ mon_pixel_planar1_tail_width_w} = pixel_planar1_total_width_w * byte_per_pixel +
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign pixel_early_end_w = pixel_planar_nxt & ((pixel_planar1_tail_width_w==3'd1) | (pixel_planar1_tail_width_w==3'd4) | ((pixel_planar1_tail_width_w==3'd2) & {pixel_planar1_total_width_w,1'b0} > 16) );
+assign pixel_early_end_w = pixel_planar_nxt & ((pixel_planar1_tail_width_w==3'd1) | (pixel_planar1_tail_width_w==3'd4) | ((pixel_planar1_tail_width_w==3'd2) & {pixel_planar1_total_width_w,1'b0} > 8) );
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 ////////////////////////////////////////////////
@@ -731,7 +731,7 @@ assign pixel_early_end_w = pixel_planar_nxt & ((pixel_planar1_tail_width_w==3'd1
 // pixel_planar0_byte_sft_w} = {pixel_element_sft_w, 5'b0} >> pixel_planar0_sft_nxt;
 // assign {mon_pixel_planar1_byte_sft_w[4:0],
 // pixel_planar1_byte_sft_w} = {pixel_element_sft_w, 5'b0} >> pixel_planar1_sft_nxt;
-//: my $atmmbw = int( log(16) / log(2) );
+//: my $atmmbw = int( log(8) / log(2) );
 //: print qq(
 //: assign {mon_pixel_element_sft_w,
 //: pixel_element_sft_w} = (reg2dp_pixel_x_offset - {2'd0,reg2dp_pad_left[${atmmbw}-1:0]});
@@ -743,11 +743,11 @@ assign pixel_early_end_w = pixel_planar_nxt & ((pixel_planar1_tail_width_w==3'd1
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
 assign {mon_pixel_element_sft_w,
-pixel_element_sft_w} = (reg2dp_pixel_x_offset - {2'd0,reg2dp_pad_left[4-1:0]});
+pixel_element_sft_w} = (reg2dp_pixel_x_offset - {2'd0,reg2dp_pad_left[3-1:0]});
 assign {mon_pixel_planar0_byte_sft_w[2:0],
-pixel_planar0_byte_sft_w} = {pixel_element_sft_w, 4'b0} >> pixel_planar0_sft_nxt;
+pixel_planar0_byte_sft_w} = {pixel_element_sft_w, 3'b0} >> pixel_planar0_sft_nxt;
 assign {mon_pixel_planar1_byte_sft_w[2:0],
-pixel_planar1_byte_sft_w} = {pixel_element_sft_w, 4'b0} >> pixel_planar1_sft_nxt;
+pixel_planar1_byte_sft_w} = {pixel_element_sft_w, 3'b0} >> pixel_planar1_sft_nxt;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign pixel_planar0_bundle_limit_w = 4'h8;
@@ -759,7 +759,7 @@ assign pixel_planar0_lp_vld_w = (|pixel_planar0_lp_burst_w);
 assign pixel_planar1_lp_vld_w = (|pixel_planar1_lp_burst_w);
 assign pixel_planar0_rp_vld_w = (|pixel_planar0_rp_burst_w);
 assign pixel_planar1_rp_vld_w = (|pixel_planar1_rp_burst_w);
-//: my $atmmbw = int( log(16) / log(2) );
+//: my $atmmbw = int( log(8) / log(2) );
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"  -en \"layer_st\" -d \"pixel_planar_nxt\" -q pixel_planar");
 //: &eperl::flop("-nodeclare   -rval \"{2{1'b0}}\"  -en \"layer_st\" -d \"pixel_precision_nxt\" -q pixel_precision");
 //: &eperl::flop("-nodeclare   -rval \"{11{1'b0}}\"  -en \"layer_st\" -d \"pixel_order_nxt\" -q pixel_order");
@@ -1070,7 +1070,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       pixel_planar0_byte_sft <= {4{1'b0}};
+       pixel_planar0_byte_sft <= {3{1'b0}};
    end else begin
        if ((layer_st) == 1'b1) begin
            pixel_planar0_byte_sft <= pixel_planar0_byte_sft_w;
@@ -1084,7 +1084,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       pixel_planar1_byte_sft <= {4{1'b0}};
+       pixel_planar1_byte_sft <= {3{1'b0}};
    end else begin
        if ((layer_st & planar1_vld_w) == 1'b1) begin
            pixel_planar1_byte_sft <= pixel_planar1_byte_sft_w;

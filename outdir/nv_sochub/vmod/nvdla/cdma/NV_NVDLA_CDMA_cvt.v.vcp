@@ -29,8 +29,8 @@ module NV_NVDLA_CDMA_cvt (
    nvdla_core_clk
   ,nvdla_core_rstn
   ,dc2cvt_dat_wr_en
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: print qq(
@@ -56,40 +56,9 @@ module NV_NVDLA_CDMA_cvt (
 //: );
 //: }
   ,dc2cvt_dat_wr_info_pd
-  ,wg2cvt_dat_wr_en
-//: my $dmaif=128;
-//: my $atmc=32*8;
-//: if($dmaif < $atmc) {
-//: my $k = int(log(int($atmc/$dmaif))/log(2));
-//: print qq(
-//: ,wg2cvt_dat_wr_sel
-//: ,wg2cvt_dat_wr_addr
-//: ,wg2cvt_dat_wr_data
-//: );
-//: } elsif($dmaif > $atmc) {
-//: my $k = int(log(int($dmaif/$atmc))/log(2));
-//: print qq(
-//: ,wg2cvt_dat_wr_mask
-//: );
-//: foreach my $i (0..$k-1) {
-//: print qq(
-//: ,wg2cvt_dat_wr_addr${i}
-//: ,wg2cvt_dat_wr_data${i}
-//: );
-//: }
-//: } else {
-//: print qq(
-//: ,wg2cvt_dat_wr_addr
-//: ,wg2cvt_dat_wr_data
-//: );
-//: }
-// ,wg2cvt_dat_wr_addr
-// ,wg2cvt_dat_wr_hsel
-// ,wg2cvt_dat_wr_data
-  ,wg2cvt_dat_wr_info_pd
   ,img2cvt_dat_wr_en
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: print qq(
@@ -126,8 +95,8 @@ module NV_NVDLA_CDMA_cvt (
 // ,img2cvt_mn_wr_data
   ,img2cvt_dat_wr_info_pd
   ,cdma2buf_dat_wr_en
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: print qq(
 //: ,cdma2buf_dat_wr_sel
@@ -176,8 +145,8 @@ module NV_NVDLA_CDMA_cvt (
 input nvdla_core_clk;
 input nvdla_core_rstn;
 input dc2cvt_dat_wr_en;
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: print qq(
@@ -206,44 +175,13 @@ input [11:0] dc2cvt_dat_wr_info_pd;
 // input dc2cvt_dat_wr_en;
 // input [11:0] dc2cvt_dat_wr_addr;
 // input dc2cvt_dat_wr_hsel;
-// input [128 -1:0] dc2cvt_dat_wr_data;
+// input [64 -1:0] dc2cvt_dat_wr_data;
 // input [11:0] dc2cvt_dat_wr_info_pd;
-input wg2cvt_dat_wr_en;
-//: my $dmaif=128;
-//: my $atmc=32*8;
-//: if($dmaif < $atmc) {
-//: my $k = int(log(int($atmc/$dmaif))/log(2));
-//: print qq(
-//: input [${k}-1:0] wg2cvt_dat_wr_sel;
-//: input [16:0] wg2cvt_dat_wr_addr;
-//: input [${dmaif}-1:0] wg2cvt_dat_wr_data;
-//: );
-//: } elsif($dmaif > $atmc) {
-//: my $k = int(log(int($dmaif/$atmc))/log(2));
-//: print qq(
-//: input [${k}-1:0] wg2cvt_dat_wr_mask;
-//: );
-//: foreach my $i (0..$k-1) {
-//: print qq(
-//: input [16:0] wg2cvt_dat_wr_addr${i};
-//: input [${dmaif}-1:0] wg2cvt_dat_wr_data${i};
-//: );
-//: }
-//: } else {
-//: print qq(
-//: input [16:0] wg2cvt_dat_wr_addr;
-//: input [${dmaif}-1:0] wg2cvt_dat_wr_data;
-//: );
-//: }
-// input [11:0] wg2cvt_dat_wr_addr;
-// input wg2cvt_dat_wr_hsel;
-// input [128 -1:0] wg2cvt_dat_wr_data;
-input [11:0] wg2cvt_dat_wr_info_pd;
 //////////////// img
 input img2cvt_dat_wr_en;
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $Bnum = $dmaif / 8;
-//: my $atmc=32*8;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: print qq(
@@ -278,16 +216,16 @@ input [11:0] img2cvt_dat_wr_info_pd;
 // input [11:0] img2cvt_dat_wr_addr;
 // input img2cvt_dat_wr_hsel;
 // //input [1023:0] img2cvt_dat_wr_data;
-// input [128 -1:0] img2cvt_dat_wr_data;
+// input [64 -1:0] img2cvt_dat_wr_data;
 // //input  [127:0] img2cvt_dat_wr_pad_mask;
 // //input [1023:0] img2cvt_mn_wr_data;
 // //: my $dmaif = NVDLA_CDMA_DMAIF_BW;
 // //: my $Bnum = $dmaif / NVDLA_BPE;
 // //: print qq(input  [$Bnum-1:0] img2cvt_dat_wr_pad_mask; );
-// input [128 -1:0] img2cvt_mn_wr_data;
+// input [64 -1:0] img2cvt_mn_wr_data;
 output cdma2buf_dat_wr_en;
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int($atmc/$dmaif);
 //: print qq(
@@ -316,7 +254,7 @@ output cdma2buf_dat_wr_en;
 // output [11:0] cdma2buf_dat_wr_addr;
 // output [1:0] cdma2buf_dat_wr_hsel;
 // //output [1023:0] cdma2buf_dat_wr_data;
-// output [128 -1:0] cdma2buf_dat_wr_data;
+// output [64 -1:0] cdma2buf_dat_wr_data;
 input nvdla_hls_clk;
 output slcg_hls_en;
 input nvdla_core_ng_clk;
@@ -345,8 +283,8 @@ reg cfg_out_int8;
 reg [15:0] cfg_pad_value;
 reg [16:0] cvt_out_addr_d1;
 reg [16:0] cvt_out_addr_reg;
-//: my $dmaif=128;
-//: my $atmm=16;
+//: my $dmaif=64;
+//: my $atmm=8;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: my $atmm_num= $Bnum / $atmm;
@@ -358,10 +296,10 @@ reg [3:0] cvt_out_nz_mask_d1;
 reg cvt_out_pad_vld_d1;
 reg cvt_out_vld_d1;
 reg cvt_out_vld_reg;
-reg [128 -1:0] cvt_wr_data_d1;
+reg [64 -1:0] cvt_wr_data_d1;
 reg cvt_wr_en_d1;
 reg cvt_wr_mean_d1;
-reg [128/8*16-1:0] cvt_wr_mean_data_d1;
+reg [64/8*16-1:0] cvt_wr_mean_data_d1;
 reg [17:0] dat_cbuf_flush_idx;
 wire [31:0] dp2reg_inf_data_num;
 wire [31:0] dp2reg_nan_data_num;
@@ -372,7 +310,7 @@ reg [0:0] is_input_int8;
 reg op_en;
 reg op_en_d0;
 reg cvt_wr_uint_d1;
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: foreach my $i (0..$Bnum -1) {
@@ -397,23 +335,23 @@ reg slcg_hls_en_d2;
 reg slcg_hls_en_d3;
 wire [15:0] cfg_pad_value_w;
 wire cfg_reg_en;
-wire [128 -1:0] cvt_data_cell;
+wire [64 -1:0] cvt_data_cell;
 wire [16:0] cvt_out_addr;
 wire [16:0] cvt_out_addr_bp;
 wire [16:0] cvt_out_addr_reg_w;
-wire [128 -1:0] cvt_out_data_masked;
-wire [128 -1:0] cvt_out_data_mix;
+wire [64 -1:0] cvt_out_data_masked;
+wire [64 -1:0] cvt_out_data_mix;
 wire [3:0] cvt_out_nz_mask_bp;
 wire cvt_out_pad_vld_bp;
 wire cvt_out_vld;
 wire cvt_out_vld_bp;
 wire cvt_out_vld_reg_w;
 wire [16:0] cvt_wr_addr;
-wire [128 -1:0] cvt_wr_data;
+wire [64 -1:0] cvt_wr_data;
 wire cvt_wr_en;
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $Bnum = $dmaif / 8;
-//: my $atmc=32*8;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: my $s = int($atmc/$dmaif);
@@ -442,13 +380,13 @@ wire cvt_wr_en;
 wire [11:0] cvt_wr_info_pd;
 wire [3:0] cvt_wr_mask;
 wire cvt_wr_mean;
-wire [128/8*16-1:0] cvt_wr_mean_data;
+wire [64/8*16-1:0] cvt_wr_mean_data;
 wire [2:0] cvt_wr_sub_h;
 wire cvt_wr_uint;
 wire [17:0] dat_cbuf_flush_idx_w;
 wire dat_cbuf_flush_vld_w;
 wire [31:0] dat_half_mask;
-wire [128 -1:0] dat_nan_mask;
+wire [64 -1:0] dat_nan_mask;
 wire is_data_expand_w;
 wire is_data_normal_w;
 wire is_input_fp16_w;
@@ -500,7 +438,6 @@ assign slcg_hls_en = slcg_hls_en_d3;
 // Input signals //
 ////////////////////////////////////////////////////////////////////////
 assign cvt_wr_info_pd = ({12 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_info_pd)
-                      | ({12 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_info_pd)
                       | ({12 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_info_pd);
 assign cvt_wr_mask[3:0] = cvt_wr_info_pd[3:0];
 //assign cvt_wr_interleave = cvt_wr_info_pd[4];
@@ -509,41 +446,35 @@ assign cvt_wr_mask[3:0] = cvt_wr_info_pd[3:0];
 assign cvt_wr_mean = cvt_wr_info_pd[7];
 assign cvt_wr_uint = cvt_wr_info_pd[8];
 assign cvt_wr_sub_h[2:0] = cvt_wr_info_pd[11:9];
-assign cvt_wr_en = (dc2cvt_dat_wr_en | wg2cvt_dat_wr_en | img2cvt_dat_wr_en);
-//: my $dmaif=128;
+assign cvt_wr_en = (dc2cvt_dat_wr_en | img2cvt_dat_wr_en);
+//: my $dmaif=64;
 //: my $Bnum = $dmaif / 8;
-//: my $atmc=32*8;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: print qq(
 //: assign cvt_wr_pad_mask = img2cvt_dat_wr_en ? img2cvt_dat_wr_pad_mask : ${Bnum}'d0;
 //: assign cvt_wr_sel = dc2cvt_dat_wr_en ? dc2cvt_dat_wr_sel
-//: : wg2cvt_dat_wr_en ? wg2cvt_dat_wr_sel
 //: : img2cvt_dat_wr_en ? img2cvt_dat_wr_sel : 0;
 //: assign cvt_wr_addr = ({17 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_addr)
-//: | ({17 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_addr)
 //: | ({17 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_addr);
-//: assign cvt_wr_data = ({128 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data)
-//: | ({128 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_data)
-//: | ({128 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data);
+//: assign cvt_wr_data = ({64 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data)
+//: | ({64 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data);
 //: assign cvt_wr_mean_data = img2cvt_mn_wr_data;
 //: );
 //: } elsif($dmaif > $atmc) {
 //: my $k = int(log(int($dmaif/$atmc))/log(2));
 //: print qq(
 //: assign cvt_dat_wr_mask = (dc2cvt_dat_wr_en & dc2cvt_dat_wr_mask)
-//: | (wg2cvt_dat_wr_en & wg2cvt_dat_wr_mask)
 //: | (img2cvt_dat_wr_en & img2cvt_dat_wr_mask);
 //: );
 //: foreach my $i (0..$k-1) {
 //: print qq(
 //: assign cvt_wr_pad_mask${i} = img2cvt_dat_wr_en ? img2cvt_dat_wr_pad_mask${i} : ${Bnum}'d0;
 //: assign cvt_wr_addr${i} = ({17 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_addr${i})
-//: | ({17 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_addr${i})
 //: | ({17 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_addr${i});
-//: assign cvt_wr_data${i} = ({128 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data${i})
-//: | ({128 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_data${i})
-//: | ({128 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data${i});
+//: assign cvt_wr_data${i} = ({64 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data${i})
+//: | ({64 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data${i});
 //: assign cvt_wr_mean_data${i} = img2cvt_mn_wr_data${i};
 //: );
 //: }
@@ -551,19 +482,17 @@ assign cvt_wr_en = (dc2cvt_dat_wr_en | wg2cvt_dat_wr_en | img2cvt_dat_wr_en);
 //: print qq(
 //: assign cvt_wr_pad_mask = img2cvt_dat_wr_en ? img2cvt_dat_wr_pad_mask : ${Bnum}'d0;
 //: assign cvt_wr_addr = ({17 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_addr)
-//: | ({17 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_addr)
 //: | ({17 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_addr);
-//: assign cvt_wr_data = ({128 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data)
-//: | ({128 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_data)
-//: | ({128 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data);
+//: assign cvt_wr_data = ({64 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data)
+//: | ({64 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data);
 //: assign cvt_wr_mean_data = img2cvt_mn_wr_data;
 //: );
 //: }
 ////////////////////////////////////////////////////////////////////////
 // generator mux control signals //
 ////////////////////////////////////////////////////////////////////////
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: print qq(
 //: assign cvt_out_sel = cvt_wr_sel;
@@ -577,8 +506,8 @@ assign cvt_wr_en = (dc2cvt_dat_wr_en | wg2cvt_dat_wr_en | img2cvt_dat_wr_en);
 //: }
 assign cvt_out_addr = cvt_wr_addr;
 assign cvt_out_vld = cvt_wr_en;
-//: my $dmaif=128;
-//: my $atmm=16;
+//: my $dmaif=64;
+//: my $atmm=8;
 //: my $Bnum = $dmaif / 8;
 //: my $atmm_num = $Bnum / $atmm;
 //: if($atmm_num == 1) {
@@ -603,7 +532,7 @@ assign cvt_out_vld = cvt_wr_en;
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"        -en \"cvt_wr_en\"          -d \"cvt_wr_uint\"           -q cvt_wr_uint_d1");
 //: &eperl::flop("-nodeclare  -norst                 -en \"cvt_wr_en & cvt_wr_mean\" -d \"cvt_wr_mean_data\" -q cvt_wr_mean_data_d1");
 //: &eperl::flop("-nodeclare  -norst                 -en \"cvt_wr_en\"          -d \"cvt_wr_data\"           -q cvt_wr_data_d1");
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: &eperl::flop("-nodeclare   -rval \"${Bnum}'b0\"           -en \"cvt_wr_en | cvt_wr_en_d1\" -d \"cvt_cell_en\"     -q cvt_cell_en_d1");
@@ -612,7 +541,7 @@ assign cvt_out_vld = cvt_wr_en;
 //: &eperl::flop("-nodeclare   -rval \"{17{1'b0}}\"  -en \"cvt_wr_en\"          -d \"cvt_out_addr\"          -q cvt_out_addr_d1");
 //: &eperl::flop("-nodeclare   -rval \"{4{1'b0}}\"   -en \"cvt_wr_en\"          -d \"cvt_wr_mask\"           -q cvt_out_nz_mask_d1");
 //: &eperl::flop("-nodeclare   -rval \"${Bnum}'b0\"           -en \"img2cvt_dat_wr_en\"  -d \"cvt_wr_pad_mask\"       -q cvt_out_pad_mask_d1");
-//: my $atmc=32*8;
+//: my $atmc=8*8;
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: if($dmaif < $atmc) {
 //: &eperl::flop("-nodeclare   -rval \"${k}'b0\"                                      -d \"cvt_out_reg_en\"        -q cvt_out_reg_en_d1");
@@ -623,7 +552,7 @@ assign cvt_out_vld = cvt_wr_en;
 ////////////////////////////////////////////////////////////////////////
 // generate input signals for convertor cells //
 ////////////////////////////////////////////////////////////////////////
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: foreach my $i(0..$Bnum-1) {
@@ -637,7 +566,7 @@ assign cvt_out_vld = cvt_wr_en;
 //: &eperl::flop("-nodeclare -norst -en \"cvt_cell_en_d1[${i}]\" -d \"oprand_1_${i}_ori\" -q oprand_1_${i}_d0");
 //: }
 ////////////////////////////////////////////////////////////////////////
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = ($dmaif / $bpe);
 //: &eperl::flop("-nodeclare -rval \"1'b0\"                               -d \"cvt_wr_en_d1\"   -q op_en_d0");
@@ -645,7 +574,7 @@ assign cvt_out_vld = cvt_wr_en;
 ////////////////////////////////////////////////////////////////////////
 // instance of convert cells //
 ////////////////////////////////////////////////////////////////////////
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: foreach my $i (0..$Bnum-1) {
@@ -674,7 +603,7 @@ assign cvt_out_vld = cvt_wr_en;
 //: }
 //: print "\n";
 assign cvt_data_cell = {
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: if($Bnum > 1) {
@@ -687,9 +616,9 @@ assign cvt_data_cell = {
 ////////////////////////////////////////////////////////////////////////
 // stage 2: pipeline to match latency of conver cells //
 ////////////////////////////////////////////////////////////////////////
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $Bnum = $dmaif / 8;
-//: my $atmc=32*8;
+//: my $atmc=8*8;
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: for(my $i = 1; $i <= 3 +1; $i ++) {
 //: my $j = $i + 1;
@@ -724,8 +653,8 @@ assign cvt_data_cell = {
 // stage 3: final pipeline stage //
 ////////////////////////////////////////////////////////////////////////
 assign cvt_out_data_mix = cfg_cvt_en[5] ? cvt_data_cell : cvt_wr_data_d1;
-//: my $dmaif=128;
-//: my $atmm=16;
+//: my $dmaif=64;
+//: my $atmm=8;
 //: my $bpe = 8;
 //: my $atmmbw= $atmm * $bpe;
 //: my $Bnum = $dmaif / $bpe;
@@ -741,18 +670,18 @@ assign cvt_out_data_mix = cfg_cvt_en[5] ? cvt_data_cell : cvt_wr_data_d1;
 //: &eperl::flop("-nodeclare   -rval \"${atmmbw}'b0\"   -d \"cvt_out_data_p${k}\" -q cvt_out_data_p${k}_reg");
 //: }
 assign cvt_out_vld_reg_w = cvt_out_vld_bp | dat_cbuf_flush_vld_w;
-//: my $dmaif=128/8;
-//: my $atmc=32;
+//: my $dmaif=64/8;
+//: my $atmc=8;
 //: if ( $dmaif < $atmc ) {
 //: my $k = int( log( int($atmc/$dmaif) ) / log(2) );
 //: print "assign cvt_out_addr_reg_w = dat_cbuf_flush_vld_w ? dat_cbuf_flush_idx[17:${k}] : cvt_out_addr_bp; \n";
 //: } else {
 //: print "assign cvt_out_addr_reg_w = dat_cbuf_flush_vld_w ? dat_cbuf_flush_idx[16:0] : cvt_out_addr_bp; \n";
 //: }
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
-//: my $atmc=32;
+//: my $atmc=8;
 //: if($Bnum < $atmc) {
 //: my $dmaif_num = $atmc / $Bnum;
 //: my $k = int(log($dmaif_num)/log(2));
@@ -778,10 +707,10 @@ assign cvt_out_vld_reg_w = cvt_out_vld_bp | dat_cbuf_flush_vld_w;
 ////////////////////////////////////////////////////////////////////////
 assign {mon_dat_cbuf_flush_idx_w,
         dat_cbuf_flush_idx_w} = dat_cbuf_flush_idx + 1'b1;
-//: my $bank_entry = 32 * 128;
+//: my $bank_entry = 32 * 512;
 //: my $bank_entry_bw = int( log( $bank_entry)/log(2) );
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: my $k;
 //: if($dmaif < $atmc) {
 //: $k = int(log(int($atmc/$dmaif))/log(2));
@@ -801,16 +730,16 @@ assign {mon_dat_cbuf_flush_idx_w,
 ////////////////////////////////////////////////////////////////////////
 assign cdma2buf_dat_wr_en = cvt_out_vld_reg;
 assign cdma2buf_dat_wr_addr = cvt_out_addr_reg;
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
-//: my $atmc=32;
+//: my $atmc=8;
 //: if($Bnum < $atmc) {
 //: print qq(assign cdma2buf_dat_wr_sel = cvt_out_sel_reg; \n );
 //: }
 assign cdma2buf_dat_wr_data = {
-//: my $dmaif=128;
-//: my $atmm=16;
+//: my $dmaif=64;
+//: my $atmm=8;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: my $atmm_num= $Bnum / $atmm;
@@ -821,7 +750,7 @@ assign cdma2buf_dat_wr_data = {
 //: }
 //: }
  cvt_out_data_p0_reg};
-assign dat_nan_mask = {128{1'b1}};
+assign dat_nan_mask = {64{1'b1}};
 assign dp2reg_nan_data_num = 32'b0;
 assign dp2reg_inf_data_num = 32'b0;
 ////////////////////////////////////////////////////////////////////////
@@ -920,11 +849,7 @@ assign dp2reg_inf_data_num = 32'b0;
   nv_assert_no_x #(0,1,0,"No X's allowed on control signals") zzz_assert_no_x_101x (nvdla_core_ng_clk, `ASSERT_RESET, 1'd1, (^(dat_cbuf_flush_vld_w))); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_no_x #(0,1,0,"No X's allowed on control signals") zzz_assert_no_x_102x (nvdla_core_clk, `ASSERT_RESET, 1'd1, (^(nan_reg_en))); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_no_x #(0,1,0,"No X's allowed on control signals") zzz_assert_no_x_103x (nvdla_core_clk, `ASSERT_RESET, 1'd1, (^(inf_reg_en))); // spyglass disable W504 SelfDeterminedExpr-ML 
-  nv_assert_zero_one_hot #(0,3,0,"Error! CVT input conflict!") zzz_assert_zero_one_hot_16x (nvdla_core_clk, `ASSERT_RESET, {dc2cvt_dat_wr_en, wg2cvt_dat_wr_en, img2cvt_dat_wr_en}); // spyglass disable W504 SelfDeterminedExpr-ML 
-  nv_assert_never #(0,0,"Error! Wg set two high masks") zzz_assert_never_19x (nvdla_core_clk, `ASSERT_RESET, (wg2cvt_dat_wr_en & (|cvt_wr_mask[3:2]))); // spyglass disable W504 SelfDeterminedExpr-ML 
-  nv_assert_never #(0,0,"Error! Wg set mean flag") zzz_assert_never_22x (nvdla_core_clk, `ASSERT_RESET, (wg2cvt_dat_wr_en & cvt_wr_mean)); // spyglass disable W504 SelfDeterminedExpr-ML 
-  nv_assert_never #(0,0,"Error! Wg set uint flag") zzz_assert_never_24x (nvdla_core_clk, `ASSERT_RESET, (wg2cvt_dat_wr_en & cvt_wr_uint)); // spyglass disable W504 SelfDeterminedExpr-ML 
-  nv_assert_never #(0,0,"Error! Wg set sub h flag") zzz_assert_never_26x (nvdla_core_clk, `ASSERT_RESET, (wg2cvt_dat_wr_en & (|cvt_wr_sub_h))); // spyglass disable W504 SelfDeterminedExpr-ML 
+  nv_assert_zero_one_hot #(0,2,0,"Error! CVT input conflict!") zzz_assert_zero_one_hot_16x (nvdla_core_clk, `ASSERT_RESET, {dc2cvt_dat_wr_en, img2cvt_dat_wr_en}); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_never #(0,0,"Error! Disable when input data") zzz_assert_never_17x (nvdla_core_clk, `ASSERT_RESET, (~op_en & cvt_wr_en)); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_never #(0,0,"Error! Dc set two high masks") zzz_assert_never_18x (nvdla_core_clk, `ASSERT_RESET, (dc2cvt_dat_wr_en & (|cvt_wr_mask[3:2]))); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_never #(0,0,"Error! Img set two hight masks when int8 input") zzz_assert_never_20x (nvdla_core_clk, `ASSERT_RESET, (img2cvt_dat_wr_en & (|cvt_wr_mask[3:2]) & is_input_int8[0])); // spyglass disable W504 SelfDeterminedExpr-ML 

@@ -50,9 +50,9 @@ input [12:0] reg2dp_cube_in_height;
 input [12:0] reg2dp_cube_in_width;
 input reg2dp_flying_mode;
 input reg2dp_op_en;
-input [8*4 -1:0] sdp2pdp_pd;
+input [8*1 -1:0] sdp2pdp_pd;
 input sdp2pdp_valid;
-output [2*8 +13:0] pre2cal1d_pd;
+output [1*8 +13:0] pre2cal1d_pd;
 output pre2cal1d_pvld;
 output sdp2pdp_ready;
 /////////////////////////////////////////////////////////////////
@@ -81,14 +81,14 @@ reg [4:0] pos_c;
 reg [4:0] sdp2pdp_c_cnt;
 wire sdp2pdp_en_sync;
 reg [12:0] sdp2pdp_height_cnt;
-wire [8*4 -1:0] sdp2pdp_pd_use;
-//: my $atomicm = 16;
+wire [8*1 -1:0] sdp2pdp_pd_use;
+//: my $atomicm = 8;
 //: my $k = int( log($atomicm)/log(2) );
 //: print "reg      [12-${k}:0] sdp2pdp_surf_cnt; \n";
 //: print "reg      [12-${k}:0] surf_cnt; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-reg      [12-4:0] sdp2pdp_surf_cnt; 
-reg      [12-4:0] surf_cnt; 
+reg      [12-3:0] sdp2pdp_surf_cnt; 
+reg      [12-3:0] surf_cnt; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 reg [12:0] sdp2pdp_width_cnt;
@@ -113,15 +113,15 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
         sdp2pdp_c_cnt <= sdp2pdp_c_cnt + 1'b1;
   end
 end
-//: my $sdpth = 4;
-//: my $atomicm = 16;
+//: my $sdpth = 1;
+//: my $atomicm = 8;
 //: my $k = int( $atomicm/$sdpth ) -1;
 //: print qq(
 //: assign sdp2pdp_c_end = (load_din & (sdp2pdp_c_cnt == 5'd${k}));
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign sdp2pdp_c_end = (load_din & (sdp2pdp_c_cnt == 5'd3));
+assign sdp2pdp_c_end = (load_din & (sdp2pdp_c_cnt == 5'd7));
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -162,14 +162,14 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     end
   end
 end
-//: my $atomicm = 16;
+//: my $atomicm = 8;
 //: my $k = int( log($atomicm)/log(2) );
 //: print qq(
 //: assign sdp2pdp_cube_end = sdp2pdp_surf_end & (sdp2pdp_surf_cnt == reg2dp_cube_in_channel[12:${k}]);
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign sdp2pdp_cube_end = sdp2pdp_surf_end & (sdp2pdp_surf_cnt == reg2dp_cube_in_channel[12:4]);
+assign sdp2pdp_cube_end = sdp2pdp_surf_end & (sdp2pdp_surf_cnt == reg2dp_cube_in_channel[12:3]);
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //////////////////////////////////////////////////////////////////////
@@ -222,25 +222,25 @@ end
 ///////////////////////////
 assign sdp2pdp_en = (onfly_en & (~waiting_for_op_en));
 //assign sdp2pdp_ready = sdp2pdp_ready_f & sdp2pdp_en;
-wire [8*4:0] pipe0_i;
+wire [8*1:0] pipe0_i;
 assign pipe0_i = {sdp2pdp_pd,sdp2pdp_en};
-//: my $k = 8*4 + 1;
+//: my $k = 8*1 + 1;
 //: &eperl::pipe(" -is -wid $k -do pipe0_o -vo sdp2pdp_valid_use_f -ri sdp2pdp_ready_use -di pipe0_i -vi sdp2pdp_valid -ro sdp2pdp_ready_f   ");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 // Reg
 reg sdp2pdp_ready_f;
 reg skid_flop_sdp2pdp_ready_f;
 reg skid_flop_sdp2pdp_valid;
-reg [33-1:0] skid_flop_pipe0_i;
+reg [9-1:0] skid_flop_pipe0_i;
 reg pipe_skid_sdp2pdp_valid;
-reg [33-1:0] pipe_skid_pipe0_i;
+reg [9-1:0] pipe_skid_pipe0_i;
 // Wire
 wire skid_sdp2pdp_valid;
-wire [33-1:0] skid_pipe0_i;
+wire [9-1:0] skid_pipe0_i;
 wire skid_sdp2pdp_ready_f;
 wire pipe_skid_sdp2pdp_ready_f;
 wire sdp2pdp_valid_use_f;
-wire [33-1:0] pipe0_o;
+wire [9-1:0] pipe0_o;
 // Code
 // SKID READY
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -268,10 +268,10 @@ assign skid_sdp2pdp_valid = (skid_flop_sdp2pdp_ready_f) ? sdp2pdp_valid : skid_f
 // SKID DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_flop_sdp2pdp_ready_f & sdp2pdp_valid) begin
-        skid_flop_pipe0_i[33-1:0] <= pipe0_i[33-1:0];
+        skid_flop_pipe0_i[9-1:0] <= pipe0_i[9-1:0];
     end
 end
-assign skid_pipe0_i[33-1:0] = (skid_flop_sdp2pdp_ready_f) ? pipe0_i[33-1:0] : skid_flop_pipe0_i[33-1:0];
+assign skid_pipe0_i[9-1:0] = (skid_flop_sdp2pdp_ready_f) ? pipe0_i[9-1:0] : skid_flop_pipe0_i[9-1:0];
 
 
 // PIPE READY
@@ -291,7 +291,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_sdp2pdp_ready_f && skid_sdp2pdp_valid) begin
-        pipe_skid_pipe0_i[33-1:0] <= skid_pipe0_i[33-1:0];
+        pipe_skid_pipe0_i[9-1:0] <= skid_pipe0_i[9-1:0];
     end
 end
 
@@ -310,8 +310,8 @@ assign sdp2pdp_ready = sdp2pdp_ready_f & sdp2pdp_en;
 assign sdp2pdp_valid_use = sdp2pdp_valid_use_f & sdp2pdp_en_sync;
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
-//: my $sdpth = 4;
-//: my $pdpth = 2;
+//: my $sdpth = 1;
+//: my $pdpth = 1;
 //: my $sdpbw = $sdpth * 8;
 //: my $pdpbw = $pdpth * 8;
 //: if($sdpth > $pdpth) {
@@ -450,72 +450,11 @@ assign sdp2pdp_valid_use = sdp2pdp_valid_use_f & sdp2pdp_en_sync;
 //: );
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-reg      [16-1:0] pre2cal1d_data; 
-reg      [1-1:0] fifo_sel_cnt; 
-wire     [2-1:0] ro_rd_rdy; 
-wire     [2-1:0] ro_rd_vld; 
-wire     [2-1:0] ro_wr_rdy; 
-wire     [2-1:0] ro_wr_vld; 
-assign sdp2pdp_ready_use = &ro_wr_rdy; 
-wire    [16-1:0] ro_rd_pd_0;  
-wire    [16-1:0] ro_wr_pd_0;  
-assign ro_wr_vld[0] = sdp2pdp_valid_use  & ro_wr_rdy[1] ; 
 
-assign ro_wr_pd_0 = sdp2pdp_pd_use[16*0+16-1:16*0];
-NV_NVDLA_PDP_SDPIN_ro_fifo_4x16 u_ro_fifo_0 (
-.nvdla_core_clk (nvdla_core_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.ro_wr_prdy (ro_wr_rdy[0])
-,.ro_wr_pvld (ro_wr_vld[0])
-,.ro_wr_pd (ro_wr_pd_0)
-,.ro_rd_prdy (ro_rd_rdy[0])
-,.ro_rd_pvld (ro_rd_vld[0])
-,.ro_rd_pd (ro_rd_pd_0)
-,.pwrbus_ram_pd (pwrbus_ram_pd[31:0])
-);
-assign ro_rd_rdy[0] = pre2cal1d_prdy & (fifo_sel_cnt == 0);
-wire    [16-1:0] ro_rd_pd_1;  
-wire    [16-1:0] ro_wr_pd_1;  
-assign ro_wr_vld[1] = sdp2pdp_valid_use  & ro_wr_rdy[0] ; 
-
-assign ro_wr_pd_1 = sdp2pdp_pd_use[16*1+16-1:16*1];
-NV_NVDLA_PDP_SDPIN_ro_fifo_4x16 u_ro_fifo_1 (
-.nvdla_core_clk (nvdla_core_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.ro_wr_prdy (ro_wr_rdy[1])
-,.ro_wr_pvld (ro_wr_vld[1])
-,.ro_wr_pd (ro_wr_pd_1)
-,.ro_rd_prdy (ro_rd_rdy[1])
-,.ro_rd_pvld (ro_rd_vld[1])
-,.ro_rd_pd (ro_rd_pd_1)
-,.pwrbus_ram_pd (pwrbus_ram_pd[31:0])
-);
-assign ro_rd_rdy[1] = pre2cal1d_prdy & (fifo_sel_cnt == 1);
-
-assign pre2cal1d_pvld_f = |ro_rd_vld;
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-if (!nvdla_core_rstn) begin
-fifo_sel_cnt <= 0;
-end else begin
-if(pre2cal1d_pvld_f) begin
-if(pre2cal1d_prdy) begin
-if(fifo_sel_cnt == 1'd1)
-fifo_sel_cnt <= 0;
-else
-fifo_sel_cnt <= fifo_sel_cnt + 1'b1;
-end
-end
-end
-end
-always @(*) begin
-case(fifo_sel_cnt)
-1'd0: pre2cal1d_data = ro_rd_pd_0;  
-1'd1: pre2cal1d_data = ro_rd_pd_1;  
-
-default: pre2cal1d_data = 16'd0;
-endcase
-end
-assign pre2cal1d_pvld = pre2cal1d_pvld_f;
+wire [8-1:0] pre2cal1d_data;
+assign sdp2pdp_ready_use = pre2cal1d_prdy;
+assign pre2cal1d_pvld = sdp2pdp_valid_use;
+assign pre2cal1d_data = sdp2pdp_pd_use;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //==============================================================
@@ -536,8 +475,8 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     end
   end
 end
-//: my $pdpth = 2;
-//: my $atomicm = 16;
+//: my $pdpth = 1;
+//: my $atomicm = 8;
 //: my $k = int( $atomicm/$pdpth ) -1;
 //: print qq(
 //: assign last_c = pre2cal1d_load & (pos_c == 5'd${k});
@@ -588,14 +527,14 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     end
   end
 end
-//: my $atomicm = 16;
+//: my $atomicm = 8;
 //: my $k = int( log($atomicm)/log(2) );
 //: print qq(
 //: assign split_end = surf_end & (surf_cnt == reg2dp_cube_in_channel[12:${k}]);
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign split_end = surf_end & (surf_cnt == reg2dp_cube_in_channel[12:4]);
+assign split_end = surf_end & (surf_cnt == reg2dp_cube_in_channel[12:3]);
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign cube_end = split_end ;

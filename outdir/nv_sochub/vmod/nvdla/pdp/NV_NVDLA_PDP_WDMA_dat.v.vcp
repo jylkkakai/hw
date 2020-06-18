@@ -41,9 +41,9 @@ module NV_NVDLA_PDP_WDMA_dat (
   ,reg2dp_partial_width_out_mid //|< i
   ,reg2dp_split_num //|< i
   ,wdma_done //|< i
-//: my $dmaifBW = 128;
-//: my $atomicm = 16*8;
-//: my $pdpbw = 2*8;
+//: my $dmaifBW = 64;
+//: my $atomicm = 8*8;
+//: my $pdpbw = 1*8;
 //: my $Wnum = int( $dmaifBW/$atomicm );
 //: my $Bnum = int($atomicm/$pdpbw);
 //: foreach my $posw (0..$Wnum-1) { ##High...low atomic_m
@@ -67,16 +67,16 @@ input [9:0] reg2dp_partial_width_out_first;
 input [9:0] reg2dp_partial_width_out_last;
 input [9:0] reg2dp_partial_width_out_mid;
 input [7:0] reg2dp_split_num;
-input [2*8 -1:0] dp2wdma_pd;
+input [1*8 -1:0] dp2wdma_pd;
 input dp2wdma_vld;
 output dp2wdma_rdy;
 //&Ports /^spt/;
 input nvdla_core_clk;
 input nvdla_core_rstn;
 input [31:0] pwrbus_ram_pd;
-//: my $dmaifBW = 128;
-//: my $atomicm = 16*8;
-//: my $pdpbw = 2*8;
+//: my $dmaifBW = 64;
+//: my $atomicm = 8*8;
+//: my $pdpbw = 1*8;
 //: my $Wnum = int( $dmaifBW/$atomicm );
 //: my $Bnum = int($atomicm/$pdpbw);
 //: foreach my $posw (0..$Wnum-1) { ##High...low atomic_m
@@ -96,7 +96,7 @@ input op_load;
 //reg cfg_do_int8;
 reg [4:0] count_b;
 reg [12:0] count_h;
-//: my $atomicm = 16;
+//: my $atomicm = 8;
 //: my $k = int( log($atomicm)/log(2) );
 //: print "reg     [12-${k}:0] count_surf;  \n";
 reg [12:0] count_w;
@@ -109,7 +109,7 @@ wire cfg_mode_split;
 wire dat_fifo_wr_prdy;
 wire dat_fifo_wr_pvld;
 //wire [3:0] dat_is_nan;
-wire [2*8 -1:0] dp2wdma_dat_pd;
+wire [1*8 -1:0] dp2wdma_dat_pd;
 //wire [15:0] fp16_in_pd_0;
 //wire [15:0] fp16_in_pd_1;
 //wire [15:0] fp16_in_pd_2;
@@ -311,8 +311,8 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     end
   end
 end
-//: my $atomicm = 16;
-//: my $pdpth = 2;
+//: my $atomicm = 8;
+//: my $pdpth = 1;
 //: my $k = int( $atomicm/$pdpth );
 //: print "assign is_last_b = (count_b==5'd${k} -1 ); \n";
 //==============
@@ -348,7 +348,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     end
   end
 end
-//: my $atomicm = 16;
+//: my $atomicm = 8;
 //: my $k = int( log($atomicm)/log(2) );
 //: print qq(
 //: assign is_last_surf = (count_surf== reg2dp_cube_out_channel[12:${k}]);
@@ -374,7 +374,7 @@ assign is_last_h = (count_h==reg2dp_cube_out_height);
 // spt information gen
 //==============
 assign spt_posb = count_b;
-//: my $Wnum = 128/16/8;
+//: my $Wnum = 64/8/8;
 //: if($Wnum == 1) {
 //: print qq(
 //: assign spt_posw = 2'b0;
@@ -393,9 +393,9 @@ assign dat_fifo_wr_pvld = dp2wdma_vld;
 assign dp2wdma_rdy = dat_fifo_wr_prdy;
 //: my @dat_wr_rdys;
 //: my @dat_wr_accepts;
-//: my $dmaifBW = 128;
-//: my $atomicm = 16*8;
-//: my $pdpbw = 2*8;
+//: my $dmaifBW = 64;
+//: my $atomicm = 8*8;
+//: my $pdpbw = 1*8;
 //: my $Wnum = int( $dmaifBW/$atomicm );
 //: my $Bnum = int($atomicm/$pdpbw);
 //: foreach my $posw (0..$Wnum-1) { ##High...low atomic_m

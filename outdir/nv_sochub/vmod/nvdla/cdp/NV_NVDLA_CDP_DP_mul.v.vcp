@@ -26,7 +26,7 @@
 module NV_NVDLA_CDP_DP_mul (
    nvdla_core_clk //|< i
   ,nvdla_core_rstn //|< i
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,intp2mul_pd_$m
@@ -45,7 +45,7 @@ module NV_NVDLA_CDP_DP_mul (
 //////////////////////////////////////////////////////
 input nvdla_core_clk;
 input nvdla_core_rstn;
-//: my $k = 2;
+//: my $k = 1;
 //: my $icvto=(8 +1);
 //: foreach my $m (0..$k-1) {
 //: print qq(
@@ -65,12 +65,12 @@ output mul2ocvt_pvld;
 output sync2mul_prdy;
 //////////////////////////////////////////////////////
 reg mul_bypass_en;
-wire [2*((8 +1)+16)-1:0] intp_out_ext;
-wire [2*((8 +1)+16)-1:0] mul2ocvt_pd_f;
+wire [1*((8 +1)+16)-1:0] intp_out_ext;
+wire [1*((8 +1)+16)-1:0] mul2ocvt_pd_f;
 wire mul2ocvt_pvld_f;
 wire mul_in_rdy;
 wire mul_in_vld;
-//: my $k = 2;
+//: my $k = 1;
 //: my $icvto=(8 +1);
 //: foreach my $m (0..$k-1) {
 //: print qq(
@@ -79,12 +79,12 @@ wire mul_in_vld;
 //: wire [15:0] mul_inb_pd_$m;
 //: );
 //: }
-wire [2 -1:0] mul_unit_rdy;
-wire [2 -1:0] mul_unit_vld;
-wire [2 -1:0] mul_vld;
-wire [2 -1:0] mul_rdy;
+wire [1 -1:0] mul_unit_rdy;
+wire [1 -1:0] mul_unit_vld;
+wire [1 -1:0] mul_vld;
+wire [1 -1:0] mul_rdy;
 ///////////////////////////////////////////
-//: my $k = 2*((8 +1)+16);
+//: my $k = 1*((8 +1)+16);
 //: &eperl::pipe(" -wid $k -is -do mul2ocvt_pd -vo mul2ocvt_pvld -ri mul2ocvt_prdy -di mul2ocvt_pd_f -vi mul2ocvt_pvld_f -ro mul2ocvt_prdy_f ");
 ///////////////////////////////////////////////////////////////////
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -99,7 +99,7 @@ assign intp2mul_prdy = (mul_bypass_en ? mul2ocvt_prdy_f : mul_in_rdy) & sync2mul
 assign sync2mul_prdy = (mul_bypass_en ? mul2ocvt_prdy_f : mul_in_rdy) & intp2mul_pvld;
 assign mul_in_vld = mul_bypass_en ? 1'b0 : (sync2mul_pvld & intp2mul_pvld);
 assign mul_in_rdy = &mul_rdy;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: assign mul_vld[$m] = mul_in_vld
@@ -113,13 +113,13 @@ assign mul_in_rdy = &mul_rdy;
 //: ;
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: assign mul_inb_pd_$m = intp2mul_pd_${m}[15:0];
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: my $icvto=(8 +1);
 //: foreach my $m (0..$k-1) {
 //: print qq(
@@ -137,7 +137,7 @@ assign mul_in_rdy = &mul_rdy;
 //: );
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: assign mul_unit_rdy[$m] = mul2ocvt_prdy_f
@@ -156,7 +156,7 @@ assign mul_in_rdy = &mul_rdy;
 ///////////////////
 assign intp_out_ext = {
 //: my $icvto=(8 +1);
-//: my $k = 2;
+//: my $k = 1;
 //: if($k > 1) {
 //: foreach my $m (0..$k-2) {
 //: my $i = $k -$m -1;

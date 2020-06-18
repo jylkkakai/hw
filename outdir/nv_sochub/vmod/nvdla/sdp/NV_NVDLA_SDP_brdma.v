@@ -64,25 +64,25 @@ module NV_NVDLA_SDP_brdma (
  input [31:0] pwrbus_ram_pd;
  output sdp_b2mcif_rd_req_valid;
  input sdp_b2mcif_rd_req_ready;
- output [79 -1:0] sdp_b2mcif_rd_req_pd;
+ output [47 -1:0] sdp_b2mcif_rd_req_pd;
  input mcif2sdp_b_rd_rsp_valid;
  output mcif2sdp_b_rd_rsp_ready;
- input [129 -1:0] mcif2sdp_b_rd_rsp_pd;
+ input [65 -1:0] mcif2sdp_b_rd_rsp_pd;
  output sdp_b2mcif_rd_cdt_lat_fifo_pop;
  output sdp_brdma2dp_alu_valid;
  input sdp_brdma2dp_alu_ready;
- output [16*16:0] sdp_brdma2dp_alu_pd;
+ output [8*16:0] sdp_brdma2dp_alu_pd;
  output sdp_brdma2dp_mul_valid;
  input sdp_brdma2dp_mul_ready;
- output [16*16:0] sdp_brdma2dp_mul_pd;
+ output [8*16:0] sdp_brdma2dp_mul_pd;
  input reg2dp_brdma_data_mode;
  input reg2dp_brdma_data_size;
  input [1:0] reg2dp_brdma_data_use;
  input reg2dp_brdma_ram_type;
  input [31:0] reg2dp_bs_base_addr_high;
- input [31-4:0] reg2dp_bs_base_addr_low;
- input [31-4:0] reg2dp_bs_line_stride;
- input [31-4:0] reg2dp_bs_surface_stride;
+ input [31-3:0] reg2dp_bs_base_addr_low;
+ input [31-3:0] reg2dp_bs_line_stride;
+ input [31-3:0] reg2dp_bs_surface_stride;
  input [4:0] reg2dp_batch_number;
  input [12:0] reg2dp_channel;
  input [12:0] reg2dp_height;
@@ -110,13 +110,13 @@ module NV_NVDLA_SDP_brdma (
  wire cq2eg_prdy;
  wire cq2eg_pvld;
  wire dma_rd_cdt_lat_fifo_pop;
- wire [79 -1:0] dma_rd_req_pd;
+ wire [47 -1:0] dma_rd_req_pd;
  wire dma_rd_req_rdy;
  wire dma_rd_req_vld;
- wire [129 -1:0] dma_rd_rsp_pd;
+ wire [65 -1:0] dma_rd_rsp_pd;
  wire dma_rd_rsp_rdy;
  wire dma_rd_rsp_vld;
- wire [129 -1:0] lat_fifo_rd_pd;
+ wire [65 -1:0] lat_fifo_rd_pd;
  wire lat_fifo_rd_pvld;
  wire lat_fifo_rd_prdy;
 // Layer Switch
@@ -151,7 +151,7 @@ NV_NVDLA_SDP_RDMA_ig u_ig (
   ,.ig2cq_pd (ig2cq_pd[15:0]) //|> w
   ,.ig2cq_pvld (ig2cq_pvld) //|> w
   ,.ig2cq_prdy (ig2cq_prdy) //|< w
-  ,.dma_rd_req_pd (dma_rd_req_pd[79 -1:0]) //|> w
+  ,.dma_rd_req_pd (dma_rd_req_pd[47 -1:0]) //|> w
   ,.dma_rd_req_vld (dma_rd_req_vld) //|> w
   ,.dma_rd_req_rdy (dma_rd_req_rdy) //|< w
   ,.reg2dp_op_en (reg2dp_op_en) //|< i
@@ -165,16 +165,16 @@ NV_NVDLA_SDP_RDMA_ig u_ig (
   ,.reg2dp_rdma_data_size (reg2dp_brdma_data_size) //|< i
   ,.reg2dp_rdma_data_use (reg2dp_brdma_data_use[1:0]) //|< i
   ,.reg2dp_base_addr_high (reg2dp_bs_base_addr_high[31:0]) //|< i
-  ,.reg2dp_base_addr_low (reg2dp_bs_base_addr_low[31-4:0]) //|< i
-  ,.reg2dp_line_stride (reg2dp_bs_line_stride[31-4:0]) //|< i
-  ,.reg2dp_surface_stride (reg2dp_bs_surface_stride[31-4:0]) //|< i
+  ,.reg2dp_base_addr_low (reg2dp_bs_base_addr_low[31-3:0]) //|< i
+  ,.reg2dp_line_stride (reg2dp_bs_line_stride[31-3:0]) //|< i
+  ,.reg2dp_surface_stride (reg2dp_bs_surface_stride[31-3:0]) //|< i
   ,.dp2reg_rdma_stall (dp2reg_brdma_stall[31:0]) //|> o
   );
-//: my $depth = 128;
+//: my $depth = 16;
 //: my $width = 16;
 //: print "NV_NVDLA_SDP_BRDMA_cq_${depth}x${width}  u_cq ( \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-NV_NVDLA_SDP_BRDMA_cq_128x16  u_cq ( 
+NV_NVDLA_SDP_BRDMA_cq_16x16  u_cq ( 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
    .nvdla_core_clk (nvdla_gated_clk) //|< w
@@ -197,14 +197,14 @@ NV_NVDLA_SDP_RDMA_eg u_eg (
   ,.cq2eg_pvld (cq2eg_pvld) //|< w
   ,.cq2eg_prdy (cq2eg_prdy) //|> w
   ,.dma_rd_cdt_lat_fifo_pop (dma_rd_cdt_lat_fifo_pop) //|> w
-  ,.lat_fifo_rd_pd (lat_fifo_rd_pd[129 -1:0]) //|< w
+  ,.lat_fifo_rd_pd (lat_fifo_rd_pd[65 -1:0]) //|< w
   ,.lat_fifo_rd_pvld (lat_fifo_rd_pvld) //|< w
   ,.lat_fifo_rd_prdy (lat_fifo_rd_prdy) //|> w
   ,.sdp_rdma2dp_alu_ready (sdp_brdma2dp_alu_ready) //|< i
   ,.sdp_rdma2dp_mul_ready (sdp_brdma2dp_mul_ready) //|< i
-  ,.sdp_rdma2dp_alu_pd (sdp_brdma2dp_alu_pd[16*16:0]) //|> o
+  ,.sdp_rdma2dp_alu_pd (sdp_brdma2dp_alu_pd[8*16:0]) //|> o
   ,.sdp_rdma2dp_alu_valid (sdp_brdma2dp_alu_valid) //|> o
-  ,.sdp_rdma2dp_mul_pd (sdp_brdma2dp_mul_pd[16*16:0]) //|> o
+  ,.sdp_rdma2dp_mul_pd (sdp_brdma2dp_mul_pd[8*16:0]) //|> o
   ,.sdp_rdma2dp_mul_valid (sdp_brdma2dp_mul_valid) //|> o
   ,.reg2dp_batch_number (reg2dp_batch_number[4:0]) //|< i
   ,.reg2dp_channel (reg2dp_channel[12:0]) //|< i
@@ -216,11 +216,11 @@ NV_NVDLA_SDP_RDMA_eg u_eg (
   ,.reg2dp_rdma_data_size (reg2dp_brdma_data_size) //|< i
   ,.reg2dp_rdma_data_use (reg2dp_brdma_data_use[1:0]) //|< i
   );
-//: my $depth = 128;
-//: my $width = 129;
+//: my $depth = 16;
+//: my $width = 65;
 //: print "NV_NVDLA_SDP_BRDMA_lat_fifo_${depth}x${width}  u_lat_fifo (\n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-NV_NVDLA_SDP_BRDMA_lat_fifo_128x129  u_lat_fifo (
+NV_NVDLA_SDP_BRDMA_lat_fifo_16x65  u_lat_fifo (
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
    .nvdla_core_clk (nvdla_gated_clk)
@@ -228,27 +228,27 @@ NV_NVDLA_SDP_BRDMA_lat_fifo_128x129  u_lat_fifo (
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0])
   ,.lat_wr_prdy (dma_rd_rsp_rdy)
   ,.lat_wr_pvld (dma_rd_rsp_vld)
-  ,.lat_wr_pd (dma_rd_rsp_pd[129 -1:0])
+  ,.lat_wr_pd (dma_rd_rsp_pd[65 -1:0])
   ,.lat_rd_prdy (lat_fifo_rd_prdy)
   ,.lat_rd_pvld (lat_fifo_rd_pvld)
-  ,.lat_rd_pd (lat_fifo_rd_pd[129 -1:0])
+  ,.lat_rd_pd (lat_fifo_rd_pd[65 -1:0])
   );
 NV_NVDLA_SDP_RDMA_dmaif u_NV_NVDLA_SDP_RDMA_dmaif (
    .nvdla_core_clk (nvdla_gated_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.sdp2mcif_rd_cdt_lat_fifo_pop (sdp_b2mcif_rd_cdt_lat_fifo_pop) //|> o
-  ,.sdp2mcif_rd_req_pd (sdp_b2mcif_rd_req_pd[79 -1:0]) //|> o
+  ,.sdp2mcif_rd_req_pd (sdp_b2mcif_rd_req_pd[47 -1:0]) //|> o
   ,.sdp2mcif_rd_req_valid (sdp_b2mcif_rd_req_valid) //|> o
   ,.sdp2mcif_rd_req_ready (sdp_b2mcif_rd_req_ready) //|< i
-  ,.mcif2sdp_rd_rsp_pd (mcif2sdp_b_rd_rsp_pd[129 -1:0]) //|< i
+  ,.mcif2sdp_rd_rsp_pd (mcif2sdp_b_rd_rsp_pd[65 -1:0]) //|< i
   ,.mcif2sdp_rd_rsp_valid (mcif2sdp_b_rd_rsp_valid) //|< i
   ,.mcif2sdp_rd_rsp_ready (mcif2sdp_b_rd_rsp_ready) //|> o
   ,.dma_rd_req_ram_type (reg2dp_brdma_ram_type) //|< w
   ,.dma_rd_rsp_ram_type (reg2dp_brdma_ram_type) //|< w
-  ,.dma_rd_req_pd (dma_rd_req_pd[79 -1:0]) //|< w
+  ,.dma_rd_req_pd (dma_rd_req_pd[47 -1:0]) //|< w
   ,.dma_rd_req_vld (dma_rd_req_vld) //|< w
   ,.dma_rd_req_rdy (dma_rd_req_rdy) //|> w
-  ,.dma_rd_rsp_pd (dma_rd_rsp_pd[129 -1:0]) //|> w
+  ,.dma_rd_rsp_pd (dma_rd_rsp_pd[65 -1:0]) //|> w
   ,.dma_rd_rsp_vld (dma_rd_rsp_vld) //|> w
   ,.dma_rd_rsp_rdy (dma_rd_rsp_rdy) //|< w
   ,.dma_rd_cdt_lat_fifo_pop (dma_rd_cdt_lat_fifo_pop) //|< w

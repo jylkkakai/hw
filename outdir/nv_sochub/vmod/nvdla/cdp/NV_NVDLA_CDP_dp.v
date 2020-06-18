@@ -149,15 +149,15 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input cdp_rdma2dp_valid; /* data valid */
 output cdp_rdma2dp_ready; /* data return handshake */
-input [2*8 +24:0] cdp_rdma2dp_pd;
+input [1*8 +24:0] cdp_rdma2dp_pd;
 output cdp_dp2wdma_valid; /* data valid */
 input cdp_dp2wdma_ready; /* data return handshake */
-output [2*8 +16:0] cdp_dp2wdma_pd;
+output [1*8 +16:0] cdp_dp2wdma_pd;
 input nvdla_core_clk_orig;
 ///////////////////////////////////////////////////////////////////
 reg sqsum_bypass_en;
 //: my $icvto = (8 +1);
-//: my $k = 2;
+//: my $k = 1;
 //: print qq(
 //: wire [${k}*${icvto}+16:0] bufin_pd;
 //: wire [${k}*${icvto}+16:0] cvt2buf_pd;
@@ -172,16 +172,16 @@ reg sqsum_bypass_en;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-wire [2*9+16:0] bufin_pd;
-wire [2*9+16:0] cvt2buf_pd;
-wire [2*9+16:0] cvt2sync_pd;
-wire [2*(9*2+3)-1:0] cvtin_out_int8_ext;
-wire [2*(9*2+3)-1:0] lutctrl_in_pd;
-wire [2*(9+16)-1:0] mul2ocvt_pd;
-wire [2*(9*2+3)-1:0] sum2itp_pd;
-wire [2*(9*2+3)-1:0] sum2sync_pd;
-wire [2*(9*2+3)-1:0] sync2itp_pd;
-wire [2*9-1:0] sync2mul_pd;
+wire [1*9+16:0] bufin_pd;
+wire [1*9+16:0] cvt2buf_pd;
+wire [1*9+16:0] cvt2sync_pd;
+wire [1*(9*2+3)-1:0] cvtin_out_int8_ext;
+wire [1*(9*2+3)-1:0] lutctrl_in_pd;
+wire [1*(9+16)-1:0] mul2ocvt_pd;
+wire [1*(9*2+3)-1:0] sum2itp_pd;
+wire [1*(9*2+3)-1:0] sum2sync_pd;
+wire [1*(9*2+3)-1:0] sync2itp_pd;
+wire [1*9-1:0] sync2mul_pd;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire bufin_prdy;
@@ -190,7 +190,7 @@ wire cvt2buf_prdy;
 wire cvt2buf_pvld;
 wire cvt2sync_prdy;
 wire cvt2sync_pvld;
-//: my $k = 2;
+//: my $k = 1;
 //: my $icvto = (8 +1);
 //: foreach my $m (0..$k-1) {
 //: print qq(
@@ -209,16 +209,10 @@ wire [17:0] dp2lut_Xinfo_0 ;
 wire [9:0] dp2lut_Y_entry_0 ;
 wire [17:0] dp2lut_Yinfo_0 ;
 
-wire [9-1:0] cvtin_out_int8_1;
-wire [9:0] dp2lut_X_entry_1 ;
-wire [17:0] dp2lut_Xinfo_1 ;
-wire [9:0] dp2lut_Y_entry_1 ;
-wire [17:0] dp2lut_Yinfo_1 ;
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire dp2lut_prdy;
 wire dp2lut_pvld;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: wire [16:0] intp2mul_pd_$m;
@@ -236,28 +230,22 @@ wire [16:0] lut2intp_X_data_00_17b;
 wire [31:0] lut2intp_X_data_01;
 wire [19:0] lut2intp_X_info_0;
 
-wire [16:0] intp2mul_pd_1;
-wire [31:0] lut2intp_X_data_10;
-wire [16:0] lut2intp_X_data_10_17b;
-wire [31:0] lut2intp_X_data_11;
-wire [19:0] lut2intp_X_info_1;
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire intp2mul_prdy;
 wire intp2mul_pvld;
-wire [2 -1:0] lut2intp_X_sel;
-wire [2 -1:0] lut2intp_Y_sel;
+wire [1 -1:0] lut2intp_X_sel;
+wire [1 -1:0] lut2intp_Y_sel;
 wire lut2intp_prdy;
 wire lut2intp_pvld;
 wire lutctrl_in_pvld;
 wire mul2ocvt_prdy;
 wire mul2ocvt_pvld;
 //: my $icvto = (8 +1);
-//: my $tp = 2;
+//: my $tp = 1;
 //: my $k = (${tp}+8)*${icvto}+17;
 //: print "wire   [${k}-1:0] normalz_buf_data;  \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-wire   [107-1:0] normalz_buf_data;  
+wire   [98-1:0] normalz_buf_data;  
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire normalz_buf_data_prdy;
@@ -326,7 +314,7 @@ NV_NVDLA_CDP_DP_syncfifo u_NV_NVDLA_CDP_DP_syncfifo (
 //===== Buffer_in Instance========
 assign bufin_pd = sqsum_bypass_en ? 0 : cvt2buf_pd;
 assign bufin_pvld = sqsum_bypass_en ? 0 : cvt2buf_pvld;
-//: if(2 >= 4) {
+//: if(1 >= 4) {
 //: print qq(
 //: NV_NVDLA_CDP_DP_bufferin u_NV_NVDLA_CDP_DP_bufferin (
 //: .nvdla_core_clk (nvdla_core_clk)
@@ -339,7 +327,7 @@ assign bufin_pvld = sqsum_bypass_en ? 0 : cvt2buf_pvld;
 //: ,.normalz_buf_data_pvld (normalz_buf_data_pvld)
 //: );
 //: );
-//: } elsif(2 < 4) {
+//: } elsif(1 < 4) {
 //: print qq(
 //: NV_NVDLA_CDP_DP_bufferin_tp1 u_NV_NVDLA_CDP_DP_bufferin (
 //: .nvdla_core_clk (nvdla_core_clk)
@@ -381,7 +369,7 @@ NV_NVDLA_CDP_DP_sum u_NV_NVDLA_CDP_DP_sum (
   );
 //===== LUT controller Instance========
 //: my $icvto = (8 +1);
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: assign cvtin_out_int8_$m = cvt2buf_pd[${m}*${icvto}+${icvto}-1:${m}*${icvto}];
@@ -391,11 +379,9 @@ NV_NVDLA_CDP_DP_sum u_NV_NVDLA_CDP_DP_sum (
 
 assign cvtin_out_int8_0 = cvt2buf_pd[0*9+9-1:0*9];
 
-assign cvtin_out_int8_1 = cvt2buf_pd[1*9+9-1:1*9];
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign cvtin_out_int8_ext = {
-//: my $k = 2;
+//: my $k = 1;
 //: my $icvto = (8 +1);
 //: if($k > 1) {
 //: foreach my $m (0..$k-2) {
@@ -407,8 +393,6 @@ assign cvtin_out_int8_ext = {
 //: }
 //: print "{{(${icvto}+3){cvtin_out_int8_0[${icvto}-1]}}, cvtin_out_int8_0}};  \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-
-{{(9+3){cvtin_out_int8_1[9-1]}}, cvtin_out_int8_1},
 {{(9+3){cvtin_out_int8_0[9-1]}}, cvtin_out_int8_0}};  
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
@@ -430,7 +414,7 @@ NV_NVDLA_CDP_DP_LUT_ctrl u_NV_NVDLA_CDP_DP_LUT_ctrl (
   ,.sum2itp_pd (lutctrl_in_pd) //|< w
   ,.sum2itp_pvld (lutctrl_in_pvld) //|< w
   ,.sum2sync_prdy (sum2sync_prdy) //|< w
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,.dp2lut_X_entry_${m} (dp2lut_X_entry_${m} )
@@ -445,11 +429,6 @@ NV_NVDLA_CDP_DP_LUT_ctrl u_NV_NVDLA_CDP_DP_LUT_ctrl (
 ,.dp2lut_Xinfo_0 (dp2lut_Xinfo_0 )
 ,.dp2lut_Y_entry_0 (dp2lut_Y_entry_0 )
 ,.dp2lut_Yinfo_0 (dp2lut_Yinfo_0 )
-
-,.dp2lut_X_entry_1 (dp2lut_X_entry_1 )
-,.dp2lut_Xinfo_1 (dp2lut_Xinfo_1 )
-,.dp2lut_Y_entry_1 (dp2lut_Y_entry_1 )
-,.dp2lut_Yinfo_1 (dp2lut_Yinfo_1 )
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.dp2lut_pvld (dp2lut_pvld) //|> w
@@ -462,7 +441,7 @@ NV_NVDLA_CDP_DP_lut u_NV_NVDLA_CDP_DP_lut (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_clk_orig (nvdla_core_clk_orig) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,.dp2lut_X_entry_${m} (dp2lut_X_entry_${m} )
@@ -477,11 +456,6 @@ NV_NVDLA_CDP_DP_lut u_NV_NVDLA_CDP_DP_lut (
 ,.dp2lut_Xinfo_0 (dp2lut_Xinfo_0 )
 ,.dp2lut_Y_entry_0 (dp2lut_Y_entry_0 )
 ,.dp2lut_Yinfo_0 (dp2lut_Yinfo_0 )
-
-,.dp2lut_X_entry_1 (dp2lut_X_entry_1 )
-,.dp2lut_Xinfo_1 (dp2lut_Xinfo_1 )
-,.dp2lut_Y_entry_1 (dp2lut_Y_entry_1 )
-,.dp2lut_Yinfo_1 (dp2lut_Yinfo_1 )
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.dp2lut_pvld (dp2lut_pvld) //|< w
@@ -496,7 +470,7 @@ NV_NVDLA_CDP_DP_lut u_NV_NVDLA_CDP_DP_lut (
   ,.reg2dp_lut_uflow_priority (reg2dp_lut_uflow_priority) //|< i
   ,.dp2lut_prdy (dp2lut_prdy) //|> w
   ,.dp2reg_lut_data (dp2reg_lut_data[15:0]) //|> o
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,.lut2intp_X_data_${m}0 (lut2intp_X_data_${m}0 )
@@ -511,11 +485,6 @@ NV_NVDLA_CDP_DP_lut u_NV_NVDLA_CDP_DP_lut (
 ,.lut2intp_X_data_00_17b (lut2intp_X_data_00_17b )
 ,.lut2intp_X_data_01 (lut2intp_X_data_01 )
 ,.lut2intp_X_info_0 (lut2intp_X_info_0 )
-
-,.lut2intp_X_data_10 (lut2intp_X_data_10 )
-,.lut2intp_X_data_10_17b (lut2intp_X_data_10_17b )
-,.lut2intp_X_data_11 (lut2intp_X_data_11 )
-,.lut2intp_X_info_1 (lut2intp_X_info_1 )
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.lut2intp_X_sel (lut2intp_X_sel) //|> w
@@ -528,7 +497,7 @@ NV_NVDLA_CDP_DP_intp u_NV_NVDLA_CDP_DP_intp (
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.dp2reg_done (dp2reg_done) //|< i
   ,.intp2mul_prdy (intp2mul_prdy) //|< w
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,.lut2intp_X_data_${m}0 (lut2intp_X_data_${m}0 )
@@ -543,11 +512,6 @@ NV_NVDLA_CDP_DP_intp u_NV_NVDLA_CDP_DP_intp (
 ,.lut2intp_X_data_00_17b (lut2intp_X_data_00_17b )
 ,.lut2intp_X_data_01 (lut2intp_X_data_01 )
 ,.lut2intp_X_info_0 (lut2intp_X_info_0 )
-
-,.lut2intp_X_data_10 (lut2intp_X_data_10 )
-,.lut2intp_X_data_10_17b (lut2intp_X_data_10_17b )
-,.lut2intp_X_data_11 (lut2intp_X_data_11 )
-,.lut2intp_X_info_1 (lut2intp_X_info_1 )
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.lut2intp_X_sel (lut2intp_X_sel) //|< w
@@ -585,7 +549,7 @@ NV_NVDLA_CDP_DP_intp u_NV_NVDLA_CDP_DP_intp (
   ,.dp2reg_d1_perf_lut_lo_hit (dp2reg_d1_perf_lut_lo_hit[31:0]) //|> o
   ,.dp2reg_d1_perf_lut_oflow (dp2reg_d1_perf_lut_oflow[31:0]) //|> o
   ,.dp2reg_d1_perf_lut_uflow (dp2reg_d1_perf_lut_uflow[31:0]) //|> o
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,.intp2mul_pd_$m (intp2mul_pd_${m}[16:0]) //|> w
@@ -594,8 +558,6 @@ NV_NVDLA_CDP_DP_intp u_NV_NVDLA_CDP_DP_intp (
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
 ,.intp2mul_pd_0 (intp2mul_pd_0[16:0]) //|> w
-
-,.intp2mul_pd_1 (intp2mul_pd_1[16:0]) //|> w
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.intp2mul_pvld (intp2mul_pvld) //|> w
@@ -606,7 +568,7 @@ NV_NVDLA_CDP_DP_intp u_NV_NVDLA_CDP_DP_intp (
 NV_NVDLA_CDP_DP_mul u_NV_NVDLA_CDP_DP_mul (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,.intp2mul_pd_$m (intp2mul_pd_${m}[16:0]) //|> w
@@ -615,8 +577,6 @@ NV_NVDLA_CDP_DP_mul u_NV_NVDLA_CDP_DP_mul (
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
 ,.intp2mul_pd_0 (intp2mul_pd_0[16:0]) //|> w
-
-,.intp2mul_pd_1 (intp2mul_pd_1[16:0]) //|> w
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.intp2mul_pvld (intp2mul_pvld) //|< w

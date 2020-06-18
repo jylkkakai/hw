@@ -72,8 +72,8 @@ module NV_NVDLA_CDMA_IMG_sg (
   ,status2dma_fsm_switch
   ,dp2reg_img_rd_latency
   ,dp2reg_img_rd_stall
-//: my $dmaif = 128;
-//: my $atmm = 16*8;
+//: my $dmaif = 64;
+//: my $atmm = 8*8;
 //: my $atmm_num = ($dmaif / $atmm);
 //: foreach my $i(0..$atmm_num -1) {
 //: print qq(
@@ -108,10 +108,10 @@ module NV_NVDLA_CDMA_IMG_sg (
 //////////////////////////////////////////////////////////
 input nvdla_core_clk;
 input nvdla_core_rstn;
-output [( 64 + 15 )-1:0] img_dat2mcif_rd_req_pd;
+output [( 32 + 15 )-1:0] img_dat2mcif_rd_req_pd;
 output img_dat2mcif_rd_req_valid;
 input img_dat2mcif_rd_req_ready;
-input [( 128 + (128/8/16) )-1:0] mcif2img_dat_rd_rsp_pd;
+input [( 64 + (64/8/8) )-1:0] mcif2img_dat_rd_rsp_pd;
 input mcif2img_dat_rd_rsp_valid;
 output mcif2img_dat_rd_rsp_ready;
 input [14:0] img2status_dat_entries;
@@ -122,15 +122,15 @@ input [10:0] pixel_order;
 input pixel_planar;
 input [3:0] pixel_planar0_bundle_limit;
 input [3:0] pixel_planar0_bundle_limit_1st;
-//: my $atmmbw = int( log(16) / log(2) );
+//: my $atmmbw = int( log(8) / log(2) );
 //: print qq(
 //: input [${atmmbw}-1:0] pixel_planar0_byte_sft;
 //: input [${atmmbw}-1:0] pixel_planar1_byte_sft;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-input [4-1:0] pixel_planar0_byte_sft;
-input [4-1:0] pixel_planar1_byte_sft;
+input [3-1:0] pixel_planar0_byte_sft;
+input [3-1:0] pixel_planar1_byte_sft;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input [3:0] pixel_planar0_lp_burst;
@@ -150,8 +150,8 @@ input reg2dp_op_en;
 input sg2pack_img_prdy;
 input [14:0] status2dma_free_entries;
 input status2dma_fsm_switch;
-//: my $dmaif = 128;
-//: my $atmm = 16*8;
+//: my $dmaif = 64;
+//: my $atmm = 8*8;
 //: my $atmm_num = ($dmaif / $atmm);
 //: foreach my $i (0..$atmm_num -1) {
 //: print qq(
@@ -163,7 +163,7 @@ input status2dma_fsm_switch;
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
 output [7:0] img2sbuf_p0_wr_addr;
-output [128-1:0] img2sbuf_p0_wr_data;
+output [64-1:0] img2sbuf_p0_wr_data;
 output img2sbuf_p0_wr_en;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
@@ -260,8 +260,8 @@ reg req_valid_d1;
 reg rsp_img_1st_burst;
 reg rsp_img_bundle_done_d1;
 reg rsp_img_bundle_end;
-reg [16*8 -1:0] rsp_img_c0l0;
-reg [16*8 -1:0] rsp_img_c1l0;
+reg [8*8 -1:0] rsp_img_c0l0;
+reg [8*8 -1:0] rsp_img_c1l0;
 reg rsp_img_end;
 reg rsp_img_is_done;
 reg rsp_img_layer_end_d1;
@@ -271,8 +271,8 @@ reg rsp_img_line_st;
 reg [7:0] rsp_img_p0_addr_d1;
 reg [3:0] rsp_img_p0_burst_cnt;
 reg [3:0] rsp_img_p0_burst_size_d1;
-reg [16*8 -1:0] rsp_img_p0_data;
-reg [16*8 -1:0] rsp_img_p0_data_d1;
+reg [8*8 -1:0] rsp_img_p0_data;
+reg [8*8 -1:0] rsp_img_p0_data_d1;
 reg [6:0] rsp_img_p0_planar0_idx;
 reg [6:0] rsp_img_p0_planar1_idx;
 reg rsp_img_p0_vld;
@@ -280,8 +280,8 @@ reg rsp_img_p0_vld_d1;
 reg [7:0] rsp_img_p1_addr_d1;
 reg [4:0] rsp_img_p1_burst_cnt;
 reg [4:0] rsp_img_p1_burst_size_d1;
-reg [16*8 -1:0] rsp_img_p1_data;
-reg [16*8 -1:0] rsp_img_p1_data_d1;
+reg [8*8 -1:0] rsp_img_p1_data;
+reg [8*8 -1:0] rsp_img_p1_data_d1;
 reg [6:0] rsp_img_p1_planar0_idx;
 reg [6:0] rsp_img_p1_planar1_idx;
 reg rsp_img_p1_vld;
@@ -304,14 +304,14 @@ wire [14:0] data_entries_w;
 wire [13:0] data_height_w;
 wire dma_blocking;
 wire [63:0] dma_rd_req_addr;
-wire [64 +14:0] dma_rd_req_pd;
+wire [32 +14:0] dma_rd_req_pd;
 wire dma_rd_req_rdy;
 wire [14:0] dma_rd_req_size;
 wire dma_rd_req_type;
 wire dma_rd_req_vld;
-wire [128 -1:0] dma_rd_rsp_data;
-wire [(128/8/16)-1:0] dma_rd_rsp_mask;
-wire [( 128 + (128/8/16) )-1:0] dma_rd_rsp_pd;
+wire [64 -1:0] dma_rd_rsp_data;
+wire [(64/8/8)-1:0] dma_rd_rsp_mask;
+wire [( 64 + (64/8/8) )-1:0] dma_rd_rsp_pd;
 wire dma_rd_rsp_rdy;
 wire dma_rd_rsp_vld;
 wire [10:0] dma_req_fifo_data;
@@ -382,9 +382,9 @@ wire mon_req_img_p1_line_offset_w;
 wire mon_req_img_p1_sec_cnt_w;
 wire mon_req_size_out;
 wire mon_rsp_img_p0_burst_cnt_inc;
-wire [16*8 -1:0] mon_rsp_img_p0_data_d1_w;
+wire [8*8 -1:0] mon_rsp_img_p0_data_d1_w;
 wire mon_rsp_img_p1_burst_cnt_inc;
-wire [16*8 -1:0] mon_rsp_img_p1_data_d1_w;
+wire [8*8 -1:0] mon_rsp_img_p1_data_d1_w;
 wire mon_total_required_entry;
 reg [8:0] outs_dp2reg_img_rd_latency;
 wire planar1_enable;
@@ -441,30 +441,30 @@ wire [4:0] req_size;
 wire [4:0] req_size_out;
 wire req_valid_d1_w;
 wire req_valid_w;
-wire [128 -1:0] rsp_dat;
+wire [64 -1:0] rsp_dat;
 wire rsp_img_1st_burst_w;
 wire rsp_img_bundle_done;
 wire rsp_img_c0l0_wr_en;
 wire rsp_img_c1l0_wr_en;
-wire [128 -1:0] rsp_img_data_sw_o0;
-wire [128 -1:0] rsp_img_data_sw_o1;
-wire [128 -1:0] rsp_img_data_sw_o3;
-wire [128 -1:0] rsp_img_data_sw_o5;
-wire [128 -1:0] rsp_img_data_sw_o9;
+wire [64 -1:0] rsp_img_data_sw_o0;
+wire [64 -1:0] rsp_img_data_sw_o1;
+wire [64 -1:0] rsp_img_data_sw_o3;
+wire [64 -1:0] rsp_img_data_sw_o5;
+wire [64 -1:0] rsp_img_data_sw_o9;
 wire rsp_img_is_done_w;
-wire [16*8 -1:0] rsp_img_l0_data;
+wire [8*8 -1:0] rsp_img_l0_data;
 wire [7:0] rsp_img_p0_addr;
 wire rsp_img_p0_burst_cnt_en;
 wire [3:0] rsp_img_p0_burst_cnt_inc;
 wire [3:0] rsp_img_p0_burst_cnt_w;
 wire rsp_img_p0_burst_size_en;
 wire [3:0] rsp_img_p0_burst_size_w;
-reg [16*8 -1:0] rsp_img_p0_cache_data;
-reg [16*8 -1:0] rsp_img_p1_cache_data;
-wire [16*8 -1:0] rsp_img_p0_data_d1_w;
-wire [16*8 -1:0] rsp_img_p0_data_atmm1;
-wire [16*8 -1:0] rsp_img_p0_data_atmm0;
-wire [16*8 -1:0] rsp_img_p0_data_w;
+reg [8*8 -1:0] rsp_img_p0_cache_data;
+reg [8*8 -1:0] rsp_img_p1_cache_data;
+wire [8*8 -1:0] rsp_img_p0_data_d1_w;
+wire [8*8 -1:0] rsp_img_p0_data_atmm1;
+wire [8*8 -1:0] rsp_img_p0_data_atmm0;
+wire [8*8 -1:0] rsp_img_p0_data_w;
 wire rsp_img_p0_planar0_en;
 wire [7:0] rsp_img_p0_planar0_idx_inc;
 wire [6:0] rsp_img_p0_planar0_idx_w;
@@ -479,8 +479,8 @@ wire [4:0] rsp_img_p1_burst_cnt_inc;
 wire [4:0] rsp_img_p1_burst_cnt_w;
 wire rsp_img_p1_burst_size_en;
 wire [4:0] rsp_img_p1_burst_size_w;
-wire [16*8 -1:0] rsp_img_p1_data_d1_w;
-wire [16*8 -1:0] rsp_img_p1_data_w;
+wire [8*8 -1:0] rsp_img_p1_data_d1_w;
+wire [8*8 -1:0] rsp_img_p1_data_w;
 wire rsp_img_p1_planar0_en;
 wire [7:0] rsp_img_p1_planar0_idx_inc;
 wire [6:0] rsp_img_p1_planar0_idx_w;
@@ -491,13 +491,13 @@ wire rsp_img_p1_vld_d1_w;
 wire rsp_img_p1_vld_w;
 wire [2:0] rsp_img_planar_idx_add;
 wire [10:0] rsp_img_sel;
-//: my $atmmbw = int( log(16) / log(2) );
+//: my $atmmbw = int( log(8) / log(2) );
 //: print qq(
 //: wire [${atmmbw}-1:0] rsp_img_sft;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-wire [4-1:0] rsp_img_sft;
+wire [3-1:0] rsp_img_sft;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire rsp_img_vld_w;
@@ -973,7 +973,7 @@ end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 ///////////// address burst offset for image /////////////
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $k = 33 - int(log($atmm)/log(2));
 //: print qq(
 //: assign {mon_req_img_p0_burst_offset_w,
@@ -986,12 +986,12 @@ end
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
 assign {mon_req_img_p0_burst_offset_w,
-req_img_p0_burst_offset_w} = (is_first_running | is_p0_last_burst) ? 29'b0 : (req_img_p0_burst_offset + req_img_p0_cur_burst);
+req_img_p0_burst_offset_w} = (is_first_running | is_p0_last_burst) ? 30'b0 : (req_img_p0_burst_offset + req_img_p0_cur_burst);
 assign {mon_req_img_p1_burst_offset_w,
-req_img_p1_burst_offset_w} = (is_first_running | is_p1_last_burst) ? 29'b0 : (req_img_p1_burst_offset + req_img_p1_cur_burst);
+req_img_p1_burst_offset_w} = (is_first_running | is_p1_last_burst) ? 30'b0 : (req_img_p1_burst_offset + req_img_p1_cur_burst);
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       req_img_p0_burst_offset <= {(29-1){1'b0}};
+       req_img_p0_burst_offset <= {(30-1){1'b0}};
    end else begin
        if ((req_img_p0_burst_offset_en) == 1'b1) begin
            req_img_p0_burst_offset <= req_img_p0_burst_offset_w;
@@ -1005,7 +1005,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       req_img_p1_burst_offset <= {(29-1){1'b0}};
+       req_img_p1_burst_offset <= {(30-1){1'b0}};
    end else begin
        if ((req_img_p1_burst_offset_en) == 1'b1) begin
            req_img_p1_burst_offset <= req_img_p1_burst_offset_w;
@@ -1022,7 +1022,7 @@ end
 ///////////// address base for image /////////////
 assign req_img_p0_addr_base_w = {reg2dp_datain_addr_high_0, reg2dp_datain_addr_low_0};
 assign req_img_p1_addr_base_w = {reg2dp_datain_addr_high_1, reg2dp_datain_addr_low_1};
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $k = int(log($atmm)/log(2));
 //: print qq(
 //: assign {mon_req_img_p0_addr,
@@ -1035,9 +1035,9 @@ assign req_img_p1_addr_base_w = {reg2dp_datain_addr_high_1, reg2dp_datain_addr_l
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
 assign {mon_req_img_p0_addr,
-req_img_p0_addr} = req_img_p0_addr_base + req_img_p0_line_offset + {req_img_p0_burst_offset,4'd0};
+req_img_p0_addr} = req_img_p0_addr_base + req_img_p0_line_offset + {req_img_p0_burst_offset,3'd0};
 assign {mon_req_img_p1_addr,
-req_img_p1_addr} = req_img_p1_addr_base + req_img_p1_line_offset + {req_img_p1_burst_offset,4'd0};
+req_img_p1_addr} = req_img_p1_addr_base + req_img_p1_line_offset + {req_img_p1_burst_offset,3'd0};
 always @(posedge nvdla_core_clk) begin
        if ((layer_st) == 1'b1) begin
            req_img_p0_addr_base <= req_img_p0_addr_base_w;
@@ -1332,8 +1332,8 @@ NV_NVDLA_DMAIF_rdrsp NV_NVDLA_PDP_RDMA_rdrsp(
 );
 ///////////////////////////////////////////
 // PKT_PACK_WIRE( dma_read_cmd , dma_rd_req_ , dma_rd_req_pd )
-assign dma_rd_req_pd[64 -1:0] = dma_rd_req_addr[64 -1:0];
-assign dma_rd_req_pd[64 +14:64] = dma_rd_req_size[14:0];
+assign dma_rd_req_pd[32 -1:0] = dma_rd_req_addr[32 -1:0];
+assign dma_rd_req_pd[32 +14:32] = dma_rd_req_size[14:0];
 assign dma_rd_req_vld = req_valid_d1 & dma_req_fifo_ready & is_cbuf_ready & ~req_is_dummy_d1;
 assign dma_rd_req_addr = req_addr_d1;
 assign dma_rd_req_size = {{10{1'b0}}, req_size_out_d1};
@@ -1362,8 +1362,8 @@ assign dma_req_fifo_data = {req_planar_d1,
 ////////////////////////////////////////////////////////////////////////
 // CDMA IMG read response logic //
 ////////////////////////////////////////////////////////////////////////
-assign dma_rd_rsp_data[128 -1:0] = dma_rd_rsp_pd[128 -1:0];
-assign dma_rd_rsp_mask[(128/8/16)-1:0] = dma_rd_rsp_pd[( 128 + (128/8/16) )-1:128];
+assign dma_rd_rsp_data[64 -1:0] = dma_rd_rsp_pd[64 -1:0];
+assign dma_rd_rsp_mask[(64/8/8)-1:0] = dma_rd_rsp_pd[( 64 + (64/8/8) )-1:64];
 assign {dma_rsp_planar,
         dma_rsp_end,
         dma_rsp_line_end,
@@ -1374,7 +1374,7 @@ assign {dma_rsp_planar,
 assign dma_rsp_blocking = (dma_rsp_fifo_req & dma_rsp_dummy);
 assign dma_rsp_mask[0] = (~dma_rsp_fifo_req) ? 1'b0 :
                          ~dma_rsp_dummy ? (dma_rd_rsp_vld & dma_rd_rsp_mask[0]) : 1'b1;
-//: my $msk = (128/8/16);
+//: my $msk = (64/8/8);
 //: if($msk >= 2) {
 //: print qq(
 //: assign dma_rsp_mask[1] = (~dma_rsp_fifo_req) ? 1'b0 :
@@ -1396,7 +1396,7 @@ assign dma_rsp_mask[0] = (~dma_rsp_fifo_req) ? 1'b0 :
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign {mon_dma_rsp_size_cnt_inc,
         dma_rsp_size_cnt_inc} = dma_rsp_size_cnt
-//: my $msk = (128/8/16);
+//: my $msk = (64/8/8);
 //: foreach my $i (0..$msk-1) {
 //: print qq(
 //: + dma_rsp_mask[$i]
@@ -1434,8 +1434,8 @@ assign dma_rsp_fifo_ready = (dma_rsp_vld & (dma_rsp_size_cnt_inc == dma_rsp_size
 ////////////////////////////////////////////////////////////////////////
 assign rsp_img_vld_w = dma_rsp_vld;
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"   -d \"rsp_img_vld_w\" -q rsp_img_vld");
-//: my $dmaif = 128/8;
-//: my $atmm = 16;
+//: my $dmaif = 64/8;
+//: my $atmm = 8;
 //: my $atmm_num = ($dmaif / $atmm);
 //: foreach my $i (0..$atmm_num-1) {
 //: print qq(
@@ -1504,7 +1504,7 @@ assign rsp_img_sel[10] = pixel_order[10] & dma_rsp_planar;
 //////// reordering ////////
 assign rsp_img_data_sw_o0 = rsp_dat;
 assign rsp_img_data_sw_o1 = {
-//: my $dmaif = 128/32;##
+//: my $dmaif = 64/32;##
 //: if($dmaif > 1) {
 //: foreach my $i (0..$dmaif-2) {
 //: my $k = $dmaif - $i -1;
@@ -1538,7 +1538,7 @@ assign rsp_img_data_sw_o1 = {
 //: }
 //: }
 //: print " rsp_dat[0*32+7:0*32], rsp_dat[0*32+15:0*32+8], rsp_dat[0*32+23:0*32+16], rsp_dat[0*32+31:0*32+24]};  \n";
-//: my $dmaif = 128/16; ##
+//: my $dmaif = 64/16; ##
 //: print " assign rsp_img_data_sw_o9 = {  \n";
 //: if($dmaif > 1) {
 //: foreach my $i (0..$dmaif-2) {
@@ -1549,8 +1549,8 @@ assign rsp_img_data_sw_o1 = {
 //: }
 //: }
 //: print " rsp_dat[0*16+7:0*16], rsp_dat[0*16+15:0*16+8]};  \n";
-//: my $dmaif = 128/8;
-//: my $atmm = 16;
+//: my $dmaif = 64/8;
+//: my $atmm = 8;
 //: my $atmm_num = ($dmaif / $atmm);
 //: print " assign {  \n";
 //: if($atmm_num > 1) {
@@ -1561,37 +1561,17 @@ assign rsp_img_data_sw_o1 = {
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-rsp_dat[3*32+31:3*32+24], rsp_dat[3*32+7:3*32], rsp_dat[3*32+15:3*32+8], rsp_dat[3*32+23:3*32+16],
-
-rsp_dat[2*32+31:2*32+24], rsp_dat[2*32+7:2*32], rsp_dat[2*32+15:2*32+8], rsp_dat[2*32+23:2*32+16],
-
 rsp_dat[1*32+31:1*32+24], rsp_dat[1*32+7:1*32], rsp_dat[1*32+15:1*32+8], rsp_dat[1*32+23:1*32+16],
  rsp_dat[0*32+31:0*32+24], rsp_dat[0*32+7:0*32], rsp_dat[0*32+15:0*32+8], rsp_dat[0*32+23:0*32+16]};  
  assign rsp_img_data_sw_o3 = {  
-
-rsp_dat[3*32+7:3*32], rsp_dat[3*32+31:3*32+24], rsp_dat[3*32+23:3*32+16], rsp_dat[3*32+15:3*32+8],
-
-rsp_dat[2*32+7:2*32], rsp_dat[2*32+31:2*32+24], rsp_dat[2*32+23:2*32+16], rsp_dat[2*32+15:2*32+8],
 
 rsp_dat[1*32+7:1*32], rsp_dat[1*32+31:1*32+24], rsp_dat[1*32+23:1*32+16], rsp_dat[1*32+15:1*32+8],
  rsp_dat[0*32+7:0*32], rsp_dat[0*32+31:0*32+24], rsp_dat[0*32+23:0*32+16], rsp_dat[0*32+15:0*32+8]};  
  assign rsp_img_data_sw_o5 = {  
 
-rsp_dat[3*32+7:3*32], rsp_dat[3*32+15:3*32+8], rsp_dat[3*32+23:3*32+16], rsp_dat[3*32+31:3*32+24],
-
-rsp_dat[2*32+7:2*32], rsp_dat[2*32+15:2*32+8], rsp_dat[2*32+23:2*32+16], rsp_dat[2*32+31:2*32+24],
-
 rsp_dat[1*32+7:1*32], rsp_dat[1*32+15:1*32+8], rsp_dat[1*32+23:1*32+16], rsp_dat[1*32+31:1*32+24],
  rsp_dat[0*32+7:0*32], rsp_dat[0*32+15:0*32+8], rsp_dat[0*32+23:0*32+16], rsp_dat[0*32+31:0*32+24]};  
  assign rsp_img_data_sw_o9 = {  
-
-rsp_dat[7*16+7:7*16], rsp_dat[7*16+15:7*16+8],
-
-rsp_dat[6*16+7:6*16], rsp_dat[6*16+15:6*16+8],
-
-rsp_dat[5*16+7:5*16], rsp_dat[5*16+15:5*16+8],
-
-rsp_dat[4*16+7:4*16], rsp_dat[4*16+15:4*16+8],
 
 rsp_dat[3*16+7:3*16], rsp_dat[3*16+15:3*16+8],
 
@@ -1602,11 +1582,11 @@ rsp_dat[1*16+7:1*16], rsp_dat[1*16+15:1*16+8],
  assign {  
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-        rsp_img_p0_data_w} = ({128{rsp_img_sel[0]}} & rsp_img_data_sw_o0) |
-                             ({128{rsp_img_sel[1]}} & rsp_img_data_sw_o1) |
-                             ({128{rsp_img_sel[3]}} & rsp_img_data_sw_o3) |
-                             ({128{rsp_img_sel[5]}} & rsp_img_data_sw_o5) |
-                             ({128{rsp_img_sel[9]}} & rsp_img_data_sw_o9);
+        rsp_img_p0_data_w} = ({64{rsp_img_sel[0]}} & rsp_img_data_sw_o0) |
+                             ({64{rsp_img_sel[1]}} & rsp_img_data_sw_o1) |
+                             ({64{rsp_img_sel[3]}} & rsp_img_data_sw_o3) |
+                             ({64{rsp_img_sel[5]}} & rsp_img_data_sw_o5) |
+                             ({64{rsp_img_sel[9]}} & rsp_img_data_sw_o9);
 assign dma_rsp_w_burst_size = dma_rsp_size;
 assign rsp_img_1st_burst_w = dma_rsp_line_st & (dma_rsp_size_cnt == 5'h0);
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"  -en \"rsp_img_vld_w\" -d \"dma_rsp_planar\" -q rsp_img_planar");
@@ -1740,8 +1720,8 @@ assign rsp_img_c0l0_wr_en = (rsp_img_p0_vld & (~rsp_img_planar));
 assign rsp_img_c1l0_wr_en = (rsp_img_p0_vld & rsp_img_planar);
 //assign rsp_img_l0_data = rsp_img_p1_vld ? rsp_img_p1_data : rsp_img_p0_data;
 // need cache more when more dmaif/atmm
-//: my $dmaif = 128;
-//: my $atmm = (16 * 8);
+//: my $dmaif = 64;
+//: my $atmm = (8 * 8);
 //: my $atmm_num = ($dmaif / $atmm);
 //: if($atmm_num == 1) {
 //: print qq(
@@ -1774,7 +1754,7 @@ assign rsp_img_c1l0_wr_en = (rsp_img_p0_vld & rsp_img_planar);
 /////rsp_img_p0_cache_data  p0 means planar 0
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       rsp_img_p0_cache_data <= {128{1'b0}};
+       rsp_img_p0_cache_data <= {64{1'b0}};
    end else begin
        if ((rsp_img_c0l0_wr_en ) == 1'b1) begin
            rsp_img_p0_cache_data <= rsp_img_p0_data;
@@ -1788,7 +1768,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       rsp_img_p1_cache_data <= {128{1'b0}};
+       rsp_img_p1_cache_data <= {64{1'b0}};
    end else begin
        if ((rsp_img_c1l0_wr_en ) == 1'b1) begin
            rsp_img_p1_cache_data <= rsp_img_p0_data;
@@ -1803,8 +1783,8 @@ end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //per atmm
-//: my $dmaif = 128;
-//: my $atmm = (16*8);
+//: my $dmaif = 64;
+//: my $atmm = (8*8);
 //: my $atmm_num = ($dmaif / $atmm);
 //: if($atmm_num == 1) {
 //: print qq(
@@ -1884,8 +1864,8 @@ end
 assign rsp_img_sft = rsp_img_planar ? pixel_planar1_byte_sft : pixel_planar0_byte_sft;
 //////// data write control logic: normal write back ////////
 //assign rsp_img_planar_idx_add = rsp_img_p1_vld_d1_w ? 2'h2 : 2'h1;
-//: my $dmaif = 128;
-//: my $atmm = (16*8);
+//: my $dmaif = 64;
+//: my $atmm = (8*8);
 //: my $atmm_num = ($dmaif / $atmm);
 //: foreach my $i (0..$atmm_num -1) {
 //: print qq(
@@ -2099,8 +2079,8 @@ end
 ////////////////////////////////////////////////////////////////////////
 // Shared buffer write signals //
 ////////////////////////////////////////////////////////////////////////
-//: my $dmaif = 128;
-//: my $atmm = 16*8;
+//: my $dmaif = 64;
+//: my $atmm = 8*8;
 //: my $atmm_num = ($dmaif / $atmm);
 //: foreach my $i (0..$atmm_num -1) {
 //: print qq(

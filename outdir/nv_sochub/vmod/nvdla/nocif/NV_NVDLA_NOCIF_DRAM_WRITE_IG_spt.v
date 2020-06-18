@@ -47,19 +47,19 @@ input nvdla_core_clk; /* arb2spt_cmd, arb2spt_dat, spt2cvt_cmd, spt2cvt_dat */
 input nvdla_core_rstn; /* arb2spt_cmd, arb2spt_dat, spt2cvt_cmd, spt2cvt_dat */
 input arb2spt_cmd_valid; /* data valid */
 output arb2spt_cmd_ready; /* data return handshake */
-input [64 +12:0] arb2spt_cmd_pd;
+input [32 +12:0] arb2spt_cmd_pd;
 input arb2spt_dat_valid; /* data valid */
 output arb2spt_dat_ready; /* data return handshake */
-input [128 +1:0] arb2spt_dat_pd;
+input [64 +1:0] arb2spt_dat_pd;
 output spt2cvt_cmd_valid; /* data valid */
 input spt2cvt_cmd_ready; /* data return handshake */
-output [64 +12:0] spt2cvt_cmd_pd;
+output [32 +12:0] spt2cvt_cmd_pd;
 output spt2cvt_dat_valid; /* data valid */
 input spt2cvt_dat_ready; /* data return handshake */
-output [128 +1:0] spt2cvt_dat_pd;
+output [64 +1:0] spt2cvt_dat_pd;
 input [31:0] pwrbus_ram_pd;
 wire [2:0] arb2spt_dat_count;
-wire [64 -1:0] cvt_cmd_addr;
+wire [32 -1:0] cvt_cmd_addr;
 wire [3:0] cvt_cmd_axid;
 wire cvt_cmd_ftran;
 wire cvt_cmd_inc;
@@ -69,24 +69,24 @@ wire cvt_cmd_rdy;
 wire cvt_cmd_require_ack;
 wire [2:0] cvt_cmd_size;
 wire cvt_cmd_swizzle;
-wire [128 -1:0] cvt_dat_data;
+wire [64 -1:0] cvt_dat_data;
 wire [1:0] cvt_dat_mask;
 wire cvt_dat_rdy;
-wire [64 -1:0] spt_cmd_addr;
+wire [32 -1:0] spt_cmd_addr;
 wire [3:0] spt_cmd_axid;
 wire spt_cmd_ftran;
 wire spt_cmd_inc;
 wire spt_cmd_ltran;
 wire spt_cmd_odd;
-wire [64 +12:0] spt_cmd_pd;
+wire [32 +12:0] spt_cmd_pd;
 wire spt_cmd_rdy;
 wire spt_cmd_require_ack;
 wire [2:0] spt_cmd_size;
 wire spt_cmd_swizzle;
 wire spt_cmd_vld;
-wire [128 -1:0] spt_dat_data;
+wire [64 -1:0] spt_dat_data;
 wire [1:0] spt_dat_mask;
-wire [128 +1:0] spt_dat_pd;
+wire [64 +1:0] spt_dat_pd;
 wire spt_dat_rdy;
 wire spt_dat_vld;
 // synoff nets
@@ -101,11 +101,11 @@ wire spt_dat_vld;
 NV_NVDLA_NOCIF_DRAM_WRITE_IG_SPT_pipe_p1 pipe_p1 (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
-  ,.arb2spt_cmd_pd (arb2spt_cmd_pd[64 +12:0]) //|< i
+  ,.arb2spt_cmd_pd (arb2spt_cmd_pd[32 +12:0]) //|< i
   ,.arb2spt_cmd_valid (arb2spt_cmd_valid) //|< i
   ,.spt_cmd_rdy (spt_cmd_rdy) //|< w
   ,.arb2spt_cmd_ready (arb2spt_cmd_ready) //|> o
-  ,.spt_cmd_pd (spt_cmd_pd[64 +12:0]) //|> w
+  ,.spt_cmd_pd (spt_cmd_pd[32 +12:0]) //|> w
   ,.spt_cmd_vld (spt_cmd_vld) //|> w
   );
 //assign mon_spt_cmd_vld = spt_cmd_vld;
@@ -118,10 +118,10 @@ NV_NVDLA_NOCIF_DRAM_WRITE_IG_SPT_dfifo u_dfifo (
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.dfifo_wr_count (arb2spt_dat_count[2:0]) //|> w
   ,.dfifo_wr_pvld (arb2spt_dat_valid) //|< i
-  ,.dfifo_wr_pd (arb2spt_dat_pd[128 +1:0]) //|< i
+  ,.dfifo_wr_pd (arb2spt_dat_pd[64 +1:0]) //|< i
   ,.dfifo_rd_prdy (spt_dat_rdy) //|< w
   ,.dfifo_rd_pvld (spt_dat_vld) //|> w
-  ,.dfifo_rd_pd (spt_dat_pd[128 +1:0]) //|> w
+  ,.dfifo_rd_pd (spt_dat_pd[64 +1:0]) //|> w
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0]) //|< i
   );
 //&Connect dfifo_wr_prdy ;
@@ -131,16 +131,16 @@ assign spt_dat_rdy = cvt_dat_rdy;
 // PKT_UNPACK_WIRE( cvt_write_cmd , spt_cmd_ , spt_cmd_pd )
 assign spt_cmd_axid[3:0] = spt_cmd_pd[3:0];
 assign spt_cmd_require_ack = spt_cmd_pd[4];
-assign spt_cmd_addr[64 -1:0] = spt_cmd_pd[64 +4:5];
-assign spt_cmd_size[2:0] = spt_cmd_pd[64 +7:64 +5];
-assign spt_cmd_swizzle = spt_cmd_pd[64 +8];
-assign spt_cmd_odd = spt_cmd_pd[64 +9];
-assign spt_cmd_inc = spt_cmd_pd[64 +10];
-assign spt_cmd_ltran = spt_cmd_pd[64 +11];
-assign spt_cmd_ftran = spt_cmd_pd[64 +12];
+assign spt_cmd_addr[32 -1:0] = spt_cmd_pd[32 +4:5];
+assign spt_cmd_size[2:0] = spt_cmd_pd[32 +7:32 +5];
+assign spt_cmd_swizzle = spt_cmd_pd[32 +8];
+assign spt_cmd_odd = spt_cmd_pd[32 +9];
+assign spt_cmd_inc = spt_cmd_pd[32 +10];
+assign spt_cmd_ltran = spt_cmd_pd[32 +11];
+assign spt_cmd_ftran = spt_cmd_pd[32 +12];
 // PKT_UNPACK_WIRE( cvt_write_data , spt_dat_ , spt_dat_pd )
-assign spt_dat_data[128 -1:0] = spt_dat_pd[128 -1:0];
-assign spt_dat_mask[1:0] = spt_dat_pd[128 +1:128];
+assign spt_dat_data[64 -1:0] = spt_dat_pd[64 -1:0];
+assign spt_dat_mask[1:0] = spt_dat_pd[64 +1:64];
 //==============
 //====OUTPUT====
 //==============
@@ -162,23 +162,23 @@ assign spt2cvt_cmd_valid = spt_cmd_vld;
 // PKT_PACK_WIRE( cvt_write_cmd , cvt_cmd_ , spt2cvt_cmd_pd )
 assign spt2cvt_cmd_pd[3:0] = cvt_cmd_axid[3:0];
 assign spt2cvt_cmd_pd[4] = cvt_cmd_require_ack ;
-assign spt2cvt_cmd_pd[64 +4:5] = cvt_cmd_addr[64 -1:0];
-assign spt2cvt_cmd_pd[64 +7:64 +5] = cvt_cmd_size[2:0];
-assign spt2cvt_cmd_pd[64 +8] = cvt_cmd_swizzle ;
-assign spt2cvt_cmd_pd[64 +9] = cvt_cmd_odd ;
-assign spt2cvt_cmd_pd[64 +10] = cvt_cmd_inc ;
-assign spt2cvt_cmd_pd[64 +11] = cvt_cmd_ltran ;
-assign spt2cvt_cmd_pd[64 +12] = cvt_cmd_ftran ;
+assign spt2cvt_cmd_pd[32 +4:5] = cvt_cmd_addr[32 -1:0];
+assign spt2cvt_cmd_pd[32 +7:32 +5] = cvt_cmd_size[2:0];
+assign spt2cvt_cmd_pd[32 +8] = cvt_cmd_swizzle ;
+assign spt2cvt_cmd_pd[32 +9] = cvt_cmd_odd ;
+assign spt2cvt_cmd_pd[32 +10] = cvt_cmd_inc ;
+assign spt2cvt_cmd_pd[32 +11] = cvt_cmd_ltran ;
+assign spt2cvt_cmd_pd[32 +12] = cvt_cmd_ftran ;
 // TO CVT : data
 assign cvt_dat_data = spt_dat_data;
 assign cvt_dat_mask = spt_dat_mask;
 assign spt2cvt_dat_valid = spt_dat_vld;
 // PKT_PACK_WIRE( cvt_write_data , cvt_dat_ , spt2cvt_dat_pd )
-assign spt2cvt_dat_pd[128 -1:0] = cvt_dat_data[128 -1:0];
-assign spt2cvt_dat_pd[128 +1:128] = cvt_dat_mask[1:0];
+assign spt2cvt_dat_pd[64 -1:0] = cvt_dat_data[64 -1:0];
+assign spt2cvt_dat_pd[64 +1:64] = cvt_dat_mask[1:0];
 endmodule // NV_NVDLA_NOCIF_WRITE_IG_spt
 // **************************************************************************************************************
-// Generated by ::pipe -m -rand none -bc spt_cmd_pd (spt_cmd_vld,spt_cmd_rdy) <= arb2spt_cmd_pd[64 +12:0] (arb2spt_cmd_valid,arb2spt_cmd_ready)
+// Generated by ::pipe -m -rand none -bc spt_cmd_pd (spt_cmd_vld,spt_cmd_rdy) <= arb2spt_cmd_pd[32 +12:0] (arb2spt_cmd_valid,arb2spt_cmd_ready)
 // **************************************************************************************************************
 module NV_NVDLA_NOCIF_DRAM_WRITE_IG_SPT_pipe_p1 (
    nvdla_core_clk
@@ -192,18 +192,18 @@ module NV_NVDLA_NOCIF_DRAM_WRITE_IG_SPT_pipe_p1 (
   );
 input nvdla_core_clk;
 input nvdla_core_rstn;
-input [64 +12:0] arb2spt_cmd_pd;
+input [32 +12:0] arb2spt_cmd_pd;
 input arb2spt_cmd_valid;
 input spt_cmd_rdy;
 output arb2spt_cmd_ready;
-output [64 +12:0] spt_cmd_pd;
+output [32 +12:0] spt_cmd_pd;
 output spt_cmd_vld;
 reg arb2spt_cmd_ready;
-reg [64 +12:0] p1_pipe_data;
+reg [32 +12:0] p1_pipe_data;
 reg p1_pipe_ready;
 reg p1_pipe_ready_bc;
 reg p1_pipe_valid;
-reg [64 +12:0] spt_cmd_pd;
+reg [32 +12:0] spt_cmd_pd;
 reg spt_cmd_vld;
 //## pipe (1) valid-ready-bubble-collapse
 always @(
@@ -221,7 +221,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk) begin
 // VCS sop_coverage_off start
-  p1_pipe_data <= (p1_pipe_ready_bc && arb2spt_cmd_valid)? arb2spt_cmd_pd[64 +12:0] : p1_pipe_data;
+  p1_pipe_data <= (p1_pipe_ready_bc && arb2spt_cmd_valid)? arb2spt_cmd_pd[32 +12:0] : p1_pipe_data;
 // VCS sop_coverage_off end
 end
 always @(
@@ -363,10 +363,10 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 output [2:0] dfifo_wr_count;
 input dfifo_wr_pvld;
-input [128 +1:0] dfifo_wr_pd;
+input [64 +1:0] dfifo_wr_pd;
 input dfifo_rd_prdy;
 output dfifo_rd_pvld;
-output [128 +1:0] dfifo_rd_pd;
+output [64 +1:0] dfifo_rd_pd;
 input [31:0] pwrbus_ram_pd;
 // Master Clock Gating (SLCG)
 //
@@ -426,17 +426,17 @@ end
 // spyglass enable_block W484
 reg [2:0] dfifo_rd_adr; // read address this cycle
 wire ram_we = wr_pushing; // note: write occurs next cycle
-wire [128 +1:0] dfifo_rd_pd; // read data out of ram
+wire [64 +1:0] dfifo_rd_pd; // read data out of ram
 wire [31 : 0] pwrbus_ram_pd;
 // Adding parameter for fifogen to disable wr/rd contention assertion in ramgen.
 // Fifogen handles this by ignoring the data on the ram data out for that cycle.
-//:my $w = eval(128 +2);
+//:my $w = eval(64 +2);
 //:print qq(
 //:NV_NVDLA_NOCIF_DRAM_WRITE_IG_SPT_dfifo_flopram_rwsa_5x${w} ram
 //:);
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-NV_NVDLA_NOCIF_DRAM_WRITE_IG_SPT_dfifo_flopram_rwsa_5x130 ram
+NV_NVDLA_NOCIF_DRAM_WRITE_IG_SPT_dfifo_flopram_rwsa_5x66 ram
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
     (
@@ -625,13 +625,13 @@ endmodule // NV_NVDLA_NOCIF_DRAM_WRITE_IG_SPT_dfifo
 //
 // Flop-Based RAM
 //
-//:my $w=eval(128 +2);
+//:my $w=eval(64 +2);
 //:print qq(
 //:module NV_NVDLA_NOCIF_DRAM_WRITE_IG_SPT_dfifo_flopram_rwsa_5x${w}
 //:);
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-module NV_NVDLA_NOCIF_DRAM_WRITE_IG_SPT_dfifo_flopram_rwsa_5x130
+module NV_NVDLA_NOCIF_DRAM_WRITE_IG_SPT_dfifo_flopram_rwsa_5x66
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
     (
@@ -645,11 +645,11 @@ module NV_NVDLA_NOCIF_DRAM_WRITE_IG_SPT_dfifo_flopram_rwsa_5x130
     );
 input clk; // write clock
 input [31 : 0] pwrbus_ram_pd;
-input [128 +1:0] di;
+input [64 +1:0] di;
 input we;
 input [2:0] wa;
 input [2:0] ra;
-output [128 +1:0] dout;
+output [64 +1:0] dout;
 `ifndef FPGA
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_0 (.A(pwrbus_ram_pd[0]));
 `endif
@@ -746,11 +746,11 @@ NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_30 (.A(pwrbus_ram_pd[30]));
 `ifndef FPGA
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_31 (.A(pwrbus_ram_pd[31]));
 `endif
-reg [128 +1:0] ram_ff0;
-reg [128 +1:0] ram_ff1;
-reg [128 +1:0] ram_ff2;
-reg [128 +1:0] ram_ff3;
-reg [128 +1:0] ram_ff4;
+reg [64 +1:0] ram_ff0;
+reg [64 +1:0] ram_ff1;
+reg [64 +1:0] ram_ff2;
+reg [64 +1:0] ram_ff3;
+reg [64 +1:0] ram_ff4;
 always @( posedge clk ) begin
     if ( we && wa == 3'd0 ) begin
  ram_ff0 <= di;
@@ -768,7 +768,7 @@ always @( posedge clk ) begin
  ram_ff4 <= di;
     end
 end
-reg [128 +1:0] dout;
+reg [64 +1:0] dout;
 always @(*) begin
     case( ra )
     3'd0: dout = ram_ff0;
@@ -777,7 +777,7 @@ always @(*) begin
     3'd3: dout = ram_ff3;
     3'd4: dout = ram_ff4;
 //VCS coverage off
-    default: dout = {128 +2{`x_or_0}};
+    default: dout = {64 +2{`x_or_0}};
 //VCS coverage on
     endcase
 end

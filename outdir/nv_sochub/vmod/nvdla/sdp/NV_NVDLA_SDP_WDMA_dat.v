@@ -55,13 +55,13 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input cmd2dat_dma_pvld;
 output cmd2dat_dma_prdy;
-input [64 -4 +13 +1:0] cmd2dat_dma_pd;
+input [32 -3 +13 +1:0] cmd2dat_dma_pd;
 input cmd2dat_spt_pvld;
 output cmd2dat_spt_prdy;
 input [14:0] cmd2dat_spt_pd;
 input sdp_dp2wdma_valid;
 output sdp_dp2wdma_ready;
-input [16*8 -1:0] sdp_dp2wdma_pd;
+input [8*8 -1:0] sdp_dp2wdma_pd;
 input dma_wr_req_rdy;
 input op_load;
 input [31:0] pwrbus_ram_pd;
@@ -76,23 +76,23 @@ input reg2dp_output_dst;
 input [1:0] reg2dp_proc_precision;
 input [12:0] reg2dp_width;
 input reg2dp_winograd;
-output [130 -1:0] dma_wr_req_pd;
+output [66 -1:0] dma_wr_req_pd;
 output dma_wr_req_vld;
 output dp2reg_done;
 output [31:0] dp2reg_status_nan_output_num;
 output dp2reg_status_unequal;
 output intr_req_ptr;
 output intr_req_pvld;
-wire [16*8 -1:0] dfifo0_rd_pd;
+wire [8*8 -1:0] dfifo0_rd_pd;
 wire dfifo0_rd_prdy;
 wire dfifo0_rd_pvld;
-wire [16*8 -1:0] dfifo1_rd_pd;
+wire [8*8 -1:0] dfifo1_rd_pd;
 wire dfifo1_rd_prdy;
 wire dfifo1_rd_pvld;
-wire [16*8 -1:0] dfifo2_rd_pd;
+wire [8*8 -1:0] dfifo2_rd_pd;
 wire dfifo2_rd_prdy;
 wire dfifo2_rd_pvld;
-wire [16*8 -1:0] dfifo3_rd_pd;
+wire [8*8 -1:0] dfifo3_rd_pd;
 wire dfifo3_rd_prdy;
 wire dfifo3_rd_pvld;
 NV_NVDLA_SDP_WDMA_DAT_in u_in (
@@ -103,19 +103,19 @@ NV_NVDLA_SDP_WDMA_DAT_in u_in (
   ,.cmd2dat_spt_pd (cmd2dat_spt_pd[14:0]) //|< i
   ,.sdp_dp2wdma_valid (sdp_dp2wdma_valid) //|< i
   ,.sdp_dp2wdma_ready (sdp_dp2wdma_ready) //|> o
-  ,.sdp_dp2wdma_pd (sdp_dp2wdma_pd[16*8 -1:0]) //|< i
+  ,.sdp_dp2wdma_pd (sdp_dp2wdma_pd[8*8 -1:0]) //|< i
   ,.dfifo0_rd_pvld (dfifo0_rd_pvld) //|> w
   ,.dfifo0_rd_prdy (dfifo0_rd_prdy) //|< w
-  ,.dfifo0_rd_pd (dfifo0_rd_pd[16*8 -1:0]) //|> w
+  ,.dfifo0_rd_pd (dfifo0_rd_pd[8*8 -1:0]) //|> w
   ,.dfifo1_rd_pvld (dfifo1_rd_pvld) //|> w
   ,.dfifo1_rd_prdy (dfifo1_rd_prdy) //|< w
-  ,.dfifo1_rd_pd (dfifo1_rd_pd[16*8 -1:0]) //|> w
+  ,.dfifo1_rd_pd (dfifo1_rd_pd[8*8 -1:0]) //|> w
   ,.dfifo2_rd_pvld (dfifo2_rd_pvld) //|> w
   ,.dfifo2_rd_prdy (dfifo2_rd_prdy) //|< w
-  ,.dfifo2_rd_pd (dfifo2_rd_pd[16*8 -1:0]) //|> w
+  ,.dfifo2_rd_pd (dfifo2_rd_pd[8*8 -1:0]) //|> w
   ,.dfifo3_rd_pvld (dfifo3_rd_pvld) //|> w
   ,.dfifo3_rd_prdy (dfifo3_rd_prdy) //|< w
-  ,.dfifo3_rd_pd (dfifo3_rd_pd[16*8 -1:0]) //|> w
+  ,.dfifo3_rd_pd (dfifo3_rd_pd[8*8 -1:0]) //|> w
   ,.reg2dp_batch_number (reg2dp_batch_number[4:0]) //|< i
   ,.reg2dp_height (reg2dp_height[12:0]) //|< i
   ,.reg2dp_out_precision (reg2dp_out_precision[1:0]) //|< i
@@ -131,19 +131,19 @@ NV_NVDLA_SDP_WDMA_DAT_out u_out (
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.cmd2dat_dma_pvld (cmd2dat_dma_pvld) //|< i
   ,.cmd2dat_dma_prdy (cmd2dat_dma_prdy) //|> o
-  ,.cmd2dat_dma_pd (cmd2dat_dma_pd[64 -4 +13 +1:0]) //|< i
+  ,.cmd2dat_dma_pd (cmd2dat_dma_pd[32 -3 +13 +1:0]) //|< i
   ,.dfifo0_rd_pvld (dfifo0_rd_pvld) //|< w
   ,.dfifo0_rd_prdy (dfifo0_rd_prdy) //|> w
-  ,.dfifo0_rd_pd (dfifo0_rd_pd[16*8 -1:0]) //|< w
+  ,.dfifo0_rd_pd (dfifo0_rd_pd[8*8 -1:0]) //|< w
   ,.dfifo1_rd_pvld (dfifo1_rd_pvld) //|< w
   ,.dfifo1_rd_prdy (dfifo1_rd_prdy) //|> w
-  ,.dfifo1_rd_pd (dfifo1_rd_pd[16*8 -1:0]) //|< w
+  ,.dfifo1_rd_pd (dfifo1_rd_pd[8*8 -1:0]) //|< w
   ,.dfifo2_rd_pvld (dfifo2_rd_pvld) //|< w
   ,.dfifo2_rd_prdy (dfifo2_rd_prdy) //|> w
-  ,.dfifo2_rd_pd (dfifo2_rd_pd[16*8 -1:0]) //|< w
+  ,.dfifo2_rd_pd (dfifo2_rd_pd[8*8 -1:0]) //|< w
   ,.dfifo3_rd_pvld (dfifo3_rd_pvld) //|< w
   ,.dfifo3_rd_prdy (dfifo3_rd_prdy) //|> w
-  ,.dfifo3_rd_pd (dfifo3_rd_pd[16*8 -1:0]) //|< w
+  ,.dfifo3_rd_pd (dfifo3_rd_pd[8*8 -1:0]) //|< w
   ,.op_load (op_load) //|< i
   ,.reg2dp_batch_number (reg2dp_batch_number[4:0]) //|< i
   ,.reg2dp_ew_alu_algo (reg2dp_ew_alu_algo[1:0]) //|< i
@@ -159,7 +159,7 @@ NV_NVDLA_SDP_WDMA_DAT_out u_out (
   ,.dp2reg_done (dp2reg_done) //|> o
   ,.dp2reg_status_unequal (dp2reg_status_unequal) //|> o
   ,.dma_wr_req_rdy (dma_wr_req_rdy) //|< i
-  ,.dma_wr_req_pd (dma_wr_req_pd[130 -1:0]) //|> o
+  ,.dma_wr_req_pd (dma_wr_req_pd[66 -1:0]) //|> o
   ,.dma_wr_req_vld (dma_wr_req_vld) //|> o
   ,.intr_req_ptr (intr_req_ptr) //|> o
   ,.intr_req_pvld (intr_req_pvld) //|> o

@@ -17,7 +17,7 @@ module NV_NVDLA_mcif (
    nvdla_core_clk
   ,nvdla_core_rstn
   ,pwrbus_ram_pd
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","pdp","cdp");
 //: foreach my $client (@rdma_name) {
 //: print "  ,${client}2mcif_rd_cdt_lat_fifo_pop\n";
 //: print "  ,${client}2mcif_rd_req_valid\n";
@@ -27,7 +27,7 @@ module NV_NVDLA_mcif (
 //: print "  ,mcif2${client}_rd_rsp_ready\n";
 //: print "  ,mcif2${client}_rd_rsp_pd\n";
 //: }
-//: my @wdma_name = ("sdp", "pdp","cdp","rbk");
+//: my @wdma_name = ("sdp", "pdp","cdp");
 //: foreach my $client (@wdma_name) {
 //: print "  ,${client}2mcif_wr_req_valid\n";
 //: print "  ,${client}2mcif_wr_req_ready\n";
@@ -75,16 +75,16 @@ output mcif2noc_axi_ar_arvalid;
 input mcif2noc_axi_ar_arready;
 output [7:0] mcif2noc_axi_ar_arid;
 output [3:0] mcif2noc_axi_ar_arlen;
-output [64 -1:0] mcif2noc_axi_ar_araddr;
+output [32 -1:0] mcif2noc_axi_ar_araddr;
 output mcif2noc_axi_aw_awvalid;
 input mcif2noc_axi_aw_awready;
 output [7:0] mcif2noc_axi_aw_awid;
 output [3:0] mcif2noc_axi_aw_awlen;
-output [64 -1:0] mcif2noc_axi_aw_awaddr;
+output [32 -1:0] mcif2noc_axi_aw_awaddr;
 output mcif2noc_axi_w_wvalid;
 input mcif2noc_axi_w_wready;
 output [64 -1:0] mcif2noc_axi_w_wdata;
-output [16 -1:0] mcif2noc_axi_w_wstrb;
+output [8 -1:0] mcif2noc_axi_w_wstrb;
 output mcif2noc_axi_w_wlast;
 input noc2mcif_axi_b_bvalid;
 output noc2mcif_axi_b_bready;
@@ -94,30 +94,30 @@ output noc2mcif_axi_r_rready;
 input [7:0] noc2mcif_axi_r_rid;
 input noc2mcif_axi_r_rlast;
 input [64 -1:0] noc2mcif_axi_r_rdata;
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","pdp","cdp");
 //: foreach my $client (@rdma_name) {
 //: print ("input  ${client}2mcif_rd_cdt_lat_fifo_pop;\n");
 //: print ("input  ${client}2mcif_rd_req_valid;\n");
 //: print ("output ${client}2mcif_rd_req_ready;\n");
-//: print qq(input [79 -1:0] ${client}2mcif_rd_req_pd;\n);
+//: print qq(input [47 -1:0] ${client}2mcif_rd_req_pd;\n);
 //: print ("output mcif2${client}_rd_rsp_valid;\n");
 //: print ("input  mcif2${client}_rd_rsp_ready;\n");
-//: print qq(output [129 -1:0] mcif2${client}_rd_rsp_pd;\n);
+//: print qq(output [65 -1:0] mcif2${client}_rd_rsp_pd;\n);
 //: }
-//: my @wdma_name = ("sdp", "pdp","cdp","rbk");
+//: my @wdma_name = ("sdp", "pdp","cdp");
 //: foreach my $client (@wdma_name) {
 //: print ("input  ${client}2mcif_wr_req_valid;\n");
 //: print ("output ${client}2mcif_wr_req_ready;\n");
-//: print qq(input [130 -1:0] ${client}2mcif_wr_req_pd;\n);
+//: print qq(input [66 -1:0] ${client}2mcif_wr_req_pd;\n);
 //: print ("output mcif2${client}_wr_rsp_complete;\n");
 //: }
 wire [7:0] reg2dp_rd_os_cnt;
 wire [7:0] reg2dp_wr_os_cnt;
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","pdp","cdp");
 //: foreach my $client (@rdma_name) {
 //: print "wire   [7:0] reg2dp_rd_weight_${client};\n";
 //: }
-//: my @wdma_name = ("sdp", "pdp","cdp","rbk");
+//: my @wdma_name = ("sdp", "pdp","cdp");
 //: foreach my $client (@wdma_name) {
 //: print "wire   [7:0] reg2dp_wr_weight_${client};\n";
 //: }
@@ -132,11 +132,11 @@ NV_NVDLA_MCIF_csb u_csb (
   ,.dp2reg_idle ({1{1'b1}}) //|< ?
   ,.reg2dp_rd_os_cnt (reg2dp_rd_os_cnt[7:0]) //|> w
   ,.reg2dp_wr_os_cnt (reg2dp_wr_os_cnt[7:0]) //|> w
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","pdp","cdp");
 //: foreach my $client (@rdma_name) {
 //: print"   ,.reg2dp_rd_weight_${client} (reg2dp_rd_weight_${client}[7:0])\n";
 //: }
-//: my @wdma_name = ("sdp", "pdp","cdp","rbk");
+//: my @wdma_name = ("sdp", "pdp","cdp");
 //: foreach my $client (@wdma_name) {
 //: print"   ,.reg2dp_wr_weight_${client} (reg2dp_wr_weight_${client}[7:0])\n";
 //: }
@@ -151,7 +151,7 @@ NV_NVDLA_MCIF_read u_read (
   ,.nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.pwrbus_ram_pd (pwrbus_ram_pd)
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","pdp","cdp");
 //: foreach my $client (@rdma_name) {
 //: print("  ,.reg2dp_rd_weight_${client}  (reg2dp_rd_weight_${client})\n"),
 //: }
@@ -180,7 +180,7 @@ NV_NVDLA_MCIF_write u_write (
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.pwrbus_ram_pd (pwrbus_ram_pd)
   ,.reg2dp_wr_os_cnt (reg2dp_wr_os_cnt)
-//: my @wdma_name = ("sdp", "pdp","cdp","rbk");
+//: my @wdma_name = ("sdp", "pdp","cdp");
 //: foreach my $client (@wdma_name) {
 //: print("  ,.reg2dp_wr_weight_${client}  (reg2dp_wr_weight_${client})\n"),
 //: }

@@ -5,9 +5,9 @@
 `ifndef SV_STRUCT_DEFINED_csc2cmac_wt_if
 `define SV_STRUCT_DEFINED_csc2cmac_wt_if
 typedef struct packed {
-  bit [31:0][7:0] data;
-  bit [31:0] mask;
-  bit [7:0] sel;
+  bit [7:0][7:0] data;
+  bit [7:0] mask;
+  bit [3:0] sel;
 } csc2cmac_wt_if_struct;
 `endif
 

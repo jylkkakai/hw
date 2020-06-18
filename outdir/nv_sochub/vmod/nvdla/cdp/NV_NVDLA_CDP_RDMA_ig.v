@@ -68,7 +68,7 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 output cdp2mcif_rd_req_valid; /* data valid */
 input cdp2mcif_rd_req_ready; /* data return handshake */
-output [79 -1:0] cdp2mcif_rd_req_pd;
+output [47 -1:0] cdp2mcif_rd_req_pd;
 output cq_wr_pvld; /* data valid */
 input cq_wr_prdy; /* data return handshake */
 output [6:0] cq_wr_pd;
@@ -77,14 +77,14 @@ reg after_op_done;
 reg [63:0] base_addr_c;
 reg [63:0] base_addr_w;
 reg [31:0] cdp_rd_stall_count;
-//: my $atomicm = 16;
+//: my $atomicm = 8;
 //: my $k = int( log($atomicm)/log(2) );
 //: print qq(
 //: reg [12-${k}:0] channel_count;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-reg [12-4:0] channel_count;
+reg [12-3:0] channel_count;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 reg [63:0] dma_req_addr;
@@ -117,7 +117,7 @@ wire cmd_accept;
 wire cnt_cen;
 wire cnt_clr;
 wire cnt_inc;
-wire [64 +14:0] dma_rd_req_pd;
+wire [32 +14:0] dma_rd_req_pd;
 wire dma_rd_req_ram_type;
 wire dma_rd_req_rdy;
 wire dma_rd_req_vld;
@@ -261,14 +261,14 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     end
   end
 end
-//: my $atomicm = 16;
+//: my $atomicm = 8;
 //: my $k = int( log($atomicm)/log(2) );
 //: print qq(
 //: assign is_last_c = (channel_count==reg2dp_channel[12:${k}]);
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign is_last_c = (channel_count==reg2dp_channel[12:4]);
+assign is_last_c = (channel_count==reg2dp_channel[12:3]);
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 // assign is_last_c = (channel_count==number_of_block_in_channel-1);
@@ -394,11 +394,11 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
             if (is_last_w) begin
                 {mon_base_addr_c_c,base_addr_c} <= base_addr_w + reg2dp_line_stride;
             end else begin
-//: my $atm = 16;
+//: my $atm = 8;
 //: my $atmbw = int(log($atm)/log(2));
 //: print "                {mon_base_addr_c_c,base_addr_c} <= base_addr_c + {width_size_use,${atmbw}'d0}; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-                {mon_base_addr_c_c,base_addr_c} <= base_addr_c + {width_size_use,4'd0}; 
+                {mon_base_addr_c_c,base_addr_c} <= base_addr_c + {width_size_use,3'd0}; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
             end
@@ -466,11 +466,11 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
             if (is_last_w) begin
                 {mon_dma_req_addr_c,dma_req_addr} <= base_addr_w + reg2dp_line_stride;
             end else begin
-//: my $atm = 16;
+//: my $atm = 8;
 //: my $atmbw = int(log($atm)/log(2));
 //: print "                {mon_dma_req_addr_c,dma_req_addr} <= base_addr_c + {width_size_use,${atmbw}'d0};  \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-                {mon_dma_req_addr_c,dma_req_addr} <= base_addr_c + {width_size_use,4'd0};  
+                {mon_dma_req_addr_c,dma_req_addr} <= base_addr_c + {width_size_use,3'd0};  
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
             end
@@ -666,8 +666,8 @@ assign cq_wr_pvld = tran_vld & dma_rd_req_rdy;
 // VALID: clamp when when cq is not ready
 assign dma_rd_req_vld = tran_vld & cq_wr_prdy;
 // PayLoad
-assign dma_rd_req_pd[64 -1:0] = dma_req_addr[64 -1:0];
-assign dma_rd_req_pd[64 +14:64] = dma_req_size[14:0];
+assign dma_rd_req_pd[32 -1:0] = dma_req_addr[32 -1:0];
+assign dma_rd_req_pd[32 +14:32] = dma_req_size[14:0];
 assign dma_rd_req_ram_type = reg2dp_src_ram_type;
 // Accept
 assign cmd_accept = dma_rd_req_vld & dma_rd_req_rdy;

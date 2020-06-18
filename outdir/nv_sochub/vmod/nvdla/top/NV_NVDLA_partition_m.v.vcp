@@ -14,7 +14,6 @@
 // this distribution for more information.
 // ================================================================
 // File Name: NV_NVDLA_CMAC.h
-`define DESIGNWARE_NOEXIST 1
 module NV_NVDLA_partition_m (
    csb2cmac_a_req_pd //|< i
   ,csb2cmac_a_req_pvld //|< i
@@ -23,14 +22,14 @@ module NV_NVDLA_partition_m (
   ,global_clk_ovr_on //|< i
   ,nvdla_clk_ovr_on //|< i
   ,nvdla_core_clk //|< i
-//: for(my $i=0; $i<32 ; $i++){
+//: for(my $i=0; $i<8 ; $i++){
 //: print qq(
 //: ,sc2mac_dat_data${i} //|< i )
 //: }
   ,sc2mac_dat_mask //|< i
   ,sc2mac_dat_pd //|< i
   ,sc2mac_dat_pvld //|< i
-//: for(my $i=0; $i<32 ; $i++){
+//: for(my $i=0; $i<8 ; $i++){
 //: print qq(
 //: ,sc2mac_wt_data${i} //|< i )
 //: }
@@ -42,7 +41,7 @@ module NV_NVDLA_partition_m (
   ,cmac_a2csb_resp_pd //|> o
   ,cmac_a2csb_resp_valid //|> o
   ,csb2cmac_a_req_prdy //|> o
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
 //: ,mac2accu_data${i} //|> o )
 //: }
@@ -62,25 +61,25 @@ input [62:0] csb2cmac_a_req_pd;
 output cmac_a2csb_resp_valid;
 output [33:0] cmac_a2csb_resp_pd;
 input sc2mac_wt_pvld; /* data valid */
-input [32 -1:0] sc2mac_wt_mask;
-//: for(my $i=0; $i<32 ; $i++){
+input [8 -1:0] sc2mac_wt_mask;
+//: for(my $i=0; $i<8 ; $i++){
 //: print qq(
 //: input [8 -1:0] sc2mac_wt_data${i}; //|< i )
 //: }
-input [16/2 -1:0] sc2mac_wt_sel;
+input [8/2 -1:0] sc2mac_wt_sel;
 input sc2mac_dat_pvld; /* data valid */
-input [32 -1:0] sc2mac_dat_mask;
-//: for(my $i=0; $i<32 ; $i++){
+input [8 -1:0] sc2mac_dat_mask;
+//: for(my $i=0; $i<8 ; $i++){
 //: print qq(
 //: input [8 -1:0] sc2mac_dat_data${i}; //|< i )
 //: }
 input [8:0] sc2mac_dat_pd;
 output mac2accu_pvld; /* data valid */
-output [16/2 -1:0] mac2accu_mask;
+output [8/2 -1:0] mac2accu_mask;
 output mac2accu_mode;
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
-//: output [21 -1:0] mac2accu_data${i}; )
+//: output [19 -1:0] mac2accu_data${i}; )
 //: }
 output [8:0] mac2accu_pd;
 input global_clk_ovr_on;
@@ -129,21 +128,21 @@ NV_NVDLA_cmac u_NV_NVDLA_cmac (
   ,.mac2accu_pvld (mac2accu_pvld) //|> o
   ,.mac2accu_mask (mac2accu_mask) //|> o
   ,.mac2accu_mode (mac2accu_mode) //|> o
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
 //: ,.mac2accu_data${i} (mac2accu_data${i}) //|> o )
 //: }
   ,.mac2accu_pd (mac2accu_pd) //|> o
   ,.sc2mac_dat_pvld (sc2mac_dat_pvld) //|< i
   ,.sc2mac_dat_mask (sc2mac_dat_mask) //|< i
-//: for(my $i=0; $i<32 ; $i++){
+//: for(my $i=0; $i<8 ; $i++){
 //: print qq(
 //: ,.sc2mac_dat_data${i} (sc2mac_dat_data${i}) //|< i )
 //: }
   ,.sc2mac_dat_pd (sc2mac_dat_pd) //|< i
   ,.sc2mac_wt_pvld (sc2mac_wt_pvld) //|< i
   ,.sc2mac_wt_mask (sc2mac_wt_mask) //|< i
-//: for(my $i=0; $i<32 ; $i++){
+//: for(my $i=0; $i<8 ; $i++){
 //: print qq(
 //: ,.sc2mac_wt_data${i} (sc2mac_wt_data${i}) //|< i )
 //: }

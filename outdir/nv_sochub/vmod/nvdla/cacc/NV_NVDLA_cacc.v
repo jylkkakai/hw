@@ -20,7 +20,7 @@ module NV_NVDLA_cacc (
   ,csb2cacc_req_pvld //|< i
   ,dla_clk_ovr_on_sync //|< i
   ,global_clk_ovr_on_sync //|< i
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
 //: ,mac_a2accu_data${i} //|< i
 //: ,mac_b2accu_data${i} //|< i )
@@ -35,14 +35,6 @@ module NV_NVDLA_cacc (
 ,mac_b2accu_data2 //|< i 
 ,mac_a2accu_data3 //|< i
 ,mac_b2accu_data3 //|< i 
-,mac_a2accu_data4 //|< i
-,mac_b2accu_data4 //|< i 
-,mac_a2accu_data5 //|< i
-,mac_b2accu_data5 //|< i 
-,mac_a2accu_data6 //|< i
-,mac_b2accu_data6 //|< i 
-,mac_a2accu_data7 //|< i
-,mac_b2accu_data7 //|< i 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,mac_a2accu_mask //|< i
   ,mac_a2accu_mode //|< i
@@ -77,40 +69,32 @@ input [62:0] csb2cacc_req_pd;
 output cacc2csb_resp_valid; /* data valid */
 output [33:0] cacc2csb_resp_pd; /* pkt_id_width=1 pkt_widths=33,33  */
 input mac_a2accu_pvld; /* data valid */
-input [16/2-1:0] mac_a2accu_mask;
+input [8/2-1:0] mac_a2accu_mask;
 input mac_a2accu_mode;
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
-//: input [21 -1:0] mac_a2accu_data${i}; //|< i
-//: input [21 -1:0] mac_b2accu_data${i}; //|< i )
+//: input [19 -1:0] mac_a2accu_data${i}; //|< i
+//: input [19 -1:0] mac_b2accu_data${i}; //|< i )
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-input [21 -1:0] mac_a2accu_data0; //|< i
-input [21 -1:0] mac_b2accu_data0; //|< i 
-input [21 -1:0] mac_a2accu_data1; //|< i
-input [21 -1:0] mac_b2accu_data1; //|< i 
-input [21 -1:0] mac_a2accu_data2; //|< i
-input [21 -1:0] mac_b2accu_data2; //|< i 
-input [21 -1:0] mac_a2accu_data3; //|< i
-input [21 -1:0] mac_b2accu_data3; //|< i 
-input [21 -1:0] mac_a2accu_data4; //|< i
-input [21 -1:0] mac_b2accu_data4; //|< i 
-input [21 -1:0] mac_a2accu_data5; //|< i
-input [21 -1:0] mac_b2accu_data5; //|< i 
-input [21 -1:0] mac_a2accu_data6; //|< i
-input [21 -1:0] mac_b2accu_data6; //|< i 
-input [21 -1:0] mac_a2accu_data7; //|< i
-input [21 -1:0] mac_b2accu_data7; //|< i 
+input [19 -1:0] mac_a2accu_data0; //|< i
+input [19 -1:0] mac_b2accu_data0; //|< i 
+input [19 -1:0] mac_a2accu_data1; //|< i
+input [19 -1:0] mac_b2accu_data1; //|< i 
+input [19 -1:0] mac_a2accu_data2; //|< i
+input [19 -1:0] mac_b2accu_data2; //|< i 
+input [19 -1:0] mac_a2accu_data3; //|< i
+input [19 -1:0] mac_b2accu_data3; //|< i 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input [8:0] mac_a2accu_pd;
 input mac_b2accu_pvld; /* data valid */
-input [16/2-1:0] mac_b2accu_mask;
+input [8/2-1:0] mac_b2accu_mask;
 input mac_b2accu_mode;
 input [8:0] mac_b2accu_pd;
 output cacc2sdp_valid; /* data valid */
 input cacc2sdp_ready; /* data return handshake */
-output [32*4 +2 -1:0] cacc2sdp_pd;
+output [32*1 +2 -1:0] cacc2sdp_pd;
 output accu2sc_credit_vld; /* data valid */
 output [2:0] accu2sc_credit_size;
 output [1:0] cacc2glb_done_intr_pd;
@@ -118,11 +102,11 @@ output [1:0] cacc2glb_done_intr_pd;
 input dla_clk_ovr_on_sync;
 input global_clk_ovr_on_sync;
 input tmc2slcg_disable_clock_gating;
-wire [4 +1 -1:0] abuf_rd_addr;
-wire [34*16 -1:0] abuf_rd_data;
+wire [3 +1 -1:0] abuf_rd_addr;
+wire [34*8 -1:0] abuf_rd_data;
 wire abuf_rd_en;
-wire [4 +1 -1:0] abuf_wr_addr;
-wire [34*16 -1:0] abuf_wr_data;
+wire [3 +1 -1:0] abuf_wr_addr;
+wire [34*8 -1:0] abuf_wr_data;
 wire abuf_wr_en;
 wire [12:0] accu_ctrl_pd;
 wire accu_ctrl_ram_valid;
@@ -130,14 +114,14 @@ wire accu_ctrl_valid;
 wire cfg_in_en_mask;
 wire cfg_is_wg;
 wire [4:0] cfg_truncate;
-wire [4 +1 -1:0] dbuf_rd_addr;
+wire [3 +1 -1:0] dbuf_rd_addr;
 wire dbuf_rd_en;
 wire dbuf_rd_layer_end;
 wire dbuf_rd_ready;
-wire [4 +1 -1:0] dbuf_wr_addr;
-wire [32*16 -1:0] dbuf_wr_data;
+wire [3 +1 -1:0] dbuf_wr_addr;
+wire [32*8 -1:0] dbuf_wr_data;
 wire dbuf_wr_en;
-wire [32*16 -1:0] dlv_data;
+wire [32*8 -1:0] dlv_data;
 wire dlv_mask;
 wire [1:0] dlv_pd;
 wire dlv_valid;
@@ -247,7 +231,7 @@ NV_NVDLA_CACC_calculator u_calculator (
   ,.cfg_in_en_mask (cfg_in_en_mask) //|< w
   ,.cfg_is_wg (cfg_is_wg) //|< w
   ,.cfg_truncate (cfg_truncate) //|< w
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
 //: ,.mac_a2accu_data${i} (mac_a2accu_data${i}) //|< i )
 //: }
@@ -257,15 +241,11 @@ NV_NVDLA_CACC_calculator u_calculator (
 ,.mac_a2accu_data1 (mac_a2accu_data1) //|< i 
 ,.mac_a2accu_data2 (mac_a2accu_data2) //|< i 
 ,.mac_a2accu_data3 (mac_a2accu_data3) //|< i 
-,.mac_a2accu_data4 (mac_a2accu_data4) //|< i 
-,.mac_a2accu_data5 (mac_a2accu_data5) //|< i 
-,.mac_a2accu_data6 (mac_a2accu_data6) //|< i 
-,.mac_a2accu_data7 (mac_a2accu_data7) //|< i 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.mac_a2accu_mask (mac_a2accu_mask) //|< i
   ,.mac_a2accu_mode (mac_a2accu_mode) //|< i
   ,.mac_a2accu_pvld (mac_a2accu_pvld) //|< i
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
 //: ,.mac_b2accu_data${i} (mac_b2accu_data${i}) //|< i )
 //: }
@@ -275,10 +255,6 @@ NV_NVDLA_CACC_calculator u_calculator (
 ,.mac_b2accu_data1 (mac_b2accu_data1) //|< i 
 ,.mac_b2accu_data2 (mac_b2accu_data2) //|< i 
 ,.mac_b2accu_data3 (mac_b2accu_data3) //|< i 
-,.mac_b2accu_data4 (mac_b2accu_data4) //|< i 
-,.mac_b2accu_data5 (mac_b2accu_data5) //|< i 
-,.mac_b2accu_data6 (mac_b2accu_data6) //|< i 
-,.mac_b2accu_data7 (mac_b2accu_data7) //|< i 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.mac_b2accu_mask (mac_b2accu_mask) //|< i
   ,.mac_b2accu_mode (mac_b2accu_mode) //|< i
@@ -302,7 +278,7 @@ NV_NVDLA_CACC_delivery_ctrl u_delivery_ctrl (
   ,.reg2dp_dataout_width (reg2dp_dataout_width) //|< w
   ,.reg2dp_dataout_height (reg2dp_dataout_height) //|< w
   ,.reg2dp_dataout_channel (reg2dp_dataout_channel) //|< w
-  ,.reg2dp_dataout_addr (reg2dp_dataout_addr[31:4]) //|< w
+  ,.reg2dp_dataout_addr (reg2dp_dataout_addr[31:3]) //|< w
   ,.reg2dp_line_packed (reg2dp_line_packed) //|< w
   ,.reg2dp_surf_packed (reg2dp_surf_packed) //|< w
   ,.reg2dp_batches (reg2dp_batches[4:0]) //|< w

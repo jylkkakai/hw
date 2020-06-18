@@ -14,14 +14,13 @@
 // this distribution for more information.
 // ================================================================
 // File Name: NV_NVDLA_CMAC.h
-`define DESIGNWARE_NOEXIST 1
 module NV_NVDLA_CMAC_CORE_rt_out (
    nvdla_core_clk
   ,nvdla_wg_clk
   ,nvdla_core_rstn
   ,cfg_is_wg
   ,cfg_reg_en
-//: for(my $i=0; $i<16/2; $i++){
+//: for(my $i=0; $i<8/2; $i++){
 //: print qq(
 //: ,out_data${i} )
 //: }
@@ -29,7 +28,7 @@ module NV_NVDLA_CMAC_CORE_rt_out (
   ,out_pd
   ,out_pvld
   ,dp2reg_done
-//: for(my $i=0; $i<16/2; $i++){
+//: for(my $i=0; $i<8/2; $i++){
 //: print qq(
 //: ,mac2accu_data${i} )
 //: }
@@ -42,22 +41,22 @@ input nvdla_wg_clk;
 input nvdla_core_rstn;
 input cfg_is_wg;
 input cfg_reg_en;
-//: for(my $i=0; $i<16/2; $i++){
+//: for(my $i=0; $i<8/2; $i++){
 //: print qq(
-//: input[21 -1:0] out_data${i}; )
+//: input[19 -1:0] out_data${i}; )
 //: }
-input [16/2 -1:0] out_mask;
+input [8/2 -1:0] out_mask;
 input [8:0] out_pd;
 input out_pvld;
 output dp2reg_done;
-//: for(my $i=0; $i<16/2; $i++){
+//: for(my $i=0; $i<8/2; $i++){
 //: print qq(
-//: output[21 -1:0] mac2accu_data${i}; )
+//: output[19 -1:0] mac2accu_data${i}; )
 //: }
-output [16/2 -1:0] mac2accu_mask;
+output [8/2 -1:0] mac2accu_mask;
 output [8:0] mac2accu_pd;
 output mac2accu_pvld;
-wire [16/2 -1:0] mac2accu_mask;
+wire [8/2 -1:0] mac2accu_mask;
 wire [8:0] mac2accu_pd;
 wire mac2accu_pvld;
 wire out_layer_done;
@@ -73,8 +72,8 @@ wire out_rt_done_d0;
 assign out_layer_done = out_pd[8] &
                             out_pd[6] &
                             out_pvld;
-//: my $kk = 16/2;
-//: my $jj = 21;
+//: my $kk = 8/2;
+//: my $jj = 19;
 //: print "wire             out_rt_pvld_d0 = out_pvld;\n";
 //: print "wire [$kk-1:0]   out_rt_mask_d0 = out_mask;\n";
 //: print "wire [8:0]       out_rt_pd_d0   = out_pd;\n";
@@ -82,8 +81,8 @@ assign out_layer_done = out_pd[8] &
 //: print "wire [${jj}-1:0]    out_rt_data${k}_d0 =  out_data${k};\n";
 //: }
 //: my $latency = 2;
-//: my $kk = 16/2;
-//: my $res_width = 21;
+//: my $kk = 8/2;
+//: my $res_width = 19;
 //: for(my $i = 0; $i < $latency; $i ++) {
 //: my $j = $i + 1;
 //: &eperl::flop(" -q  out_rt_pvld_d${j}  -d \"out_rt_pvld_d${i}\" -clk nvdla_core_clk -rst nvdla_core_rstn ");
@@ -98,7 +97,7 @@ assign out_layer_done = out_pd[8] &
 //: print "assign    mac2accu_pvld = out_rt_pvld_d${i};\n";
 //: print "assign    mac2accu_mask = out_rt_mask_d${i};\n";
 //: print "assign    mac2accu_pd = out_rt_pd_d${i};\n";
-//: my $kk = 16/2;
+//: my $kk = 8/2;
 //: for(my $k = 0; $k < $kk; $k ++) {
 //: print "assign    mac2accu_data${k} = out_rt_data${k}_d${i};\n";
 //: }

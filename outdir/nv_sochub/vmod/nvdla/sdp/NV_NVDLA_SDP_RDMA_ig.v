@@ -45,7 +45,7 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input op_load;
 input dma_rd_req_rdy;
-output [79 -1:0] dma_rd_req_pd;
+output [47 -1:0] dma_rd_req_pd;
 output dma_rd_req_vld;
 input ig2cq_prdy;
 output [15:0] ig2cq_pd;
@@ -60,16 +60,14 @@ input reg2dp_rdma_data_mode;
 input reg2dp_rdma_data_size;
 input [1:0] reg2dp_rdma_data_use;
 input [31:0] reg2dp_base_addr_high;
-input [31-4:0] reg2dp_base_addr_low;
-input [31-4:0] reg2dp_line_stride;
-input [31-4:0] reg2dp_surface_stride;
+input [31-3:0] reg2dp_base_addr_low;
+input [31-3:0] reg2dp_line_stride;
+input [31-3:0] reg2dp_surface_stride;
 input reg2dp_perf_dma_en;
 output [31:0] dp2reg_rdma_stall;
-reg [64 -4 -1:0] base_addr_line;
-reg [64 -4 -1:0] base_addr_surf;
-reg [64 -4 -1:0] base_addr_width;
-reg [64 -4 -1:0] base_addr_wino;
-reg mon_base_addr_wino_c;
+reg [32 -3 -1:0] base_addr_line;
+reg [32 -3 -1:0] base_addr_surf;
+reg [32 -3 -1:0] base_addr_width;
 reg mon_base_addr_line_c;
 reg mon_base_addr_surf_c;
 reg mon_base_addr_width_c;
@@ -78,36 +76,30 @@ wire [14:0] ig2eg_size;
 reg cmd_process;
 wire cmd_accept;
 wire op_done;
-reg [13-4:0] count_c;
+reg [13-3:0] count_c;
 reg [14:0] count_w;
 reg [12:0] count_h;
-reg [13-4:0] size_of_surf;
+reg [13-3:0] size_of_surf;
 reg [14:0] size_of_straight;
 reg [14:0] size_of_width;
 wire [12:0] size_of_height;
-wire [64 -4 -1:0] cfg_base_addr;
+wire [32 -3 -1:0] cfg_base_addr;
 wire cfg_data_mode_per_kernel;
 wire cfg_data_size_1byte;
 wire cfg_data_use_both;
 wire cfg_mode_1x1_pack;
 wire cfg_proc_int16;
 wire cfg_proc_int8;
-wire [31-4:0] cfg_line_stride;
-wire [31-4:0] cfg_surf_stride;
+wire [31-3:0] cfg_line_stride;
+wire [31-3:0] cfg_surf_stride;
 wire is_cube_end;
 wire is_last_c;
 wire is_last_h;
 wire is_last_w;
 wire is_line_end;
 wire is_surf_end;
-wire cfg_mode_wino;
-reg [1:0] count_g;
-wire [1:0] size_of_wino;
-wire is_last_wg;
-wire is_wino_end;
-reg [2:0] mode_wino_req_size;
 reg [14:0] dma_req_size;
-reg [64 -1:0] dma_req_addr;
+reg [32 -1:0] dma_req_addr;
 reg stl_adv;
 reg [31:0] stl_cnt_cur;
 reg [33:0] stl_cnt_dec;
@@ -181,7 +173,7 @@ end
 //==============
 // Address catenate and offset calc
 //==============
-assign cfg_base_addr = {reg2dp_base_addr_high,reg2dp_base_addr_low};
+assign cfg_base_addr = reg2dp_base_addr_low;
 assign cfg_surf_stride = {reg2dp_surface_stride};
 assign cfg_line_stride = {reg2dp_line_stride};
 assign cfg_data_size_1byte = reg2dp_rdma_data_size == 1'h0 ;
@@ -189,35 +181,13 @@ assign cfg_data_use_both = reg2dp_rdma_data_use == 2'h2 ;
 assign cfg_data_mode_per_kernel = reg2dp_rdma_data_mode == 1'h0 ;
 assign cfg_proc_int8 = reg2dp_proc_precision == 0 ;
 assign cfg_proc_int16 = reg2dp_proc_precision == 1 ;
-assign cfg_mode_wino = reg2dp_winograd== 1'h1 ;
 assign cfg_mode_1x1_pack = (reg2dp_width==0) & (reg2dp_height==0);
 //=================================================
 // Cube Shape
 //=================================================
-assign is_wino_end = (!cfg_mode_wino) | cfg_data_mode_per_kernel | is_last_wg;
-assign is_line_end = (!cfg_mode_wino) | cfg_data_mode_per_kernel | is_wino_end & is_last_w;
+assign is_line_end = 1'b1;
 assign is_surf_end = cfg_mode_1x1_pack | cfg_data_mode_per_kernel | (is_line_end & is_last_h);
 assign is_cube_end = cfg_mode_1x1_pack | cfg_data_mode_per_kernel | (is_surf_end & is_last_c);
-//==============
-// Winagrad Count: size always==1, go height direction with 4 steps, then width direction
-//==============
-assign size_of_wino = cfg_mode_wino ? 2'd3 : 2'd0;
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-  if (!nvdla_core_rstn) begin
-    count_g <= {2{1'b0}};
-  end else begin
-    if (cfg_mode_wino) begin
-        if (cmd_accept) begin
-            if (is_wino_end) begin
-                count_g <= 0;
-            end else begin
-                count_g <= count_g + 1'b1;
-            end
-        end
-    end
-  end
-end
-assign is_last_wg = (count_g==size_of_wino);
 //==============
 // CHANNEL Count:
 //==============
@@ -227,16 +197,16 @@ always @(
   or cfg_proc_int16
   ) begin
     if (cfg_proc_int8) begin
-        size_of_surf = {1'b0,reg2dp_channel[12:4]};
+        size_of_surf = {1'b0,reg2dp_channel[12:3]};
     end else if (cfg_proc_int16) begin
-        size_of_surf = reg2dp_channel[12:4 -1];
+        size_of_surf = reg2dp_channel[12:3 -1];
     end else begin
-        size_of_surf = reg2dp_channel[12:4 -1];
+        size_of_surf = reg2dp_channel[12:3 -1];
     end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-    count_c <= {(14-4){1'b0}};
+    count_c <= {(14-3){1'b0}};
   end else begin
     if (cmd_accept) begin
         if (is_cube_end) begin
@@ -251,7 +221,7 @@ assign is_last_c = (count_c==size_of_surf);
 //==============
 // HEIGHT Count:
 //==============
-assign size_of_height = cfg_mode_wino ? {2'd0,reg2dp_height[12:2]} : reg2dp_height;
+assign size_of_height = reg2dp_height;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
     count_h <= {13{1'b0}};
@@ -266,44 +236,18 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   end
 end
 assign is_last_h = (count_h==size_of_height);
-//==============
-// Width Count:
-//==============
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-  if (!nvdla_core_rstn) begin
-    count_w <= {15{1'b0}};
-  end else begin
-    if (cfg_mode_wino) begin
-        if (cmd_accept) begin
-            if (is_line_end) begin
-                count_w <= 0;
-            end else if (is_wino_end) begin
-                count_w <= count_w + 1;
-            end
-        end
-    end
-  end
-end
-assign is_last_w = (count_w==size_of_width);
 //==========================================
 // DMA Req : ADDR PREPARE
 //==========================================
 // LINE
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-    base_addr_line <= {(64 -4){1'b0}};
+    base_addr_line <= {(32 -3){1'b0}};
     mon_base_addr_line_c <= 1'b0;
   end else begin
     if (op_load) begin
         base_addr_line <= cfg_base_addr;
     end else if (cmd_accept) begin
-        if (cfg_mode_wino) begin
-            if (is_surf_end) begin
-                {mon_base_addr_line_c,base_addr_line} <= base_addr_surf + cfg_surf_stride;
-            end else if (is_line_end) begin
-                {mon_base_addr_line_c,base_addr_line} <= base_addr_line + (cfg_line_stride<<2);
-            end
-        end else
         begin
             if (is_surf_end) begin
                 {mon_base_addr_line_c,base_addr_line} <= base_addr_surf + cfg_surf_stride;
@@ -362,17 +306,12 @@ end
 // SURF
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-    base_addr_surf <= {(64 -4){1'b0}};
+    base_addr_surf <= {(32 -3){1'b0}};
     mon_base_addr_surf_c <= 1'b0;
   end else begin
     if (op_load) begin
         base_addr_surf <= cfg_base_addr;
     end else if (cmd_accept) begin
-        if (cfg_mode_wino) begin
-            if (is_surf_end) begin
-                {mon_base_addr_surf_c,base_addr_surf} <= base_addr_surf + cfg_surf_stride;
-            end
-        end else
         begin
             if (is_surf_end) begin
                 {mon_base_addr_surf_c,base_addr_surf} <= base_addr_surf + cfg_surf_stride;
@@ -426,164 +365,21 @@ end
 // spyglass enable_block WRN_58
 // spyglass enable_block WRN_61
 `endif // SPYGLASS_ASSERT_ON
-// ADDR WinoG
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-  if (!nvdla_core_rstn) begin
-    base_addr_wino <= {(64 -4){1'b0}};
-    mon_base_addr_wino_c <= 1'b0;
-  end else begin
-    if (cfg_mode_wino) begin
-        if (op_load) begin
-            base_addr_wino <= cfg_base_addr;
-        end else if (cmd_accept) begin
-            if (is_surf_end) begin
-                {mon_base_addr_wino_c,base_addr_wino} <= base_addr_surf + cfg_surf_stride;
-            end else if (is_line_end) begin
-                {mon_base_addr_wino_c,base_addr_wino} <= base_addr_line + (cfg_line_stride<<2);
-            end else if (is_wino_end) begin
-                {mon_base_addr_wino_c,base_addr_wino} <= base_addr_width + (dma_req_size+1);
-            end else begin
-                {mon_base_addr_wino_c,base_addr_wino} <= base_addr_wino + cfg_line_stride;
-            end
-        end
-    end
-  end
-end
-`ifdef SPYGLASS_ASSERT_ON
-`else
-// spyglass disable_block NoWidthInBasedNum-ML
-// spyglass disable_block STARC-2.10.3.2a
-// spyglass disable_block STARC05-2.1.3.1
-// spyglass disable_block STARC-2.1.4.6
-// spyglass disable_block W116
-// spyglass disable_block W154
-// spyglass disable_block W239
-// spyglass disable_block W362
-// spyglass disable_block WRN_58
-// spyglass disable_block WRN_61
-`endif // SPYGLASS_ASSERT_ON
-`ifdef ASSERT_ON
-`ifdef FV_ASSERT_ON
-`define ASSERT_RESET nvdla_core_rstn
-`else
-`ifdef SYNTHESIS
-`define ASSERT_RESET nvdla_core_rstn
-`else
-`ifdef ASSERT_OFF_RESET_IS_X
-`define ASSERT_RESET ((1'bx === nvdla_core_rstn) ? 1'b0 : nvdla_core_rstn)
-`else
-`define ASSERT_RESET ((1'bx === nvdla_core_rstn) ? 1'b1 : nvdla_core_rstn)
-`endif // ASSERT_OFF_RESET_IS_X
-`endif // SYNTHESIS
-`endif // FV_ASSERT_ON
-// VCS coverage off
-  nv_assert_never #(0,0,"SDP RDMA: no overflow is allowed") zzz_assert_never_4x (nvdla_core_clk, `ASSERT_RESET, mon_base_addr_wino_c); // spyglass disable W504 SelfDeterminedExpr-ML 
-// VCS coverage on
-`undef ASSERT_RESET
-`endif // ASSERT_ON
-`ifdef SPYGLASS_ASSERT_ON
-`else
-// spyglass enable_block NoWidthInBasedNum-ML
-// spyglass enable_block STARC-2.10.3.2a
-// spyglass enable_block STARC05-2.1.3.1
-// spyglass enable_block STARC-2.1.4.6
-// spyglass enable_block W116
-// spyglass enable_block W154
-// spyglass enable_block W239
-// spyglass enable_block W362
-// spyglass enable_block WRN_58
-// spyglass enable_block WRN_61
-`endif // SPYGLASS_ASSERT_ON
-// ADDR width
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-  if (!nvdla_core_rstn) begin
-    base_addr_width <= {(64 -4){1'b0}};
-    mon_base_addr_width_c <= 1'b0;
-  end else begin
-    if (cfg_mode_wino) begin
-        if (op_load) begin
-            base_addr_width <= cfg_base_addr;
-        end else if (cmd_accept) begin
-            if (is_surf_end) begin
-                {mon_base_addr_width_c,base_addr_width} <= base_addr_surf + cfg_surf_stride;
-            end else if (is_line_end) begin
-                {mon_base_addr_width_c,base_addr_width} <= base_addr_line + (cfg_line_stride<<2);
-            end else if (is_wino_end) begin
-                {mon_base_addr_width_c,base_addr_width} <= base_addr_width + (dma_req_size+1);
-            end
-        end
-    end
-  end
-end
-`ifdef SPYGLASS_ASSERT_ON
-`else
-// spyglass disable_block NoWidthInBasedNum-ML
-// spyglass disable_block STARC-2.10.3.2a
-// spyglass disable_block STARC05-2.1.3.1
-// spyglass disable_block STARC-2.1.4.6
-// spyglass disable_block W116
-// spyglass disable_block W154
-// spyglass disable_block W239
-// spyglass disable_block W362
-// spyglass disable_block WRN_58
-// spyglass disable_block WRN_61
-`endif // SPYGLASS_ASSERT_ON
-`ifdef ASSERT_ON
-`ifdef FV_ASSERT_ON
-`define ASSERT_RESET nvdla_core_rstn
-`else
-`ifdef SYNTHESIS
-`define ASSERT_RESET nvdla_core_rstn
-`else
-`ifdef ASSERT_OFF_RESET_IS_X
-`define ASSERT_RESET ((1'bx === nvdla_core_rstn) ? 1'b0 : nvdla_core_rstn)
-`else
-`define ASSERT_RESET ((1'bx === nvdla_core_rstn) ? 1'b1 : nvdla_core_rstn)
-`endif // ASSERT_OFF_RESET_IS_X
-`endif // SYNTHESIS
-`endif // FV_ASSERT_ON
-// VCS coverage off
-  nv_assert_never #(0,0,"SDP RDMA: no overflow is allowed") zzz_assert_never_5x (nvdla_core_clk, `ASSERT_RESET, mon_base_addr_width_c); // spyglass disable W504 SelfDeterminedExpr-ML 
-// VCS coverage on
-`undef ASSERT_RESET
-`endif // ASSERT_ON
-`ifdef SPYGLASS_ASSERT_ON
-`else
-// spyglass enable_block NoWidthInBasedNum-ML
-// spyglass enable_block STARC-2.10.3.2a
-// spyglass enable_block STARC05-2.1.3.1
-// spyglass enable_block STARC-2.1.4.6
-// spyglass enable_block W116
-// spyglass enable_block W154
-// spyglass enable_block W239
-// spyglass enable_block W362
-// spyglass enable_block WRN_58
-// spyglass enable_block WRN_61
-`endif // SPYGLASS_ASSERT_ON
 //==========================================
 // DMA Req : Addr
 //==========================================
 always @(
   base_addr_line
-  or cfg_mode_wino
-  or base_addr_wino
   ) begin
-    if (cfg_mode_wino)
-        dma_req_addr = {base_addr_wino,{4{1'b0}}};
-    else
-        dma_req_addr = {base_addr_line,{4{1'b0}}};
+        dma_req_addr = {base_addr_line,{3{1'b0}}};
 end
 // Size_Of_Width: As each element is 1B or 2B, the width of cube will be resized accordingly
 always @(
   reg2dp_width
-  or cfg_mode_wino
   or cfg_proc_int8
   or cfg_data_use_both
   or cfg_data_size_1byte
   ) begin
-    if (cfg_mode_wino) begin
-        size_of_width = {3'd0,reg2dp_width[12:1]};
-    end else
     if (cfg_proc_int8) begin
         if (cfg_data_use_both) begin
             if (cfg_data_size_1byte) begin
@@ -609,42 +405,6 @@ end
 //==========================================
 // DMA Req : SIZE
 //==========================================
-// winograd
-always @(
-  cfg_proc_int8
-  or cfg_data_use_both
-  or cfg_data_size_1byte
-  ) begin
-    if (cfg_proc_int8) begin
-        if (cfg_data_use_both) begin
-            if (cfg_data_size_1byte) begin
-                mode_wino_req_size = 3'd3;
-            end else begin
-                mode_wino_req_size = 3'd7;
-            end
-        end else begin
-            if (cfg_data_size_1byte) begin
-                mode_wino_req_size = 3'd1;
-            end else begin
-                mode_wino_req_size = 3'd3;
-            end
-        end
-    end else begin
-        if (cfg_data_use_both) begin
-            if (cfg_data_size_1byte) begin
-                mode_wino_req_size = 3'd1;
-            end else begin
-                mode_wino_req_size = 3'd3;
-            end
-        end else begin
-            if (cfg_data_size_1byte) begin
-                mode_wino_req_size = 3'd0;
-            end else begin
-                mode_wino_req_size = 3'd1;
-            end
-        end
-    end
-end
 // in 1x1_pack mode, only send one request out
 //assign mode_1x1_req_size = size_of_surf;
 // PRECISION: 2byte both
@@ -739,16 +499,11 @@ always @(
   cfg_data_mode_per_kernel
   or cfg_mode_1x1_pack
   or size_of_straight
-  or cfg_mode_wino
-  or mode_wino_req_size
   or size_of_width
   ) begin
     if (cfg_data_mode_per_kernel || cfg_mode_1x1_pack) begin
         dma_req_size = size_of_straight;
     end else begin
-        if (cfg_mode_wino) begin
-            dma_req_size = {{12{1'b0}}, mode_wino_req_size};
-        end else
         begin
             dma_req_size = size_of_width;
         end
@@ -813,8 +568,8 @@ assign ig2cq_pvld = cmd_process & dma_rd_req_rdy;
 //==============
 // VALID: clamp when when cq is not ready
 assign dma_rd_req_vld = cmd_process & ig2cq_prdy;
-assign dma_rd_req_pd[64 -1:0] = dma_req_addr[64 -1:0];
-assign dma_rd_req_pd[79 -1:64] = dma_req_size[14:0];
+assign dma_rd_req_pd[32 -1:0] = dma_req_addr[32 -1:0];
+assign dma_rd_req_pd[47 -1:32] = dma_req_size[14:0];
 // Accept
 assign cmd_accept = dma_rd_req_vld & dma_rd_req_rdy;
 //==============
@@ -861,51 +616,4 @@ always @(
   ) begin
   dp2reg_rdma_stall[31:0] = stl_cnt_cur[31:0];
 end
-//===============
-// ASSERTION
-`ifdef SPYGLASS_ASSERT_ON
-`else
-// spyglass disable_block NoWidthInBasedNum-ML
-// spyglass disable_block STARC-2.10.3.2a
-// spyglass disable_block STARC05-2.1.3.1
-// spyglass disable_block STARC-2.1.4.6
-// spyglass disable_block W116
-// spyglass disable_block W154
-// spyglass disable_block W239
-// spyglass disable_block W362
-// spyglass disable_block WRN_58
-// spyglass disable_block WRN_61
-`endif // SPYGLASS_ASSERT_ON
-`ifdef ASSERT_ON
-`ifdef FV_ASSERT_ON
-`define ASSERT_RESET nvdla_core_rstn
-`else
-`ifdef SYNTHESIS
-`define ASSERT_RESET nvdla_core_rstn
-`else
-`ifdef ASSERT_OFF_RESET_IS_X
-`define ASSERT_RESET ((1'bx === nvdla_core_rstn) ? 1'b0 : nvdla_core_rstn)
-`else
-`define ASSERT_RESET ((1'bx === nvdla_core_rstn) ? 1'b1 : nvdla_core_rstn)
-`endif // ASSERT_OFF_RESET_IS_X
-`endif // SYNTHESIS
-`endif // FV_ASSERT_ON
-// VCS coverage off
-  nv_assert_never #(0,0,"SDP-RDMA: winograd, height need be multiple of 4") zzz_assert_never_8x (nvdla_core_clk, `ASSERT_RESET, op_load & cfg_mode_wino & (reg2dp_height[1:0]!=2'b11)); // spyglass disable W504 SelfDeterminedExpr-ML 
-// VCS coverage on
-`undef ASSERT_RESET
-`endif // ASSERT_ON
-`ifdef SPYGLASS_ASSERT_ON
-`else
-// spyglass enable_block NoWidthInBasedNum-ML
-// spyglass enable_block STARC-2.10.3.2a
-// spyglass enable_block STARC05-2.1.3.1
-// spyglass enable_block STARC-2.1.4.6
-// spyglass enable_block W116
-// spyglass enable_block W154
-// spyglass enable_block W239
-// spyglass enable_block W362
-// spyglass enable_block WRN_58
-// spyglass enable_block WRN_61
-`endif // SPYGLASS_ASSERT_ON
 endmodule // NV_NVDLA_SDP_RDMA_ig

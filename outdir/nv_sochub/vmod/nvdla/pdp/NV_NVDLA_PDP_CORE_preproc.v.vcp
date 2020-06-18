@@ -50,9 +50,9 @@ input [12:0] reg2dp_cube_in_height;
 input [12:0] reg2dp_cube_in_width;
 input reg2dp_flying_mode;
 input reg2dp_op_en;
-input [8*4 -1:0] sdp2pdp_pd;
+input [8*1 -1:0] sdp2pdp_pd;
 input sdp2pdp_valid;
-output [2*8 +13:0] pre2cal1d_pd;
+output [1*8 +13:0] pre2cal1d_pd;
 output pre2cal1d_pvld;
 output sdp2pdp_ready;
 /////////////////////////////////////////////////////////////////
@@ -81,8 +81,8 @@ reg [4:0] pos_c;
 reg [4:0] sdp2pdp_c_cnt;
 wire sdp2pdp_en_sync;
 reg [12:0] sdp2pdp_height_cnt;
-wire [8*4 -1:0] sdp2pdp_pd_use;
-//: my $atomicm = 16;
+wire [8*1 -1:0] sdp2pdp_pd_use;
+//: my $atomicm = 8;
 //: my $k = int( log($atomicm)/log(2) );
 //: print "reg      [12-${k}:0] sdp2pdp_surf_cnt; \n";
 //: print "reg      [12-${k}:0] surf_cnt; \n";
@@ -108,8 +108,8 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
         sdp2pdp_c_cnt <= sdp2pdp_c_cnt + 1'b1;
   end
 end
-//: my $sdpth = 4;
-//: my $atomicm = 16;
+//: my $sdpth = 1;
+//: my $atomicm = 8;
 //: my $k = int( $atomicm/$sdpth ) -1;
 //: print qq(
 //: assign sdp2pdp_c_end = (load_din & (sdp2pdp_c_cnt == 5'd${k}));
@@ -152,7 +152,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     end
   end
 end
-//: my $atomicm = 16;
+//: my $atomicm = 8;
 //: my $k = int( log($atomicm)/log(2) );
 //: print qq(
 //: assign sdp2pdp_cube_end = sdp2pdp_surf_end & (sdp2pdp_surf_cnt == reg2dp_cube_in_channel[12:${k}]);
@@ -207,9 +207,9 @@ end
 ///////////////////////////
 assign sdp2pdp_en = (onfly_en & (~waiting_for_op_en));
 //assign sdp2pdp_ready = sdp2pdp_ready_f & sdp2pdp_en;
-wire [8*4:0] pipe0_i;
+wire [8*1:0] pipe0_i;
 assign pipe0_i = {sdp2pdp_pd,sdp2pdp_en};
-//: my $k = 8*4 + 1;
+//: my $k = 8*1 + 1;
 //: &eperl::pipe(" -is -wid $k -do pipe0_o -vo sdp2pdp_valid_use_f -ri sdp2pdp_ready_use -di pipe0_i -vi sdp2pdp_valid -ro sdp2pdp_ready_f   ");
 assign {sdp2pdp_pd_use,sdp2pdp_en_sync} = pipe0_o;
 ////
@@ -219,8 +219,8 @@ assign sdp2pdp_ready = sdp2pdp_ready_f & sdp2pdp_en;
 assign sdp2pdp_valid_use = sdp2pdp_valid_use_f & sdp2pdp_en_sync;
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
-//: my $sdpth = 4;
-//: my $pdpth = 2;
+//: my $sdpth = 1;
+//: my $pdpth = 1;
 //: my $sdpbw = $sdpth * 8;
 //: my $pdpbw = $pdpth * 8;
 //: if($sdpth > $pdpth) {
@@ -376,8 +376,8 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     end
   end
 end
-//: my $pdpth = 2;
-//: my $atomicm = 16;
+//: my $pdpth = 1;
+//: my $atomicm = 8;
 //: my $k = int( $atomicm/$pdpth ) -1;
 //: print qq(
 //: assign last_c = pre2cal1d_load & (pos_c == 5'd${k});
@@ -423,7 +423,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     end
   end
 end
-//: my $atomicm = 16;
+//: my $atomicm = 8;
 //: my $k = int( log($atomicm)/log(2) );
 //: print qq(
 //: assign split_end = surf_end & (surf_cnt == reg2dp_cube_in_channel[12:${k}]);

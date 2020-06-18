@@ -851,8 +851,8 @@ int main(int argc, const char **argv, char **env) {
 		.aw_awready = &dla->nvdla_core2dbb_aw_awready,
 		.aw_awid = &dla->nvdla_core2dbb_aw_awid,
 		.aw_awlen = &dla->nvdla_core2dbb_aw_awlen,
-		//.aw_awaddr = &dla->nvdla_core2dbb_aw_awaddr,
-		.aw_awaddr = (uint64_t *)&dla->nvdla_core2dbb_aw_awaddr,
+		.aw_awaddr = &dla->nvdla_core2dbb_aw_awaddr,
+		//.aw_awaddr = (uint64_t *)&dla->nvdla_core2dbb_aw_awaddr,
 		
 		.w_wvalid = &dla->nvdla_core2dbb_w_wvalid,
 		.w_wready = &dla->nvdla_core2dbb_w_wready,
@@ -868,8 +868,8 @@ int main(int argc, const char **argv, char **env) {
 		.ar_arready = &dla->nvdla_core2dbb_ar_arready,
 		.ar_arid = &dla->nvdla_core2dbb_ar_arid,
 		.ar_arlen = &dla->nvdla_core2dbb_ar_arlen,
-		//.ar_araddr = &dla->nvdla_core2dbb_ar_araddr,
-		.ar_araddr = (uint64_t *)&dla->nvdla_core2dbb_ar_araddr,
+		.ar_araddr = &dla->nvdla_core2dbb_ar_araddr,
+		//.ar_araddr = (uint64_t *)&dla->nvdla_core2dbb_ar_araddr,
 	
 		.r_rvalid = &dla->nvdla_core2dbb_r_rvalid,
 		.r_rready = &dla->nvdla_core2dbb_r_rready,

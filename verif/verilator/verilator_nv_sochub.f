@@ -107,7 +107,8 @@
 -v ../../vmod/own_fifos/NV_NVDLA_PDP_RDMA_lat_fifo_129x128.v
 -v ../../vmod/own_fifos/NV_NVDLA_CDP_RDMA_lat_fifo_129x128.v
 -v ../../vmod/rams/model/RAMPDP_128X258_GL_M1_D2.v
-
+-v ../../vmod/rams/model/RAMPDP_256X14_GL_M4_D2.v
+-v ../../vmod/rams/model/RAMPDP_256X16_GL_M2_D2.v
 
 
 -DNO_PLI_OR_EMU

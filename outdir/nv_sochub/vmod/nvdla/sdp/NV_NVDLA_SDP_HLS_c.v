@@ -36,17 +36,17 @@ input [15:0] cfg_scale;
 input [5:0] cfg_truncate;
 input cvt_in_pvld;
 input cvt_out_prdy;
-input [32*4 -1:0] cvt_pd_in;
+input [32*1 -1:0] cvt_pd_in;
 output cvt_in_prdy;
 output cvt_out_pvld;
-output [16*4 +4 -1:0] cvt_pd_out;
+output [16*1 +1 -1:0] cvt_pd_out;
 input nvdla_core_clk;
 input nvdla_core_rstn;
-wire [8*4 -1:0] cvt_pd_out8;
-wire [16*4 -1:0] cvt_pd_out16;
+wire [8*1 -1:0] cvt_pd_out8;
+wire [16*1 -1:0] cvt_pd_out16;
 //: my $b = 8;
-//: my $dw = 16*4;
-//: my $k=4;
+//: my $dw = 16*1;
+//: my $k=1;
 //: foreach my $i (0..${k}-1) {
 //: print qq(
 //: wire [31:0] cvt_data_in_$i;
@@ -101,42 +101,12 @@ wire cvt_in_prdy_0;
 wire cvt_out_pvld_0;
 wire cvt_sat_out_0;
 
-wire [31:0] cvt_data_in_1;
-wire [15:0] cvt_data_out_1;
-wire cvt_in_prdy_1;
-wire cvt_out_pvld_1;
-wire cvt_sat_out_1;
-
-wire [31:0] cvt_data_in_2;
-wire [15:0] cvt_data_out_2;
-wire cvt_in_prdy_2;
-wire cvt_out_pvld_2;
-wire cvt_sat_out_2;
-
-wire [31:0] cvt_data_in_3;
-wire [15:0] cvt_data_out_3;
-wire cvt_in_prdy_3;
-wire cvt_out_pvld_3;
-wire cvt_sat_out_3;
-
 assign  cvt_data_in_0 = cvt_pd_in[32*0+31:32*0]; 
-assign  cvt_data_in_1 = cvt_pd_in[32*1+31:32*1]; 
-assign  cvt_data_in_2 = cvt_pd_in[32*2+31:32*2]; 
-assign  cvt_data_in_3 = cvt_pd_in[32*3+31:32*3]; 
 assign  cvt_pd_out8[8*0+7:8*0] = cvt_data_out_0[7:0]; 
-assign  cvt_pd_out8[8*1+7:8*1] = cvt_data_out_1[7:0]; 
-assign  cvt_pd_out8[8*2+7:8*2] = cvt_data_out_2[7:0]; 
-assign  cvt_pd_out8[8*3+7:8*3] = cvt_data_out_3[7:0]; 
 assign  cvt_pd_out16[16*0+15:16*0] = cvt_data_out_0; 
-assign  cvt_pd_out16[16*1+15:16*1] = cvt_data_out_1; 
-assign  cvt_pd_out16[16*2+15:16*2] = cvt_data_out_2; 
-assign  cvt_pd_out16[16*3+15:16*3] = cvt_data_out_3; 
 
-assign  cvt_pd_out[64-1:0] = cfg_out_precision[1:0]==2'b0 ? {{(8*4){1'b0}},cvt_pd_out8[8*4-1:0]} : cvt_pd_out16[16*4-1:0]; 
-assign  cvt_pd_out[64+0] = cvt_sat_out_0; 
-assign  cvt_pd_out[64+1] = cvt_sat_out_1; 
-assign  cvt_pd_out[64+2] = cvt_sat_out_2; 
-assign  cvt_pd_out[64+3] = cvt_sat_out_3; 
+assign  cvt_pd_out[16-1:0] = cfg_out_precision[1:0]==2'b0 ? {{(8*1){1'b0}},cvt_pd_out8[8*1-1:0]} : cvt_pd_out16[16*1-1:0]; 
+assign  cvt_pd_out[16+0] = cvt_sat_out_0; 
 
 
 NV_NVDLA_SDP_HLS_C_int c_int_0 (
@@ -154,60 +124,6 @@ NV_NVDLA_SDP_HLS_C_int c_int_0 (
 ,.cvt_in_prdy (cvt_in_prdy_0)
 ,.cvt_out_pvld (cvt_out_pvld_0)
 ,.cvt_sat_out (cvt_sat_out_0)
-);
-
-
-NV_NVDLA_SDP_HLS_C_int c_int_1 (
-.cfg_mode_eql (cfg_mode_eql)
-,.cfg_offset (cfg_offset[31:0])
-,.cfg_out_precision (cfg_out_precision[1:0])
-,.cfg_scale (cfg_scale[15:0])
-,.cfg_truncate (cfg_truncate[5:0])
-,.cvt_data_in (cvt_data_in_1[31:0])
-,.cvt_in_pvld (cvt_in_pvld)
-,.cvt_out_prdy (cvt_out_prdy)
-,.nvdla_core_clk (nvdla_core_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.cvt_data_out (cvt_data_out_1[15:0])
-,.cvt_in_prdy (cvt_in_prdy_1)
-,.cvt_out_pvld (cvt_out_pvld_1)
-,.cvt_sat_out (cvt_sat_out_1)
-);
-
-
-NV_NVDLA_SDP_HLS_C_int c_int_2 (
-.cfg_mode_eql (cfg_mode_eql)
-,.cfg_offset (cfg_offset[31:0])
-,.cfg_out_precision (cfg_out_precision[1:0])
-,.cfg_scale (cfg_scale[15:0])
-,.cfg_truncate (cfg_truncate[5:0])
-,.cvt_data_in (cvt_data_in_2[31:0])
-,.cvt_in_pvld (cvt_in_pvld)
-,.cvt_out_prdy (cvt_out_prdy)
-,.nvdla_core_clk (nvdla_core_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.cvt_data_out (cvt_data_out_2[15:0])
-,.cvt_in_prdy (cvt_in_prdy_2)
-,.cvt_out_pvld (cvt_out_pvld_2)
-,.cvt_sat_out (cvt_sat_out_2)
-);
-
-
-NV_NVDLA_SDP_HLS_C_int c_int_3 (
-.cfg_mode_eql (cfg_mode_eql)
-,.cfg_offset (cfg_offset[31:0])
-,.cfg_out_precision (cfg_out_precision[1:0])
-,.cfg_scale (cfg_scale[15:0])
-,.cfg_truncate (cfg_truncate[5:0])
-,.cvt_data_in (cvt_data_in_3[31:0])
-,.cvt_in_pvld (cvt_in_pvld)
-,.cvt_out_prdy (cvt_out_prdy)
-,.nvdla_core_clk (nvdla_core_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.cvt_data_out (cvt_data_out_3[15:0])
-,.cvt_in_prdy (cvt_in_prdy_3)
-,.cvt_out_pvld (cvt_out_pvld_3)
-,.cvt_sat_out (cvt_sat_out_3)
 );
 
 

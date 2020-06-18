@@ -5,17 +5,17 @@ interface csc2cmac_data_if
   field stripe_end 1
   field channel_end 1
   field layer_end 1
-  field mask 32
-  field data[32] 8
+  field mask 8
+  field data[8] 8
 interface csc2cmac_wt_if
   flow valid
-  field data[32] 8
-  field mask 32
-  field sel 8
+  field data[8] 8
+  field mask 8
+  field sel 4
 interface cmac2cacc_if
   flow valid
-  field data[8] 21
-  field mask 8
+  field data[4] 19
+  field mask 4
   field mode 1
   field batch_index 5
   field stripe_st 1
@@ -24,23 +24,23 @@ interface cmac2cacc_if
   field layer_end 1
 interface cacc2sdp_if
   flow valid_ready
-  field pd[4] 32
+  field pd[1] 32
   field pd_batch_end 1
   field pd_layer_end 1
 interface sdp2pdp_if
   flow valid_ready
-  field pd[4] 8
+  field pd[1] 8
 group DMA_READ_REQ
-  field addr 64
+  field addr 32
   field size 15
 group DMA_READ_RSP
-  field data 128
+  field data 64
   field mask 1
 group DMA_WR_REQ
-  field addr 64
+  field addr 32
   field size 13
 group DMA_WR_DATA
-  field data 128
+  field data 64
   field mask 1
 interface nvdla_dma_rd_req
     flow valid_ready

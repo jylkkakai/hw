@@ -61,10 +61,10 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 output lut2inp_pvld; /* data valid */
 input lut2inp_prdy; /* data return handshake */
-output [185*1 -1:0] lut2inp_pd;
+output [185*0 -1:0] lut2inp_pd;
 input idx2lut_pvld; /* data valid */
 output idx2lut_prdy; /* data return handshake */
-input [81*1 -1:0] idx2lut_pd;
+input [81*0 -1:0] idx2lut_pd;
 input reg2dp_lut_int_access_type;
 input [9:0] reg2dp_lut_int_addr;
 input [15:0] reg2dp_lut_int_data;
@@ -95,12 +95,12 @@ output [31:0] dp2reg_lut_uflow;
 input [31:0] pwrbus_ram_pd;
 input op_en_load;
 wire idx2lut_prdy;
-wire [185*1 -1:0] lut2inp_pd;
+wire [185*0 -1:0] lut2inp_pd;
 wire lut2inp_pvld;
-wire [81*1 -1:0] lut_in_pd;
+wire [81*0 -1:0] lut_in_pd;
 wire lut_in_pvld;
 wire lut_in_prdy;
-wire [185*1 -1:0] lut_out_pd;
+wire [185*0 -1:0] lut_out_pd;
 wire lut_out_pvld;
 wire lut_out_prdy;
 //: my $m = 65;
@@ -114,7 +114,7 @@ wire lut_out_prdy;
 //: foreach my $i (0..${n}-1) {
 //: print "reg     [15:0] REG_lo_${i}; \n";
 //: }
-//: my $k = 1;
+//: my $k = 0;
 //: foreach my $lut (qw(le lo)) {
 //: foreach my $j (0..1) {
 //: foreach my $i (0..${k}-1) {
@@ -637,15 +637,11 @@ reg     [15:0] REG_lo_253;
 reg     [15:0] REG_lo_254; 
 reg     [15:0] REG_lo_255; 
 reg     [15:0] REG_lo_256; 
-reg     [15:0] le_data0_0; 
-reg     [15:0] le_data1_0; 
-reg     [15:0] lo_data0_0; 
-reg     [15:0] lo_data1_0; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 reg [15:0] le_lut_data;
 reg [15:0] lo_lut_data;
-//: my $k = 1;
+//: my $k = 0;
 //: foreach my $i (0..${k}-1) {
 //: print qq(
 //: reg [31:0] out_bias${i};
@@ -655,11 +651,6 @@ reg [15:0] lo_lut_data;
 //: );
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-
-reg [31:0] out_bias0;
-reg [31:0] out_offset0;
-reg [15:0] out_scale0;
-reg [4:0] out_shift0;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire [0:0] lut_hybrid_sum_tmp;
@@ -717,18 +708,18 @@ reg [33:0] perf_lut_uflow_cnt_ext;
 reg [33:0] perf_lut_uflow_cnt_mod;
 reg [33:0] perf_lut_uflow_cnt_new;
 reg [33:0] perf_lut_uflow_cnt_nxt;
-wire [70*1 -1:0] cmd_fifo_rd_pd;
+wire [70*0 -1:0] cmd_fifo_rd_pd;
 wire cmd_fifo_rd_prdy;
 wire cmd_fifo_rd_pvld;
-wire [70*1 -1:0] cmd_fifo_wr_pd;
+wire [70*0 -1:0] cmd_fifo_wr_pd;
 wire cmd_fifo_wr_prdy;
 wire cmd_fifo_wr_pvld;
-wire [32*1 -1:0] dat_fifo_rd_pd;
+wire [32*0 -1:0] dat_fifo_rd_pd;
 wire dat_fifo_rd_prdy;
 wire dat_fifo_rd_pvld;
-wire [32*1 -1:0] dat_fifo_wr_pd;
+wire [32*0 -1:0] dat_fifo_wr_pd;
 wire dat_fifo_wr_pvld;
-//: my $k = 1;
+//: my $k = 0;
 //: foreach my $j (0..1) {
 //: foreach my $i (0..${k}-1) {
 //: print"wire    [15:0] dat_in_y${j}_${i}; \n";
@@ -742,7 +733,7 @@ wire dat_fifo_wr_pvld;
 //: foreach my $i (0..${od}-1) {
 //: print"wire           lo_wr_en_$i; \n";
 //: }
-//: my $k = 1;
+//: my $k = 0;
 //: foreach my $i (0..${k}-1) {
 //: print qq(
 //: wire [8:0] lut_in_addr${i};
@@ -767,8 +758,6 @@ wire dat_fifo_wr_pvld;
 //: );
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-wire    [15:0] dat_in_y0_0; 
-wire    [15:0] dat_in_y1_0; 
 wire           le_wr_en_0; 
 wire           le_wr_en_1; 
 wire           le_wr_en_2; 
@@ -1091,26 +1080,6 @@ wire           lo_wr_en_253;
 wire           lo_wr_en_254; 
 wire           lo_wr_en_255; 
 wire           lo_wr_en_256; 
-
-wire [8:0] lut_in_addr0;
-wire [8:0] lut_in_addr0_0;
-wire [8:0] lut_in_addr0_1;
-wire [34:0] lut_in_fraction0;
-wire lut_in_hybrid0;
-wire lut_in_le_hit0;
-wire lut_in_lo_hit0;
-wire lut_in_oflow0;
-wire lut_in_sel0;
-wire lut_in_uflow0;
-wire [31:0] lut_in_x0;
-wire out_flow0;
-wire [34:0] out_fraction0;
-wire out_oflow0;
-wire out_sel0;
-wire out_uflow0;
-wire [31:0] out_x0;
-wire [15:0] out_y0_0;
-wire [15:0] out_y1_0;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire lut_access_type;
@@ -21986,20 +21955,20 @@ NV_NVDLA_SDP_CORE_Y_lut_pipe_p1 pipe_p1 (
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.idx2lut_pvld (idx2lut_pvld)
   ,.idx2lut_prdy (idx2lut_prdy)
-  ,.idx2lut_pd (idx2lut_pd[81*1 -1:0])
+  ,.idx2lut_pd (idx2lut_pd[81*0 -1:0])
   ,.lut_in_pvld (lut_in_pvld)
   ,.lut_in_prdy (lut_in_prdy)
-  ,.lut_in_pd (lut_in_pd[81*1 -1:0])
+  ,.lut_in_pd (lut_in_pd[81*0 -1:0])
   );
 // PKT_UNPACK_WIRE( sdp_y_lut_in , lut_in_ , lut_in_pd )
-//: my $k=1;
-//: my $bx =1*35;
-//: my $bof=1*(35+32);
-//: my $buf=1*(35+32+1);
-//: my $bsl=1*(35+32+2);
-//: my $ba =1*(35+32+3);
-//: my $beh=1*(35+32+12);
-//: my $boh=1*(35+32+13);
+//: my $k=0;
+//: my $bx =0*35;
+//: my $bof=0*(35+32);
+//: my $buf=0*(35+32+1);
+//: my $bsl=0*(35+32+2);
+//: my $ba =0*(35+32+3);
+//: my $beh=0*(35+32+12);
+//: my $boh=0*(35+32+13);
 //: foreach my $i (0..${k}-1) {
 //: print "assign   lut_in_fraction${i}[34:0] =  lut_in_pd[35*${i}+34:35*${i}]; \n";
 //: }
@@ -22025,20 +21994,12 @@ NV_NVDLA_SDP_CORE_Y_lut_pipe_p1 pipe_p1 (
 //: print "assign   lut_in_lo_hit${i}         =  lut_in_pd[${i}+${boh}]; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign   lut_in_fraction0[34:0] =  lut_in_pd[35*0+34:35*0]; 
-assign   lut_in_x0[31:0]        =  lut_in_pd[32*0+31+35:32*0+35]; 
-assign   lut_in_oflow0          =  lut_in_pd[0+67]; 
-assign   lut_in_uflow0          =  lut_in_pd[0+68]; 
-assign   lut_in_sel0            =  lut_in_pd[0+69]; 
-assign   lut_in_addr0[8:0]      =  lut_in_pd[9*0+8+70:9*0+70]; 
-assign   lut_in_le_hit0         =  lut_in_pd[0+79]; 
-assign   lut_in_lo_hit0         =  lut_in_pd[0+80]; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //=======================================
 // PERF STATISTIC
 // OFLOW
-//: my $k=1;
+//: my $k=0;
 //: my $w=0;
 //: print "assign lut_oflow_sum_tmp[${w}:0] = lut_in_oflow0";
 //: if(${k} >1) {
@@ -22088,7 +22049,7 @@ always @(
   lut_oflow_cnt[31:0] = perf_lut_oflow_cnt_cur[31:0];
 end
 // UFLOW
-//: my $k=1;
+//: my $k=0;
 //: my $w=0;
 //: print "assign lut_uflow_sum_tmp[${w}:0] = lut_in_uflow0";
 //: if(${k} >1) {
@@ -22138,7 +22099,7 @@ always @(
   lut_uflow_cnt[31:0] = perf_lut_uflow_cnt_cur[31:0];
 end
 // HYBRID
-//: my $k=1;
+//: my $k=0;
 //: my $w=0;
 //: foreach my $i (0..${k}-1) {
 //: print "assign lut_in_hybrid${i} = !(lut_in_oflow${i} | lut_in_uflow${i}); \n";
@@ -22152,7 +22113,6 @@ end
 //: }
 //: print ";\n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign lut_in_hybrid0 = !(lut_in_oflow0 | lut_in_uflow0); 
 
 assign lut_hybrid_sum_tmp[0:0] = lut_in_hybrid0;
 
@@ -22196,7 +22156,7 @@ always @(
   lut_hybrid_cnt[31:0] = perf_lut_hybrid_cnt_cur[31:0];
 end
 // LE_HIT
-//: my $k=1;
+//: my $k=0;
 //: my $w=0;
 //: print "assign lut_le_hit_sum_tmp[${w}:0] = lut_in_le_hit0";
 //: if(${k} >1) {
@@ -22248,7 +22208,7 @@ always @(
   lut_le_hit_cnt[31:0] = perf_lut_le_hit_cnt_cur[31:0];
 end
 // LO_HIT
-//: my $k=1;
+//: my $k=0;
 //: my $w=0;
 //: print "assign lut_lo_hit_sum_tmp[${w}:0] = lut_in_lo_hit0";
 //: if(${k} >1) {
@@ -22299,7 +22259,7 @@ always @(
 end
 //=======================================
 // rd addr mux
-//: my $k=1;
+//: my $k=0;
 //: foreach my $i (0..${k}-1) {
 //: print qq(
 //: assign lut_in_addr${i}_0 = lut_in_addr${i};
@@ -22335,1074 +22295,14 @@ end
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign lut_in_addr0_0 = lut_in_addr0;
-assign lut_in_addr0_1 = lut_in_addr0 + 1;
-
-always @ ( * ) begin
-case (lut_in_addr0_0)
- 0: le_data0_0 = REG_le_0; 
- 1: le_data0_0 = REG_le_1; 
- 2: le_data0_0 = REG_le_2; 
- 3: le_data0_0 = REG_le_3; 
- 4: le_data0_0 = REG_le_4; 
- 5: le_data0_0 = REG_le_5; 
- 6: le_data0_0 = REG_le_6; 
- 7: le_data0_0 = REG_le_7; 
- 8: le_data0_0 = REG_le_8; 
- 9: le_data0_0 = REG_le_9; 
- 10: le_data0_0 = REG_le_10; 
- 11: le_data0_0 = REG_le_11; 
- 12: le_data0_0 = REG_le_12; 
- 13: le_data0_0 = REG_le_13; 
- 14: le_data0_0 = REG_le_14; 
- 15: le_data0_0 = REG_le_15; 
- 16: le_data0_0 = REG_le_16; 
- 17: le_data0_0 = REG_le_17; 
- 18: le_data0_0 = REG_le_18; 
- 19: le_data0_0 = REG_le_19; 
- 20: le_data0_0 = REG_le_20; 
- 21: le_data0_0 = REG_le_21; 
- 22: le_data0_0 = REG_le_22; 
- 23: le_data0_0 = REG_le_23; 
- 24: le_data0_0 = REG_le_24; 
- 25: le_data0_0 = REG_le_25; 
- 26: le_data0_0 = REG_le_26; 
- 27: le_data0_0 = REG_le_27; 
- 28: le_data0_0 = REG_le_28; 
- 29: le_data0_0 = REG_le_29; 
- 30: le_data0_0 = REG_le_30; 
- 31: le_data0_0 = REG_le_31; 
- 32: le_data0_0 = REG_le_32; 
- 33: le_data0_0 = REG_le_33; 
- 34: le_data0_0 = REG_le_34; 
- 35: le_data0_0 = REG_le_35; 
- 36: le_data0_0 = REG_le_36; 
- 37: le_data0_0 = REG_le_37; 
- 38: le_data0_0 = REG_le_38; 
- 39: le_data0_0 = REG_le_39; 
- 40: le_data0_0 = REG_le_40; 
- 41: le_data0_0 = REG_le_41; 
- 42: le_data0_0 = REG_le_42; 
- 43: le_data0_0 = REG_le_43; 
- 44: le_data0_0 = REG_le_44; 
- 45: le_data0_0 = REG_le_45; 
- 46: le_data0_0 = REG_le_46; 
- 47: le_data0_0 = REG_le_47; 
- 48: le_data0_0 = REG_le_48; 
- 49: le_data0_0 = REG_le_49; 
- 50: le_data0_0 = REG_le_50; 
- 51: le_data0_0 = REG_le_51; 
- 52: le_data0_0 = REG_le_52; 
- 53: le_data0_0 = REG_le_53; 
- 54: le_data0_0 = REG_le_54; 
- 55: le_data0_0 = REG_le_55; 
- 56: le_data0_0 = REG_le_56; 
- 57: le_data0_0 = REG_le_57; 
- 58: le_data0_0 = REG_le_58; 
- 59: le_data0_0 = REG_le_59; 
- 60: le_data0_0 = REG_le_60; 
- 61: le_data0_0 = REG_le_61; 
- 62: le_data0_0 = REG_le_62; 
- 63: le_data0_0 = REG_le_63; 
- 64: le_data0_0 = REG_le_64; 
- 65: le_data0_0 = REG_le_65; 
- 66: le_data0_0 = REG_le_66; 
- 67: le_data0_0 = REG_le_67; 
- 68: le_data0_0 = REG_le_68; 
- 69: le_data0_0 = REG_le_69; 
- 70: le_data0_0 = REG_le_70; 
- 71: le_data0_0 = REG_le_71; 
- 72: le_data0_0 = REG_le_72; 
- 73: le_data0_0 = REG_le_73; 
- 74: le_data0_0 = REG_le_74; 
- 75: le_data0_0 = REG_le_75; 
- 76: le_data0_0 = REG_le_76; 
- 77: le_data0_0 = REG_le_77; 
- 78: le_data0_0 = REG_le_78; 
- 79: le_data0_0 = REG_le_79; 
- 80: le_data0_0 = REG_le_80; 
- 81: le_data0_0 = REG_le_81; 
- 82: le_data0_0 = REG_le_82; 
- 83: le_data0_0 = REG_le_83; 
- 84: le_data0_0 = REG_le_84; 
- 85: le_data0_0 = REG_le_85; 
- 86: le_data0_0 = REG_le_86; 
- 87: le_data0_0 = REG_le_87; 
- 88: le_data0_0 = REG_le_88; 
- 89: le_data0_0 = REG_le_89; 
- 90: le_data0_0 = REG_le_90; 
- 91: le_data0_0 = REG_le_91; 
- 92: le_data0_0 = REG_le_92; 
- 93: le_data0_0 = REG_le_93; 
- 94: le_data0_0 = REG_le_94; 
- 95: le_data0_0 = REG_le_95; 
- 96: le_data0_0 = REG_le_96; 
- 97: le_data0_0 = REG_le_97; 
- 98: le_data0_0 = REG_le_98; 
- 99: le_data0_0 = REG_le_99; 
- 100: le_data0_0 = REG_le_100; 
- 101: le_data0_0 = REG_le_101; 
- 102: le_data0_0 = REG_le_102; 
- 103: le_data0_0 = REG_le_103; 
- 104: le_data0_0 = REG_le_104; 
- 105: le_data0_0 = REG_le_105; 
- 106: le_data0_0 = REG_le_106; 
- 107: le_data0_0 = REG_le_107; 
- 108: le_data0_0 = REG_le_108; 
- 109: le_data0_0 = REG_le_109; 
- 110: le_data0_0 = REG_le_110; 
- 111: le_data0_0 = REG_le_111; 
- 112: le_data0_0 = REG_le_112; 
- 113: le_data0_0 = REG_le_113; 
- 114: le_data0_0 = REG_le_114; 
- 115: le_data0_0 = REG_le_115; 
- 116: le_data0_0 = REG_le_116; 
- 117: le_data0_0 = REG_le_117; 
- 118: le_data0_0 = REG_le_118; 
- 119: le_data0_0 = REG_le_119; 
- 120: le_data0_0 = REG_le_120; 
- 121: le_data0_0 = REG_le_121; 
- 122: le_data0_0 = REG_le_122; 
- 123: le_data0_0 = REG_le_123; 
- 124: le_data0_0 = REG_le_124; 
- 125: le_data0_0 = REG_le_125; 
- 126: le_data0_0 = REG_le_126; 
- 127: le_data0_0 = REG_le_127; 
- 128: le_data0_0 = REG_le_128; 
- 129: le_data0_0 = REG_le_129; 
- 130: le_data0_0 = REG_le_130; 
- 131: le_data0_0 = REG_le_131; 
- 132: le_data0_0 = REG_le_132; 
- 133: le_data0_0 = REG_le_133; 
- 134: le_data0_0 = REG_le_134; 
- 135: le_data0_0 = REG_le_135; 
- 136: le_data0_0 = REG_le_136; 
- 137: le_data0_0 = REG_le_137; 
- 138: le_data0_0 = REG_le_138; 
- 139: le_data0_0 = REG_le_139; 
- 140: le_data0_0 = REG_le_140; 
- 141: le_data0_0 = REG_le_141; 
- 142: le_data0_0 = REG_le_142; 
- 143: le_data0_0 = REG_le_143; 
- 144: le_data0_0 = REG_le_144; 
- 145: le_data0_0 = REG_le_145; 
- 146: le_data0_0 = REG_le_146; 
- 147: le_data0_0 = REG_le_147; 
- 148: le_data0_0 = REG_le_148; 
- 149: le_data0_0 = REG_le_149; 
- 150: le_data0_0 = REG_le_150; 
- 151: le_data0_0 = REG_le_151; 
- 152: le_data0_0 = REG_le_152; 
- 153: le_data0_0 = REG_le_153; 
- 154: le_data0_0 = REG_le_154; 
- 155: le_data0_0 = REG_le_155; 
- 156: le_data0_0 = REG_le_156; 
- 157: le_data0_0 = REG_le_157; 
- 158: le_data0_0 = REG_le_158; 
- 159: le_data0_0 = REG_le_159; 
- 160: le_data0_0 = REG_le_160; 
- 161: le_data0_0 = REG_le_161; 
- 162: le_data0_0 = REG_le_162; 
- 163: le_data0_0 = REG_le_163; 
- 164: le_data0_0 = REG_le_164; 
- 165: le_data0_0 = REG_le_165; 
- 166: le_data0_0 = REG_le_166; 
- 167: le_data0_0 = REG_le_167; 
- 168: le_data0_0 = REG_le_168; 
- 169: le_data0_0 = REG_le_169; 
- 170: le_data0_0 = REG_le_170; 
- 171: le_data0_0 = REG_le_171; 
- 172: le_data0_0 = REG_le_172; 
- 173: le_data0_0 = REG_le_173; 
- 174: le_data0_0 = REG_le_174; 
- 175: le_data0_0 = REG_le_175; 
- 176: le_data0_0 = REG_le_176; 
- 177: le_data0_0 = REG_le_177; 
- 178: le_data0_0 = REG_le_178; 
- 179: le_data0_0 = REG_le_179; 
- 180: le_data0_0 = REG_le_180; 
- 181: le_data0_0 = REG_le_181; 
- 182: le_data0_0 = REG_le_182; 
- 183: le_data0_0 = REG_le_183; 
- 184: le_data0_0 = REG_le_184; 
- 185: le_data0_0 = REG_le_185; 
- 186: le_data0_0 = REG_le_186; 
- 187: le_data0_0 = REG_le_187; 
- 188: le_data0_0 = REG_le_188; 
- 189: le_data0_0 = REG_le_189; 
- 190: le_data0_0 = REG_le_190; 
- 191: le_data0_0 = REG_le_191; 
- 192: le_data0_0 = REG_le_192; 
- 193: le_data0_0 = REG_le_193; 
- 194: le_data0_0 = REG_le_194; 
- 195: le_data0_0 = REG_le_195; 
- 196: le_data0_0 = REG_le_196; 
- 197: le_data0_0 = REG_le_197; 
- 198: le_data0_0 = REG_le_198; 
- 199: le_data0_0 = REG_le_199; 
- 200: le_data0_0 = REG_le_200; 
- 201: le_data0_0 = REG_le_201; 
- 202: le_data0_0 = REG_le_202; 
- 203: le_data0_0 = REG_le_203; 
- 204: le_data0_0 = REG_le_204; 
- 205: le_data0_0 = REG_le_205; 
- 206: le_data0_0 = REG_le_206; 
- 207: le_data0_0 = REG_le_207; 
- 208: le_data0_0 = REG_le_208; 
- 209: le_data0_0 = REG_le_209; 
- 210: le_data0_0 = REG_le_210; 
- 211: le_data0_0 = REG_le_211; 
- 212: le_data0_0 = REG_le_212; 
- 213: le_data0_0 = REG_le_213; 
- 214: le_data0_0 = REG_le_214; 
- 215: le_data0_0 = REG_le_215; 
- 216: le_data0_0 = REG_le_216; 
- 217: le_data0_0 = REG_le_217; 
- 218: le_data0_0 = REG_le_218; 
- 219: le_data0_0 = REG_le_219; 
- 220: le_data0_0 = REG_le_220; 
- 221: le_data0_0 = REG_le_221; 
- 222: le_data0_0 = REG_le_222; 
- 223: le_data0_0 = REG_le_223; 
- 224: le_data0_0 = REG_le_224; 
- 225: le_data0_0 = REG_le_225; 
- 226: le_data0_0 = REG_le_226; 
- 227: le_data0_0 = REG_le_227; 
- 228: le_data0_0 = REG_le_228; 
- 229: le_data0_0 = REG_le_229; 
- 230: le_data0_0 = REG_le_230; 
- 231: le_data0_0 = REG_le_231; 
- 232: le_data0_0 = REG_le_232; 
- 233: le_data0_0 = REG_le_233; 
- 234: le_data0_0 = REG_le_234; 
- 235: le_data0_0 = REG_le_235; 
- 236: le_data0_0 = REG_le_236; 
- 237: le_data0_0 = REG_le_237; 
- 238: le_data0_0 = REG_le_238; 
- 239: le_data0_0 = REG_le_239; 
- 240: le_data0_0 = REG_le_240; 
- 241: le_data0_0 = REG_le_241; 
- 242: le_data0_0 = REG_le_242; 
- 243: le_data0_0 = REG_le_243; 
- 244: le_data0_0 = REG_le_244; 
- 245: le_data0_0 = REG_le_245; 
- 246: le_data0_0 = REG_le_246; 
- 247: le_data0_0 = REG_le_247; 
- 248: le_data0_0 = REG_le_248; 
- 249: le_data0_0 = REG_le_249; 
- 250: le_data0_0 = REG_le_250; 
- 251: le_data0_0 = REG_le_251; 
- 252: le_data0_0 = REG_le_252; 
- 253: le_data0_0 = REG_le_253; 
- 254: le_data0_0 = REG_le_254; 
- 255: le_data0_0 = REG_le_255; 
- 256: le_data0_0 = REG_le_256; 
-
-default: le_data0_0= {16{`x_or_0}};
-endcase
-end
-
-always @ ( * ) begin
-case (lut_in_addr0_1)
- 1: le_data1_0 = REG_le_1; 
- 2: le_data1_0 = REG_le_2; 
- 3: le_data1_0 = REG_le_3; 
- 4: le_data1_0 = REG_le_4; 
- 5: le_data1_0 = REG_le_5; 
- 6: le_data1_0 = REG_le_6; 
- 7: le_data1_0 = REG_le_7; 
- 8: le_data1_0 = REG_le_8; 
- 9: le_data1_0 = REG_le_9; 
- 10: le_data1_0 = REG_le_10; 
- 11: le_data1_0 = REG_le_11; 
- 12: le_data1_0 = REG_le_12; 
- 13: le_data1_0 = REG_le_13; 
- 14: le_data1_0 = REG_le_14; 
- 15: le_data1_0 = REG_le_15; 
- 16: le_data1_0 = REG_le_16; 
- 17: le_data1_0 = REG_le_17; 
- 18: le_data1_0 = REG_le_18; 
- 19: le_data1_0 = REG_le_19; 
- 20: le_data1_0 = REG_le_20; 
- 21: le_data1_0 = REG_le_21; 
- 22: le_data1_0 = REG_le_22; 
- 23: le_data1_0 = REG_le_23; 
- 24: le_data1_0 = REG_le_24; 
- 25: le_data1_0 = REG_le_25; 
- 26: le_data1_0 = REG_le_26; 
- 27: le_data1_0 = REG_le_27; 
- 28: le_data1_0 = REG_le_28; 
- 29: le_data1_0 = REG_le_29; 
- 30: le_data1_0 = REG_le_30; 
- 31: le_data1_0 = REG_le_31; 
- 32: le_data1_0 = REG_le_32; 
- 33: le_data1_0 = REG_le_33; 
- 34: le_data1_0 = REG_le_34; 
- 35: le_data1_0 = REG_le_35; 
- 36: le_data1_0 = REG_le_36; 
- 37: le_data1_0 = REG_le_37; 
- 38: le_data1_0 = REG_le_38; 
- 39: le_data1_0 = REG_le_39; 
- 40: le_data1_0 = REG_le_40; 
- 41: le_data1_0 = REG_le_41; 
- 42: le_data1_0 = REG_le_42; 
- 43: le_data1_0 = REG_le_43; 
- 44: le_data1_0 = REG_le_44; 
- 45: le_data1_0 = REG_le_45; 
- 46: le_data1_0 = REG_le_46; 
- 47: le_data1_0 = REG_le_47; 
- 48: le_data1_0 = REG_le_48; 
- 49: le_data1_0 = REG_le_49; 
- 50: le_data1_0 = REG_le_50; 
- 51: le_data1_0 = REG_le_51; 
- 52: le_data1_0 = REG_le_52; 
- 53: le_data1_0 = REG_le_53; 
- 54: le_data1_0 = REG_le_54; 
- 55: le_data1_0 = REG_le_55; 
- 56: le_data1_0 = REG_le_56; 
- 57: le_data1_0 = REG_le_57; 
- 58: le_data1_0 = REG_le_58; 
- 59: le_data1_0 = REG_le_59; 
- 60: le_data1_0 = REG_le_60; 
- 61: le_data1_0 = REG_le_61; 
- 62: le_data1_0 = REG_le_62; 
- 63: le_data1_0 = REG_le_63; 
- 64: le_data1_0 = REG_le_64; 
- 65: le_data1_0 = REG_le_65; 
- 66: le_data1_0 = REG_le_66; 
- 67: le_data1_0 = REG_le_67; 
- 68: le_data1_0 = REG_le_68; 
- 69: le_data1_0 = REG_le_69; 
- 70: le_data1_0 = REG_le_70; 
- 71: le_data1_0 = REG_le_71; 
- 72: le_data1_0 = REG_le_72; 
- 73: le_data1_0 = REG_le_73; 
- 74: le_data1_0 = REG_le_74; 
- 75: le_data1_0 = REG_le_75; 
- 76: le_data1_0 = REG_le_76; 
- 77: le_data1_0 = REG_le_77; 
- 78: le_data1_0 = REG_le_78; 
- 79: le_data1_0 = REG_le_79; 
- 80: le_data1_0 = REG_le_80; 
- 81: le_data1_0 = REG_le_81; 
- 82: le_data1_0 = REG_le_82; 
- 83: le_data1_0 = REG_le_83; 
- 84: le_data1_0 = REG_le_84; 
- 85: le_data1_0 = REG_le_85; 
- 86: le_data1_0 = REG_le_86; 
- 87: le_data1_0 = REG_le_87; 
- 88: le_data1_0 = REG_le_88; 
- 89: le_data1_0 = REG_le_89; 
- 90: le_data1_0 = REG_le_90; 
- 91: le_data1_0 = REG_le_91; 
- 92: le_data1_0 = REG_le_92; 
- 93: le_data1_0 = REG_le_93; 
- 94: le_data1_0 = REG_le_94; 
- 95: le_data1_0 = REG_le_95; 
- 96: le_data1_0 = REG_le_96; 
- 97: le_data1_0 = REG_le_97; 
- 98: le_data1_0 = REG_le_98; 
- 99: le_data1_0 = REG_le_99; 
- 100: le_data1_0 = REG_le_100; 
- 101: le_data1_0 = REG_le_101; 
- 102: le_data1_0 = REG_le_102; 
- 103: le_data1_0 = REG_le_103; 
- 104: le_data1_0 = REG_le_104; 
- 105: le_data1_0 = REG_le_105; 
- 106: le_data1_0 = REG_le_106; 
- 107: le_data1_0 = REG_le_107; 
- 108: le_data1_0 = REG_le_108; 
- 109: le_data1_0 = REG_le_109; 
- 110: le_data1_0 = REG_le_110; 
- 111: le_data1_0 = REG_le_111; 
- 112: le_data1_0 = REG_le_112; 
- 113: le_data1_0 = REG_le_113; 
- 114: le_data1_0 = REG_le_114; 
- 115: le_data1_0 = REG_le_115; 
- 116: le_data1_0 = REG_le_116; 
- 117: le_data1_0 = REG_le_117; 
- 118: le_data1_0 = REG_le_118; 
- 119: le_data1_0 = REG_le_119; 
- 120: le_data1_0 = REG_le_120; 
- 121: le_data1_0 = REG_le_121; 
- 122: le_data1_0 = REG_le_122; 
- 123: le_data1_0 = REG_le_123; 
- 124: le_data1_0 = REG_le_124; 
- 125: le_data1_0 = REG_le_125; 
- 126: le_data1_0 = REG_le_126; 
- 127: le_data1_0 = REG_le_127; 
- 128: le_data1_0 = REG_le_128; 
- 129: le_data1_0 = REG_le_129; 
- 130: le_data1_0 = REG_le_130; 
- 131: le_data1_0 = REG_le_131; 
- 132: le_data1_0 = REG_le_132; 
- 133: le_data1_0 = REG_le_133; 
- 134: le_data1_0 = REG_le_134; 
- 135: le_data1_0 = REG_le_135; 
- 136: le_data1_0 = REG_le_136; 
- 137: le_data1_0 = REG_le_137; 
- 138: le_data1_0 = REG_le_138; 
- 139: le_data1_0 = REG_le_139; 
- 140: le_data1_0 = REG_le_140; 
- 141: le_data1_0 = REG_le_141; 
- 142: le_data1_0 = REG_le_142; 
- 143: le_data1_0 = REG_le_143; 
- 144: le_data1_0 = REG_le_144; 
- 145: le_data1_0 = REG_le_145; 
- 146: le_data1_0 = REG_le_146; 
- 147: le_data1_0 = REG_le_147; 
- 148: le_data1_0 = REG_le_148; 
- 149: le_data1_0 = REG_le_149; 
- 150: le_data1_0 = REG_le_150; 
- 151: le_data1_0 = REG_le_151; 
- 152: le_data1_0 = REG_le_152; 
- 153: le_data1_0 = REG_le_153; 
- 154: le_data1_0 = REG_le_154; 
- 155: le_data1_0 = REG_le_155; 
- 156: le_data1_0 = REG_le_156; 
- 157: le_data1_0 = REG_le_157; 
- 158: le_data1_0 = REG_le_158; 
- 159: le_data1_0 = REG_le_159; 
- 160: le_data1_0 = REG_le_160; 
- 161: le_data1_0 = REG_le_161; 
- 162: le_data1_0 = REG_le_162; 
- 163: le_data1_0 = REG_le_163; 
- 164: le_data1_0 = REG_le_164; 
- 165: le_data1_0 = REG_le_165; 
- 166: le_data1_0 = REG_le_166; 
- 167: le_data1_0 = REG_le_167; 
- 168: le_data1_0 = REG_le_168; 
- 169: le_data1_0 = REG_le_169; 
- 170: le_data1_0 = REG_le_170; 
- 171: le_data1_0 = REG_le_171; 
- 172: le_data1_0 = REG_le_172; 
- 173: le_data1_0 = REG_le_173; 
- 174: le_data1_0 = REG_le_174; 
- 175: le_data1_0 = REG_le_175; 
- 176: le_data1_0 = REG_le_176; 
- 177: le_data1_0 = REG_le_177; 
- 178: le_data1_0 = REG_le_178; 
- 179: le_data1_0 = REG_le_179; 
- 180: le_data1_0 = REG_le_180; 
- 181: le_data1_0 = REG_le_181; 
- 182: le_data1_0 = REG_le_182; 
- 183: le_data1_0 = REG_le_183; 
- 184: le_data1_0 = REG_le_184; 
- 185: le_data1_0 = REG_le_185; 
- 186: le_data1_0 = REG_le_186; 
- 187: le_data1_0 = REG_le_187; 
- 188: le_data1_0 = REG_le_188; 
- 189: le_data1_0 = REG_le_189; 
- 190: le_data1_0 = REG_le_190; 
- 191: le_data1_0 = REG_le_191; 
- 192: le_data1_0 = REG_le_192; 
- 193: le_data1_0 = REG_le_193; 
- 194: le_data1_0 = REG_le_194; 
- 195: le_data1_0 = REG_le_195; 
- 196: le_data1_0 = REG_le_196; 
- 197: le_data1_0 = REG_le_197; 
- 198: le_data1_0 = REG_le_198; 
- 199: le_data1_0 = REG_le_199; 
- 200: le_data1_0 = REG_le_200; 
- 201: le_data1_0 = REG_le_201; 
- 202: le_data1_0 = REG_le_202; 
- 203: le_data1_0 = REG_le_203; 
- 204: le_data1_0 = REG_le_204; 
- 205: le_data1_0 = REG_le_205; 
- 206: le_data1_0 = REG_le_206; 
- 207: le_data1_0 = REG_le_207; 
- 208: le_data1_0 = REG_le_208; 
- 209: le_data1_0 = REG_le_209; 
- 210: le_data1_0 = REG_le_210; 
- 211: le_data1_0 = REG_le_211; 
- 212: le_data1_0 = REG_le_212; 
- 213: le_data1_0 = REG_le_213; 
- 214: le_data1_0 = REG_le_214; 
- 215: le_data1_0 = REG_le_215; 
- 216: le_data1_0 = REG_le_216; 
- 217: le_data1_0 = REG_le_217; 
- 218: le_data1_0 = REG_le_218; 
- 219: le_data1_0 = REG_le_219; 
- 220: le_data1_0 = REG_le_220; 
- 221: le_data1_0 = REG_le_221; 
- 222: le_data1_0 = REG_le_222; 
- 223: le_data1_0 = REG_le_223; 
- 224: le_data1_0 = REG_le_224; 
- 225: le_data1_0 = REG_le_225; 
- 226: le_data1_0 = REG_le_226; 
- 227: le_data1_0 = REG_le_227; 
- 228: le_data1_0 = REG_le_228; 
- 229: le_data1_0 = REG_le_229; 
- 230: le_data1_0 = REG_le_230; 
- 231: le_data1_0 = REG_le_231; 
- 232: le_data1_0 = REG_le_232; 
- 233: le_data1_0 = REG_le_233; 
- 234: le_data1_0 = REG_le_234; 
- 235: le_data1_0 = REG_le_235; 
- 236: le_data1_0 = REG_le_236; 
- 237: le_data1_0 = REG_le_237; 
- 238: le_data1_0 = REG_le_238; 
- 239: le_data1_0 = REG_le_239; 
- 240: le_data1_0 = REG_le_240; 
- 241: le_data1_0 = REG_le_241; 
- 242: le_data1_0 = REG_le_242; 
- 243: le_data1_0 = REG_le_243; 
- 244: le_data1_0 = REG_le_244; 
- 245: le_data1_0 = REG_le_245; 
- 246: le_data1_0 = REG_le_246; 
- 247: le_data1_0 = REG_le_247; 
- 248: le_data1_0 = REG_le_248; 
- 249: le_data1_0 = REG_le_249; 
- 250: le_data1_0 = REG_le_250; 
- 251: le_data1_0 = REG_le_251; 
- 252: le_data1_0 = REG_le_252; 
- 253: le_data1_0 = REG_le_253; 
- 254: le_data1_0 = REG_le_254; 
- 255: le_data1_0 = REG_le_255; 
- 256: le_data1_0 = REG_le_256; 
-
-default: le_data1_0= {16{`x_or_0}};
-endcase
-end
-
-always @ ( * ) begin
-case (lut_in_addr0_0)
- 0: lo_data0_0 = REG_lo_0; 
- 1: lo_data0_0 = REG_lo_1; 
- 2: lo_data0_0 = REG_lo_2; 
- 3: lo_data0_0 = REG_lo_3; 
- 4: lo_data0_0 = REG_lo_4; 
- 5: lo_data0_0 = REG_lo_5; 
- 6: lo_data0_0 = REG_lo_6; 
- 7: lo_data0_0 = REG_lo_7; 
- 8: lo_data0_0 = REG_lo_8; 
- 9: lo_data0_0 = REG_lo_9; 
- 10: lo_data0_0 = REG_lo_10; 
- 11: lo_data0_0 = REG_lo_11; 
- 12: lo_data0_0 = REG_lo_12; 
- 13: lo_data0_0 = REG_lo_13; 
- 14: lo_data0_0 = REG_lo_14; 
- 15: lo_data0_0 = REG_lo_15; 
- 16: lo_data0_0 = REG_lo_16; 
- 17: lo_data0_0 = REG_lo_17; 
- 18: lo_data0_0 = REG_lo_18; 
- 19: lo_data0_0 = REG_lo_19; 
- 20: lo_data0_0 = REG_lo_20; 
- 21: lo_data0_0 = REG_lo_21; 
- 22: lo_data0_0 = REG_lo_22; 
- 23: lo_data0_0 = REG_lo_23; 
- 24: lo_data0_0 = REG_lo_24; 
- 25: lo_data0_0 = REG_lo_25; 
- 26: lo_data0_0 = REG_lo_26; 
- 27: lo_data0_0 = REG_lo_27; 
- 28: lo_data0_0 = REG_lo_28; 
- 29: lo_data0_0 = REG_lo_29; 
- 30: lo_data0_0 = REG_lo_30; 
- 31: lo_data0_0 = REG_lo_31; 
- 32: lo_data0_0 = REG_lo_32; 
- 33: lo_data0_0 = REG_lo_33; 
- 34: lo_data0_0 = REG_lo_34; 
- 35: lo_data0_0 = REG_lo_35; 
- 36: lo_data0_0 = REG_lo_36; 
- 37: lo_data0_0 = REG_lo_37; 
- 38: lo_data0_0 = REG_lo_38; 
- 39: lo_data0_0 = REG_lo_39; 
- 40: lo_data0_0 = REG_lo_40; 
- 41: lo_data0_0 = REG_lo_41; 
- 42: lo_data0_0 = REG_lo_42; 
- 43: lo_data0_0 = REG_lo_43; 
- 44: lo_data0_0 = REG_lo_44; 
- 45: lo_data0_0 = REG_lo_45; 
- 46: lo_data0_0 = REG_lo_46; 
- 47: lo_data0_0 = REG_lo_47; 
- 48: lo_data0_0 = REG_lo_48; 
- 49: lo_data0_0 = REG_lo_49; 
- 50: lo_data0_0 = REG_lo_50; 
- 51: lo_data0_0 = REG_lo_51; 
- 52: lo_data0_0 = REG_lo_52; 
- 53: lo_data0_0 = REG_lo_53; 
- 54: lo_data0_0 = REG_lo_54; 
- 55: lo_data0_0 = REG_lo_55; 
- 56: lo_data0_0 = REG_lo_56; 
- 57: lo_data0_0 = REG_lo_57; 
- 58: lo_data0_0 = REG_lo_58; 
- 59: lo_data0_0 = REG_lo_59; 
- 60: lo_data0_0 = REG_lo_60; 
- 61: lo_data0_0 = REG_lo_61; 
- 62: lo_data0_0 = REG_lo_62; 
- 63: lo_data0_0 = REG_lo_63; 
- 64: lo_data0_0 = REG_lo_64; 
- 65: lo_data0_0 = REG_lo_65; 
- 66: lo_data0_0 = REG_lo_66; 
- 67: lo_data0_0 = REG_lo_67; 
- 68: lo_data0_0 = REG_lo_68; 
- 69: lo_data0_0 = REG_lo_69; 
- 70: lo_data0_0 = REG_lo_70; 
- 71: lo_data0_0 = REG_lo_71; 
- 72: lo_data0_0 = REG_lo_72; 
- 73: lo_data0_0 = REG_lo_73; 
- 74: lo_data0_0 = REG_lo_74; 
- 75: lo_data0_0 = REG_lo_75; 
- 76: lo_data0_0 = REG_lo_76; 
- 77: lo_data0_0 = REG_lo_77; 
- 78: lo_data0_0 = REG_lo_78; 
- 79: lo_data0_0 = REG_lo_79; 
- 80: lo_data0_0 = REG_lo_80; 
- 81: lo_data0_0 = REG_lo_81; 
- 82: lo_data0_0 = REG_lo_82; 
- 83: lo_data0_0 = REG_lo_83; 
- 84: lo_data0_0 = REG_lo_84; 
- 85: lo_data0_0 = REG_lo_85; 
- 86: lo_data0_0 = REG_lo_86; 
- 87: lo_data0_0 = REG_lo_87; 
- 88: lo_data0_0 = REG_lo_88; 
- 89: lo_data0_0 = REG_lo_89; 
- 90: lo_data0_0 = REG_lo_90; 
- 91: lo_data0_0 = REG_lo_91; 
- 92: lo_data0_0 = REG_lo_92; 
- 93: lo_data0_0 = REG_lo_93; 
- 94: lo_data0_0 = REG_lo_94; 
- 95: lo_data0_0 = REG_lo_95; 
- 96: lo_data0_0 = REG_lo_96; 
- 97: lo_data0_0 = REG_lo_97; 
- 98: lo_data0_0 = REG_lo_98; 
- 99: lo_data0_0 = REG_lo_99; 
- 100: lo_data0_0 = REG_lo_100; 
- 101: lo_data0_0 = REG_lo_101; 
- 102: lo_data0_0 = REG_lo_102; 
- 103: lo_data0_0 = REG_lo_103; 
- 104: lo_data0_0 = REG_lo_104; 
- 105: lo_data0_0 = REG_lo_105; 
- 106: lo_data0_0 = REG_lo_106; 
- 107: lo_data0_0 = REG_lo_107; 
- 108: lo_data0_0 = REG_lo_108; 
- 109: lo_data0_0 = REG_lo_109; 
- 110: lo_data0_0 = REG_lo_110; 
- 111: lo_data0_0 = REG_lo_111; 
- 112: lo_data0_0 = REG_lo_112; 
- 113: lo_data0_0 = REG_lo_113; 
- 114: lo_data0_0 = REG_lo_114; 
- 115: lo_data0_0 = REG_lo_115; 
- 116: lo_data0_0 = REG_lo_116; 
- 117: lo_data0_0 = REG_lo_117; 
- 118: lo_data0_0 = REG_lo_118; 
- 119: lo_data0_0 = REG_lo_119; 
- 120: lo_data0_0 = REG_lo_120; 
- 121: lo_data0_0 = REG_lo_121; 
- 122: lo_data0_0 = REG_lo_122; 
- 123: lo_data0_0 = REG_lo_123; 
- 124: lo_data0_0 = REG_lo_124; 
- 125: lo_data0_0 = REG_lo_125; 
- 126: lo_data0_0 = REG_lo_126; 
- 127: lo_data0_0 = REG_lo_127; 
- 128: lo_data0_0 = REG_lo_128; 
- 129: lo_data0_0 = REG_lo_129; 
- 130: lo_data0_0 = REG_lo_130; 
- 131: lo_data0_0 = REG_lo_131; 
- 132: lo_data0_0 = REG_lo_132; 
- 133: lo_data0_0 = REG_lo_133; 
- 134: lo_data0_0 = REG_lo_134; 
- 135: lo_data0_0 = REG_lo_135; 
- 136: lo_data0_0 = REG_lo_136; 
- 137: lo_data0_0 = REG_lo_137; 
- 138: lo_data0_0 = REG_lo_138; 
- 139: lo_data0_0 = REG_lo_139; 
- 140: lo_data0_0 = REG_lo_140; 
- 141: lo_data0_0 = REG_lo_141; 
- 142: lo_data0_0 = REG_lo_142; 
- 143: lo_data0_0 = REG_lo_143; 
- 144: lo_data0_0 = REG_lo_144; 
- 145: lo_data0_0 = REG_lo_145; 
- 146: lo_data0_0 = REG_lo_146; 
- 147: lo_data0_0 = REG_lo_147; 
- 148: lo_data0_0 = REG_lo_148; 
- 149: lo_data0_0 = REG_lo_149; 
- 150: lo_data0_0 = REG_lo_150; 
- 151: lo_data0_0 = REG_lo_151; 
- 152: lo_data0_0 = REG_lo_152; 
- 153: lo_data0_0 = REG_lo_153; 
- 154: lo_data0_0 = REG_lo_154; 
- 155: lo_data0_0 = REG_lo_155; 
- 156: lo_data0_0 = REG_lo_156; 
- 157: lo_data0_0 = REG_lo_157; 
- 158: lo_data0_0 = REG_lo_158; 
- 159: lo_data0_0 = REG_lo_159; 
- 160: lo_data0_0 = REG_lo_160; 
- 161: lo_data0_0 = REG_lo_161; 
- 162: lo_data0_0 = REG_lo_162; 
- 163: lo_data0_0 = REG_lo_163; 
- 164: lo_data0_0 = REG_lo_164; 
- 165: lo_data0_0 = REG_lo_165; 
- 166: lo_data0_0 = REG_lo_166; 
- 167: lo_data0_0 = REG_lo_167; 
- 168: lo_data0_0 = REG_lo_168; 
- 169: lo_data0_0 = REG_lo_169; 
- 170: lo_data0_0 = REG_lo_170; 
- 171: lo_data0_0 = REG_lo_171; 
- 172: lo_data0_0 = REG_lo_172; 
- 173: lo_data0_0 = REG_lo_173; 
- 174: lo_data0_0 = REG_lo_174; 
- 175: lo_data0_0 = REG_lo_175; 
- 176: lo_data0_0 = REG_lo_176; 
- 177: lo_data0_0 = REG_lo_177; 
- 178: lo_data0_0 = REG_lo_178; 
- 179: lo_data0_0 = REG_lo_179; 
- 180: lo_data0_0 = REG_lo_180; 
- 181: lo_data0_0 = REG_lo_181; 
- 182: lo_data0_0 = REG_lo_182; 
- 183: lo_data0_0 = REG_lo_183; 
- 184: lo_data0_0 = REG_lo_184; 
- 185: lo_data0_0 = REG_lo_185; 
- 186: lo_data0_0 = REG_lo_186; 
- 187: lo_data0_0 = REG_lo_187; 
- 188: lo_data0_0 = REG_lo_188; 
- 189: lo_data0_0 = REG_lo_189; 
- 190: lo_data0_0 = REG_lo_190; 
- 191: lo_data0_0 = REG_lo_191; 
- 192: lo_data0_0 = REG_lo_192; 
- 193: lo_data0_0 = REG_lo_193; 
- 194: lo_data0_0 = REG_lo_194; 
- 195: lo_data0_0 = REG_lo_195; 
- 196: lo_data0_0 = REG_lo_196; 
- 197: lo_data0_0 = REG_lo_197; 
- 198: lo_data0_0 = REG_lo_198; 
- 199: lo_data0_0 = REG_lo_199; 
- 200: lo_data0_0 = REG_lo_200; 
- 201: lo_data0_0 = REG_lo_201; 
- 202: lo_data0_0 = REG_lo_202; 
- 203: lo_data0_0 = REG_lo_203; 
- 204: lo_data0_0 = REG_lo_204; 
- 205: lo_data0_0 = REG_lo_205; 
- 206: lo_data0_0 = REG_lo_206; 
- 207: lo_data0_0 = REG_lo_207; 
- 208: lo_data0_0 = REG_lo_208; 
- 209: lo_data0_0 = REG_lo_209; 
- 210: lo_data0_0 = REG_lo_210; 
- 211: lo_data0_0 = REG_lo_211; 
- 212: lo_data0_0 = REG_lo_212; 
- 213: lo_data0_0 = REG_lo_213; 
- 214: lo_data0_0 = REG_lo_214; 
- 215: lo_data0_0 = REG_lo_215; 
- 216: lo_data0_0 = REG_lo_216; 
- 217: lo_data0_0 = REG_lo_217; 
- 218: lo_data0_0 = REG_lo_218; 
- 219: lo_data0_0 = REG_lo_219; 
- 220: lo_data0_0 = REG_lo_220; 
- 221: lo_data0_0 = REG_lo_221; 
- 222: lo_data0_0 = REG_lo_222; 
- 223: lo_data0_0 = REG_lo_223; 
- 224: lo_data0_0 = REG_lo_224; 
- 225: lo_data0_0 = REG_lo_225; 
- 226: lo_data0_0 = REG_lo_226; 
- 227: lo_data0_0 = REG_lo_227; 
- 228: lo_data0_0 = REG_lo_228; 
- 229: lo_data0_0 = REG_lo_229; 
- 230: lo_data0_0 = REG_lo_230; 
- 231: lo_data0_0 = REG_lo_231; 
- 232: lo_data0_0 = REG_lo_232; 
- 233: lo_data0_0 = REG_lo_233; 
- 234: lo_data0_0 = REG_lo_234; 
- 235: lo_data0_0 = REG_lo_235; 
- 236: lo_data0_0 = REG_lo_236; 
- 237: lo_data0_0 = REG_lo_237; 
- 238: lo_data0_0 = REG_lo_238; 
- 239: lo_data0_0 = REG_lo_239; 
- 240: lo_data0_0 = REG_lo_240; 
- 241: lo_data0_0 = REG_lo_241; 
- 242: lo_data0_0 = REG_lo_242; 
- 243: lo_data0_0 = REG_lo_243; 
- 244: lo_data0_0 = REG_lo_244; 
- 245: lo_data0_0 = REG_lo_245; 
- 246: lo_data0_0 = REG_lo_246; 
- 247: lo_data0_0 = REG_lo_247; 
- 248: lo_data0_0 = REG_lo_248; 
- 249: lo_data0_0 = REG_lo_249; 
- 250: lo_data0_0 = REG_lo_250; 
- 251: lo_data0_0 = REG_lo_251; 
- 252: lo_data0_0 = REG_lo_252; 
- 253: lo_data0_0 = REG_lo_253; 
- 254: lo_data0_0 = REG_lo_254; 
- 255: lo_data0_0 = REG_lo_255; 
- 256: lo_data0_0 = REG_lo_256; 
-
-default: lo_data0_0= {16{`x_or_0}};
-endcase
-end
-
-always @ ( * ) begin
-case (lut_in_addr0_1)
- 1: lo_data1_0 = REG_lo_1; 
- 2: lo_data1_0 = REG_lo_2; 
- 3: lo_data1_0 = REG_lo_3; 
- 4: lo_data1_0 = REG_lo_4; 
- 5: lo_data1_0 = REG_lo_5; 
- 6: lo_data1_0 = REG_lo_6; 
- 7: lo_data1_0 = REG_lo_7; 
- 8: lo_data1_0 = REG_lo_8; 
- 9: lo_data1_0 = REG_lo_9; 
- 10: lo_data1_0 = REG_lo_10; 
- 11: lo_data1_0 = REG_lo_11; 
- 12: lo_data1_0 = REG_lo_12; 
- 13: lo_data1_0 = REG_lo_13; 
- 14: lo_data1_0 = REG_lo_14; 
- 15: lo_data1_0 = REG_lo_15; 
- 16: lo_data1_0 = REG_lo_16; 
- 17: lo_data1_0 = REG_lo_17; 
- 18: lo_data1_0 = REG_lo_18; 
- 19: lo_data1_0 = REG_lo_19; 
- 20: lo_data1_0 = REG_lo_20; 
- 21: lo_data1_0 = REG_lo_21; 
- 22: lo_data1_0 = REG_lo_22; 
- 23: lo_data1_0 = REG_lo_23; 
- 24: lo_data1_0 = REG_lo_24; 
- 25: lo_data1_0 = REG_lo_25; 
- 26: lo_data1_0 = REG_lo_26; 
- 27: lo_data1_0 = REG_lo_27; 
- 28: lo_data1_0 = REG_lo_28; 
- 29: lo_data1_0 = REG_lo_29; 
- 30: lo_data1_0 = REG_lo_30; 
- 31: lo_data1_0 = REG_lo_31; 
- 32: lo_data1_0 = REG_lo_32; 
- 33: lo_data1_0 = REG_lo_33; 
- 34: lo_data1_0 = REG_lo_34; 
- 35: lo_data1_0 = REG_lo_35; 
- 36: lo_data1_0 = REG_lo_36; 
- 37: lo_data1_0 = REG_lo_37; 
- 38: lo_data1_0 = REG_lo_38; 
- 39: lo_data1_0 = REG_lo_39; 
- 40: lo_data1_0 = REG_lo_40; 
- 41: lo_data1_0 = REG_lo_41; 
- 42: lo_data1_0 = REG_lo_42; 
- 43: lo_data1_0 = REG_lo_43; 
- 44: lo_data1_0 = REG_lo_44; 
- 45: lo_data1_0 = REG_lo_45; 
- 46: lo_data1_0 = REG_lo_46; 
- 47: lo_data1_0 = REG_lo_47; 
- 48: lo_data1_0 = REG_lo_48; 
- 49: lo_data1_0 = REG_lo_49; 
- 50: lo_data1_0 = REG_lo_50; 
- 51: lo_data1_0 = REG_lo_51; 
- 52: lo_data1_0 = REG_lo_52; 
- 53: lo_data1_0 = REG_lo_53; 
- 54: lo_data1_0 = REG_lo_54; 
- 55: lo_data1_0 = REG_lo_55; 
- 56: lo_data1_0 = REG_lo_56; 
- 57: lo_data1_0 = REG_lo_57; 
- 58: lo_data1_0 = REG_lo_58; 
- 59: lo_data1_0 = REG_lo_59; 
- 60: lo_data1_0 = REG_lo_60; 
- 61: lo_data1_0 = REG_lo_61; 
- 62: lo_data1_0 = REG_lo_62; 
- 63: lo_data1_0 = REG_lo_63; 
- 64: lo_data1_0 = REG_lo_64; 
- 65: lo_data1_0 = REG_lo_65; 
- 66: lo_data1_0 = REG_lo_66; 
- 67: lo_data1_0 = REG_lo_67; 
- 68: lo_data1_0 = REG_lo_68; 
- 69: lo_data1_0 = REG_lo_69; 
- 70: lo_data1_0 = REG_lo_70; 
- 71: lo_data1_0 = REG_lo_71; 
- 72: lo_data1_0 = REG_lo_72; 
- 73: lo_data1_0 = REG_lo_73; 
- 74: lo_data1_0 = REG_lo_74; 
- 75: lo_data1_0 = REG_lo_75; 
- 76: lo_data1_0 = REG_lo_76; 
- 77: lo_data1_0 = REG_lo_77; 
- 78: lo_data1_0 = REG_lo_78; 
- 79: lo_data1_0 = REG_lo_79; 
- 80: lo_data1_0 = REG_lo_80; 
- 81: lo_data1_0 = REG_lo_81; 
- 82: lo_data1_0 = REG_lo_82; 
- 83: lo_data1_0 = REG_lo_83; 
- 84: lo_data1_0 = REG_lo_84; 
- 85: lo_data1_0 = REG_lo_85; 
- 86: lo_data1_0 = REG_lo_86; 
- 87: lo_data1_0 = REG_lo_87; 
- 88: lo_data1_0 = REG_lo_88; 
- 89: lo_data1_0 = REG_lo_89; 
- 90: lo_data1_0 = REG_lo_90; 
- 91: lo_data1_0 = REG_lo_91; 
- 92: lo_data1_0 = REG_lo_92; 
- 93: lo_data1_0 = REG_lo_93; 
- 94: lo_data1_0 = REG_lo_94; 
- 95: lo_data1_0 = REG_lo_95; 
- 96: lo_data1_0 = REG_lo_96; 
- 97: lo_data1_0 = REG_lo_97; 
- 98: lo_data1_0 = REG_lo_98; 
- 99: lo_data1_0 = REG_lo_99; 
- 100: lo_data1_0 = REG_lo_100; 
- 101: lo_data1_0 = REG_lo_101; 
- 102: lo_data1_0 = REG_lo_102; 
- 103: lo_data1_0 = REG_lo_103; 
- 104: lo_data1_0 = REG_lo_104; 
- 105: lo_data1_0 = REG_lo_105; 
- 106: lo_data1_0 = REG_lo_106; 
- 107: lo_data1_0 = REG_lo_107; 
- 108: lo_data1_0 = REG_lo_108; 
- 109: lo_data1_0 = REG_lo_109; 
- 110: lo_data1_0 = REG_lo_110; 
- 111: lo_data1_0 = REG_lo_111; 
- 112: lo_data1_0 = REG_lo_112; 
- 113: lo_data1_0 = REG_lo_113; 
- 114: lo_data1_0 = REG_lo_114; 
- 115: lo_data1_0 = REG_lo_115; 
- 116: lo_data1_0 = REG_lo_116; 
- 117: lo_data1_0 = REG_lo_117; 
- 118: lo_data1_0 = REG_lo_118; 
- 119: lo_data1_0 = REG_lo_119; 
- 120: lo_data1_0 = REG_lo_120; 
- 121: lo_data1_0 = REG_lo_121; 
- 122: lo_data1_0 = REG_lo_122; 
- 123: lo_data1_0 = REG_lo_123; 
- 124: lo_data1_0 = REG_lo_124; 
- 125: lo_data1_0 = REG_lo_125; 
- 126: lo_data1_0 = REG_lo_126; 
- 127: lo_data1_0 = REG_lo_127; 
- 128: lo_data1_0 = REG_lo_128; 
- 129: lo_data1_0 = REG_lo_129; 
- 130: lo_data1_0 = REG_lo_130; 
- 131: lo_data1_0 = REG_lo_131; 
- 132: lo_data1_0 = REG_lo_132; 
- 133: lo_data1_0 = REG_lo_133; 
- 134: lo_data1_0 = REG_lo_134; 
- 135: lo_data1_0 = REG_lo_135; 
- 136: lo_data1_0 = REG_lo_136; 
- 137: lo_data1_0 = REG_lo_137; 
- 138: lo_data1_0 = REG_lo_138; 
- 139: lo_data1_0 = REG_lo_139; 
- 140: lo_data1_0 = REG_lo_140; 
- 141: lo_data1_0 = REG_lo_141; 
- 142: lo_data1_0 = REG_lo_142; 
- 143: lo_data1_0 = REG_lo_143; 
- 144: lo_data1_0 = REG_lo_144; 
- 145: lo_data1_0 = REG_lo_145; 
- 146: lo_data1_0 = REG_lo_146; 
- 147: lo_data1_0 = REG_lo_147; 
- 148: lo_data1_0 = REG_lo_148; 
- 149: lo_data1_0 = REG_lo_149; 
- 150: lo_data1_0 = REG_lo_150; 
- 151: lo_data1_0 = REG_lo_151; 
- 152: lo_data1_0 = REG_lo_152; 
- 153: lo_data1_0 = REG_lo_153; 
- 154: lo_data1_0 = REG_lo_154; 
- 155: lo_data1_0 = REG_lo_155; 
- 156: lo_data1_0 = REG_lo_156; 
- 157: lo_data1_0 = REG_lo_157; 
- 158: lo_data1_0 = REG_lo_158; 
- 159: lo_data1_0 = REG_lo_159; 
- 160: lo_data1_0 = REG_lo_160; 
- 161: lo_data1_0 = REG_lo_161; 
- 162: lo_data1_0 = REG_lo_162; 
- 163: lo_data1_0 = REG_lo_163; 
- 164: lo_data1_0 = REG_lo_164; 
- 165: lo_data1_0 = REG_lo_165; 
- 166: lo_data1_0 = REG_lo_166; 
- 167: lo_data1_0 = REG_lo_167; 
- 168: lo_data1_0 = REG_lo_168; 
- 169: lo_data1_0 = REG_lo_169; 
- 170: lo_data1_0 = REG_lo_170; 
- 171: lo_data1_0 = REG_lo_171; 
- 172: lo_data1_0 = REG_lo_172; 
- 173: lo_data1_0 = REG_lo_173; 
- 174: lo_data1_0 = REG_lo_174; 
- 175: lo_data1_0 = REG_lo_175; 
- 176: lo_data1_0 = REG_lo_176; 
- 177: lo_data1_0 = REG_lo_177; 
- 178: lo_data1_0 = REG_lo_178; 
- 179: lo_data1_0 = REG_lo_179; 
- 180: lo_data1_0 = REG_lo_180; 
- 181: lo_data1_0 = REG_lo_181; 
- 182: lo_data1_0 = REG_lo_182; 
- 183: lo_data1_0 = REG_lo_183; 
- 184: lo_data1_0 = REG_lo_184; 
- 185: lo_data1_0 = REG_lo_185; 
- 186: lo_data1_0 = REG_lo_186; 
- 187: lo_data1_0 = REG_lo_187; 
- 188: lo_data1_0 = REG_lo_188; 
- 189: lo_data1_0 = REG_lo_189; 
- 190: lo_data1_0 = REG_lo_190; 
- 191: lo_data1_0 = REG_lo_191; 
- 192: lo_data1_0 = REG_lo_192; 
- 193: lo_data1_0 = REG_lo_193; 
- 194: lo_data1_0 = REG_lo_194; 
- 195: lo_data1_0 = REG_lo_195; 
- 196: lo_data1_0 = REG_lo_196; 
- 197: lo_data1_0 = REG_lo_197; 
- 198: lo_data1_0 = REG_lo_198; 
- 199: lo_data1_0 = REG_lo_199; 
- 200: lo_data1_0 = REG_lo_200; 
- 201: lo_data1_0 = REG_lo_201; 
- 202: lo_data1_0 = REG_lo_202; 
- 203: lo_data1_0 = REG_lo_203; 
- 204: lo_data1_0 = REG_lo_204; 
- 205: lo_data1_0 = REG_lo_205; 
- 206: lo_data1_0 = REG_lo_206; 
- 207: lo_data1_0 = REG_lo_207; 
- 208: lo_data1_0 = REG_lo_208; 
- 209: lo_data1_0 = REG_lo_209; 
- 210: lo_data1_0 = REG_lo_210; 
- 211: lo_data1_0 = REG_lo_211; 
- 212: lo_data1_0 = REG_lo_212; 
- 213: lo_data1_0 = REG_lo_213; 
- 214: lo_data1_0 = REG_lo_214; 
- 215: lo_data1_0 = REG_lo_215; 
- 216: lo_data1_0 = REG_lo_216; 
- 217: lo_data1_0 = REG_lo_217; 
- 218: lo_data1_0 = REG_lo_218; 
- 219: lo_data1_0 = REG_lo_219; 
- 220: lo_data1_0 = REG_lo_220; 
- 221: lo_data1_0 = REG_lo_221; 
- 222: lo_data1_0 = REG_lo_222; 
- 223: lo_data1_0 = REG_lo_223; 
- 224: lo_data1_0 = REG_lo_224; 
- 225: lo_data1_0 = REG_lo_225; 
- 226: lo_data1_0 = REG_lo_226; 
- 227: lo_data1_0 = REG_lo_227; 
- 228: lo_data1_0 = REG_lo_228; 
- 229: lo_data1_0 = REG_lo_229; 
- 230: lo_data1_0 = REG_lo_230; 
- 231: lo_data1_0 = REG_lo_231; 
- 232: lo_data1_0 = REG_lo_232; 
- 233: lo_data1_0 = REG_lo_233; 
- 234: lo_data1_0 = REG_lo_234; 
- 235: lo_data1_0 = REG_lo_235; 
- 236: lo_data1_0 = REG_lo_236; 
- 237: lo_data1_0 = REG_lo_237; 
- 238: lo_data1_0 = REG_lo_238; 
- 239: lo_data1_0 = REG_lo_239; 
- 240: lo_data1_0 = REG_lo_240; 
- 241: lo_data1_0 = REG_lo_241; 
- 242: lo_data1_0 = REG_lo_242; 
- 243: lo_data1_0 = REG_lo_243; 
- 244: lo_data1_0 = REG_lo_244; 
- 245: lo_data1_0 = REG_lo_245; 
- 246: lo_data1_0 = REG_lo_246; 
- 247: lo_data1_0 = REG_lo_247; 
- 248: lo_data1_0 = REG_lo_248; 
- 249: lo_data1_0 = REG_lo_249; 
- 250: lo_data1_0 = REG_lo_250; 
- 251: lo_data1_0 = REG_lo_251; 
- 252: lo_data1_0 = REG_lo_252; 
- 253: lo_data1_0 = REG_lo_253; 
- 254: lo_data1_0 = REG_lo_254; 
- 255: lo_data1_0 = REG_lo_255; 
- 256: lo_data1_0 = REG_lo_256; 
-
-default: lo_data1_0= {16{`x_or_0}};
-endcase
-end
-
-assign dat_in_y0_0 = (lut_in_sel0==1'b0) ? le_data0_0 : lo_data0_0;
-assign dat_in_y1_0 = (lut_in_sel0==1'b0) ? le_data1_0 : lo_data1_0;
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //=======================================
 // dat fifo wr
 assign rd_lut_en = lut_in_pvld & lut_in_prdy;
 assign dat_fifo_wr_pvld = rd_lut_en;
 // PKT_PACK_WIRE( sdp_y_lut_dat , dat_in_ , dat_fifo_wr_pd )
-//: my $k=1;
-//: my $b=1*16;
+//: my $k=0;
+//: my $b=0*16;
 //: foreach my $i (0..${k}-1) {
 //: print "assign       dat_fifo_wr_pd[16*${i}+15:16*${i}]  =  dat_in_y0_${i}[15:0]; \n";
 //: }
@@ -23417,20 +22317,16 @@ assign dat_fifo_wr_pvld = rd_lut_en;
 //: print "assign       out_y1_${i}[15:0] = dat_fifo_rd_pd[16*${i}+${b}+15:16*${i}+${b}]; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign       dat_fifo_wr_pd[16*0+15:16*0]  =  dat_in_y0_0[15:0]; 
-assign       dat_fifo_wr_pd[16*0+16+15:16*0+16] =  dat_in_y1_0[15:0]; 
-assign       out_y0_0[15:0] = dat_fifo_rd_pd[16*0+15:16*0]; 
-assign       out_y1_0[15:0] = dat_fifo_rd_pd[16*0+16+15:16*0+16]; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 NV_NVDLA_SDP_CORE_Y_LUT_dat u_dat (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.dat_fifo_wr_pvld (dat_fifo_wr_pvld) //|< w
-  ,.dat_fifo_wr_pd (dat_fifo_wr_pd[32*1 -1:0]) //|< w
+  ,.dat_fifo_wr_pd (dat_fifo_wr_pd[32*0 -1:0]) //|< w
   ,.dat_fifo_rd_prdy (dat_fifo_rd_prdy) //|< w
   ,.dat_fifo_rd_pvld (dat_fifo_rd_pvld) //|> w
-  ,.dat_fifo_rd_pd (dat_fifo_rd_pd[32*1 -1:0]) //|> w
+  ,.dat_fifo_rd_pd (dat_fifo_rd_pd[32*0 -1:0]) //|> w
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0]) //|< i
   );
 // dat fifo rd
@@ -23438,11 +22334,11 @@ assign dat_fifo_rd_prdy = lut_out_prdy;
 //============
 // cmd fifo wr:
 // PKT_PACK_WIRE( sdp_y_lut_cmd , lut_in_ , cmd_fifo_wr_pd )
-//: my $k=1;
-//: my $bx =1*35;
-//: my $bof=1*(35+32);
-//: my $buf=1*(35+32+1);
-//: my $bsl=1*(35+32+2);
+//: my $k=0;
+//: my $bx =0*35;
+//: my $bof=0*(35+32);
+//: my $buf=0*(35+32+1);
+//: my $bsl=0*(35+32+2);
 //: foreach my $i (0..${k}-1) {
 //: print "assign       cmd_fifo_wr_pd[35*${i}+34:35*${i}] =      lut_in_fraction${i}[34:0]; \n";
 //: }
@@ -23475,16 +22371,6 @@ assign dat_fifo_rd_prdy = lut_out_prdy;
 //: print "assign       out_sel${i}            =  cmd_fifo_rd_pd[${i}+${bsl}]; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign       cmd_fifo_wr_pd[35*0+34:35*0] =      lut_in_fraction0[34:0]; 
-assign       cmd_fifo_wr_pd[32*0+31+35:32*0+35] =   lut_in_x0[31:0]; 
-assign       cmd_fifo_wr_pd[0+67] =       lut_in_oflow0 ; 
-assign       cmd_fifo_wr_pd[0+68] =       lut_in_uflow0 ; 
-assign       cmd_fifo_wr_pd[0+69] =       lut_in_sel0 ; 
-assign       out_fraction0[34:0] =  cmd_fifo_rd_pd[35*0+34:35*0]; 
-assign       out_x0[31:0]        =  cmd_fifo_rd_pd[32*0+31+35:32*0+35]; 
-assign       out_oflow0          =  cmd_fifo_rd_pd[0+67]; 
-assign       out_uflow0          =  cmd_fifo_rd_pd[0+68]; 
-assign       out_sel0            =  cmd_fifo_rd_pd[0+69]; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign cmd_fifo_wr_pvld = lut_in_pvld;
@@ -23495,17 +22381,17 @@ NV_NVDLA_SDP_CORE_Y_LUT_cmd u_cmd (
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.cmd_fifo_wr_prdy (cmd_fifo_wr_prdy) //|> w
   ,.cmd_fifo_wr_pvld (cmd_fifo_wr_pvld) //|< w
-  ,.cmd_fifo_wr_pd (cmd_fifo_wr_pd[70*1 -1:0]) //|< w
+  ,.cmd_fifo_wr_pd (cmd_fifo_wr_pd[70*0 -1:0]) //|< w
   ,.cmd_fifo_rd_prdy (cmd_fifo_rd_prdy) //|< w
   ,.cmd_fifo_rd_pvld (cmd_fifo_rd_pvld) //|> w
-  ,.cmd_fifo_rd_pd (cmd_fifo_rd_pd[70*1 -1:0]) //|> w
+  ,.cmd_fifo_rd_pd (cmd_fifo_rd_pd[70*0 -1:0]) //|> w
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0]) //|< i
   );
 // cmd fifo rd:
 assign cmd_fifo_rd_prdy = lut_out_prdy & dat_fifo_rd_pvld;
 //=======================================
 // output mux when oflow/uflow
-//: my $k=1;
+//: my $k=0;
 //: foreach my $i (0..${k}-1) {
 //: print "assign out_flow${i} = out_uflow${i} | out_oflow${i}; \n";
 //: }
@@ -23569,77 +22455,21 @@ assign cmd_fifo_rd_prdy = lut_out_prdy & dat_fifo_rd_pvld;
 //: );
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign out_flow0 = out_uflow0 | out_oflow0; 
-
-always @(
-out_uflow0
-or out_sel0
-or reg2dp_lut_le_slope_uflow_scale
-or reg2dp_lut_le_slope_uflow_shift
-or reg2dp_lut_le_start
-or reg2dp_lut_le_function
-or reg2dp_lut_le_index_offset
-or reg2dp_lut_lo_slope_uflow_scale
-or reg2dp_lut_lo_slope_uflow_shift
-or reg2dp_lut_lo_start
-or out_oflow0
-or reg2dp_lut_le_slope_oflow_scale
-or reg2dp_lut_le_slope_oflow_shift
-or reg2dp_lut_le_end
-or reg2dp_lut_lo_slope_oflow_scale
-or reg2dp_lut_lo_slope_oflow_shift
-or reg2dp_lut_lo_end
-) begin
-if (out_uflow0) begin
-if (out_sel0==1'b0) begin
-out_scale0 = reg2dp_lut_le_slope_uflow_scale;
-out_shift0 = reg2dp_lut_le_slope_uflow_shift;
-out_offset0 = reg2dp_lut_le_start;
-if (reg2dp_lut_le_function==1'b0) begin
-out_bias0 = reg2dp_lut_le_index_offset[8 -1] ? 0 : (1 << reg2dp_lut_le_index_offset);
-end else begin
-out_bias0 = 0;
-end
-end else begin
-out_scale0 = reg2dp_lut_lo_slope_uflow_scale;
-out_shift0 = reg2dp_lut_lo_slope_uflow_shift;
-out_offset0 = reg2dp_lut_lo_start;
-out_bias0 = 0;
-end
-end else if (out_oflow0) begin
-if (out_sel0==1'b0) begin
-out_scale0 = reg2dp_lut_le_slope_oflow_scale;
-out_shift0 = reg2dp_lut_le_slope_oflow_shift;
-out_offset0 = reg2dp_lut_le_end;
-out_bias0 = 0;
-end else begin
-out_scale0 = reg2dp_lut_lo_slope_oflow_scale;
-out_shift0 = reg2dp_lut_lo_slope_oflow_shift;
-out_offset0 = reg2dp_lut_lo_end;
-out_bias0 = 0;
-end
-end else begin
-out_scale0 = 0;
-out_shift0 = 0;
-out_offset0 = 0;
-out_bias0 = 0;
-end
-end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //=======================================
 // output pipe
 assign lut_out_pvld = dat_fifo_rd_pvld;
 // PKT_PACK_WIRE( sdp_y_lut_out , out_ , lut_out_pd )
-//: my $k=1;
-//: my $bf =1*32;
-//: my $by0=1*(32+35);
-//: my $by1=1*(32+35+16);
-//: my $bsc=1*(32+35+32);
-//: my $bsf=1*(32+35+48);
-//: my $bof=1*(32+35+48+5);
-//: my $bbs=1*(32+35+85);
-//: my $bfw=1*(32+35+85+32);
+//: my $k=0;
+//: my $bf =0*32;
+//: my $by0=0*(32+35);
+//: my $by1=0*(32+35+16);
+//: my $bsc=0*(32+35+32);
+//: my $bsf=0*(32+35+48);
+//: my $bof=0*(32+35+48+5);
+//: my $bbs=0*(32+35+85);
+//: my $bfw=0*(32+35+85+32);
 //: foreach my $i (0..${k}-1) {
 //: print "assign       lut_out_pd[32*${i}+31:32*${i}]                 = out_x${i}[31:0]; \n";
 //: }
@@ -23668,15 +22498,6 @@ assign lut_out_pvld = dat_fifo_rd_pvld;
 //: print "assign       lut_out_pd[${i}+${bfw}]     = out_flow${i}; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign       lut_out_pd[32*0+31:32*0]                 = out_x0[31:0]; 
-assign       lut_out_pd[35*0+32+34:35*0+32]     = out_fraction0[34:0]; 
-assign       lut_out_pd[16*0+67+15:16*0+67]   = out_y0_0[15:0]; 
-assign       lut_out_pd[16*0+83+15:16*0+83]   = out_y1_0[15:0]; 
-assign       lut_out_pd[16*0+99+15:16*0+99]   = out_scale0[15:0]; 
-assign       lut_out_pd[5*0+115+4:5*0+115]      = out_shift0[4:0]; 
-assign       lut_out_pd[32*0+120+31:32*0+120]   = out_offset0[31:0]; 
-assign       lut_out_pd[32*0+152+31:32*0+152]   = out_bias0[31:0]; 
-assign       lut_out_pd[0+184]     = out_flow0; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 NV_NVDLA_SDP_CORE_Y_lut_pipe_p2 pipe_p2 (
@@ -23684,10 +22505,10 @@ NV_NVDLA_SDP_CORE_Y_lut_pipe_p2 pipe_p2 (
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.lut_out_pvld (lut_out_pvld)
   ,.lut_out_prdy (lut_out_prdy)
-  ,.lut_out_pd (lut_out_pd[185*1 -1:0])
+  ,.lut_out_pd (lut_out_pd[185*0 -1:0])
   ,.lut2inp_pvld (lut2inp_pvld)
   ,.lut2inp_prdy (lut2inp_prdy)
-  ,.lut2inp_pd (lut2inp_pd[185*1 -1:0])
+  ,.lut2inp_pd (lut2inp_pd[185*0 -1:0])
   );
 //=======================================
 // Assertions
@@ -23843,27 +22664,27 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input idx2lut_pvld;
 output idx2lut_prdy;
-input [81*1 -1:0] idx2lut_pd;
+input [81*0 -1:0] idx2lut_pd;
 output lut_in_pvld;
 input lut_in_prdy;
-output [81*1 -1:0] lut_in_pd;
-//: my $dw = 81*1;
+output [81*0 -1:0] lut_in_pd;
+//: my $dw = 81*0;
 //: &eperl::pipe("-is -wid $dw -do lut_in_pd -vo lut_in_pvld -ri lut_in_prdy -di idx2lut_pd -vi idx2lut_pvld -ro idx2lut_prdy");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 // Reg
 reg idx2lut_prdy;
 reg skid_flop_idx2lut_prdy;
 reg skid_flop_idx2lut_pvld;
-reg [81-1:0] skid_flop_idx2lut_pd;
+reg  skid_flop_idx2lut_pd;
 reg pipe_skid_idx2lut_pvld;
-reg [81-1:0] pipe_skid_idx2lut_pd;
+reg  pipe_skid_idx2lut_pd;
 // Wire
 wire skid_idx2lut_pvld;
-wire [81-1:0] skid_idx2lut_pd;
+wire  skid_idx2lut_pd;
 wire skid_idx2lut_prdy;
 wire pipe_skid_idx2lut_prdy;
 wire lut_in_pvld;
-wire [81-1:0] lut_in_pd;
+wire  lut_in_pd;
 // Code
 // SKID READY
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -23891,10 +22712,10 @@ assign skid_idx2lut_pvld = (skid_flop_idx2lut_prdy) ? idx2lut_pvld : skid_flop_i
 // SKID DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_flop_idx2lut_prdy & idx2lut_pvld) begin
-        skid_flop_idx2lut_pd[81-1:0] <= idx2lut_pd[81-1:0];
+        skid_flop_idx2lut_pd <= idx2lut_pd;
     end
 end
-assign skid_idx2lut_pd[81-1:0] = (skid_flop_idx2lut_prdy) ? idx2lut_pd[81-1:0] : skid_flop_idx2lut_pd[81-1:0];
+assign skid_idx2lut_pd = (skid_flop_idx2lut_prdy) ? idx2lut_pd : skid_flop_idx2lut_pd;
 
 
 // PIPE READY
@@ -23914,7 +22735,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_idx2lut_prdy && skid_idx2lut_pvld) begin
-        pipe_skid_idx2lut_pd[81-1:0] <= skid_idx2lut_pd[81-1:0];
+        pipe_skid_idx2lut_pd <= skid_idx2lut_pd;
     end
 end
 
@@ -23940,27 +22761,27 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input lut_out_pvld;
 output lut_out_prdy;
-input [185*1 -1:0] lut_out_pd;
+input [185*0 -1:0] lut_out_pd;
 output lut2inp_pvld;
 input lut2inp_prdy;
-output [185*1 -1:0] lut2inp_pd;
-//: my $dw = 185*1;
+output [185*0 -1:0] lut2inp_pd;
+//: my $dw = 185*0;
 //: &eperl::pipe("-is -wid $dw -do lut2inp_pd -vo lut2inp_pvld -ri lut2inp_prdy -di lut_out_pd -vi lut_out_pvld -ro lut_out_prdy");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 // Reg
 reg lut_out_prdy;
 reg skid_flop_lut_out_prdy;
 reg skid_flop_lut_out_pvld;
-reg [185-1:0] skid_flop_lut_out_pd;
+reg  skid_flop_lut_out_pd;
 reg pipe_skid_lut_out_pvld;
-reg [185-1:0] pipe_skid_lut_out_pd;
+reg  pipe_skid_lut_out_pd;
 // Wire
 wire skid_lut_out_pvld;
-wire [185-1:0] skid_lut_out_pd;
+wire  skid_lut_out_pd;
 wire skid_lut_out_prdy;
 wire pipe_skid_lut_out_prdy;
 wire lut2inp_pvld;
-wire [185-1:0] lut2inp_pd;
+wire  lut2inp_pd;
 // Code
 // SKID READY
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -23988,10 +22809,10 @@ assign skid_lut_out_pvld = (skid_flop_lut_out_prdy) ? lut_out_pvld : skid_flop_l
 // SKID DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_flop_lut_out_prdy & lut_out_pvld) begin
-        skid_flop_lut_out_pd[185-1:0] <= lut_out_pd[185-1:0];
+        skid_flop_lut_out_pd <= lut_out_pd;
     end
 end
-assign skid_lut_out_pd[185-1:0] = (skid_flop_lut_out_prdy) ? lut_out_pd[185-1:0] : skid_flop_lut_out_pd[185-1:0];
+assign skid_lut_out_pd = (skid_flop_lut_out_prdy) ? lut_out_pd : skid_flop_lut_out_pd;
 
 
 // PIPE READY
@@ -24011,7 +22832,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_lut_out_prdy && skid_lut_out_pvld) begin
-        pipe_skid_lut_out_pd[185-1:0] <= skid_lut_out_pd[185-1:0];
+        pipe_skid_lut_out_pd <= skid_lut_out_pd;
     end
 end
 
@@ -24039,10 +22860,10 @@ module NV_NVDLA_SDP_CORE_Y_LUT_dat (
 input nvdla_core_clk;
 input nvdla_core_rstn;
 input dat_fifo_wr_pvld;
-input [31:0] dat_fifo_wr_pd;
+input [127:0] dat_fifo_wr_pd;
 input dat_fifo_rd_prdy;
 output dat_fifo_rd_pvld;
-output [31:0] dat_fifo_rd_pd;
+output [127:0] dat_fifo_rd_pd;
 input [31:0] pwrbus_ram_pd;
 // Master Clock Gating (SLCG)
 //
@@ -24103,11 +22924,11 @@ end
 wire rd_popping;
 reg dat_fifo_rd_adr; // read address this cycle
 wire ram_we = wr_pushing && (dat_fifo_wr_count > 2'd0 || !rd_popping); // note: write occurs next cycle
-wire [31:0] dat_fifo_rd_pd_p; // read data out of ram
+wire [127:0] dat_fifo_rd_pd_p; // read data out of ram
 wire [31 : 0] pwrbus_ram_pd;
 // Adding parameter for fifogen to disable wr/rd contention assertion in ramgen.
 // Fifogen handles this by ignoring the data on the ram data out for that cycle.
-NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32 ram (
+NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128 ram (
       .clk( nvdla_core_clk_mgated )
     , .pwrbus_ram_pd ( pwrbus_ram_pd )
     , .di ( dat_fifo_wr_pd )
@@ -24169,7 +22990,7 @@ always @( posedge nvdla_core_clk_mgated or negedge nvdla_core_rstn ) begin
 //synopsys translate_on
     end
 end
-reg [31:0] dat_fifo_rd_pd; // output data register
+reg [127:0] dat_fifo_rd_pd; // output data register
 wire rd_req_next = (dat_fifo_rd_pvld_p || (dat_fifo_rd_pvld_int && !dat_fifo_rd_prdy)) ;
 always @( posedge nvdla_core_clk_mgated or negedge nvdla_core_rstn ) begin
     if ( !nvdla_core_rstn ) begin
@@ -24185,7 +23006,7 @@ always @( posedge nvdla_core_clk_mgated ) begin
 //synopsys translate_off
         else if ( !((rd_popping)) ) begin
     end else begin
-        dat_fifo_rd_pd <= {32{`x_or_0}};
+        dat_fifo_rd_pd <= {128{`x_or_0}};
     end
 //synopsys translate_on
 end
@@ -24290,7 +23111,7 @@ endmodule // NV_NVDLA_SDP_CORE_Y_LUT_dat
 //
 // Flop-Based RAM
 //
-module NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32 (
+module NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128 (
       clk
     , pwrbus_ram_pd
     , di
@@ -24301,11 +23122,11 @@ module NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32 (
     );
 input clk; // write clock
 input [31 : 0] pwrbus_ram_pd;
-input [31:0] di;
+input [127:0] di;
 input we;
 input [0:0] wa;
 input [1:0] ra;
-output [31:0] dout;
+output [127:0] dout;
 `ifndef FPGA
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_0 (.A(pwrbus_ram_pd[0]));
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_1 (.A(pwrbus_ram_pd[1]));
@@ -24341,19 +23162,19 @@ NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_30 (.A(pwrbus_ram_pd[30]));
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_31 (.A(pwrbus_ram_pd[31]));
 `endif
 `ifdef EMU
-wire [31:0] dout_p;
+wire [127:0] dout_p;
 // we use an emulation ram here to save flops on the emulation board
 // so that the monstrous chip can fit :-)
 //
 reg [0:0] Wa0_vmw;
 reg we0_vmw;
-reg [31:0] Di0_vmw;
+reg [127:0] Di0_vmw;
 always @( posedge clk ) begin
     Wa0_vmw <= wa;
     we0_vmw <= we;
     Di0_vmw <= di;
 end
-vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32 emu_ram (
+vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128 emu_ram (
      .Wa0( Wa0_vmw )
    , .we0( we0_vmw )
    , .Di0( Di0_vmw )
@@ -24362,8 +23183,8 @@ vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32 emu_ram (
    );
 assign dout = (ra == 2) ? di : dout_p;
 `else
-reg [31:0] ram_ff0;
-reg [31:0] ram_ff1;
+reg [127:0] ram_ff0;
+reg [127:0] ram_ff1;
 always @( posedge clk ) begin
     if ( we && wa == 1'd0 ) begin
  ram_ff0 <= di;
@@ -24372,44 +23193,44 @@ always @( posedge clk ) begin
  ram_ff1 <= di;
     end
 end
-reg [31:0] dout;
+reg [127:0] dout;
 always @(*) begin
     case( ra )
     2'd0: dout = ram_ff0;
     2'd1: dout = ram_ff1;
     2'd2: dout = di;
 //VCS coverage off
-    default: dout = {32{`x_or_0}};
+    default: dout = {128{`x_or_0}};
 //VCS coverage on
     endcase
 end
 `endif // EMU
-endmodule // NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32
+endmodule // NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128
 // emulation model of flopram guts
 //
 `ifdef EMU
-module vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32 (
+module vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128 (
    Wa0, we0, Di0,
    Ra0, Do0
    );
 input [0:0] Wa0;
 input we0;
-input [31:0] Di0;
+input [127:0] Di0;
 input [0:0] Ra0;
-output [31:0] Do0;
+output [127:0] Do0;
 // Only visible during Spyglass to avoid blackboxes.
 `ifdef SPYGLASS_FLOPRAM
-assign Do0 = 32'd0;
+assign Do0 = 128'd0;
 wire dummy = 1'b0 | (|Wa0) | (|we0) | (|Di0) | (|Ra0);
 `endif
 // synopsys translate_off
 `ifndef SYNTH_LEVEL1_COMPILE
 `ifndef SYNTHESIS
-reg [31:0] mem[1:0];
+reg [127:0] mem[1:0];
 // expand mem for debug ease
 `ifdef EMU_EXPAND_FLOPRAM_MEM
-wire [31:0] Q0 = mem[0];
-wire [31:0] Q1 = mem[1];
+wire [127:0] Q0 = mem[0];
+wire [127:0] Q1 = mem[1];
 `endif
 // asynchronous ram writes
 always @(*) begin
@@ -24424,21 +23245,21 @@ assign Do0 = mem[Ra0];
 // synopsys translate_on
 // synopsys dc_script_begin
 // synopsys dc_script_end
-// g2c if { [find / -null_ok -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32] != {} } { set_attr preserve 1 [find / -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32] }
-endmodule // vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32
-//vmw: Memory vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32
+// g2c if { [find / -null_ok -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128] != {} } { set_attr preserve 1 [find / -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128] }
+endmodule // vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128
+//vmw: Memory vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128
 //vmw: Address-size 1
-//vmw: Data-size 32
+//vmw: Data-size 128
 //vmw: Sensitivity level 1
 //vmw: Ports W R
 //vmw: terminal we0 WriteEnable0
 //vmw: terminal Wa0 address0
-//vmw: terminal Di0[31:0] data0[31:0]
+//vmw: terminal Di0[127:0] data0[127:0]
 //vmw:
 //vmw: terminal Ra0 address1
-//vmw: terminal Do0[31:0] data1[31:0]
+//vmw: terminal Do0[127:0] data1[127:0]
 //vmw:
-//qt: CELL vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32
+//qt: CELL vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128
 //qt: TERMINAL we0 TYPE=WE POLARITY=H PORT=1
 //qt: TERMINAL Wa0[%d] TYPE=ADDRESS DIR=W BIT=%1 PORT=1
 //qt: TERMINAL Di0[%d] TYPE=DATA DIR=I BIT=%1 PORT=1
@@ -24463,10 +23284,10 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 output cmd_fifo_wr_prdy;
 input cmd_fifo_wr_pvld;
-input [69:0] cmd_fifo_wr_pd;
+input [279:0] cmd_fifo_wr_pd;
 input cmd_fifo_rd_prdy;
 output cmd_fifo_rd_pvld;
-output [69:0] cmd_fifo_rd_pd;
+output [279:0] cmd_fifo_rd_pd;
 input [31:0] pwrbus_ram_pd;
 // Master Clock Gating (SLCG)
 //
@@ -24541,11 +23362,11 @@ end
 wire rd_popping;
 reg cmd_fifo_rd_adr; // read address this cycle
 wire ram_we = wr_pushing && (cmd_fifo_wr_count > 2'd0 || !rd_popping); // note: write occurs next cycle
-wire [69:0] cmd_fifo_rd_pd_p; // read data out of ram
+wire [279:0] cmd_fifo_rd_pd_p; // read data out of ram
 wire [31 : 0] pwrbus_ram_pd;
 // Adding parameter for fifogen to disable wr/rd contention assertion in ramgen.
 // Fifogen handles this by ignoring the data on the ram data out for that cycle.
-NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70 ram (
+NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280 ram (
       .clk( nvdla_core_clk_mgated )
     , .pwrbus_ram_pd ( pwrbus_ram_pd )
     , .di ( cmd_fifo_wr_pd )
@@ -24607,7 +23428,7 @@ always @( posedge nvdla_core_clk_mgated or negedge nvdla_core_rstn ) begin
 //synopsys translate_on
     end
 end
-reg [69:0] cmd_fifo_rd_pd; // output data register
+reg [279:0] cmd_fifo_rd_pd; // output data register
 wire rd_req_next = (cmd_fifo_rd_pvld_p || (cmd_fifo_rd_pvld_int && !cmd_fifo_rd_prdy)) ;
 always @( posedge nvdla_core_clk_mgated or negedge nvdla_core_rstn ) begin
     if ( !nvdla_core_rstn ) begin
@@ -24623,7 +23444,7 @@ always @( posedge nvdla_core_clk_mgated ) begin
 //synopsys translate_off
         else if ( !((rd_popping)) ) begin
     end else begin
-        cmd_fifo_rd_pd <= {70{`x_or_0}};
+        cmd_fifo_rd_pd <= {280{`x_or_0}};
     end
 //synopsys translate_on
 end
@@ -24773,7 +23594,7 @@ endmodule // NV_NVDLA_SDP_CORE_Y_LUT_cmd
 //
 // Flop-Based RAM
 //
-module NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70 (
+module NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280 (
       clk
     , pwrbus_ram_pd
     , di
@@ -24784,11 +23605,11 @@ module NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70 (
     );
 input clk; // write clock
 input [31 : 0] pwrbus_ram_pd;
-input [69:0] di;
+input [279:0] di;
 input we;
 input [0:0] wa;
 input [1:0] ra;
-output [69:0] dout;
+output [279:0] dout;
 `ifndef FPGA
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_0 (.A(pwrbus_ram_pd[0]));
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_1 (.A(pwrbus_ram_pd[1]));
@@ -24824,19 +23645,19 @@ NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_30 (.A(pwrbus_ram_pd[30]));
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_31 (.A(pwrbus_ram_pd[31]));
 `endif
 `ifdef EMU
-wire [69:0] dout_p;
+wire [279:0] dout_p;
 // we use an emulation ram here to save flops on the emulation board
 // so that the monstrous chip can fit :-)
 //
 reg [0:0] Wa0_vmw;
 reg we0_vmw;
-reg [69:0] Di0_vmw;
+reg [279:0] Di0_vmw;
 always @( posedge clk ) begin
     Wa0_vmw <= wa;
     we0_vmw <= we;
     Di0_vmw <= di;
 end
-vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70 emu_ram (
+vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280 emu_ram (
      .Wa0( Wa0_vmw )
    , .we0( we0_vmw )
    , .Di0( Di0_vmw )
@@ -24845,8 +23666,8 @@ vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70 emu_ram (
    );
 assign dout = (ra == 2) ? di : dout_p;
 `else
-reg [69:0] ram_ff0;
-reg [69:0] ram_ff1;
+reg [279:0] ram_ff0;
+reg [279:0] ram_ff1;
 always @( posedge clk ) begin
     if ( we && wa == 1'd0 ) begin
  ram_ff0 <= di;
@@ -24855,44 +23676,44 @@ always @( posedge clk ) begin
  ram_ff1 <= di;
     end
 end
-reg [69:0] dout;
+reg [279:0] dout;
 always @(*) begin
     case( ra )
     2'd0: dout = ram_ff0;
     2'd1: dout = ram_ff1;
     2'd2: dout = di;
 //VCS coverage off
-    default: dout = {70{`x_or_0}};
+    default: dout = {280{`x_or_0}};
 //VCS coverage on
     endcase
 end
 `endif // EMU
-endmodule // NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70
+endmodule // NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280
 // emulation model of flopram guts
 //
 `ifdef EMU
-module vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70 (
+module vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280 (
    Wa0, we0, Di0,
    Ra0, Do0
    );
 input [0:0] Wa0;
 input we0;
-input [69:0] Di0;
+input [279:0] Di0;
 input [0:0] Ra0;
-output [69:0] Do0;
+output [279:0] Do0;
 // Only visible during Spyglass to avoid blackboxes.
 `ifdef SPYGLASS_FLOPRAM
-assign Do0 = 70'd0;
+assign Do0 = 280'd0;
 wire dummy = 1'b0 | (|Wa0) | (|we0) | (|Di0) | (|Ra0);
 `endif
 // synopsys translate_off
 `ifndef SYNTH_LEVEL1_COMPILE
 `ifndef SYNTHESIS
-reg [69:0] mem[1:0];
+reg [279:0] mem[1:0];
 // expand mem for debug ease
 `ifdef EMU_EXPAND_FLOPRAM_MEM
-wire [69:0] Q0 = mem[0];
-wire [69:0] Q1 = mem[1];
+wire [279:0] Q0 = mem[0];
+wire [279:0] Q1 = mem[1];
 `endif
 // asynchronous ram writes
 always @(*) begin
@@ -24907,26 +23728,6 @@ assign Do0 = mem[Ra0];
 // synopsys translate_on
 // synopsys dc_script_begin
 // synopsys dc_script_end
-// g2c if { [find / -null_ok -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70] != {} } { set_attr preserve 1 [find / -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70] }
-endmodule // vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70
-//vmw: Memory vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70
-//vmw: Address-size 1
-//vmw: Data-size 70
-//vmw: Sensitivity level 1
-//vmw: Ports W R
-//vmw: terminal we0 WriteEnable0
-//vmw: terminal Wa0 address0
-//vmw: terminal Di0[69:0] data0[69:0]
-//vmw:
-//vmw: terminal Ra0 address1
-//vmw: terminal Do0[69:0] data1[69:0]
-//vmw:
-//qt: CELL vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70
-//qt: TERMINAL we0 TYPE=WE POLARITY=H PORT=1
-//qt: TERMINAL Wa0[%d] TYPE=ADDRESS DIR=W BIT=%1 PORT=1
-//qt: TERMINAL Di0[%d] TYPE=DATA DIR=I BIT=%1 PORT=1
-//qt:
-//qt: TERMINAL Ra0[%d] TYPE=ADDRESS DIR=R BIT=%1 PORT=1
-//qt: TERMINAL Do0[%d] TYPE=DATA DIR=O BIT=%1 PORT=1
-//qt:
+// g2c if { [find / -null_ok -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280] != {} } { set_attr preserve 1 [find / -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280] }
+endmodule // vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280
 `endif // EMU

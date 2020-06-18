@@ -5,8 +5,8 @@
 `ifndef SV_STRUCT_DEFINED_cmac2cacc_if
 `define SV_STRUCT_DEFINED_cmac2cacc_if
 typedef struct packed {
-  bit [7:0][20:0] data;
-  bit [7:0] mask;
+  bit [3:0][18:0] data;
+  bit [3:0] mask;
   bit [0:0] mode;
   bit [4:0] batch_index;
   bit [0:0] stripe_st;

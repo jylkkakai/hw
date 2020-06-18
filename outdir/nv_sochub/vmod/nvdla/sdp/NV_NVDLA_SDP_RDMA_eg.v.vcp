@@ -52,14 +52,14 @@ output eg_done;
 input [15:0] cq2eg_pd;
 input cq2eg_pvld;
 output cq2eg_prdy;
-input [129 -1:0] lat_fifo_rd_pd;
+input [65 -1:0] lat_fifo_rd_pd;
 input lat_fifo_rd_pvld;
 output lat_fifo_rd_prdy;
 output dma_rd_cdt_lat_fifo_pop;
-output [16*16:0] sdp_rdma2dp_alu_pd;
+output [8*16:0] sdp_rdma2dp_alu_pd;
 output sdp_rdma2dp_alu_valid;
 input sdp_rdma2dp_alu_ready;
-output [16*16:0] sdp_rdma2dp_mul_pd;
+output [8*16:0] sdp_rdma2dp_mul_pd;
 output sdp_rdma2dp_mul_valid;
 input sdp_rdma2dp_mul_ready;
 input [4:0] reg2dp_batch_number;
@@ -111,17 +111,17 @@ wire alu_roc_rdy;
 wire alu_roc_vld;
 wire alu_rod_rdy;
 wire alu_rod_vld;
-wire [4*16*8 +3:0] unpack_out_pd;
+wire [4*8*8 +3:0] unpack_out_pd;
 wire unpack_out_pvld;
 wire unpack_out_prdy;
-wire [16*8 -1:0] mode_1bytex2_alu_rod0_pd;
-wire [16*8 -1:0] mode_1bytex2_alu_rod1_pd;
-wire [16*8 -1:0] mode_2bytex2_alu_rod0_pd;
-wire [16*8 -1:0] mode_2bytex2_alu_rod1_pd;
-wire [16*8 -1:0] mode_1bytex2_mul_rod0_pd;
-wire [16*8 -1:0] mode_1bytex2_mul_rod1_pd;
-wire [16*8 -1:0] mode_2bytex2_mul_rod0_pd;
-wire [16*8 -1:0] mode_2bytex2_mul_rod1_pd;
+wire [8*8 -1:0] mode_1bytex2_alu_rod0_pd;
+wire [8*8 -1:0] mode_1bytex2_alu_rod1_pd;
+wire [8*8 -1:0] mode_2bytex2_alu_rod0_pd;
+wire [8*8 -1:0] mode_2bytex2_alu_rod1_pd;
+wire [8*8 -1:0] mode_1bytex2_mul_rod0_pd;
+wire [8*8 -1:0] mode_1bytex2_mul_rod1_pd;
+wire [8*8 -1:0] mode_2bytex2_mul_rod0_pd;
+wire [8*8 -1:0] mode_2bytex2_mul_rod1_pd;
 //==============
 // CFG REG
 //==============
@@ -136,7 +136,6 @@ assign cfg_mode_1bytex1 = cfg_data_size_1byte & cfg_mode_single;
 assign cfg_mode_2bytex1 = cfg_data_size_2byte & cfg_mode_single;
 assign cfg_mode_1bytex2 = cfg_data_size_1byte & cfg_mode_both;
 assign cfg_mode_2bytex2 = cfg_data_size_2byte & cfg_mode_both;
-wire cfg_mode_multi_batch = reg2dp_batch_number!=0;
 assign cfg_dp_8 = reg2dp_proc_precision== 0 ;
 assign cfg_do_8 = reg2dp_out_precision== 0 ;
 assign cfg_alu_en = cfg_mode_alu_only || cfg_mode_both;
@@ -148,7 +147,7 @@ assign dma_rd_cdt_lat_fifo_pop = lat_fifo_rd_pvld & lat_fifo_rd_prdy;
 //==============
 // Latency FIFO to buffer return DATA
 //==============
-wire [3:0] lat_fifo_rd_mask = {{(4-1){1'b0}},lat_fifo_rd_pd[129 -1:128]};
+wire [3:0] lat_fifo_rd_mask = {{(4-1){1'b0}},lat_fifo_rd_pd[65 -1:64]};
 wire [2:0] lat_fifo_rd_size = lat_fifo_rd_mask[3]+lat_fifo_rd_mask[2]+lat_fifo_rd_mask[1]+lat_fifo_rd_mask[0];
 //==================================================================
 // Context Queue: read
@@ -223,15 +222,15 @@ wire lat_fifo_rd_beat_end = is_last_beat;
 NV_NVDLA_SDP_RDMA_unpack u_rdma_unpack (
    .nvdla_core_clk (nvdla_core_clk)
   ,.nvdla_core_rstn (nvdla_core_rstn)
-  ,.inp_data (lat_fifo_rd_pd[129 -1:0])
+  ,.inp_data (lat_fifo_rd_pd[65 -1:0])
   ,.inp_pvld (lat_fifo_rd_pvld)
   ,.inp_prdy (lat_fifo_rd_prdy)
   ,.inp_end (lat_fifo_rd_beat_end)
-  ,.out_data (unpack_out_pd[4*16*8 +3:0])
+  ,.out_data (unpack_out_pd[4*8*8 +3:0])
   ,.out_pvld (unpack_out_pvld)
   ,.out_prdy (unpack_out_prdy)
   );
-wire [3:0] unpack_out_mask = unpack_out_pd[4*16*8 +3:4*16*8];
+wire [3:0] unpack_out_mask = unpack_out_pd[4*8*8 +3:4*8*8];
 assign unpack_out_prdy = cfg_mode_both ? alu_rod_rdy & mul_rod_rdy : cfg_mode_alu_only ? alu_rod_rdy : mul_rod_rdy;
 //============================================================
 // Re-Order FIFO to send data to SDP-core
@@ -252,7 +251,7 @@ assign unpack_out_prdy = cfg_mode_both ? alu_rod_rdy & mul_rod_rdy : cfg_mode_al
 // 2Bx2 | ALU | MUL |
 // |----------------------------------------------------|
 //============================================================
-//: my $k = 16;
+//: my $k = 8;
 //: foreach my $i (0..${k}-1) {
 //: my $j = ${i}*2;
 //: print "assign  mode_1bytex2_alu_rod0_pd[8*${i}+7:8*${i}] = unpack_out_pd[8*${j}+7: 8*${j}]; \n";
@@ -293,14 +292,14 @@ assign unpack_out_prdy = cfg_mode_both ? alu_rod_rdy & mul_rod_rdy : cfg_mode_al
 //: print "assign  mode_2bytex2_mul_rod1_pd[16*${i}+15:16*${i}] = unpack_out_pd[16*${jj}+15: 16*${jj}]; \n";
 //: }
 //: print "\n";
-wire [16*8 -1:0] alu_rod0_pd = cfg_mode_2bytex2 ? mode_2bytex2_alu_rod0_pd : cfg_mode_1bytex2 ? mode_1bytex2_alu_rod0_pd : unpack_out_pd[(16*8*0+16*8 -1):16*8*0];
-wire [16*8 -1:0] alu_rod1_pd = cfg_mode_2bytex2 ? mode_2bytex2_alu_rod1_pd : cfg_mode_1bytex2 ? mode_1bytex2_alu_rod1_pd : unpack_out_pd[(16*8*1+16*8 -1):16*8*1];
-wire [16*8 -1:0] alu_rod2_pd = unpack_out_pd[(16*8*2+16*8 -1):16*8*2];
-wire [16*8 -1:0] alu_rod3_pd = unpack_out_pd[(16*8*3+16*8 -1):16*8*3];
-wire [16*8 -1:0] mul_rod0_pd = cfg_mode_2bytex2 ? mode_2bytex2_mul_rod0_pd : cfg_mode_1bytex2 ? mode_1bytex2_mul_rod0_pd : unpack_out_pd[(16*8*0+16*8 -1):16*8*0];
-wire [16*8 -1:0] mul_rod1_pd = cfg_mode_2bytex2 ? mode_2bytex2_mul_rod1_pd : cfg_mode_1bytex2 ? mode_1bytex2_mul_rod1_pd : unpack_out_pd[(16*8*1+16*8 -1):16*8*1];
-wire [16*8 -1:0] mul_rod2_pd = unpack_out_pd[(16*8*2+16*8 -1):16*8*2];
-wire [16*8 -1:0] mul_rod3_pd = unpack_out_pd[(16*8*3+16*8 -1):16*8*3];
+wire [8*8 -1:0] alu_rod0_pd = cfg_mode_2bytex2 ? mode_2bytex2_alu_rod0_pd : cfg_mode_1bytex2 ? mode_1bytex2_alu_rod0_pd : unpack_out_pd[(8*8*0+8*8 -1):8*8*0];
+wire [8*8 -1:0] alu_rod1_pd = cfg_mode_2bytex2 ? mode_2bytex2_alu_rod1_pd : cfg_mode_1bytex2 ? mode_1bytex2_alu_rod1_pd : unpack_out_pd[(8*8*1+8*8 -1):8*8*1];
+wire [8*8 -1:0] alu_rod2_pd = unpack_out_pd[(8*8*2+8*8 -1):8*8*2];
+wire [8*8 -1:0] alu_rod3_pd = unpack_out_pd[(8*8*3+8*8 -1):8*8*3];
+wire [8*8 -1:0] mul_rod0_pd = cfg_mode_2bytex2 ? mode_2bytex2_mul_rod0_pd : cfg_mode_1bytex2 ? mode_1bytex2_mul_rod0_pd : unpack_out_pd[(8*8*0+8*8 -1):8*8*0];
+wire [8*8 -1:0] mul_rod1_pd = cfg_mode_2bytex2 ? mode_2bytex2_mul_rod1_pd : cfg_mode_1bytex2 ? mode_1bytex2_mul_rod1_pd : unpack_out_pd[(8*8*1+8*8 -1):8*8*1];
+wire [8*8 -1:0] mul_rod2_pd = unpack_out_pd[(8*8*2+8*8 -1):8*8*2];
+wire [8*8 -1:0] mul_rod3_pd = unpack_out_pd[(8*8*3+8*8 -1):8*8*3];
 wire [3:0] alu_rod_mask = cfg_mode_both ? {2'h0,unpack_out_mask[2],unpack_out_mask[0]} : unpack_out_mask[3:0];
 wire [3:0] mul_rod_mask = cfg_mode_both ? {2'h0,unpack_out_mask[2],unpack_out_mask[0]} : unpack_out_mask[3:0];
 wire [2:0] alu_roc_size = alu_rod_mask[3] + alu_rod_mask[2] + alu_rod_mask[1] + alu_rod_mask[0];
@@ -321,11 +320,11 @@ NV_NVDLA_SDP_RDMA_EG_ro u_alu (
   ,.pwrbus_ram_pd (pwrbus_ram_pd)
   ,.sdp_rdma2dp_valid (sdp_rdma2dp_alu_valid)
   ,.sdp_rdma2dp_ready (sdp_rdma2dp_alu_ready)
-  ,.sdp_rdma2dp_pd (sdp_rdma2dp_alu_pd[16*16:0])
-  ,.rod0_wr_pd (alu_rod0_pd[16*8 -1:0])
-  ,.rod1_wr_pd (alu_rod1_pd[16*8 -1:0])
-  ,.rod2_wr_pd (alu_rod2_pd[16*8 -1:0])
-  ,.rod3_wr_pd (alu_rod3_pd[16*8 -1:0])
+  ,.sdp_rdma2dp_pd (sdp_rdma2dp_alu_pd[8*16:0])
+  ,.rod0_wr_pd (alu_rod0_pd[8*8 -1:0])
+  ,.rod1_wr_pd (alu_rod1_pd[8*8 -1:0])
+  ,.rod2_wr_pd (alu_rod2_pd[8*8 -1:0])
+  ,.rod3_wr_pd (alu_rod3_pd[8*8 -1:0])
   ,.rod_wr_mask (alu_rod_mask[3:0])
   ,.rod_wr_vld (alu_rod_vld)
   ,.rod_wr_rdy (alu_rod_rdy)
@@ -335,8 +334,6 @@ NV_NVDLA_SDP_RDMA_EG_ro u_alu (
   ,.cfg_dp_8 (cfg_dp_8)
   ,.cfg_dp_size_1byte (cfg_data_size_1byte)
   ,.cfg_mode_per_element (cfg_mode_per_element)
-  ,.cfg_mode_multi_batch (cfg_mode_multi_batch)
-  ,.reg2dp_batch_number (reg2dp_batch_number[4:0])
   ,.reg2dp_channel (reg2dp_channel[12:0])
   ,.reg2dp_height (reg2dp_height[12:0])
   ,.reg2dp_width (reg2dp_width[12:0])
@@ -348,11 +345,11 @@ NV_NVDLA_SDP_RDMA_EG_ro u_mul (
   ,.pwrbus_ram_pd (pwrbus_ram_pd)
   ,.sdp_rdma2dp_valid (sdp_rdma2dp_mul_valid)
   ,.sdp_rdma2dp_ready (sdp_rdma2dp_mul_ready)
-  ,.sdp_rdma2dp_pd (sdp_rdma2dp_mul_pd[16*16:0])
-  ,.rod0_wr_pd (mul_rod0_pd[16*8 -1:0])
-  ,.rod1_wr_pd (mul_rod1_pd[16*8 -1:0])
-  ,.rod2_wr_pd (mul_rod2_pd[16*8 -1:0])
-  ,.rod3_wr_pd (mul_rod3_pd[16*8 -1:0])
+  ,.sdp_rdma2dp_pd (sdp_rdma2dp_mul_pd[8*16:0])
+  ,.rod0_wr_pd (mul_rod0_pd[8*8 -1:0])
+  ,.rod1_wr_pd (mul_rod1_pd[8*8 -1:0])
+  ,.rod2_wr_pd (mul_rod2_pd[8*8 -1:0])
+  ,.rod3_wr_pd (mul_rod3_pd[8*8 -1:0])
   ,.rod_wr_mask (mul_rod_mask[3:0])
   ,.rod_wr_vld (mul_rod_vld)
   ,.rod_wr_rdy (mul_rod_rdy)
@@ -362,8 +359,6 @@ NV_NVDLA_SDP_RDMA_EG_ro u_mul (
   ,.cfg_dp_8 (cfg_dp_8)
   ,.cfg_dp_size_1byte (cfg_data_size_1byte)
   ,.cfg_mode_per_element (cfg_mode_per_element)
-  ,.cfg_mode_multi_batch (cfg_mode_multi_batch)
-  ,.reg2dp_batch_number (reg2dp_batch_number[4:0])
   ,.reg2dp_channel (reg2dp_channel[12:0])
   ,.reg2dp_height (reg2dp_height[12:0])
   ,.reg2dp_width (reg2dp_width[12:0])

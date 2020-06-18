@@ -42,7 +42,7 @@ module NV_NVDLA_CDP_DP_nan (
 //////////////////////////////////////////////////////
 input nvdla_core_clk;
 input nvdla_core_rstn;
-input [2*8 +24:0] cdp_rdma2dp_pd;
+input [1*8 +24:0] cdp_rdma2dp_pd;
 input cdp_rdma2dp_valid;
 input dp2reg_done;
 input nan_preproc_prdy;
@@ -52,10 +52,10 @@ input reg2dp_op_en;
 output cdp_rdma2dp_ready;
 output [31:0] dp2reg_inf_input_num;
 output [31:0] dp2reg_nan_input_num;
-output [2*8 +24:0] nan_preproc_pd;
+output [1*8 +24:0] nan_preproc_pd;
 output nan_preproc_pvld;
 //////////////////////////////////////////////////////
-reg [2*8 +24:0] datin_d;
+reg [1*8 +24:0] datin_d;
 reg din_pvld_d1;
 wire [31:0] dp2reg_inf_input_num=0;
 wire [31:0] dp2reg_nan_input_num=0;
@@ -142,13 +142,13 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   end
 end
 assign op_en_load = reg2dp_op_en & (~op_en_d1);
-//: my $k = int( log(16/2)/log(2) ) ;
+//: my $k = int( log(8/1)/log(2) ) ;
 //: print qq(
-//: assign layer_end = &{cdp_rdma2dp_pd[2*8 +16:2*8 +13],cdp_rdma2dp_pd[2*8 +8+${k}-1:2*8 +8]} & load_din;
+//: assign layer_end = &{cdp_rdma2dp_pd[1*8 +16:1*8 +13],cdp_rdma2dp_pd[1*8 +8+${k}-1:1*8 +8]} & load_din;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign layer_end = &{cdp_rdma2dp_pd[2*8 +16:2*8 +13],cdp_rdma2dp_pd[2*8 +8+3-1:2*8 +8]} & load_din;
+assign layer_end = &{cdp_rdma2dp_pd[1*8 +16:1*8 +13],cdp_rdma2dp_pd[1*8 +8+3-1:1*8 +8]} & load_din;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -205,9 +205,9 @@ assign nan_preproc_pvld = din_pvld_d1;
 // //////////////////////////////////////////////////////////////////////
 // //input NaN element count
 // //////////////////////////////////////////////////////////////////////
-// assign last_w = cdp_rdma2dp_pd[2*8 +12];
-// assign last_h = cdp_rdma2dp_pd[2*8 +13];
-// assign last_c = cdp_rdma2dp_pd[2*8 +14];
+// assign last_w = cdp_rdma2dp_pd[1*8 +12];
+// assign last_h = cdp_rdma2dp_pd[1*8 +13];
+// assign last_c = cdp_rdma2dp_pd[1*8 +14];
 // assign cube_end = last_w & last_h & last_c;
 //
 // function [2:0] fun_bit_sum_4;

@@ -58,16 +58,16 @@ module NV_NVDLA_PDP_rdma (
  input [62:0] csb2pdp_rdma_req_pd;
  input mcif2pdp_rd_rsp_valid; /* data valid */
  output mcif2pdp_rd_rsp_ready; /* data return handshake */
- input [( 128 + (128/8/16) )-1:0] mcif2pdp_rd_rsp_pd;
+ input [( 64 + (64/8/8) )-1:0] mcif2pdp_rd_rsp_pd;
  output pdp2mcif_rd_cdt_lat_fifo_pop;
  output pdp2mcif_rd_req_valid; /* data valid */
  input pdp2mcif_rd_req_ready; /* data return handshake */
- output [64 +14:0] pdp2mcif_rd_req_pd;
+ output [32 +14:0] pdp2mcif_rd_req_pd;
  output pdp_rdma2csb_resp_valid; /* data valid */
  output [33:0] pdp_rdma2csb_resp_pd; /* pkt_id_width=1 pkt_widths=33,33  */
  output pdp_rdma2dp_valid; /* data valid */
  input pdp_rdma2dp_ready; /* data return handshake */
- output [8*2 +13:0] pdp_rdma2dp_pd;
+ output [8*1 +13:0] pdp_rdma2dp_pd;
  input [31:0] pwrbus_ram_pd;
  input dla_clk_ovr_on_sync;
  input global_clk_ovr_on_sync;

@@ -6,7 +6,7 @@
 #define _DMA_READ_RSP_struct_H_
 
 typedef struct DMA_READ_RSP_s {
-    sc_int<128> data ;
+    sc_int<64> data ;
     sc_int<1> mask ;
 } DMA_READ_RSP_t;
 

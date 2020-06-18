@@ -37,18 +37,18 @@ module NV_NVDLA_CDP_rdma (
  output cdp2mcif_rd_cdt_lat_fifo_pop;
  output cdp2mcif_rd_req_valid; /* data valid */
  input cdp2mcif_rd_req_ready; /* data return handshake */
- output [79 -1:0] cdp2mcif_rd_req_pd;
+ output [47 -1:0] cdp2mcif_rd_req_pd;
  output cdp_rdma2csb_resp_valid; /* data valid */
  output [33:0] cdp_rdma2csb_resp_pd; /* pkt_id_width=1 pkt_widths=33,33  */
  output cdp_rdma2dp_valid; /* data valid */
  input cdp_rdma2dp_ready; /* data return handshake */
- output [2*8 +24:0] cdp_rdma2dp_pd;
+ output [1*8 +24:0] cdp_rdma2dp_pd;
  input csb2cdp_rdma_req_pvld; /* data valid */
  output csb2cdp_rdma_req_prdy; /* data return handshake */
  input [62:0] csb2cdp_rdma_req_pd;
  input mcif2cdp_rd_rsp_valid; /* data valid */
  output mcif2cdp_rd_rsp_ready; /* data return handshake */
- input [129 -1:0] mcif2cdp_rd_rsp_pd;
+ input [65 -1:0] mcif2cdp_rd_rsp_pd;
  input [31:0] pwrbus_ram_pd;
 input dla_clk_ovr_on_sync;
 input global_clk_ovr_on_sync;

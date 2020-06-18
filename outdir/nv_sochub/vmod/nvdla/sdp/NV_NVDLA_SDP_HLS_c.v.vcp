@@ -36,17 +36,17 @@ input [15:0] cfg_scale;
 input [5:0] cfg_truncate;
 input cvt_in_pvld;
 input cvt_out_prdy;
-input [32*4 -1:0] cvt_pd_in;
+input [32*1 -1:0] cvt_pd_in;
 output cvt_in_prdy;
 output cvt_out_pvld;
-output [16*4 +4 -1:0] cvt_pd_out;
+output [16*1 +1 -1:0] cvt_pd_out;
 input nvdla_core_clk;
 input nvdla_core_rstn;
-wire [8*4 -1:0] cvt_pd_out8;
-wire [16*4 -1:0] cvt_pd_out16;
+wire [8*1 -1:0] cvt_pd_out8;
+wire [16*1 -1:0] cvt_pd_out16;
 //: my $b = 8;
-//: my $dw = 16*4;
-//: my $k=4;
+//: my $dw = 16*1;
+//: my $k=1;
 //: foreach my $i (0..${k}-1) {
 //: print qq(
 //: wire [31:0] cvt_data_in_$i;

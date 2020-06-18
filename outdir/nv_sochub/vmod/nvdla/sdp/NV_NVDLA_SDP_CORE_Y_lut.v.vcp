@@ -61,10 +61,10 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 output lut2inp_pvld; /* data valid */
 input lut2inp_prdy; /* data return handshake */
-output [185*1 -1:0] lut2inp_pd;
+output [185*0 -1:0] lut2inp_pd;
 input idx2lut_pvld; /* data valid */
 output idx2lut_prdy; /* data return handshake */
-input [81*1 -1:0] idx2lut_pd;
+input [81*0 -1:0] idx2lut_pd;
 input reg2dp_lut_int_access_type;
 input [9:0] reg2dp_lut_int_addr;
 input [15:0] reg2dp_lut_int_data;
@@ -95,12 +95,12 @@ output [31:0] dp2reg_lut_uflow;
 input [31:0] pwrbus_ram_pd;
 input op_en_load;
 wire idx2lut_prdy;
-wire [185*1 -1:0] lut2inp_pd;
+wire [185*0 -1:0] lut2inp_pd;
 wire lut2inp_pvld;
-wire [81*1 -1:0] lut_in_pd;
+wire [81*0 -1:0] lut_in_pd;
 wire lut_in_pvld;
 wire lut_in_prdy;
-wire [185*1 -1:0] lut_out_pd;
+wire [185*0 -1:0] lut_out_pd;
 wire lut_out_pvld;
 wire lut_out_prdy;
 //: my $m = 65;
@@ -114,7 +114,7 @@ wire lut_out_prdy;
 //: foreach my $i (0..${n}-1) {
 //: print "reg     [15:0] REG_lo_${i}; \n";
 //: }
-//: my $k = 1;
+//: my $k = 0;
 //: foreach my $lut (qw(le lo)) {
 //: foreach my $j (0..1) {
 //: foreach my $i (0..${k}-1) {
@@ -124,7 +124,7 @@ wire lut_out_prdy;
 //: }
 reg [15:0] le_lut_data;
 reg [15:0] lo_lut_data;
-//: my $k = 1;
+//: my $k = 0;
 //: foreach my $i (0..${k}-1) {
 //: print qq(
 //: reg [31:0] out_bias${i};
@@ -188,18 +188,18 @@ reg [33:0] perf_lut_uflow_cnt_ext;
 reg [33:0] perf_lut_uflow_cnt_mod;
 reg [33:0] perf_lut_uflow_cnt_new;
 reg [33:0] perf_lut_uflow_cnt_nxt;
-wire [70*1 -1:0] cmd_fifo_rd_pd;
+wire [70*0 -1:0] cmd_fifo_rd_pd;
 wire cmd_fifo_rd_prdy;
 wire cmd_fifo_rd_pvld;
-wire [70*1 -1:0] cmd_fifo_wr_pd;
+wire [70*0 -1:0] cmd_fifo_wr_pd;
 wire cmd_fifo_wr_prdy;
 wire cmd_fifo_wr_pvld;
-wire [32*1 -1:0] dat_fifo_rd_pd;
+wire [32*0 -1:0] dat_fifo_rd_pd;
 wire dat_fifo_rd_prdy;
 wire dat_fifo_rd_pvld;
-wire [32*1 -1:0] dat_fifo_wr_pd;
+wire [32*0 -1:0] dat_fifo_wr_pd;
 wire dat_fifo_wr_pvld;
-//: my $k = 1;
+//: my $k = 0;
 //: foreach my $j (0..1) {
 //: foreach my $i (0..${k}-1) {
 //: print"wire    [15:0] dat_in_y${j}_${i}; \n";
@@ -213,7 +213,7 @@ wire dat_fifo_wr_pvld;
 //: foreach my $i (0..${od}-1) {
 //: print"wire           lo_wr_en_$i; \n";
 //: }
-//: my $k = 1;
+//: my $k = 0;
 //: foreach my $i (0..${k}-1) {
 //: print qq(
 //: wire [8:0] lut_in_addr${i};
@@ -21110,20 +21110,20 @@ NV_NVDLA_SDP_CORE_Y_lut_pipe_p1 pipe_p1 (
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.idx2lut_pvld (idx2lut_pvld)
   ,.idx2lut_prdy (idx2lut_prdy)
-  ,.idx2lut_pd (idx2lut_pd[81*1 -1:0])
+  ,.idx2lut_pd (idx2lut_pd[81*0 -1:0])
   ,.lut_in_pvld (lut_in_pvld)
   ,.lut_in_prdy (lut_in_prdy)
-  ,.lut_in_pd (lut_in_pd[81*1 -1:0])
+  ,.lut_in_pd (lut_in_pd[81*0 -1:0])
   );
 // PKT_UNPACK_WIRE( sdp_y_lut_in , lut_in_ , lut_in_pd )
-//: my $k=1;
-//: my $bx =1*35;
-//: my $bof=1*(35+32);
-//: my $buf=1*(35+32+1);
-//: my $bsl=1*(35+32+2);
-//: my $ba =1*(35+32+3);
-//: my $beh=1*(35+32+12);
-//: my $boh=1*(35+32+13);
+//: my $k=0;
+//: my $bx =0*35;
+//: my $bof=0*(35+32);
+//: my $buf=0*(35+32+1);
+//: my $bsl=0*(35+32+2);
+//: my $ba =0*(35+32+3);
+//: my $beh=0*(35+32+12);
+//: my $boh=0*(35+32+13);
 //: foreach my $i (0..${k}-1) {
 //: print "assign   lut_in_fraction${i}[34:0] =  lut_in_pd[35*${i}+34:35*${i}]; \n";
 //: }
@@ -21151,7 +21151,7 @@ NV_NVDLA_SDP_CORE_Y_lut_pipe_p1 pipe_p1 (
 //=======================================
 // PERF STATISTIC
 // OFLOW
-//: my $k=1;
+//: my $k=0;
 //: my $w=0;
 //: print "assign lut_oflow_sum_tmp[${w}:0] = lut_in_oflow0";
 //: if(${k} >1) {
@@ -21197,7 +21197,7 @@ always @(
   lut_oflow_cnt[31:0] = perf_lut_oflow_cnt_cur[31:0];
 end
 // UFLOW
-//: my $k=1;
+//: my $k=0;
 //: my $w=0;
 //: print "assign lut_uflow_sum_tmp[${w}:0] = lut_in_uflow0";
 //: if(${k} >1) {
@@ -21243,7 +21243,7 @@ always @(
   lut_uflow_cnt[31:0] = perf_lut_uflow_cnt_cur[31:0];
 end
 // HYBRID
-//: my $k=1;
+//: my $k=0;
 //: my $w=0;
 //: foreach my $i (0..${k}-1) {
 //: print "assign lut_in_hybrid${i} = !(lut_in_oflow${i} | lut_in_uflow${i}); \n";
@@ -21295,7 +21295,7 @@ always @(
   lut_hybrid_cnt[31:0] = perf_lut_hybrid_cnt_cur[31:0];
 end
 // LE_HIT
-//: my $k=1;
+//: my $k=0;
 //: my $w=0;
 //: print "assign lut_le_hit_sum_tmp[${w}:0] = lut_in_le_hit0";
 //: if(${k} >1) {
@@ -21343,7 +21343,7 @@ always @(
   lut_le_hit_cnt[31:0] = perf_lut_le_hit_cnt_cur[31:0];
 end
 // LO_HIT
-//: my $k=1;
+//: my $k=0;
 //: my $w=0;
 //: print "assign lut_lo_hit_sum_tmp[${w}:0] = lut_in_lo_hit0";
 //: if(${k} >1) {
@@ -21390,7 +21390,7 @@ always @(
 end
 //=======================================
 // rd addr mux
-//: my $k=1;
+//: my $k=0;
 //: foreach my $i (0..${k}-1) {
 //: print qq(
 //: assign lut_in_addr${i}_0 = lut_in_addr${i};
@@ -21429,8 +21429,8 @@ end
 assign rd_lut_en = lut_in_pvld & lut_in_prdy;
 assign dat_fifo_wr_pvld = rd_lut_en;
 // PKT_PACK_WIRE( sdp_y_lut_dat , dat_in_ , dat_fifo_wr_pd )
-//: my $k=1;
-//: my $b=1*16;
+//: my $k=0;
+//: my $b=0*16;
 //: foreach my $i (0..${k}-1) {
 //: print "assign       dat_fifo_wr_pd[16*${i}+15:16*${i}]  =  dat_in_y0_${i}[15:0]; \n";
 //: }
@@ -21448,10 +21448,10 @@ NV_NVDLA_SDP_CORE_Y_LUT_dat u_dat (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.dat_fifo_wr_pvld (dat_fifo_wr_pvld) //|< w
-  ,.dat_fifo_wr_pd (dat_fifo_wr_pd[32*1 -1:0]) //|< w
+  ,.dat_fifo_wr_pd (dat_fifo_wr_pd[32*0 -1:0]) //|< w
   ,.dat_fifo_rd_prdy (dat_fifo_rd_prdy) //|< w
   ,.dat_fifo_rd_pvld (dat_fifo_rd_pvld) //|> w
-  ,.dat_fifo_rd_pd (dat_fifo_rd_pd[32*1 -1:0]) //|> w
+  ,.dat_fifo_rd_pd (dat_fifo_rd_pd[32*0 -1:0]) //|> w
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0]) //|< i
   );
 // dat fifo rd
@@ -21459,11 +21459,11 @@ assign dat_fifo_rd_prdy = lut_out_prdy;
 //============
 // cmd fifo wr:
 // PKT_PACK_WIRE( sdp_y_lut_cmd , lut_in_ , cmd_fifo_wr_pd )
-//: my $k=1;
-//: my $bx =1*35;
-//: my $bof=1*(35+32);
-//: my $buf=1*(35+32+1);
-//: my $bsl=1*(35+32+2);
+//: my $k=0;
+//: my $bx =0*35;
+//: my $bof=0*(35+32);
+//: my $buf=0*(35+32+1);
+//: my $bsl=0*(35+32+2);
 //: foreach my $i (0..${k}-1) {
 //: print "assign       cmd_fifo_wr_pd[35*${i}+34:35*${i}] =      lut_in_fraction${i}[34:0]; \n";
 //: }
@@ -21503,17 +21503,17 @@ NV_NVDLA_SDP_CORE_Y_LUT_cmd u_cmd (
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.cmd_fifo_wr_prdy (cmd_fifo_wr_prdy) //|> w
   ,.cmd_fifo_wr_pvld (cmd_fifo_wr_pvld) //|< w
-  ,.cmd_fifo_wr_pd (cmd_fifo_wr_pd[70*1 -1:0]) //|< w
+  ,.cmd_fifo_wr_pd (cmd_fifo_wr_pd[70*0 -1:0]) //|< w
   ,.cmd_fifo_rd_prdy (cmd_fifo_rd_prdy) //|< w
   ,.cmd_fifo_rd_pvld (cmd_fifo_rd_pvld) //|> w
-  ,.cmd_fifo_rd_pd (cmd_fifo_rd_pd[70*1 -1:0]) //|> w
+  ,.cmd_fifo_rd_pd (cmd_fifo_rd_pd[70*0 -1:0]) //|> w
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0]) //|< i
   );
 // cmd fifo rd:
 assign cmd_fifo_rd_prdy = lut_out_prdy & dat_fifo_rd_pvld;
 //=======================================
 // output mux when oflow/uflow
-//: my $k=1;
+//: my $k=0;
 //: foreach my $i (0..${k}-1) {
 //: print "assign out_flow${i} = out_uflow${i} | out_oflow${i}; \n";
 //: }
@@ -21580,15 +21580,15 @@ assign cmd_fifo_rd_prdy = lut_out_prdy & dat_fifo_rd_pvld;
 // output pipe
 assign lut_out_pvld = dat_fifo_rd_pvld;
 // PKT_PACK_WIRE( sdp_y_lut_out , out_ , lut_out_pd )
-//: my $k=1;
-//: my $bf =1*32;
-//: my $by0=1*(32+35);
-//: my $by1=1*(32+35+16);
-//: my $bsc=1*(32+35+32);
-//: my $bsf=1*(32+35+48);
-//: my $bof=1*(32+35+48+5);
-//: my $bbs=1*(32+35+85);
-//: my $bfw=1*(32+35+85+32);
+//: my $k=0;
+//: my $bf =0*32;
+//: my $by0=0*(32+35);
+//: my $by1=0*(32+35+16);
+//: my $bsc=0*(32+35+32);
+//: my $bsf=0*(32+35+48);
+//: my $bof=0*(32+35+48+5);
+//: my $bbs=0*(32+35+85);
+//: my $bfw=0*(32+35+85+32);
 //: foreach my $i (0..${k}-1) {
 //: print "assign       lut_out_pd[32*${i}+31:32*${i}]                 = out_x${i}[31:0]; \n";
 //: }
@@ -21621,10 +21621,10 @@ NV_NVDLA_SDP_CORE_Y_lut_pipe_p2 pipe_p2 (
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.lut_out_pvld (lut_out_pvld)
   ,.lut_out_prdy (lut_out_prdy)
-  ,.lut_out_pd (lut_out_pd[185*1 -1:0])
+  ,.lut_out_pd (lut_out_pd[185*0 -1:0])
   ,.lut2inp_pvld (lut2inp_pvld)
   ,.lut2inp_prdy (lut2inp_prdy)
-  ,.lut2inp_pd (lut2inp_pd[185*1 -1:0])
+  ,.lut2inp_pd (lut2inp_pd[185*0 -1:0])
   );
 //=======================================
 // Assertions
@@ -21780,11 +21780,11 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input idx2lut_pvld;
 output idx2lut_prdy;
-input [81*1 -1:0] idx2lut_pd;
+input [81*0 -1:0] idx2lut_pd;
 output lut_in_pvld;
 input lut_in_prdy;
-output [81*1 -1:0] lut_in_pd;
-//: my $dw = 81*1;
+output [81*0 -1:0] lut_in_pd;
+//: my $dw = 81*0;
 //: &eperl::pipe("-is -wid $dw -do lut_in_pd -vo lut_in_pvld -ri lut_in_prdy -di idx2lut_pd -vi idx2lut_pvld -ro idx2lut_prdy");
 endmodule
 module NV_NVDLA_SDP_CORE_Y_lut_pipe_p2 (
@@ -21801,11 +21801,11 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input lut_out_pvld;
 output lut_out_prdy;
-input [185*1 -1:0] lut_out_pd;
+input [185*0 -1:0] lut_out_pd;
 output lut2inp_pvld;
 input lut2inp_prdy;
-output [185*1 -1:0] lut2inp_pd;
-//: my $dw = 185*1;
+output [185*0 -1:0] lut2inp_pd;
+//: my $dw = 185*0;
 //: &eperl::pipe("-is -wid $dw -do lut2inp_pd -vo lut2inp_pvld -ri lut2inp_prdy -di lut_out_pd -vi lut_out_pvld -ro lut_out_prdy");
 endmodule
 `define FORCE_CONTENTION_ASSERTION_RESET_ACTIVE 1'b1
@@ -21824,10 +21824,10 @@ module NV_NVDLA_SDP_CORE_Y_LUT_dat (
 input nvdla_core_clk;
 input nvdla_core_rstn;
 input dat_fifo_wr_pvld;
-input [31:0] dat_fifo_wr_pd;
+input [127:0] dat_fifo_wr_pd;
 input dat_fifo_rd_prdy;
 output dat_fifo_rd_pvld;
-output [31:0] dat_fifo_rd_pd;
+output [127:0] dat_fifo_rd_pd;
 input [31:0] pwrbus_ram_pd;
 // Master Clock Gating (SLCG)
 //
@@ -21888,11 +21888,11 @@ end
 wire rd_popping;
 reg dat_fifo_rd_adr; // read address this cycle
 wire ram_we = wr_pushing && (dat_fifo_wr_count > 2'd0 || !rd_popping); // note: write occurs next cycle
-wire [31:0] dat_fifo_rd_pd_p; // read data out of ram
+wire [127:0] dat_fifo_rd_pd_p; // read data out of ram
 wire [31 : 0] pwrbus_ram_pd;
 // Adding parameter for fifogen to disable wr/rd contention assertion in ramgen.
 // Fifogen handles this by ignoring the data on the ram data out for that cycle.
-NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32 ram (
+NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128 ram (
       .clk( nvdla_core_clk_mgated )
     , .pwrbus_ram_pd ( pwrbus_ram_pd )
     , .di ( dat_fifo_wr_pd )
@@ -21954,7 +21954,7 @@ always @( posedge nvdla_core_clk_mgated or negedge nvdla_core_rstn ) begin
 //synopsys translate_on
     end
 end
-reg [31:0] dat_fifo_rd_pd; // output data register
+reg [127:0] dat_fifo_rd_pd; // output data register
 wire rd_req_next = (dat_fifo_rd_pvld_p || (dat_fifo_rd_pvld_int && !dat_fifo_rd_prdy)) ;
 always @( posedge nvdla_core_clk_mgated or negedge nvdla_core_rstn ) begin
     if ( !nvdla_core_rstn ) begin
@@ -21970,7 +21970,7 @@ always @( posedge nvdla_core_clk_mgated ) begin
 //synopsys translate_off
         else if ( !((rd_popping)) ) begin
     end else begin
-        dat_fifo_rd_pd <= {32{`x_or_0}};
+        dat_fifo_rd_pd <= {128{`x_or_0}};
     end
 //synopsys translate_on
 end
@@ -22075,7 +22075,7 @@ endmodule // NV_NVDLA_SDP_CORE_Y_LUT_dat
 //
 // Flop-Based RAM
 //
-module NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32 (
+module NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128 (
       clk
     , pwrbus_ram_pd
     , di
@@ -22086,11 +22086,11 @@ module NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32 (
     );
 input clk; // write clock
 input [31 : 0] pwrbus_ram_pd;
-input [31:0] di;
+input [127:0] di;
 input we;
 input [0:0] wa;
 input [1:0] ra;
-output [31:0] dout;
+output [127:0] dout;
 `ifndef FPGA
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_0 (.A(pwrbus_ram_pd[0]));
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_1 (.A(pwrbus_ram_pd[1]));
@@ -22126,19 +22126,19 @@ NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_30 (.A(pwrbus_ram_pd[30]));
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_31 (.A(pwrbus_ram_pd[31]));
 `endif
 `ifdef EMU
-wire [31:0] dout_p;
+wire [127:0] dout_p;
 // we use an emulation ram here to save flops on the emulation board
 // so that the monstrous chip can fit :-)
 //
 reg [0:0] Wa0_vmw;
 reg we0_vmw;
-reg [31:0] Di0_vmw;
+reg [127:0] Di0_vmw;
 always @( posedge clk ) begin
     Wa0_vmw <= wa;
     we0_vmw <= we;
     Di0_vmw <= di;
 end
-vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32 emu_ram (
+vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128 emu_ram (
      .Wa0( Wa0_vmw )
    , .we0( we0_vmw )
    , .Di0( Di0_vmw )
@@ -22147,8 +22147,8 @@ vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32 emu_ram (
    );
 assign dout = (ra == 2) ? di : dout_p;
 `else
-reg [31:0] ram_ff0;
-reg [31:0] ram_ff1;
+reg [127:0] ram_ff0;
+reg [127:0] ram_ff1;
 always @( posedge clk ) begin
     if ( we && wa == 1'd0 ) begin
  ram_ff0 <= di;
@@ -22157,44 +22157,44 @@ always @( posedge clk ) begin
  ram_ff1 <= di;
     end
 end
-reg [31:0] dout;
+reg [127:0] dout;
 always @(*) begin
     case( ra )
     2'd0: dout = ram_ff0;
     2'd1: dout = ram_ff1;
     2'd2: dout = di;
 //VCS coverage off
-    default: dout = {32{`x_or_0}};
+    default: dout = {128{`x_or_0}};
 //VCS coverage on
     endcase
 end
 `endif // EMU
-endmodule // NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32
+endmodule // NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128
 // emulation model of flopram guts
 //
 `ifdef EMU
-module vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32 (
+module vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128 (
    Wa0, we0, Di0,
    Ra0, Do0
    );
 input [0:0] Wa0;
 input we0;
-input [31:0] Di0;
+input [127:0] Di0;
 input [0:0] Ra0;
-output [31:0] Do0;
+output [127:0] Do0;
 // Only visible during Spyglass to avoid blackboxes.
 `ifdef SPYGLASS_FLOPRAM
-assign Do0 = 32'd0;
+assign Do0 = 128'd0;
 wire dummy = 1'b0 | (|Wa0) | (|we0) | (|Di0) | (|Ra0);
 `endif
 // synopsys translate_off
 `ifndef SYNTH_LEVEL1_COMPILE
 `ifndef SYNTHESIS
-reg [31:0] mem[1:0];
+reg [127:0] mem[1:0];
 // expand mem for debug ease
 `ifdef EMU_EXPAND_FLOPRAM_MEM
-wire [31:0] Q0 = mem[0];
-wire [31:0] Q1 = mem[1];
+wire [127:0] Q0 = mem[0];
+wire [127:0] Q1 = mem[1];
 `endif
 // asynchronous ram writes
 always @(*) begin
@@ -22209,21 +22209,21 @@ assign Do0 = mem[Ra0];
 // synopsys translate_on
 // synopsys dc_script_begin
 // synopsys dc_script_end
-// g2c if { [find / -null_ok -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32] != {} } { set_attr preserve 1 [find / -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32] }
-endmodule // vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32
-//vmw: Memory vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32
+// g2c if { [find / -null_ok -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128] != {} } { set_attr preserve 1 [find / -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128] }
+endmodule // vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128
+//vmw: Memory vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128
 //vmw: Address-size 1
-//vmw: Data-size 32
+//vmw: Data-size 128
 //vmw: Sensitivity level 1
 //vmw: Ports W R
 //vmw: terminal we0 WriteEnable0
 //vmw: terminal Wa0 address0
-//vmw: terminal Di0[31:0] data0[31:0]
+//vmw: terminal Di0[127:0] data0[127:0]
 //vmw:
 //vmw: terminal Ra0 address1
-//vmw: terminal Do0[31:0] data1[31:0]
+//vmw: terminal Do0[127:0] data1[127:0]
 //vmw:
-//qt: CELL vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x32
+//qt: CELL vmw_NV_NVDLA_SDP_CORE_Y_LUT_dat_flopram_rwsa_2x128
 //qt: TERMINAL we0 TYPE=WE POLARITY=H PORT=1
 //qt: TERMINAL Wa0[%d] TYPE=ADDRESS DIR=W BIT=%1 PORT=1
 //qt: TERMINAL Di0[%d] TYPE=DATA DIR=I BIT=%1 PORT=1
@@ -22248,10 +22248,10 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 output cmd_fifo_wr_prdy;
 input cmd_fifo_wr_pvld;
-input [69:0] cmd_fifo_wr_pd;
+input [279:0] cmd_fifo_wr_pd;
 input cmd_fifo_rd_prdy;
 output cmd_fifo_rd_pvld;
-output [69:0] cmd_fifo_rd_pd;
+output [279:0] cmd_fifo_rd_pd;
 input [31:0] pwrbus_ram_pd;
 // Master Clock Gating (SLCG)
 //
@@ -22326,11 +22326,11 @@ end
 wire rd_popping;
 reg cmd_fifo_rd_adr; // read address this cycle
 wire ram_we = wr_pushing && (cmd_fifo_wr_count > 2'd0 || !rd_popping); // note: write occurs next cycle
-wire [69:0] cmd_fifo_rd_pd_p; // read data out of ram
+wire [279:0] cmd_fifo_rd_pd_p; // read data out of ram
 wire [31 : 0] pwrbus_ram_pd;
 // Adding parameter for fifogen to disable wr/rd contention assertion in ramgen.
 // Fifogen handles this by ignoring the data on the ram data out for that cycle.
-NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70 ram (
+NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280 ram (
       .clk( nvdla_core_clk_mgated )
     , .pwrbus_ram_pd ( pwrbus_ram_pd )
     , .di ( cmd_fifo_wr_pd )
@@ -22392,7 +22392,7 @@ always @( posedge nvdla_core_clk_mgated or negedge nvdla_core_rstn ) begin
 //synopsys translate_on
     end
 end
-reg [69:0] cmd_fifo_rd_pd; // output data register
+reg [279:0] cmd_fifo_rd_pd; // output data register
 wire rd_req_next = (cmd_fifo_rd_pvld_p || (cmd_fifo_rd_pvld_int && !cmd_fifo_rd_prdy)) ;
 always @( posedge nvdla_core_clk_mgated or negedge nvdla_core_rstn ) begin
     if ( !nvdla_core_rstn ) begin
@@ -22408,7 +22408,7 @@ always @( posedge nvdla_core_clk_mgated ) begin
 //synopsys translate_off
         else if ( !((rd_popping)) ) begin
     end else begin
-        cmd_fifo_rd_pd <= {70{`x_or_0}};
+        cmd_fifo_rd_pd <= {280{`x_or_0}};
     end
 //synopsys translate_on
 end
@@ -22558,7 +22558,7 @@ endmodule // NV_NVDLA_SDP_CORE_Y_LUT_cmd
 //
 // Flop-Based RAM
 //
-module NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70 (
+module NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280 (
       clk
     , pwrbus_ram_pd
     , di
@@ -22569,11 +22569,11 @@ module NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70 (
     );
 input clk; // write clock
 input [31 : 0] pwrbus_ram_pd;
-input [69:0] di;
+input [279:0] di;
 input we;
 input [0:0] wa;
 input [1:0] ra;
-output [69:0] dout;
+output [279:0] dout;
 `ifndef FPGA
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_0 (.A(pwrbus_ram_pd[0]));
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_1 (.A(pwrbus_ram_pd[1]));
@@ -22609,19 +22609,19 @@ NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_30 (.A(pwrbus_ram_pd[30]));
 NV_BLKBOX_SINK UJ_BBOX2UNIT_UNUSED_pwrbus_31 (.A(pwrbus_ram_pd[31]));
 `endif
 `ifdef EMU
-wire [69:0] dout_p;
+wire [279:0] dout_p;
 // we use an emulation ram here to save flops on the emulation board
 // so that the monstrous chip can fit :-)
 //
 reg [0:0] Wa0_vmw;
 reg we0_vmw;
-reg [69:0] Di0_vmw;
+reg [279:0] Di0_vmw;
 always @( posedge clk ) begin
     Wa0_vmw <= wa;
     we0_vmw <= we;
     Di0_vmw <= di;
 end
-vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70 emu_ram (
+vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280 emu_ram (
      .Wa0( Wa0_vmw )
    , .we0( we0_vmw )
    , .Di0( Di0_vmw )
@@ -22630,8 +22630,8 @@ vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70 emu_ram (
    );
 assign dout = (ra == 2) ? di : dout_p;
 `else
-reg [69:0] ram_ff0;
-reg [69:0] ram_ff1;
+reg [279:0] ram_ff0;
+reg [279:0] ram_ff1;
 always @( posedge clk ) begin
     if ( we && wa == 1'd0 ) begin
  ram_ff0 <= di;
@@ -22640,44 +22640,44 @@ always @( posedge clk ) begin
  ram_ff1 <= di;
     end
 end
-reg [69:0] dout;
+reg [279:0] dout;
 always @(*) begin
     case( ra )
     2'd0: dout = ram_ff0;
     2'd1: dout = ram_ff1;
     2'd2: dout = di;
 //VCS coverage off
-    default: dout = {70{`x_or_0}};
+    default: dout = {280{`x_or_0}};
 //VCS coverage on
     endcase
 end
 `endif // EMU
-endmodule // NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70
+endmodule // NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280
 // emulation model of flopram guts
 //
 `ifdef EMU
-module vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70 (
+module vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280 (
    Wa0, we0, Di0,
    Ra0, Do0
    );
 input [0:0] Wa0;
 input we0;
-input [69:0] Di0;
+input [279:0] Di0;
 input [0:0] Ra0;
-output [69:0] Do0;
+output [279:0] Do0;
 // Only visible during Spyglass to avoid blackboxes.
 `ifdef SPYGLASS_FLOPRAM
-assign Do0 = 70'd0;
+assign Do0 = 280'd0;
 wire dummy = 1'b0 | (|Wa0) | (|we0) | (|Di0) | (|Ra0);
 `endif
 // synopsys translate_off
 `ifndef SYNTH_LEVEL1_COMPILE
 `ifndef SYNTHESIS
-reg [69:0] mem[1:0];
+reg [279:0] mem[1:0];
 // expand mem for debug ease
 `ifdef EMU_EXPAND_FLOPRAM_MEM
-wire [69:0] Q0 = mem[0];
-wire [69:0] Q1 = mem[1];
+wire [279:0] Q0 = mem[0];
+wire [279:0] Q1 = mem[1];
 `endif
 // asynchronous ram writes
 always @(*) begin
@@ -22692,26 +22692,6 @@ assign Do0 = mem[Ra0];
 // synopsys translate_on
 // synopsys dc_script_begin
 // synopsys dc_script_end
-// g2c if { [find / -null_ok -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70] != {} } { set_attr preserve 1 [find / -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70] }
-endmodule // vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70
-//vmw: Memory vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70
-//vmw: Address-size 1
-//vmw: Data-size 70
-//vmw: Sensitivity level 1
-//vmw: Ports W R
-//vmw: terminal we0 WriteEnable0
-//vmw: terminal Wa0 address0
-//vmw: terminal Di0[69:0] data0[69:0]
-//vmw:
-//vmw: terminal Ra0 address1
-//vmw: terminal Do0[69:0] data1[69:0]
-//vmw:
-//qt: CELL vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x70
-//qt: TERMINAL we0 TYPE=WE POLARITY=H PORT=1
-//qt: TERMINAL Wa0[%d] TYPE=ADDRESS DIR=W BIT=%1 PORT=1
-//qt: TERMINAL Di0[%d] TYPE=DATA DIR=I BIT=%1 PORT=1
-//qt:
-//qt: TERMINAL Ra0[%d] TYPE=ADDRESS DIR=R BIT=%1 PORT=1
-//qt: TERMINAL Do0[%d] TYPE=DATA DIR=O BIT=%1 PORT=1
-//qt:
+// g2c if { [find / -null_ok -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280] != {} } { set_attr preserve 1 [find / -subdesign vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280] }
+endmodule // vmw_NV_NVDLA_SDP_CORE_Y_LUT_cmd_flopram_rwsa_2x280
 `endif // EMU

@@ -51,10 +51,10 @@ input tmc2slcg_disable_clock_gating;
  output cdp2mcif_rd_cdt_lat_fifo_pop;
  output cdp2mcif_rd_req_valid; /* data valid */
  input cdp2mcif_rd_req_ready; /* data return handshake */
- output [79 -1:0] cdp2mcif_rd_req_pd;
+ output [47 -1:0] cdp2mcif_rd_req_pd;
  output cdp2mcif_wr_req_valid; /* data valid */
  input cdp2mcif_wr_req_ready; /* data return handshake */
- output [130 -1:0] cdp2mcif_wr_req_pd; /* pkt_id_width=1 pkt_widths=78,514  */
+ output [66 -1:0] cdp2mcif_wr_req_pd; /* pkt_id_width=1 pkt_widths=78,514  */
  output cdp_rdma2csb_resp_valid; /* data valid */
  output [33:0] cdp_rdma2csb_resp_pd; /* pkt_id_width=1 pkt_widths=33,33  */
  input csb2cdp_rdma_req_pvld; /* data valid */
@@ -65,14 +65,14 @@ input tmc2slcg_disable_clock_gating;
  input [62:0] csb2cdp_req_pd;
  input mcif2cdp_rd_rsp_valid; /* data valid */
  output mcif2cdp_rd_rsp_ready; /* data return handshake */
- input [129 -1:0] mcif2cdp_rd_rsp_pd;
+ input [65 -1:0] mcif2cdp_rd_rsp_pd;
  input mcif2cdp_wr_rsp_complete;
  input [31:0] pwrbus_ram_pd;
 //////////////////////////////////////////////////////////////////
- wire [2*8 +16:0] cdp_dp2wdma_pd;
+ wire [1*8 +16:0] cdp_dp2wdma_pd;
  wire cdp_dp2wdma_ready;
  wire cdp_dp2wdma_valid;
- wire [2*8 +24:0] cdp_rdma2dp_pd;
+ wire [1*8 +24:0] cdp_rdma2dp_pd;
  wire cdp_rdma2dp_ready;
  wire cdp_rdma2dp_valid;
  wire [31:0] dp2reg_d0_out_saturation;
@@ -95,7 +95,7 @@ input tmc2slcg_disable_clock_gating;
  wire [31:0] dp2reg_nan_input_num;
  wire mon_op_en_neg;
  wire mon_op_en_pos;
- wire [2*8 +24:0] nan_preproc_pd;
+ wire [1*8 +24:0] nan_preproc_pd;
  wire nan_preproc_prdy;
  wire nan_preproc_pvld;
  wire nvdla_op_gated_clk_core;

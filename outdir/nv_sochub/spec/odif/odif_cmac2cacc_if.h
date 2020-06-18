@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 typedef struct cmac2cacc_if_s {
-    sc_int<21> data[8] ;
-    sc_int<8> mask ;
+    sc_int<19> data[4] ;
+    sc_int<4> mask ;
     sc_int<1> mode ;
     sc_int<5> batch_index ;
     sc_int<1> stripe_st ;

@@ -62,22 +62,22 @@ output [31:0] dp2reg_status_inf_input_num;
 output [31:0] dp2reg_status_nan_input_num;
 output sdp_mrdma2cmux_valid;
 input sdp_mrdma2cmux_ready;
-output [32*16 +1:0] sdp_mrdma2cmux_pd;
+output [32*8 +1:0] sdp_mrdma2cmux_pd;
 input cmd2dat_dma_pvld;
 output cmd2dat_dma_prdy;
 input [14:0] cmd2dat_dma_pd;
 input pfifo0_rd_pvld;
 output pfifo0_rd_prdy;
-input [16*8 -1:0] pfifo0_rd_pd;
+input [8*8 -1:0] pfifo0_rd_pd;
 input pfifo1_rd_pvld;
 output pfifo1_rd_prdy;
-input [16*8 -1:0] pfifo1_rd_pd;
+input [8*8 -1:0] pfifo1_rd_pd;
 input pfifo2_rd_pvld;
 output pfifo2_rd_prdy;
-input [16*8 -1:0] pfifo2_rd_pd;
+input [8*8 -1:0] pfifo2_rd_pd;
 input pfifo3_rd_pvld;
 output pfifo3_rd_prdy;
-input [16*8 -1:0] pfifo3_rd_pd;
+input [8*8 -1:0] pfifo3_rd_pd;
 reg eg_done;
 wire cfg_di_16;
 wire cfg_di_fp16;
@@ -94,9 +94,9 @@ wire [13:0] cmd2dat_dma_size;
 wire cmd_cube_end;
 wire dat_accept;
 wire dat_batch_end;
-wire [32*16 -1:0] dat_data;
+wire [32*8 -1:0] dat_data;
 wire dat_layer_end;
-wire [32*16 +1:0] dat_pd;
+wire [32*8 +1:0] dat_pd;
 wire dat_rdy;
 wire dat_vld;
 wire fifo_vld;
@@ -104,11 +104,11 @@ wire pfifo0_sel;
 wire pfifo1_sel;
 wire pfifo2_sel;
 wire pfifo3_sel;
-wire [16*8 -1:0] pfifo0_rd_data;
-wire [16*8 -1:0] pfifo1_rd_data;
-wire [16*8 -1:0] pfifo2_rd_data;
-wire [16*8 -1:0] pfifo3_rd_data;
-//: my $k = 16/2;
+wire [8*8 -1:0] pfifo0_rd_data;
+wire [8*8 -1:0] pfifo1_rd_data;
+wire [8*8 -1:0] pfifo2_rd_data;
+wire [8*8 -1:0] pfifo3_rd_data;
+//: my $k = 8/2;
 //: foreach my $j (0..3) {
 //: foreach my $i (0..${k}-1) {
 //: print "wire    [15:0] pfifo${j}_data_byte${i}_16; \n";
@@ -120,7 +120,7 @@ wire [16*8 -1:0] pfifo3_rd_data;
 //: print "wire    [31:0] pfifo${j}_data_ext_byte${i}_16; \n";
 //: }
 //: }
-//: my $k = 16;
+//: my $k = 8;
 //: my $dw = $k * 8 -1;
 //: foreach my $j (0..3) {
 //: foreach my $i (0..${k}-1) {
@@ -137,34 +137,18 @@ wire    [15:0] pfifo0_data_byte0_16;
 wire    [15:0] pfifo0_data_byte1_16; 
 wire    [15:0] pfifo0_data_byte2_16; 
 wire    [15:0] pfifo0_data_byte3_16; 
-wire    [15:0] pfifo0_data_byte4_16; 
-wire    [15:0] pfifo0_data_byte5_16; 
-wire    [15:0] pfifo0_data_byte6_16; 
-wire    [15:0] pfifo0_data_byte7_16; 
 wire    [15:0] pfifo1_data_byte0_16; 
 wire    [15:0] pfifo1_data_byte1_16; 
 wire    [15:0] pfifo1_data_byte2_16; 
 wire    [15:0] pfifo1_data_byte3_16; 
-wire    [15:0] pfifo1_data_byte4_16; 
-wire    [15:0] pfifo1_data_byte5_16; 
-wire    [15:0] pfifo1_data_byte6_16; 
-wire    [15:0] pfifo1_data_byte7_16; 
 wire    [15:0] pfifo2_data_byte0_16; 
 wire    [15:0] pfifo2_data_byte1_16; 
 wire    [15:0] pfifo2_data_byte2_16; 
 wire    [15:0] pfifo2_data_byte3_16; 
-wire    [15:0] pfifo2_data_byte4_16; 
-wire    [15:0] pfifo2_data_byte5_16; 
-wire    [15:0] pfifo2_data_byte6_16; 
-wire    [15:0] pfifo2_data_byte7_16; 
 wire    [15:0] pfifo3_data_byte0_16; 
 wire    [15:0] pfifo3_data_byte1_16; 
 wire    [15:0] pfifo3_data_byte2_16; 
 wire    [15:0] pfifo3_data_byte3_16; 
-wire    [15:0] pfifo3_data_byte4_16; 
-wire    [15:0] pfifo3_data_byte5_16; 
-wire    [15:0] pfifo3_data_byte6_16; 
-wire    [15:0] pfifo3_data_byte7_16; 
 wire    [31:0] pfifo0_data_ext_byte0_int16; 
 wire    [31:0] pfifo0_data_ext_byte0_16; 
 wire    [31:0] pfifo0_data_ext_byte1_int16; 
@@ -173,14 +157,6 @@ wire    [31:0] pfifo0_data_ext_byte2_int16;
 wire    [31:0] pfifo0_data_ext_byte2_16; 
 wire    [31:0] pfifo0_data_ext_byte3_int16; 
 wire    [31:0] pfifo0_data_ext_byte3_16; 
-wire    [31:0] pfifo0_data_ext_byte4_int16; 
-wire    [31:0] pfifo0_data_ext_byte4_16; 
-wire    [31:0] pfifo0_data_ext_byte5_int16; 
-wire    [31:0] pfifo0_data_ext_byte5_16; 
-wire    [31:0] pfifo0_data_ext_byte6_int16; 
-wire    [31:0] pfifo0_data_ext_byte6_16; 
-wire    [31:0] pfifo0_data_ext_byte7_int16; 
-wire    [31:0] pfifo0_data_ext_byte7_16; 
 wire    [31:0] pfifo1_data_ext_byte0_int16; 
 wire    [31:0] pfifo1_data_ext_byte0_16; 
 wire    [31:0] pfifo1_data_ext_byte1_int16; 
@@ -189,14 +165,6 @@ wire    [31:0] pfifo1_data_ext_byte2_int16;
 wire    [31:0] pfifo1_data_ext_byte2_16; 
 wire    [31:0] pfifo1_data_ext_byte3_int16; 
 wire    [31:0] pfifo1_data_ext_byte3_16; 
-wire    [31:0] pfifo1_data_ext_byte4_int16; 
-wire    [31:0] pfifo1_data_ext_byte4_16; 
-wire    [31:0] pfifo1_data_ext_byte5_int16; 
-wire    [31:0] pfifo1_data_ext_byte5_16; 
-wire    [31:0] pfifo1_data_ext_byte6_int16; 
-wire    [31:0] pfifo1_data_ext_byte6_16; 
-wire    [31:0] pfifo1_data_ext_byte7_int16; 
-wire    [31:0] pfifo1_data_ext_byte7_16; 
 wire    [31:0] pfifo2_data_ext_byte0_int16; 
 wire    [31:0] pfifo2_data_ext_byte0_16; 
 wire    [31:0] pfifo2_data_ext_byte1_int16; 
@@ -205,14 +173,6 @@ wire    [31:0] pfifo2_data_ext_byte2_int16;
 wire    [31:0] pfifo2_data_ext_byte2_16; 
 wire    [31:0] pfifo2_data_ext_byte3_int16; 
 wire    [31:0] pfifo2_data_ext_byte3_16; 
-wire    [31:0] pfifo2_data_ext_byte4_int16; 
-wire    [31:0] pfifo2_data_ext_byte4_16; 
-wire    [31:0] pfifo2_data_ext_byte5_int16; 
-wire    [31:0] pfifo2_data_ext_byte5_16; 
-wire    [31:0] pfifo2_data_ext_byte6_int16; 
-wire    [31:0] pfifo2_data_ext_byte6_16; 
-wire    [31:0] pfifo2_data_ext_byte7_int16; 
-wire    [31:0] pfifo2_data_ext_byte7_16; 
 wire    [31:0] pfifo3_data_ext_byte0_int16; 
 wire    [31:0] pfifo3_data_ext_byte0_16; 
 wire    [31:0] pfifo3_data_ext_byte1_int16; 
@@ -221,14 +181,6 @@ wire    [31:0] pfifo3_data_ext_byte2_int16;
 wire    [31:0] pfifo3_data_ext_byte2_16; 
 wire    [31:0] pfifo3_data_ext_byte3_int16; 
 wire    [31:0] pfifo3_data_ext_byte3_16; 
-wire    [31:0] pfifo3_data_ext_byte4_int16; 
-wire    [31:0] pfifo3_data_ext_byte4_16; 
-wire    [31:0] pfifo3_data_ext_byte5_int16; 
-wire    [31:0] pfifo3_data_ext_byte5_16; 
-wire    [31:0] pfifo3_data_ext_byte6_int16; 
-wire    [31:0] pfifo3_data_ext_byte6_16; 
-wire    [31:0] pfifo3_data_ext_byte7_int16; 
-wire    [31:0] pfifo3_data_ext_byte7_16; 
 wire     [7:0] pfifo0_data_byte0_8; 
 wire     [7:0] pfifo0_data_byte1_8; 
 wire     [7:0] pfifo0_data_byte2_8; 
@@ -237,14 +189,6 @@ wire     [7:0] pfifo0_data_byte4_8;
 wire     [7:0] pfifo0_data_byte5_8; 
 wire     [7:0] pfifo0_data_byte6_8; 
 wire     [7:0] pfifo0_data_byte7_8; 
-wire     [7:0] pfifo0_data_byte8_8; 
-wire     [7:0] pfifo0_data_byte9_8; 
-wire     [7:0] pfifo0_data_byte10_8; 
-wire     [7:0] pfifo0_data_byte11_8; 
-wire     [7:0] pfifo0_data_byte12_8; 
-wire     [7:0] pfifo0_data_byte13_8; 
-wire     [7:0] pfifo0_data_byte14_8; 
-wire     [7:0] pfifo0_data_byte15_8; 
 wire     [7:0] pfifo1_data_byte0_8; 
 wire     [7:0] pfifo1_data_byte1_8; 
 wire     [7:0] pfifo1_data_byte2_8; 
@@ -253,14 +197,6 @@ wire     [7:0] pfifo1_data_byte4_8;
 wire     [7:0] pfifo1_data_byte5_8; 
 wire     [7:0] pfifo1_data_byte6_8; 
 wire     [7:0] pfifo1_data_byte7_8; 
-wire     [7:0] pfifo1_data_byte8_8; 
-wire     [7:0] pfifo1_data_byte9_8; 
-wire     [7:0] pfifo1_data_byte10_8; 
-wire     [7:0] pfifo1_data_byte11_8; 
-wire     [7:0] pfifo1_data_byte12_8; 
-wire     [7:0] pfifo1_data_byte13_8; 
-wire     [7:0] pfifo1_data_byte14_8; 
-wire     [7:0] pfifo1_data_byte15_8; 
 wire     [7:0] pfifo2_data_byte0_8; 
 wire     [7:0] pfifo2_data_byte1_8; 
 wire     [7:0] pfifo2_data_byte2_8; 
@@ -269,14 +205,6 @@ wire     [7:0] pfifo2_data_byte4_8;
 wire     [7:0] pfifo2_data_byte5_8; 
 wire     [7:0] pfifo2_data_byte6_8; 
 wire     [7:0] pfifo2_data_byte7_8; 
-wire     [7:0] pfifo2_data_byte8_8; 
-wire     [7:0] pfifo2_data_byte9_8; 
-wire     [7:0] pfifo2_data_byte10_8; 
-wire     [7:0] pfifo2_data_byte11_8; 
-wire     [7:0] pfifo2_data_byte12_8; 
-wire     [7:0] pfifo2_data_byte13_8; 
-wire     [7:0] pfifo2_data_byte14_8; 
-wire     [7:0] pfifo2_data_byte15_8; 
 wire     [7:0] pfifo3_data_byte0_8; 
 wire     [7:0] pfifo3_data_byte1_8; 
 wire     [7:0] pfifo3_data_byte2_8; 
@@ -285,14 +213,6 @@ wire     [7:0] pfifo3_data_byte4_8;
 wire     [7:0] pfifo3_data_byte5_8; 
 wire     [7:0] pfifo3_data_byte6_8; 
 wire     [7:0] pfifo3_data_byte7_8; 
-wire     [7:0] pfifo3_data_byte8_8; 
-wire     [7:0] pfifo3_data_byte9_8; 
-wire     [7:0] pfifo3_data_byte10_8; 
-wire     [7:0] pfifo3_data_byte11_8; 
-wire     [7:0] pfifo3_data_byte12_8; 
-wire     [7:0] pfifo3_data_byte13_8; 
-wire     [7:0] pfifo3_data_byte14_8; 
-wire     [7:0] pfifo3_data_byte15_8; 
 wire    [31:0] pfifo0_data_ext_byte0_8; 
 wire    [31:0] pfifo0_data_ext_byte1_8; 
 wire    [31:0] pfifo0_data_ext_byte2_8; 
@@ -301,14 +221,6 @@ wire    [31:0] pfifo0_data_ext_byte4_8;
 wire    [31:0] pfifo0_data_ext_byte5_8; 
 wire    [31:0] pfifo0_data_ext_byte6_8; 
 wire    [31:0] pfifo0_data_ext_byte7_8; 
-wire    [31:0] pfifo0_data_ext_byte8_8; 
-wire    [31:0] pfifo0_data_ext_byte9_8; 
-wire    [31:0] pfifo0_data_ext_byte10_8; 
-wire    [31:0] pfifo0_data_ext_byte11_8; 
-wire    [31:0] pfifo0_data_ext_byte12_8; 
-wire    [31:0] pfifo0_data_ext_byte13_8; 
-wire    [31:0] pfifo0_data_ext_byte14_8; 
-wire    [31:0] pfifo0_data_ext_byte15_8; 
 wire    [31:0] pfifo1_data_ext_byte0_8; 
 wire    [31:0] pfifo1_data_ext_byte1_8; 
 wire    [31:0] pfifo1_data_ext_byte2_8; 
@@ -317,14 +229,6 @@ wire    [31:0] pfifo1_data_ext_byte4_8;
 wire    [31:0] pfifo1_data_ext_byte5_8; 
 wire    [31:0] pfifo1_data_ext_byte6_8; 
 wire    [31:0] pfifo1_data_ext_byte7_8; 
-wire    [31:0] pfifo1_data_ext_byte8_8; 
-wire    [31:0] pfifo1_data_ext_byte9_8; 
-wire    [31:0] pfifo1_data_ext_byte10_8; 
-wire    [31:0] pfifo1_data_ext_byte11_8; 
-wire    [31:0] pfifo1_data_ext_byte12_8; 
-wire    [31:0] pfifo1_data_ext_byte13_8; 
-wire    [31:0] pfifo1_data_ext_byte14_8; 
-wire    [31:0] pfifo1_data_ext_byte15_8; 
 wire    [31:0] pfifo2_data_ext_byte0_8; 
 wire    [31:0] pfifo2_data_ext_byte1_8; 
 wire    [31:0] pfifo2_data_ext_byte2_8; 
@@ -333,14 +237,6 @@ wire    [31:0] pfifo2_data_ext_byte4_8;
 wire    [31:0] pfifo2_data_ext_byte5_8; 
 wire    [31:0] pfifo2_data_ext_byte6_8; 
 wire    [31:0] pfifo2_data_ext_byte7_8; 
-wire    [31:0] pfifo2_data_ext_byte8_8; 
-wire    [31:0] pfifo2_data_ext_byte9_8; 
-wire    [31:0] pfifo2_data_ext_byte10_8; 
-wire    [31:0] pfifo2_data_ext_byte11_8; 
-wire    [31:0] pfifo2_data_ext_byte12_8; 
-wire    [31:0] pfifo2_data_ext_byte13_8; 
-wire    [31:0] pfifo2_data_ext_byte14_8; 
-wire    [31:0] pfifo2_data_ext_byte15_8; 
 wire    [31:0] pfifo3_data_ext_byte0_8; 
 wire    [31:0] pfifo3_data_ext_byte1_8; 
 wire    [31:0] pfifo3_data_ext_byte2_8; 
@@ -349,26 +245,18 @@ wire    [31:0] pfifo3_data_ext_byte4_8;
 wire    [31:0] pfifo3_data_ext_byte5_8; 
 wire    [31:0] pfifo3_data_ext_byte6_8; 
 wire    [31:0] pfifo3_data_ext_byte7_8; 
-wire    [31:0] pfifo3_data_ext_byte8_8; 
-wire    [31:0] pfifo3_data_ext_byte9_8; 
-wire    [31:0] pfifo3_data_ext_byte10_8; 
-wire    [31:0] pfifo3_data_ext_byte11_8; 
-wire    [31:0] pfifo3_data_ext_byte12_8; 
-wire    [31:0] pfifo3_data_ext_byte13_8; 
-wire    [31:0] pfifo3_data_ext_byte14_8; 
-wire    [31:0] pfifo3_data_ext_byte15_8; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-wire [32*16 -1:0] pfifo_data0_16;
-wire [32*16 -1:0] pfifo_data1_16;
-wire [32*16 -1:0] pfifo_data2_16;
-wire [32*16 -1:0] pfifo_data3_16;
-wire [32*16 -1:0] pfifo_data0_8;
-wire [32*16 -1:0] pfifo_data1_8;
-wire [32*16 -1:0] pfifo_data2_8;
-wire [32*16 -1:0] pfifo_data3_8;
-reg [32*16 -1:0] pfifo_data_r;
-wire [32*16 -1:0] pfifo_data;
+wire [32*8 -1:0] pfifo_data0_16;
+wire [32*8 -1:0] pfifo_data1_16;
+wire [32*8 -1:0] pfifo_data2_16;
+wire [32*8 -1:0] pfifo_data3_16;
+wire [32*8 -1:0] pfifo_data0_8;
+wire [32*8 -1:0] pfifo_data1_8;
+wire [32*8 -1:0] pfifo_data2_8;
+wire [32*8 -1:0] pfifo_data3_8;
+reg [32*8 -1:0] pfifo_data_r;
+wire [32*8 -1:0] pfifo_data;
 wire pfifo_sel;
 wire pfifo_vld;
 wire sdp_mrdma2cmux_layer_end;
@@ -413,11 +301,11 @@ assign pfifo0_rd_prdy = dat_rdy & pfifo0_sel; //& cmd2dat_dma_pvld;
 assign pfifo1_rd_prdy = dat_rdy & pfifo1_sel; //& cmd2dat_dma_pvld;
 assign pfifo2_rd_prdy = dat_rdy & pfifo2_sel; //& cmd2dat_dma_pvld;
 assign pfifo3_rd_prdy = dat_rdy & pfifo3_sel; //& cmd2dat_dma_pvld;
-assign pfifo0_rd_data = {16*8{pfifo0_sel}} & pfifo0_rd_pd;
-assign pfifo1_rd_data = {16*8{pfifo1_sel}} & pfifo1_rd_pd;
-assign pfifo2_rd_data = {16*8{pfifo2_sel}} & pfifo2_rd_pd;
-assign pfifo3_rd_data = {16*8{pfifo3_sel}} & pfifo3_rd_pd;
-//: my $k = 16/2;
+assign pfifo0_rd_data = {8*8{pfifo0_sel}} & pfifo0_rd_pd;
+assign pfifo1_rd_data = {8*8{pfifo1_sel}} & pfifo1_rd_pd;
+assign pfifo2_rd_data = {8*8{pfifo2_sel}} & pfifo2_rd_pd;
+assign pfifo3_rd_data = {8*8{pfifo3_sel}} & pfifo3_rd_pd;
+//: my $k = 8/2;
 //: foreach my $j (0..3) {
 //: foreach my $i (0..${k}-1) {
 //: print "assign pfifo${j}_data_byte${i}_16 = pfifo${j}_rd_data[${i}*16+15:${i}*16]; \n";
@@ -425,7 +313,7 @@ assign pfifo3_rd_data = {16*8{pfifo3_sel}} & pfifo3_rd_pd;
 //: print "\n";
 //: }
 //: print "\n";
-//: my $k = 16/2;
+//: my $k = 8/2;
 //: foreach my $j (0..3) {
 //: foreach my $i (0..${k}-1) {
 //: print "assign pfifo${j}_data_ext_byte${i}_int16 = {{16{pfifo${j}_data_byte${i}_16[15]}}, pfifo${j}_data_byte${i}_16[15:0]}; \n";
@@ -433,14 +321,14 @@ assign pfifo3_rd_data = {16*8{pfifo3_sel}} & pfifo3_rd_pd;
 //: print "\n";
 //: }
 //: print "\n";
-//: my $k = 16/2;
+//: my $k = 8/2;
 //: foreach my $j (0..3) {
 //: foreach my $i (0..${k}-1) {
 //: print "assign pfifo${j}_data_ext_byte${i}_16 = pfifo${j}_data_ext_byte${i}_int16; \n";
 //: }
 //: }
 //: print "\n";
-//: my $k = 16/2;
+//: my $k = 8/2;
 //: my $remain = $k*32;
 //: foreach my $j (0..3) {
 //: print "assign pfifo_data${j}_16 = {${remain}\'h0,";
@@ -455,117 +343,69 @@ assign pfifo0_data_byte0_16 = pfifo0_rd_data[0*16+15:0*16];
 assign pfifo0_data_byte1_16 = pfifo0_rd_data[1*16+15:1*16]; 
 assign pfifo0_data_byte2_16 = pfifo0_rd_data[2*16+15:2*16]; 
 assign pfifo0_data_byte3_16 = pfifo0_rd_data[3*16+15:3*16]; 
-assign pfifo0_data_byte4_16 = pfifo0_rd_data[4*16+15:4*16]; 
-assign pfifo0_data_byte5_16 = pfifo0_rd_data[5*16+15:5*16]; 
-assign pfifo0_data_byte6_16 = pfifo0_rd_data[6*16+15:6*16]; 
-assign pfifo0_data_byte7_16 = pfifo0_rd_data[7*16+15:7*16]; 
 
 assign pfifo1_data_byte0_16 = pfifo1_rd_data[0*16+15:0*16]; 
 assign pfifo1_data_byte1_16 = pfifo1_rd_data[1*16+15:1*16]; 
 assign pfifo1_data_byte2_16 = pfifo1_rd_data[2*16+15:2*16]; 
 assign pfifo1_data_byte3_16 = pfifo1_rd_data[3*16+15:3*16]; 
-assign pfifo1_data_byte4_16 = pfifo1_rd_data[4*16+15:4*16]; 
-assign pfifo1_data_byte5_16 = pfifo1_rd_data[5*16+15:5*16]; 
-assign pfifo1_data_byte6_16 = pfifo1_rd_data[6*16+15:6*16]; 
-assign pfifo1_data_byte7_16 = pfifo1_rd_data[7*16+15:7*16]; 
 
 assign pfifo2_data_byte0_16 = pfifo2_rd_data[0*16+15:0*16]; 
 assign pfifo2_data_byte1_16 = pfifo2_rd_data[1*16+15:1*16]; 
 assign pfifo2_data_byte2_16 = pfifo2_rd_data[2*16+15:2*16]; 
 assign pfifo2_data_byte3_16 = pfifo2_rd_data[3*16+15:3*16]; 
-assign pfifo2_data_byte4_16 = pfifo2_rd_data[4*16+15:4*16]; 
-assign pfifo2_data_byte5_16 = pfifo2_rd_data[5*16+15:5*16]; 
-assign pfifo2_data_byte6_16 = pfifo2_rd_data[6*16+15:6*16]; 
-assign pfifo2_data_byte7_16 = pfifo2_rd_data[7*16+15:7*16]; 
 
 assign pfifo3_data_byte0_16 = pfifo3_rd_data[0*16+15:0*16]; 
 assign pfifo3_data_byte1_16 = pfifo3_rd_data[1*16+15:1*16]; 
 assign pfifo3_data_byte2_16 = pfifo3_rd_data[2*16+15:2*16]; 
 assign pfifo3_data_byte3_16 = pfifo3_rd_data[3*16+15:3*16]; 
-assign pfifo3_data_byte4_16 = pfifo3_rd_data[4*16+15:4*16]; 
-assign pfifo3_data_byte5_16 = pfifo3_rd_data[5*16+15:5*16]; 
-assign pfifo3_data_byte6_16 = pfifo3_rd_data[6*16+15:6*16]; 
-assign pfifo3_data_byte7_16 = pfifo3_rd_data[7*16+15:7*16]; 
 
 
 assign pfifo0_data_ext_byte0_int16 = {{16{pfifo0_data_byte0_16[15]}}, pfifo0_data_byte0_16[15:0]}; 
 assign pfifo0_data_ext_byte1_int16 = {{16{pfifo0_data_byte1_16[15]}}, pfifo0_data_byte1_16[15:0]}; 
 assign pfifo0_data_ext_byte2_int16 = {{16{pfifo0_data_byte2_16[15]}}, pfifo0_data_byte2_16[15:0]}; 
 assign pfifo0_data_ext_byte3_int16 = {{16{pfifo0_data_byte3_16[15]}}, pfifo0_data_byte3_16[15:0]}; 
-assign pfifo0_data_ext_byte4_int16 = {{16{pfifo0_data_byte4_16[15]}}, pfifo0_data_byte4_16[15:0]}; 
-assign pfifo0_data_ext_byte5_int16 = {{16{pfifo0_data_byte5_16[15]}}, pfifo0_data_byte5_16[15:0]}; 
-assign pfifo0_data_ext_byte6_int16 = {{16{pfifo0_data_byte6_16[15]}}, pfifo0_data_byte6_16[15:0]}; 
-assign pfifo0_data_ext_byte7_int16 = {{16{pfifo0_data_byte7_16[15]}}, pfifo0_data_byte7_16[15:0]}; 
 
 assign pfifo1_data_ext_byte0_int16 = {{16{pfifo1_data_byte0_16[15]}}, pfifo1_data_byte0_16[15:0]}; 
 assign pfifo1_data_ext_byte1_int16 = {{16{pfifo1_data_byte1_16[15]}}, pfifo1_data_byte1_16[15:0]}; 
 assign pfifo1_data_ext_byte2_int16 = {{16{pfifo1_data_byte2_16[15]}}, pfifo1_data_byte2_16[15:0]}; 
 assign pfifo1_data_ext_byte3_int16 = {{16{pfifo1_data_byte3_16[15]}}, pfifo1_data_byte3_16[15:0]}; 
-assign pfifo1_data_ext_byte4_int16 = {{16{pfifo1_data_byte4_16[15]}}, pfifo1_data_byte4_16[15:0]}; 
-assign pfifo1_data_ext_byte5_int16 = {{16{pfifo1_data_byte5_16[15]}}, pfifo1_data_byte5_16[15:0]}; 
-assign pfifo1_data_ext_byte6_int16 = {{16{pfifo1_data_byte6_16[15]}}, pfifo1_data_byte6_16[15:0]}; 
-assign pfifo1_data_ext_byte7_int16 = {{16{pfifo1_data_byte7_16[15]}}, pfifo1_data_byte7_16[15:0]}; 
 
 assign pfifo2_data_ext_byte0_int16 = {{16{pfifo2_data_byte0_16[15]}}, pfifo2_data_byte0_16[15:0]}; 
 assign pfifo2_data_ext_byte1_int16 = {{16{pfifo2_data_byte1_16[15]}}, pfifo2_data_byte1_16[15:0]}; 
 assign pfifo2_data_ext_byte2_int16 = {{16{pfifo2_data_byte2_16[15]}}, pfifo2_data_byte2_16[15:0]}; 
 assign pfifo2_data_ext_byte3_int16 = {{16{pfifo2_data_byte3_16[15]}}, pfifo2_data_byte3_16[15:0]}; 
-assign pfifo2_data_ext_byte4_int16 = {{16{pfifo2_data_byte4_16[15]}}, pfifo2_data_byte4_16[15:0]}; 
-assign pfifo2_data_ext_byte5_int16 = {{16{pfifo2_data_byte5_16[15]}}, pfifo2_data_byte5_16[15:0]}; 
-assign pfifo2_data_ext_byte6_int16 = {{16{pfifo2_data_byte6_16[15]}}, pfifo2_data_byte6_16[15:0]}; 
-assign pfifo2_data_ext_byte7_int16 = {{16{pfifo2_data_byte7_16[15]}}, pfifo2_data_byte7_16[15:0]}; 
 
 assign pfifo3_data_ext_byte0_int16 = {{16{pfifo3_data_byte0_16[15]}}, pfifo3_data_byte0_16[15:0]}; 
 assign pfifo3_data_ext_byte1_int16 = {{16{pfifo3_data_byte1_16[15]}}, pfifo3_data_byte1_16[15:0]}; 
 assign pfifo3_data_ext_byte2_int16 = {{16{pfifo3_data_byte2_16[15]}}, pfifo3_data_byte2_16[15:0]}; 
 assign pfifo3_data_ext_byte3_int16 = {{16{pfifo3_data_byte3_16[15]}}, pfifo3_data_byte3_16[15:0]}; 
-assign pfifo3_data_ext_byte4_int16 = {{16{pfifo3_data_byte4_16[15]}}, pfifo3_data_byte4_16[15:0]}; 
-assign pfifo3_data_ext_byte5_int16 = {{16{pfifo3_data_byte5_16[15]}}, pfifo3_data_byte5_16[15:0]}; 
-assign pfifo3_data_ext_byte6_int16 = {{16{pfifo3_data_byte6_16[15]}}, pfifo3_data_byte6_16[15:0]}; 
-assign pfifo3_data_ext_byte7_int16 = {{16{pfifo3_data_byte7_16[15]}}, pfifo3_data_byte7_16[15:0]}; 
 
 
 assign pfifo0_data_ext_byte0_16 = pfifo0_data_ext_byte0_int16; 
 assign pfifo0_data_ext_byte1_16 = pfifo0_data_ext_byte1_int16; 
 assign pfifo0_data_ext_byte2_16 = pfifo0_data_ext_byte2_int16; 
 assign pfifo0_data_ext_byte3_16 = pfifo0_data_ext_byte3_int16; 
-assign pfifo0_data_ext_byte4_16 = pfifo0_data_ext_byte4_int16; 
-assign pfifo0_data_ext_byte5_16 = pfifo0_data_ext_byte5_int16; 
-assign pfifo0_data_ext_byte6_16 = pfifo0_data_ext_byte6_int16; 
-assign pfifo0_data_ext_byte7_16 = pfifo0_data_ext_byte7_int16; 
 assign pfifo1_data_ext_byte0_16 = pfifo1_data_ext_byte0_int16; 
 assign pfifo1_data_ext_byte1_16 = pfifo1_data_ext_byte1_int16; 
 assign pfifo1_data_ext_byte2_16 = pfifo1_data_ext_byte2_int16; 
 assign pfifo1_data_ext_byte3_16 = pfifo1_data_ext_byte3_int16; 
-assign pfifo1_data_ext_byte4_16 = pfifo1_data_ext_byte4_int16; 
-assign pfifo1_data_ext_byte5_16 = pfifo1_data_ext_byte5_int16; 
-assign pfifo1_data_ext_byte6_16 = pfifo1_data_ext_byte6_int16; 
-assign pfifo1_data_ext_byte7_16 = pfifo1_data_ext_byte7_int16; 
 assign pfifo2_data_ext_byte0_16 = pfifo2_data_ext_byte0_int16; 
 assign pfifo2_data_ext_byte1_16 = pfifo2_data_ext_byte1_int16; 
 assign pfifo2_data_ext_byte2_16 = pfifo2_data_ext_byte2_int16; 
 assign pfifo2_data_ext_byte3_16 = pfifo2_data_ext_byte3_int16; 
-assign pfifo2_data_ext_byte4_16 = pfifo2_data_ext_byte4_int16; 
-assign pfifo2_data_ext_byte5_16 = pfifo2_data_ext_byte5_int16; 
-assign pfifo2_data_ext_byte6_16 = pfifo2_data_ext_byte6_int16; 
-assign pfifo2_data_ext_byte7_16 = pfifo2_data_ext_byte7_int16; 
 assign pfifo3_data_ext_byte0_16 = pfifo3_data_ext_byte0_int16; 
 assign pfifo3_data_ext_byte1_16 = pfifo3_data_ext_byte1_int16; 
 assign pfifo3_data_ext_byte2_16 = pfifo3_data_ext_byte2_int16; 
 assign pfifo3_data_ext_byte3_16 = pfifo3_data_ext_byte3_int16; 
-assign pfifo3_data_ext_byte4_16 = pfifo3_data_ext_byte4_int16; 
-assign pfifo3_data_ext_byte5_16 = pfifo3_data_ext_byte5_int16; 
-assign pfifo3_data_ext_byte6_16 = pfifo3_data_ext_byte6_int16; 
-assign pfifo3_data_ext_byte7_16 = pfifo3_data_ext_byte7_int16; 
 
-assign pfifo_data0_16 = {256'h0,pfifo0_data_ext_byte7_16,pfifo0_data_ext_byte6_16,pfifo0_data_ext_byte5_16,pfifo0_data_ext_byte4_16,pfifo0_data_ext_byte3_16,pfifo0_data_ext_byte2_16,pfifo0_data_ext_byte1_16,pfifo0_data_ext_byte0_16}; 
-assign pfifo_data1_16 = {256'h0,pfifo1_data_ext_byte7_16,pfifo1_data_ext_byte6_16,pfifo1_data_ext_byte5_16,pfifo1_data_ext_byte4_16,pfifo1_data_ext_byte3_16,pfifo1_data_ext_byte2_16,pfifo1_data_ext_byte1_16,pfifo1_data_ext_byte0_16}; 
-assign pfifo_data2_16 = {256'h0,pfifo2_data_ext_byte7_16,pfifo2_data_ext_byte6_16,pfifo2_data_ext_byte5_16,pfifo2_data_ext_byte4_16,pfifo2_data_ext_byte3_16,pfifo2_data_ext_byte2_16,pfifo2_data_ext_byte1_16,pfifo2_data_ext_byte0_16}; 
-assign pfifo_data3_16 = {256'h0,pfifo3_data_ext_byte7_16,pfifo3_data_ext_byte6_16,pfifo3_data_ext_byte5_16,pfifo3_data_ext_byte4_16,pfifo3_data_ext_byte3_16,pfifo3_data_ext_byte2_16,pfifo3_data_ext_byte1_16,pfifo3_data_ext_byte0_16}; 
+assign pfifo_data0_16 = {128'h0,pfifo0_data_ext_byte3_16,pfifo0_data_ext_byte2_16,pfifo0_data_ext_byte1_16,pfifo0_data_ext_byte0_16}; 
+assign pfifo_data1_16 = {128'h0,pfifo1_data_ext_byte3_16,pfifo1_data_ext_byte2_16,pfifo1_data_ext_byte1_16,pfifo1_data_ext_byte0_16}; 
+assign pfifo_data2_16 = {128'h0,pfifo2_data_ext_byte3_16,pfifo2_data_ext_byte2_16,pfifo2_data_ext_byte1_16,pfifo2_data_ext_byte0_16}; 
+assign pfifo_data3_16 = {128'h0,pfifo3_data_ext_byte3_16,pfifo3_data_ext_byte2_16,pfifo3_data_ext_byte1_16,pfifo3_data_ext_byte0_16}; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //// int8 ///////////
-//: my $k = 16;
+//: my $k = 8;
 //: foreach my $j (0..3) {
 //: foreach my $i (0..${k}-1) {
 //: print "assign pfifo${j}_data_byte${i}_8 = pfifo${j}_rd_data[${i}*8+7:${i}*8]; \n";
@@ -573,7 +413,7 @@ assign pfifo_data3_16 = {256'h0,pfifo3_data_ext_byte7_16,pfifo3_data_ext_byte6_1
 //: print "\n";
 //: }
 //: print "\n";
-//: my $k = 16;
+//: my $k = 8;
 //: foreach my $j (0..3) {
 //: foreach my $i (0..${k}-1) {
 //: print "assign pfifo${j}_data_ext_byte${i}_8 = {{24{pfifo${j}_data_byte${i}_8[7]}}, pfifo${j}_data_byte${i}_8[7:0]}; \n";
@@ -590,14 +430,6 @@ assign pfifo0_data_byte4_8 = pfifo0_rd_data[4*8+7:4*8];
 assign pfifo0_data_byte5_8 = pfifo0_rd_data[5*8+7:5*8]; 
 assign pfifo0_data_byte6_8 = pfifo0_rd_data[6*8+7:6*8]; 
 assign pfifo0_data_byte7_8 = pfifo0_rd_data[7*8+7:7*8]; 
-assign pfifo0_data_byte8_8 = pfifo0_rd_data[8*8+7:8*8]; 
-assign pfifo0_data_byte9_8 = pfifo0_rd_data[9*8+7:9*8]; 
-assign pfifo0_data_byte10_8 = pfifo0_rd_data[10*8+7:10*8]; 
-assign pfifo0_data_byte11_8 = pfifo0_rd_data[11*8+7:11*8]; 
-assign pfifo0_data_byte12_8 = pfifo0_rd_data[12*8+7:12*8]; 
-assign pfifo0_data_byte13_8 = pfifo0_rd_data[13*8+7:13*8]; 
-assign pfifo0_data_byte14_8 = pfifo0_rd_data[14*8+7:14*8]; 
-assign pfifo0_data_byte15_8 = pfifo0_rd_data[15*8+7:15*8]; 
 
 assign pfifo1_data_byte0_8 = pfifo1_rd_data[0*8+7:0*8]; 
 assign pfifo1_data_byte1_8 = pfifo1_rd_data[1*8+7:1*8]; 
@@ -607,14 +439,6 @@ assign pfifo1_data_byte4_8 = pfifo1_rd_data[4*8+7:4*8];
 assign pfifo1_data_byte5_8 = pfifo1_rd_data[5*8+7:5*8]; 
 assign pfifo1_data_byte6_8 = pfifo1_rd_data[6*8+7:6*8]; 
 assign pfifo1_data_byte7_8 = pfifo1_rd_data[7*8+7:7*8]; 
-assign pfifo1_data_byte8_8 = pfifo1_rd_data[8*8+7:8*8]; 
-assign pfifo1_data_byte9_8 = pfifo1_rd_data[9*8+7:9*8]; 
-assign pfifo1_data_byte10_8 = pfifo1_rd_data[10*8+7:10*8]; 
-assign pfifo1_data_byte11_8 = pfifo1_rd_data[11*8+7:11*8]; 
-assign pfifo1_data_byte12_8 = pfifo1_rd_data[12*8+7:12*8]; 
-assign pfifo1_data_byte13_8 = pfifo1_rd_data[13*8+7:13*8]; 
-assign pfifo1_data_byte14_8 = pfifo1_rd_data[14*8+7:14*8]; 
-assign pfifo1_data_byte15_8 = pfifo1_rd_data[15*8+7:15*8]; 
 
 assign pfifo2_data_byte0_8 = pfifo2_rd_data[0*8+7:0*8]; 
 assign pfifo2_data_byte1_8 = pfifo2_rd_data[1*8+7:1*8]; 
@@ -624,14 +448,6 @@ assign pfifo2_data_byte4_8 = pfifo2_rd_data[4*8+7:4*8];
 assign pfifo2_data_byte5_8 = pfifo2_rd_data[5*8+7:5*8]; 
 assign pfifo2_data_byte6_8 = pfifo2_rd_data[6*8+7:6*8]; 
 assign pfifo2_data_byte7_8 = pfifo2_rd_data[7*8+7:7*8]; 
-assign pfifo2_data_byte8_8 = pfifo2_rd_data[8*8+7:8*8]; 
-assign pfifo2_data_byte9_8 = pfifo2_rd_data[9*8+7:9*8]; 
-assign pfifo2_data_byte10_8 = pfifo2_rd_data[10*8+7:10*8]; 
-assign pfifo2_data_byte11_8 = pfifo2_rd_data[11*8+7:11*8]; 
-assign pfifo2_data_byte12_8 = pfifo2_rd_data[12*8+7:12*8]; 
-assign pfifo2_data_byte13_8 = pfifo2_rd_data[13*8+7:13*8]; 
-assign pfifo2_data_byte14_8 = pfifo2_rd_data[14*8+7:14*8]; 
-assign pfifo2_data_byte15_8 = pfifo2_rd_data[15*8+7:15*8]; 
 
 assign pfifo3_data_byte0_8 = pfifo3_rd_data[0*8+7:0*8]; 
 assign pfifo3_data_byte1_8 = pfifo3_rd_data[1*8+7:1*8]; 
@@ -641,14 +457,6 @@ assign pfifo3_data_byte4_8 = pfifo3_rd_data[4*8+7:4*8];
 assign pfifo3_data_byte5_8 = pfifo3_rd_data[5*8+7:5*8]; 
 assign pfifo3_data_byte6_8 = pfifo3_rd_data[6*8+7:6*8]; 
 assign pfifo3_data_byte7_8 = pfifo3_rd_data[7*8+7:7*8]; 
-assign pfifo3_data_byte8_8 = pfifo3_rd_data[8*8+7:8*8]; 
-assign pfifo3_data_byte9_8 = pfifo3_rd_data[9*8+7:9*8]; 
-assign pfifo3_data_byte10_8 = pfifo3_rd_data[10*8+7:10*8]; 
-assign pfifo3_data_byte11_8 = pfifo3_rd_data[11*8+7:11*8]; 
-assign pfifo3_data_byte12_8 = pfifo3_rd_data[12*8+7:12*8]; 
-assign pfifo3_data_byte13_8 = pfifo3_rd_data[13*8+7:13*8]; 
-assign pfifo3_data_byte14_8 = pfifo3_rd_data[14*8+7:14*8]; 
-assign pfifo3_data_byte15_8 = pfifo3_rd_data[15*8+7:15*8]; 
 
 
 assign pfifo0_data_ext_byte0_8 = {{24{pfifo0_data_byte0_8[7]}}, pfifo0_data_byte0_8[7:0]}; 
@@ -659,14 +467,6 @@ assign pfifo0_data_ext_byte4_8 = {{24{pfifo0_data_byte4_8[7]}}, pfifo0_data_byte
 assign pfifo0_data_ext_byte5_8 = {{24{pfifo0_data_byte5_8[7]}}, pfifo0_data_byte5_8[7:0]}; 
 assign pfifo0_data_ext_byte6_8 = {{24{pfifo0_data_byte6_8[7]}}, pfifo0_data_byte6_8[7:0]}; 
 assign pfifo0_data_ext_byte7_8 = {{24{pfifo0_data_byte7_8[7]}}, pfifo0_data_byte7_8[7:0]}; 
-assign pfifo0_data_ext_byte8_8 = {{24{pfifo0_data_byte8_8[7]}}, pfifo0_data_byte8_8[7:0]}; 
-assign pfifo0_data_ext_byte9_8 = {{24{pfifo0_data_byte9_8[7]}}, pfifo0_data_byte9_8[7:0]}; 
-assign pfifo0_data_ext_byte10_8 = {{24{pfifo0_data_byte10_8[7]}}, pfifo0_data_byte10_8[7:0]}; 
-assign pfifo0_data_ext_byte11_8 = {{24{pfifo0_data_byte11_8[7]}}, pfifo0_data_byte11_8[7:0]}; 
-assign pfifo0_data_ext_byte12_8 = {{24{pfifo0_data_byte12_8[7]}}, pfifo0_data_byte12_8[7:0]}; 
-assign pfifo0_data_ext_byte13_8 = {{24{pfifo0_data_byte13_8[7]}}, pfifo0_data_byte13_8[7:0]}; 
-assign pfifo0_data_ext_byte14_8 = {{24{pfifo0_data_byte14_8[7]}}, pfifo0_data_byte14_8[7:0]}; 
-assign pfifo0_data_ext_byte15_8 = {{24{pfifo0_data_byte15_8[7]}}, pfifo0_data_byte15_8[7:0]}; 
 
 assign pfifo1_data_ext_byte0_8 = {{24{pfifo1_data_byte0_8[7]}}, pfifo1_data_byte0_8[7:0]}; 
 assign pfifo1_data_ext_byte1_8 = {{24{pfifo1_data_byte1_8[7]}}, pfifo1_data_byte1_8[7:0]}; 
@@ -676,14 +476,6 @@ assign pfifo1_data_ext_byte4_8 = {{24{pfifo1_data_byte4_8[7]}}, pfifo1_data_byte
 assign pfifo1_data_ext_byte5_8 = {{24{pfifo1_data_byte5_8[7]}}, pfifo1_data_byte5_8[7:0]}; 
 assign pfifo1_data_ext_byte6_8 = {{24{pfifo1_data_byte6_8[7]}}, pfifo1_data_byte6_8[7:0]}; 
 assign pfifo1_data_ext_byte7_8 = {{24{pfifo1_data_byte7_8[7]}}, pfifo1_data_byte7_8[7:0]}; 
-assign pfifo1_data_ext_byte8_8 = {{24{pfifo1_data_byte8_8[7]}}, pfifo1_data_byte8_8[7:0]}; 
-assign pfifo1_data_ext_byte9_8 = {{24{pfifo1_data_byte9_8[7]}}, pfifo1_data_byte9_8[7:0]}; 
-assign pfifo1_data_ext_byte10_8 = {{24{pfifo1_data_byte10_8[7]}}, pfifo1_data_byte10_8[7:0]}; 
-assign pfifo1_data_ext_byte11_8 = {{24{pfifo1_data_byte11_8[7]}}, pfifo1_data_byte11_8[7:0]}; 
-assign pfifo1_data_ext_byte12_8 = {{24{pfifo1_data_byte12_8[7]}}, pfifo1_data_byte12_8[7:0]}; 
-assign pfifo1_data_ext_byte13_8 = {{24{pfifo1_data_byte13_8[7]}}, pfifo1_data_byte13_8[7:0]}; 
-assign pfifo1_data_ext_byte14_8 = {{24{pfifo1_data_byte14_8[7]}}, pfifo1_data_byte14_8[7:0]}; 
-assign pfifo1_data_ext_byte15_8 = {{24{pfifo1_data_byte15_8[7]}}, pfifo1_data_byte15_8[7:0]}; 
 
 assign pfifo2_data_ext_byte0_8 = {{24{pfifo2_data_byte0_8[7]}}, pfifo2_data_byte0_8[7:0]}; 
 assign pfifo2_data_ext_byte1_8 = {{24{pfifo2_data_byte1_8[7]}}, pfifo2_data_byte1_8[7:0]}; 
@@ -693,14 +485,6 @@ assign pfifo2_data_ext_byte4_8 = {{24{pfifo2_data_byte4_8[7]}}, pfifo2_data_byte
 assign pfifo2_data_ext_byte5_8 = {{24{pfifo2_data_byte5_8[7]}}, pfifo2_data_byte5_8[7:0]}; 
 assign pfifo2_data_ext_byte6_8 = {{24{pfifo2_data_byte6_8[7]}}, pfifo2_data_byte6_8[7:0]}; 
 assign pfifo2_data_ext_byte7_8 = {{24{pfifo2_data_byte7_8[7]}}, pfifo2_data_byte7_8[7:0]}; 
-assign pfifo2_data_ext_byte8_8 = {{24{pfifo2_data_byte8_8[7]}}, pfifo2_data_byte8_8[7:0]}; 
-assign pfifo2_data_ext_byte9_8 = {{24{pfifo2_data_byte9_8[7]}}, pfifo2_data_byte9_8[7:0]}; 
-assign pfifo2_data_ext_byte10_8 = {{24{pfifo2_data_byte10_8[7]}}, pfifo2_data_byte10_8[7:0]}; 
-assign pfifo2_data_ext_byte11_8 = {{24{pfifo2_data_byte11_8[7]}}, pfifo2_data_byte11_8[7:0]}; 
-assign pfifo2_data_ext_byte12_8 = {{24{pfifo2_data_byte12_8[7]}}, pfifo2_data_byte12_8[7:0]}; 
-assign pfifo2_data_ext_byte13_8 = {{24{pfifo2_data_byte13_8[7]}}, pfifo2_data_byte13_8[7:0]}; 
-assign pfifo2_data_ext_byte14_8 = {{24{pfifo2_data_byte14_8[7]}}, pfifo2_data_byte14_8[7:0]}; 
-assign pfifo2_data_ext_byte15_8 = {{24{pfifo2_data_byte15_8[7]}}, pfifo2_data_byte15_8[7:0]}; 
 
 assign pfifo3_data_ext_byte0_8 = {{24{pfifo3_data_byte0_8[7]}}, pfifo3_data_byte0_8[7:0]}; 
 assign pfifo3_data_ext_byte1_8 = {{24{pfifo3_data_byte1_8[7]}}, pfifo3_data_byte1_8[7:0]}; 
@@ -710,20 +494,12 @@ assign pfifo3_data_ext_byte4_8 = {{24{pfifo3_data_byte4_8[7]}}, pfifo3_data_byte
 assign pfifo3_data_ext_byte5_8 = {{24{pfifo3_data_byte5_8[7]}}, pfifo3_data_byte5_8[7:0]}; 
 assign pfifo3_data_ext_byte6_8 = {{24{pfifo3_data_byte6_8[7]}}, pfifo3_data_byte6_8[7:0]}; 
 assign pfifo3_data_ext_byte7_8 = {{24{pfifo3_data_byte7_8[7]}}, pfifo3_data_byte7_8[7:0]}; 
-assign pfifo3_data_ext_byte8_8 = {{24{pfifo3_data_byte8_8[7]}}, pfifo3_data_byte8_8[7:0]}; 
-assign pfifo3_data_ext_byte9_8 = {{24{pfifo3_data_byte9_8[7]}}, pfifo3_data_byte9_8[7:0]}; 
-assign pfifo3_data_ext_byte10_8 = {{24{pfifo3_data_byte10_8[7]}}, pfifo3_data_byte10_8[7:0]}; 
-assign pfifo3_data_ext_byte11_8 = {{24{pfifo3_data_byte11_8[7]}}, pfifo3_data_byte11_8[7:0]}; 
-assign pfifo3_data_ext_byte12_8 = {{24{pfifo3_data_byte12_8[7]}}, pfifo3_data_byte12_8[7:0]}; 
-assign pfifo3_data_ext_byte13_8 = {{24{pfifo3_data_byte13_8[7]}}, pfifo3_data_byte13_8[7:0]}; 
-assign pfifo3_data_ext_byte14_8 = {{24{pfifo3_data_byte14_8[7]}}, pfifo3_data_byte14_8[7:0]}; 
-assign pfifo3_data_ext_byte15_8 = {{24{pfifo3_data_byte15_8[7]}}, pfifo3_data_byte15_8[7:0]}; 
 
 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 // INT8, concate
-//: my $k = 16;
+//: my $k = 8;
 //: foreach my $j (0..3) {
 //: print "assign pfifo_data${j}_8 = {";
 //: foreach my $i (0..${k}-2) {
@@ -733,10 +509,10 @@ assign pfifo3_data_ext_byte15_8 = {{24{pfifo3_data_byte15_8[7]}}, pfifo3_data_by
 //: print "pfifo${j}_data_ext_byte0_8}; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign pfifo_data0_8 = {pfifo0_data_ext_byte15_8,pfifo0_data_ext_byte14_8,pfifo0_data_ext_byte13_8,pfifo0_data_ext_byte12_8,pfifo0_data_ext_byte11_8,pfifo0_data_ext_byte10_8,pfifo0_data_ext_byte9_8,pfifo0_data_ext_byte8_8,pfifo0_data_ext_byte7_8,pfifo0_data_ext_byte6_8,pfifo0_data_ext_byte5_8,pfifo0_data_ext_byte4_8,pfifo0_data_ext_byte3_8,pfifo0_data_ext_byte2_8,pfifo0_data_ext_byte1_8,pfifo0_data_ext_byte0_8}; 
-assign pfifo_data1_8 = {pfifo1_data_ext_byte15_8,pfifo1_data_ext_byte14_8,pfifo1_data_ext_byte13_8,pfifo1_data_ext_byte12_8,pfifo1_data_ext_byte11_8,pfifo1_data_ext_byte10_8,pfifo1_data_ext_byte9_8,pfifo1_data_ext_byte8_8,pfifo1_data_ext_byte7_8,pfifo1_data_ext_byte6_8,pfifo1_data_ext_byte5_8,pfifo1_data_ext_byte4_8,pfifo1_data_ext_byte3_8,pfifo1_data_ext_byte2_8,pfifo1_data_ext_byte1_8,pfifo1_data_ext_byte0_8}; 
-assign pfifo_data2_8 = {pfifo2_data_ext_byte15_8,pfifo2_data_ext_byte14_8,pfifo2_data_ext_byte13_8,pfifo2_data_ext_byte12_8,pfifo2_data_ext_byte11_8,pfifo2_data_ext_byte10_8,pfifo2_data_ext_byte9_8,pfifo2_data_ext_byte8_8,pfifo2_data_ext_byte7_8,pfifo2_data_ext_byte6_8,pfifo2_data_ext_byte5_8,pfifo2_data_ext_byte4_8,pfifo2_data_ext_byte3_8,pfifo2_data_ext_byte2_8,pfifo2_data_ext_byte1_8,pfifo2_data_ext_byte0_8}; 
-assign pfifo_data3_8 = {pfifo3_data_ext_byte15_8,pfifo3_data_ext_byte14_8,pfifo3_data_ext_byte13_8,pfifo3_data_ext_byte12_8,pfifo3_data_ext_byte11_8,pfifo3_data_ext_byte10_8,pfifo3_data_ext_byte9_8,pfifo3_data_ext_byte8_8,pfifo3_data_ext_byte7_8,pfifo3_data_ext_byte6_8,pfifo3_data_ext_byte5_8,pfifo3_data_ext_byte4_8,pfifo3_data_ext_byte3_8,pfifo3_data_ext_byte2_8,pfifo3_data_ext_byte1_8,pfifo3_data_ext_byte0_8}; 
+assign pfifo_data0_8 = {pfifo0_data_ext_byte7_8,pfifo0_data_ext_byte6_8,pfifo0_data_ext_byte5_8,pfifo0_data_ext_byte4_8,pfifo0_data_ext_byte3_8,pfifo0_data_ext_byte2_8,pfifo0_data_ext_byte1_8,pfifo0_data_ext_byte0_8}; 
+assign pfifo_data1_8 = {pfifo1_data_ext_byte7_8,pfifo1_data_ext_byte6_8,pfifo1_data_ext_byte5_8,pfifo1_data_ext_byte4_8,pfifo1_data_ext_byte3_8,pfifo1_data_ext_byte2_8,pfifo1_data_ext_byte1_8,pfifo1_data_ext_byte0_8}; 
+assign pfifo_data2_8 = {pfifo2_data_ext_byte7_8,pfifo2_data_ext_byte6_8,pfifo2_data_ext_byte5_8,pfifo2_data_ext_byte4_8,pfifo2_data_ext_byte3_8,pfifo2_data_ext_byte2_8,pfifo2_data_ext_byte1_8,pfifo2_data_ext_byte0_8}; 
+assign pfifo_data3_8 = {pfifo3_data_ext_byte7_8,pfifo3_data_ext_byte6_8,pfifo3_data_ext_byte5_8,pfifo3_data_ext_byte4_8,pfifo3_data_ext_byte3_8,pfifo3_data_ext_byte2_8,pfifo3_data_ext_byte1_8,pfifo3_data_ext_byte0_8}; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //=====PERF COUNT BEG=============
@@ -765,7 +541,7 @@ always @(
      pfifo2_sel: pfifo_data_r = cfg_di_16 ? pfifo_data2_16 : pfifo_data2_8;
      pfifo3_sel: pfifo_data_r = cfg_di_16 ? pfifo_data3_16 : pfifo_data3_8;
     default : begin
-                pfifo_data_r[32*16 -1:0] = {(32*16){`x_or_0}};
+                pfifo_data_r[32*8 -1:0] = {(32*8){`x_or_0}};
               end
     endcase
 //spyglass enable_block W171 W226
@@ -774,20 +550,20 @@ assign dat_data = pfifo_data_r;
 assign dat_accept = dat_vld & dat_rdy;
 assign dat_layer_end = cmd_cube_end & is_last_beat;
 assign dat_batch_end = cmd_cube_end & is_last_beat;
-assign dat_pd[32*16 -1:0] = dat_data[32*16 -1:0];
-assign dat_pd[32*16] = dat_batch_end ;
-assign dat_pd[32*16 +1] = dat_layer_end ;
+assign dat_pd[32*8 -1:0] = dat_data[32*8 -1:0];
+assign dat_pd[32*8] = dat_batch_end ;
+assign dat_pd[32*8 +1] = dat_layer_end ;
 NV_NVDLA_SDP_MRDMA_EG_DOUT_pipe_p1 pipe_p1 (
    .nvdla_core_clk (nvdla_core_clk)
   ,.nvdla_core_rstn (nvdla_core_rstn)
-  ,.dat_pd (dat_pd[32*16 +1:0])
+  ,.dat_pd (dat_pd[32*8 +1:0])
   ,.dat_vld (dat_vld)
   ,.sdp_mrdma2cmux_ready (sdp_mrdma2cmux_ready)
   ,.dat_rdy (dat_rdy)
-  ,.sdp_mrdma2cmux_pd (sdp_mrdma2cmux_pd[32*16 +1:0])
+  ,.sdp_mrdma2cmux_pd (sdp_mrdma2cmux_pd[32*8 +1:0])
   ,.sdp_mrdma2cmux_valid (sdp_mrdma2cmux_valid)
   );
-assign sdp_mrdma2cmux_layer_end = sdp_mrdma2cmux_pd[32*16 +1];
+assign sdp_mrdma2cmux_layer_end = sdp_mrdma2cmux_pd[32*8 +1];
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
     eg_done <= 1'b0;
@@ -798,7 +574,7 @@ end
 //Shift-left - unsigned shift argument one bit more
 endmodule // NV_NVDLA_SDP_MRDMA_EG_dout
 // **************************************************************************************************************
-// Generated by ::pipe -m -bc -is sdp_mrdma2cmux_pd (sdp_mrdma2cmux_valid, sdp_mrdma2cmux_ready) <= dat_pd[32*16 +1:0] (dat_vld,dat_rdy)
+// Generated by ::pipe -m -bc -is sdp_mrdma2cmux_pd (sdp_mrdma2cmux_valid, sdp_mrdma2cmux_ready) <= dat_pd[32*8 +1:0] (dat_vld,dat_rdy)
 // **************************************************************************************************************
 module NV_NVDLA_SDP_MRDMA_EG_DOUT_pipe_p1 (
    nvdla_core_clk
@@ -812,29 +588,29 @@ module NV_NVDLA_SDP_MRDMA_EG_DOUT_pipe_p1 (
   );
 input nvdla_core_clk;
 input nvdla_core_rstn;
-input [32*16 +1:0] dat_pd;
+input [32*8 +1:0] dat_pd;
 input dat_vld;
 output dat_rdy;
-output [32*16 +1:0] sdp_mrdma2cmux_pd;
+output [32*8 +1:0] sdp_mrdma2cmux_pd;
 output sdp_mrdma2cmux_valid;
 input sdp_mrdma2cmux_ready;
-//: my $dw = 32*16 +2;
+//: my $dw = 32*8 +2;
 //: &eperl::pipe("-is -wid $dw -do sdp_mrdma2cmux_pd -vo sdp_mrdma2cmux_valid -ri sdp_mrdma2cmux_ready -di dat_pd -vi dat_vld -ro dat_rdy");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 // Reg
 reg dat_rdy;
 reg skid_flop_dat_rdy;
 reg skid_flop_dat_vld;
-reg [514-1:0] skid_flop_dat_pd;
+reg [258-1:0] skid_flop_dat_pd;
 reg pipe_skid_dat_vld;
-reg [514-1:0] pipe_skid_dat_pd;
+reg [258-1:0] pipe_skid_dat_pd;
 // Wire
 wire skid_dat_vld;
-wire [514-1:0] skid_dat_pd;
+wire [258-1:0] skid_dat_pd;
 wire skid_dat_rdy;
 wire pipe_skid_dat_rdy;
 wire sdp_mrdma2cmux_valid;
-wire [514-1:0] sdp_mrdma2cmux_pd;
+wire [258-1:0] sdp_mrdma2cmux_pd;
 // Code
 // SKID READY
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -862,10 +638,10 @@ assign skid_dat_vld = (skid_flop_dat_rdy) ? dat_vld : skid_flop_dat_vld;
 // SKID DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_flop_dat_rdy & dat_vld) begin
-        skid_flop_dat_pd[514-1:0] <= dat_pd[514-1:0];
+        skid_flop_dat_pd[258-1:0] <= dat_pd[258-1:0];
     end
 end
-assign skid_dat_pd[514-1:0] = (skid_flop_dat_rdy) ? dat_pd[514-1:0] : skid_flop_dat_pd[514-1:0];
+assign skid_dat_pd[258-1:0] = (skid_flop_dat_rdy) ? dat_pd[258-1:0] : skid_flop_dat_pd[258-1:0];
 
 
 // PIPE READY
@@ -885,7 +661,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_dat_rdy && skid_dat_vld) begin
-        pipe_skid_dat_pd[514-1:0] <= skid_dat_pd[514-1:0];
+        pipe_skid_dat_pd[258-1:0] <= skid_dat_pd[258-1:0];
     end
 end
 

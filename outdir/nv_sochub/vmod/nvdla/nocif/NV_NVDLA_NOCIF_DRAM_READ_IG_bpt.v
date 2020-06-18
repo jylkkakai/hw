@@ -43,11 +43,11 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input dma2bpt_req_valid; /* data valid */
 output dma2bpt_req_ready; /* data return handshake */
-input [64 +14:0] dma2bpt_req_pd;
+input [32 +14:0] dma2bpt_req_pd;
 input dma2bpt_cdt_lat_fifo_pop;
 output bpt2arb_req_valid; /* data valid */
 input bpt2arb_req_ready; /* data return handshake */
-output [64 +10:0] bpt2arb_req_pd;
+output [32 +10:0] bpt2arb_req_pd;
 input [3:0] tieoff_axid;
 input [7:0] tieoff_lat_fifo_depth;
 reg [15:0] count_req;
@@ -59,13 +59,13 @@ reg [9:0] lat_cnt_new;
 reg [9:0] lat_cnt_nxt;
 reg [7:0] lat_count_cnt;
 reg [0:0] lat_count_dec;
-reg [64 -1:0] out_addr;
+reg [32 -1:0] out_addr;
 reg [2:0] out_size;
 reg [15:0] req_num;
 reg [2:0] slot_needed;
 wire [1:0] beat_size_NC;
 wire bpt2arb_accept;
-wire [64 -1:0] bpt2arb_addr;
+wire [32 -1:0] bpt2arb_addr;
 wire [3:0] bpt2arb_axid;
 wire bpt2arb_ftran;
 wire bpt2arb_ltran;
@@ -75,15 +75,15 @@ wire bpt2arb_swizzle;
 wire [2:0] end_offset;
 wire [3:0] ftran_num;
 wire [2:0] ftran_size;
-wire [64 -1:0] in_addr;
-wire [64 +14:0] in_pd;
-wire [64 +14:0] in_pd_p;
+wire [32 -1:0] in_addr;
+wire [32 +14:0] in_pd;
+wire [32 +14:0] in_pd_p;
 wire in_rdy;
 wire in_rdy_p;
 wire [14:0] in_size;
 wire in_vld;
 wire in_vld_p;
-wire [64 +14:0] in_vld_pd;
+wire [32 +14:0] in_vld_pd;
 wire is_ftran;
 wire is_ltran;
 wire is_mtran;
@@ -116,28 +116,28 @@ wire [2:0] stt_offset;
 NV_NVDLA_NOCIF_DRAM_READ_IG_BPT_pipe_p1 pipe_p1 (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
-  ,.dma2bpt_req_pd (dma2bpt_req_pd[64 +14:0]) //|< i
+  ,.dma2bpt_req_pd (dma2bpt_req_pd[32 +14:0]) //|< i
   ,.dma2bpt_req_valid (dma2bpt_req_valid) //|< i
   ,.in_rdy_p (in_rdy_p) //|< w
   ,.dma2bpt_req_ready (dma2bpt_req_ready) //|> o
-  ,.in_pd_p (in_pd_p[64 +14:0]) //|> w
+  ,.in_pd_p (in_pd_p[32 +14:0]) //|> w
   ,.in_vld_p (in_vld_p) //|> w
   );
 NV_NVDLA_NOCIF_DRAM_READ_IG_BPT_pipe_p2 pipe_p2 (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
-  ,.in_pd_p (in_pd_p[64 +14:0]) //|< w
+  ,.in_pd_p (in_pd_p[32 +14:0]) //|< w
   ,.in_rdy (in_rdy) //|< w
   ,.in_vld_p (in_vld_p) //|< w
-  ,.in_pd (in_pd[64 +14:0]) //|> w
+  ,.in_pd (in_pd[32 +14:0]) //|> w
   ,.in_rdy_p (in_rdy_p) //|> w
   ,.in_vld (in_vld) //|> w
   );
 assign in_rdy = req_rdy & is_ltran;
 assign in_vld_pd = {79{in_vld}} & in_pd;
 // PKT_UNPACK_WIRE( dma_read_cmd , in_ , in_vld_pd )
-assign in_addr[64 -1:0] = in_vld_pd[64 -1:0];
-assign in_size[14:0] = in_vld_pd[64 +14:64];
+assign in_addr[32 -1:0] = in_vld_pd[32 -1:0];
+assign in_size[14:0] = in_vld_pd[32 +14:32];
 `ifdef SPYGLASS_ASSERT_ON
 `else
 // spyglass disable_block NoWidthInBasedNum-ML
@@ -186,11 +186,11 @@ assign in_size[14:0] = in_vld_pd[64 +14:64];
 `endif // SPYGLASS_ASSERT_ON
 //assign stt_addr = in_addr;
 //assign {mon_end_addr_c,end_addr} = stt_addr + in_size<<5;
-//:my $k=16;
+//:my $k=8;
 //:my $j=log(${k})/log(2);
 //:my $l = 64;
 //:my $m = log(${l})/log(2);
-//: if (16 == $m) {
+//: if (8 == $m) {
 //: print qq(assign stt_offset[2:0] = in_addr[$j+1:$j];);
 //: print qq(assign size_offset[2:0] = in_size[1:0];);
 //: } else {
@@ -198,13 +198,13 @@ assign in_size[14:0] = in_vld_pd[64 +14:64];
 //: print qq(assign size_offset[2:0] = in_size[2:0];);
 //:}
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign stt_offset[2:0] = in_addr[4+2:4];assign size_offset[2:0] = in_size[2:0];
+assign stt_offset[2:0] = in_addr[3+2:3];assign size_offset[2:0] = in_size[2:0];
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //assign stt_offset[2:0] = in_addr[7:5];
 //assign size_offset[2:0] = in_size[2:0];
 assign {mon_end_offset_c, end_offset[2:0]} = stt_offset + size_offset;
-assign is_single_tran = (stt_offset + in_size) < ((( 128 )/8/16)*4);
-assign ftran_size[2:0] = is_single_tran ? size_offset : ((( 128 )/8/16)*4 -1) -stt_offset;
+assign is_single_tran = (stt_offset + in_size) < ((( 64 )/8/8)*4);
+assign ftran_size[2:0] = is_single_tran ? size_offset : ((( 64 )/8/8)*4 -1) -stt_offset;
 //assign ftran_size[2:0] = is_single_tran ? size_offset : (7 -stt_offset);
 assign ftran_num[3:0] = ftran_size + 1;
 assign ltran_size[2:0] = is_single_tran ? `tick_x_or_0 : end_offset; // when single tran, size of ltran is meanningless
@@ -221,7 +221,7 @@ always @(
   or out_swizzle
   or is_ftran
   ) begin
-    if (4 == 3) begin
+    if (3 == 3) begin
        slot_needed = 1;
     end
     else if (is_single_tran) begin
@@ -380,8 +380,8 @@ assign req_enable = (!lat_fifo_stall_enable) || ({{5{1'b0}}, slot_needed} <= lat
 //================
 // bsp out: swizzle
 //================
-assign out_swizzle = (4 == 3) ? 1'b0 : (stt_offset[0]==1'b1);
-assign out_odd = (4 == 3) ? 0 : (in_size[0]==1'b0);
+assign out_swizzle = (3 == 3) ? 1'b0 : (stt_offset[0]==1'b1);
+assign out_odd = (3 == 3) ? 0 : (in_size[0]==1'b0);
 //================
 // bsp out: size
 //================
@@ -393,7 +393,7 @@ always @(
   or ltran_size
   ) begin
     out_size = {3{`tick_x_or_0}};
-    if (4 == 3) begin
+    if (3 == 3) begin
        out_size = 0;
     end
     else if (is_ftran) begin
@@ -461,17 +461,17 @@ assign {mon_out_beats_c,beat_size_NC[1:0]} = out_size[2:1] + out_inc; //stepheng
 always @(posedge nvdla_core_clk) begin
     if (bpt2arb_accept) begin
         if (is_ftran) begin
-//out_addr <= in_addr + ((ftran_size+1)<<(4));
-     if (4 == 3)
-               out_addr <= in_addr + ((1)<<(4));
+//out_addr <= in_addr + ((ftran_size+1)<<(3));
+     if (3 == 3)
+               out_addr <= in_addr + ((1)<<(3));
             else
-               out_addr <= in_addr + ((ftran_size+1)<<(4));
+               out_addr <= in_addr + ((ftran_size+1)<<(3));
         end else begin
-//out_addr <= out_addr + (8<<(4 -1));
-     if (4 == 3)
-               out_addr <= out_addr + (1<<(4));
+//out_addr <= out_addr + (8<<(3 -1));
+     if (3 == 3)
+               out_addr <= out_addr + (1<<(3));
             else
-               out_addr <= out_addr + (8<<(4 -1));
+               out_addr <= out_addr + (8<<(3 -1));
         end
     end
 end
@@ -483,7 +483,7 @@ always @(
 //or mtran_num
   *
   ) begin
-    if (4 == 3)
+    if (3 == 3)
        req_num = in_size + 1;
     else if (is_single_tran) begin
         req_num = 1;
@@ -525,12 +525,12 @@ assign bpt2arb_accept = bpt2arb_req_valid & req_rdy;
 //
 // PKT_PACK_WIRE( cvt_read_cmd , bpt2arb_ , bpt2arb_req_pd )
 assign bpt2arb_req_pd[3:0] = bpt2arb_axid[3:0];
-assign bpt2arb_req_pd[64 +3:4] = bpt2arb_addr[64 -1:0];
-assign bpt2arb_req_pd[64 +6:64 +4] = bpt2arb_size[2:0];
-assign bpt2arb_req_pd[64 +7] = bpt2arb_swizzle ;
-assign bpt2arb_req_pd[64 +8] = bpt2arb_odd ;
-assign bpt2arb_req_pd[64 +9] = bpt2arb_ltran ;
-assign bpt2arb_req_pd[64 +10] = bpt2arb_ftran ;
+assign bpt2arb_req_pd[32 +3:4] = bpt2arb_addr[32 -1:0];
+assign bpt2arb_req_pd[32 +6:32 +4] = bpt2arb_size[2:0];
+assign bpt2arb_req_pd[32 +7] = bpt2arb_swizzle ;
+assign bpt2arb_req_pd[32 +8] = bpt2arb_odd ;
+assign bpt2arb_req_pd[32 +9] = bpt2arb_ltran ;
+assign bpt2arb_req_pd[32 +10] = bpt2arb_ftran ;
 //VCS coverage off
 `ifndef DISABLE_FUNCPOINT
   `ifdef ENABLE_FUNCPOINT
@@ -619,7 +619,7 @@ assign bpt2arb_req_pd[64 +10] = bpt2arb_ftran ;
 //VCS coverage on
 endmodule // NV_NVDLA_NOCIF_READ_IG_bpt
 // **************************************************************************************************************
-// Generated by ::pipe -m -bc -os in_pd_p (in_vld_p,in_rdy_p) <= dma2bpt_req_pd[64 +14:0] (dma2bpt_req_valid,dma2bpt_req_ready)
+// Generated by ::pipe -m -bc -os in_pd_p (in_vld_p,in_rdy_p) <= dma2bpt_req_pd[32 +14:0] (dma2bpt_req_valid,dma2bpt_req_ready)
 // **************************************************************************************************************
 module NV_NVDLA_NOCIF_DRAM_READ_IG_BPT_pipe_p1 (
    nvdla_core_clk
@@ -633,27 +633,27 @@ module NV_NVDLA_NOCIF_DRAM_READ_IG_BPT_pipe_p1 (
   );
 input nvdla_core_clk;
 input nvdla_core_rstn;
-input [64 +14:0] dma2bpt_req_pd;
+input [32 +14:0] dma2bpt_req_pd;
 input dma2bpt_req_valid;
 input in_rdy_p;
 output dma2bpt_req_ready;
-output [64 +14:0] in_pd_p;
+output [32 +14:0] in_pd_p;
 output in_vld_p;
 reg dma2bpt_req_ready;
-reg [64 +14:0] in_pd_p;
+reg [32 +14:0] in_pd_p;
 reg in_vld_p;
-reg [64 +14:0] p1_pipe_data;
-reg [64 +14:0] p1_pipe_rand_data;
+reg [32 +14:0] p1_pipe_data;
+reg [32 +14:0] p1_pipe_rand_data;
 reg p1_pipe_rand_ready;
 reg p1_pipe_rand_valid;
 reg p1_pipe_ready;
 reg p1_pipe_ready_bc;
-reg [64 +14:0] p1_pipe_skid_data;
+reg [32 +14:0] p1_pipe_skid_data;
 reg p1_pipe_skid_ready;
 reg p1_pipe_skid_valid;
 reg p1_pipe_valid;
 reg p1_skid_catch;
-reg [64 +14:0] p1_skid_data;
+reg [32 +14:0] p1_skid_data;
 reg p1_skid_ready;
 reg p1_skid_ready_flop;
 reg p1_skid_valid;
@@ -673,12 +673,12 @@ always @(
   `ifdef SYNTHESIS
   p1_pipe_rand_valid = dma2bpt_req_valid;
   dma2bpt_req_ready = p1_pipe_rand_ready;
-  p1_pipe_rand_data = dma2bpt_req_pd[64 +14:0];
+  p1_pipe_rand_data = dma2bpt_req_pd[32 +14:0];
   `else
 // VCS coverage off
   p1_pipe_rand_valid = (p1_pipe_rand_active)? 1'b0 : dma2bpt_req_valid;
   dma2bpt_req_ready = (p1_pipe_rand_active)? 1'b0 : p1_pipe_rand_ready;
-  p1_pipe_rand_data = (p1_pipe_rand_active)? 'bx : dma2bpt_req_pd[64 +14:0];
+  p1_pipe_rand_data = (p1_pipe_rand_active)? 'bx : dma2bpt_req_pd[32 +14:0];
 // VCS coverage on
   `endif
 end
@@ -1017,7 +1017,7 @@ wire p1_assert_clk = nvdla_core_clk;
 `endif
 endmodule // NV_NVDLA_CVIF_READ_IG_BPT_pipe_p1
 // **************************************************************************************************************
-// Generated by ::pipe -m -bc -is in_pd (in_vld,in_rdy) <= in_pd_p[64 +14:0] (in_vld_p,in_rdy_p)
+// Generated by ::pipe -m -bc -is in_pd (in_vld,in_rdy) <= in_pd_p[32 +14:0] (in_vld_p,in_rdy_p)
 // **************************************************************************************************************
 module NV_NVDLA_NOCIF_DRAM_READ_IG_BPT_pipe_p2 (
    nvdla_core_clk
@@ -1031,25 +1031,25 @@ module NV_NVDLA_NOCIF_DRAM_READ_IG_BPT_pipe_p2 (
   );
 input nvdla_core_clk;
 input nvdla_core_rstn;
-input [64 +14:0] in_pd_p;
+input [32 +14:0] in_pd_p;
 input in_rdy;
 input in_vld_p;
-output [64 +14:0] in_pd;
+output [32 +14:0] in_pd;
 output in_rdy_p;
 output in_vld;
-reg [64 +14:0] in_pd;
+reg [32 +14:0] in_pd;
 reg in_rdy_p;
 reg in_vld;
-reg [64 +14:0] p2_pipe_data;
-reg [64 +14:0] p2_pipe_rand_data;
+reg [32 +14:0] p2_pipe_data;
+reg [32 +14:0] p2_pipe_rand_data;
 reg p2_pipe_rand_ready;
 reg p2_pipe_rand_valid;
 reg p2_pipe_ready;
 reg p2_pipe_ready_bc;
 reg p2_pipe_valid;
 reg p2_skid_catch;
-reg [64 +14:0] p2_skid_data;
-reg [64 +14:0] p2_skid_pipe_data;
+reg [32 +14:0] p2_skid_data;
+reg [32 +14:0] p2_skid_pipe_data;
 reg p2_skid_pipe_ready;
 reg p2_skid_pipe_valid;
 reg p2_skid_ready;
@@ -1071,12 +1071,12 @@ always @(
   `ifdef SYNTHESIS
   p2_pipe_rand_valid = in_vld_p;
   in_rdy_p = p2_pipe_rand_ready;
-  p2_pipe_rand_data = in_pd_p[64 +14:0];
+  p2_pipe_rand_data = in_pd_p[32 +14:0];
   `else
 // VCS coverage off
   p2_pipe_rand_valid = (p2_pipe_rand_active)? 1'b0 : in_vld_p;
   in_rdy_p = (p2_pipe_rand_active)? 1'b0 : p2_pipe_rand_ready;
-  p2_pipe_rand_data = (p2_pipe_rand_active)? 'bx : in_pd_p[64 +14:0];
+  p2_pipe_rand_data = (p2_pipe_rand_active)? 'bx : in_pd_p[32 +14:0];
 // VCS coverage on
   `endif
 end

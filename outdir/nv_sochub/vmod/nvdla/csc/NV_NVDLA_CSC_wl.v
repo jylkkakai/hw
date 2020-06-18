@@ -26,7 +26,7 @@
     //atomK*4
 //notice, for image case, first atom OP within one strip OP must fetch from entry align place, in the middle of an entry is not supported.
 //thus, when atomC/atomK=4, stripe=4*atomK, feature data still keeps atomK*2
-    `define CC_ATOMC_DIV_ATOMK_EQUAL_2
+    `define CC_ATOMC_DIV_ATOMK_EQUAL_1
 //batch keep 1
 module NV_NVDLA_CSC_wl (
    nvdla_core_clk //|< i
@@ -56,7 +56,7 @@ module NV_NVDLA_CSC_wl (
   `endif
   ,sc2mac_wt_a_pvld //|> o
   ,sc2mac_wt_a_mask //|> o
-//: for(my $i = 0; $i < 32; $i ++) {
+//: for(my $i = 0; $i < 8; $i ++) {
 //: print qq( ,sc2mac_wt_a_data${i} //|> o\n);
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -68,36 +68,12 @@ module NV_NVDLA_CSC_wl (
  ,sc2mac_wt_a_data5 //|> o
  ,sc2mac_wt_a_data6 //|> o
  ,sc2mac_wt_a_data7 //|> o
- ,sc2mac_wt_a_data8 //|> o
- ,sc2mac_wt_a_data9 //|> o
- ,sc2mac_wt_a_data10 //|> o
- ,sc2mac_wt_a_data11 //|> o
- ,sc2mac_wt_a_data12 //|> o
- ,sc2mac_wt_a_data13 //|> o
- ,sc2mac_wt_a_data14 //|> o
- ,sc2mac_wt_a_data15 //|> o
- ,sc2mac_wt_a_data16 //|> o
- ,sc2mac_wt_a_data17 //|> o
- ,sc2mac_wt_a_data18 //|> o
- ,sc2mac_wt_a_data19 //|> o
- ,sc2mac_wt_a_data20 //|> o
- ,sc2mac_wt_a_data21 //|> o
- ,sc2mac_wt_a_data22 //|> o
- ,sc2mac_wt_a_data23 //|> o
- ,sc2mac_wt_a_data24 //|> o
- ,sc2mac_wt_a_data25 //|> o
- ,sc2mac_wt_a_data26 //|> o
- ,sc2mac_wt_a_data27 //|> o
- ,sc2mac_wt_a_data28 //|> o
- ,sc2mac_wt_a_data29 //|> o
- ,sc2mac_wt_a_data30 //|> o
- ,sc2mac_wt_a_data31 //|> o
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,sc2mac_wt_a_sel //|> o
   ,sc2mac_wt_b_pvld //|> o
   ,sc2mac_wt_b_mask //|> o
-//: for(my $i = 0; $i < 32; $i ++) {
+//: for(my $i = 0; $i < 8; $i ++) {
 //: print qq( ,sc2mac_wt_b_data${i} //|> o\n);
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -109,30 +85,6 @@ module NV_NVDLA_CSC_wl (
  ,sc2mac_wt_b_data5 //|> o
  ,sc2mac_wt_b_data6 //|> o
  ,sc2mac_wt_b_data7 //|> o
- ,sc2mac_wt_b_data8 //|> o
- ,sc2mac_wt_b_data9 //|> o
- ,sc2mac_wt_b_data10 //|> o
- ,sc2mac_wt_b_data11 //|> o
- ,sc2mac_wt_b_data12 //|> o
- ,sc2mac_wt_b_data13 //|> o
- ,sc2mac_wt_b_data14 //|> o
- ,sc2mac_wt_b_data15 //|> o
- ,sc2mac_wt_b_data16 //|> o
- ,sc2mac_wt_b_data17 //|> o
- ,sc2mac_wt_b_data18 //|> o
- ,sc2mac_wt_b_data19 //|> o
- ,sc2mac_wt_b_data20 //|> o
- ,sc2mac_wt_b_data21 //|> o
- ,sc2mac_wt_b_data22 //|> o
- ,sc2mac_wt_b_data23 //|> o
- ,sc2mac_wt_b_data24 //|> o
- ,sc2mac_wt_b_data25 //|> o
- ,sc2mac_wt_b_data26 //|> o
- ,sc2mac_wt_b_data27 //|> o
- ,sc2mac_wt_b_data28 //|> o
- ,sc2mac_wt_b_data29 //|> o
- ,sc2mac_wt_b_data30 //|> o
- ,sc2mac_wt_b_data31 //|> o
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,sc2mac_wt_b_sel //|> o
@@ -165,25 +117,25 @@ output [13:0] sc2cdma_wt_kernels;
 output [15 -1:0] sc2cdma_wt_entries;
 output [8:0] sc2cdma_wmb_entries;
 output sc2buf_wt_rd_en; /* data valid */
-output [12 -1:0] sc2buf_wt_rd_addr;
+output [14 -1:0] sc2buf_wt_rd_addr;
 input sc2buf_wt_rd_valid; /* data valid */
-input [256 -1:0] sc2buf_wt_rd_data;
+input [64 -1:0] sc2buf_wt_rd_data;
 `ifdef CBUF_WEIGHT_COMPRESSED
 output sc2buf_wmb_rd_en; /* data valid */
-output [12 -1:0] sc2buf_wmb_rd_addr;
+output [14 -1:0] sc2buf_wmb_rd_addr;
 input sc2buf_wmb_rd_valid; /* data valid */
-input [256 -1:0] sc2buf_wmb_rd_data;
+input [64 -1:0] sc2buf_wmb_rd_data;
 `else
 wire sc2buf_wmb_rd_valid=1'b0;
-wire [256 -1:0] sc2buf_wmb_rd_data= {256{1'b0}};
+wire [64 -1:0] sc2buf_wmb_rd_data= {64{1'b0}};
 `endif
 output sc2mac_wt_a_pvld; /* data valid */
 output sc2mac_wt_b_pvld; /* data valid */
-output [32 -1:0] sc2mac_wt_a_mask;
-output [32 -1:0] sc2mac_wt_b_mask;
-output [16/2 -1:0] sc2mac_wt_a_sel;
-output [16/2 -1:0] sc2mac_wt_b_sel;
-//: for(my $i = 0; $i < 32; $i ++) {
+output [8 -1:0] sc2mac_wt_a_mask;
+output [8 -1:0] sc2mac_wt_b_mask;
+output [8/2 -1:0] sc2mac_wt_a_sel;
+output [8/2 -1:0] sc2mac_wt_b_sel;
+//: for(my $i = 0; $i < 8; $i ++) {
 //: print qq(output [8 -1:0] sc2mac_wt_a_data${i};\n);
 //: print qq(output [8 -1:0] sc2mac_wt_b_data${i};\n);
 //: }
@@ -204,54 +156,6 @@ output [8 -1:0] sc2mac_wt_a_data6;
 output [8 -1:0] sc2mac_wt_b_data6;
 output [8 -1:0] sc2mac_wt_a_data7;
 output [8 -1:0] sc2mac_wt_b_data7;
-output [8 -1:0] sc2mac_wt_a_data8;
-output [8 -1:0] sc2mac_wt_b_data8;
-output [8 -1:0] sc2mac_wt_a_data9;
-output [8 -1:0] sc2mac_wt_b_data9;
-output [8 -1:0] sc2mac_wt_a_data10;
-output [8 -1:0] sc2mac_wt_b_data10;
-output [8 -1:0] sc2mac_wt_a_data11;
-output [8 -1:0] sc2mac_wt_b_data11;
-output [8 -1:0] sc2mac_wt_a_data12;
-output [8 -1:0] sc2mac_wt_b_data12;
-output [8 -1:0] sc2mac_wt_a_data13;
-output [8 -1:0] sc2mac_wt_b_data13;
-output [8 -1:0] sc2mac_wt_a_data14;
-output [8 -1:0] sc2mac_wt_b_data14;
-output [8 -1:0] sc2mac_wt_a_data15;
-output [8 -1:0] sc2mac_wt_b_data15;
-output [8 -1:0] sc2mac_wt_a_data16;
-output [8 -1:0] sc2mac_wt_b_data16;
-output [8 -1:0] sc2mac_wt_a_data17;
-output [8 -1:0] sc2mac_wt_b_data17;
-output [8 -1:0] sc2mac_wt_a_data18;
-output [8 -1:0] sc2mac_wt_b_data18;
-output [8 -1:0] sc2mac_wt_a_data19;
-output [8 -1:0] sc2mac_wt_b_data19;
-output [8 -1:0] sc2mac_wt_a_data20;
-output [8 -1:0] sc2mac_wt_b_data20;
-output [8 -1:0] sc2mac_wt_a_data21;
-output [8 -1:0] sc2mac_wt_b_data21;
-output [8 -1:0] sc2mac_wt_a_data22;
-output [8 -1:0] sc2mac_wt_b_data22;
-output [8 -1:0] sc2mac_wt_a_data23;
-output [8 -1:0] sc2mac_wt_b_data23;
-output [8 -1:0] sc2mac_wt_a_data24;
-output [8 -1:0] sc2mac_wt_b_data24;
-output [8 -1:0] sc2mac_wt_a_data25;
-output [8 -1:0] sc2mac_wt_b_data25;
-output [8 -1:0] sc2mac_wt_a_data26;
-output [8 -1:0] sc2mac_wt_b_data26;
-output [8 -1:0] sc2mac_wt_a_data27;
-output [8 -1:0] sc2mac_wt_b_data27;
-output [8 -1:0] sc2mac_wt_a_data28;
-output [8 -1:0] sc2mac_wt_b_data28;
-output [8 -1:0] sc2mac_wt_a_data29;
-output [8 -1:0] sc2mac_wt_b_data29;
-output [8 -1:0] sc2mac_wt_a_data30;
-output [8 -1:0] sc2mac_wt_b_data30;
-output [8 -1:0] sc2mac_wt_a_data31;
-output [8 -1:0] sc2mac_wt_b_data31;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input nvdla_core_ng_clk;
@@ -267,22 +171,22 @@ input [27:0] reg2dp_wmb_bytes;
 input [4:0] reg2dp_data_bank;
 input [4:0] reg2dp_weight_bank;
 reg [4:0] data_bank;
-reg [256 -1:0] dec_input_data;
-reg [32 -1:0] dec_input_mask;
+reg [64 -1:0] dec_input_data;
+reg [8 -1:0] dec_input_mask;
 reg [9:0] dec_input_mask_en;
 reg dec_input_pipe_valid;
 reg is_compressed_d1;
 reg is_sg_running_d1;
 reg [15 -1:0] last_weight_entries;
 reg [8:0] last_wmb_entries;
-reg [12 -1:0] sc2buf_wmb_rd_addr;
+reg [14 -1:0] sc2buf_wmb_rd_addr;
 reg sc2buf_wmb_rd_en;
-reg [12 -1:0] sc2buf_wt_rd_addr;
+reg [14 -1:0] sc2buf_wt_rd_addr;
 reg sc2buf_wt_rd_en;
 reg [8:0] sc2cdma_wmb_entries;
 reg [15 -1:0] sc2cdma_wt_entries;
 reg sc2cdma_wt_updt;
-//: for(my $i = 0; $i < 32; $i ++) {
+//: for(my $i = 0; $i < 8; $i ++) {
 //: print qq(reg [8 -1:0] sc2mac_wt_a_data${i};\n);
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -294,36 +198,12 @@ reg [8 -1:0] sc2mac_wt_a_data4;
 reg [8 -1:0] sc2mac_wt_a_data5;
 reg [8 -1:0] sc2mac_wt_a_data6;
 reg [8 -1:0] sc2mac_wt_a_data7;
-reg [8 -1:0] sc2mac_wt_a_data8;
-reg [8 -1:0] sc2mac_wt_a_data9;
-reg [8 -1:0] sc2mac_wt_a_data10;
-reg [8 -1:0] sc2mac_wt_a_data11;
-reg [8 -1:0] sc2mac_wt_a_data12;
-reg [8 -1:0] sc2mac_wt_a_data13;
-reg [8 -1:0] sc2mac_wt_a_data14;
-reg [8 -1:0] sc2mac_wt_a_data15;
-reg [8 -1:0] sc2mac_wt_a_data16;
-reg [8 -1:0] sc2mac_wt_a_data17;
-reg [8 -1:0] sc2mac_wt_a_data18;
-reg [8 -1:0] sc2mac_wt_a_data19;
-reg [8 -1:0] sc2mac_wt_a_data20;
-reg [8 -1:0] sc2mac_wt_a_data21;
-reg [8 -1:0] sc2mac_wt_a_data22;
-reg [8 -1:0] sc2mac_wt_a_data23;
-reg [8 -1:0] sc2mac_wt_a_data24;
-reg [8 -1:0] sc2mac_wt_a_data25;
-reg [8 -1:0] sc2mac_wt_a_data26;
-reg [8 -1:0] sc2mac_wt_a_data27;
-reg [8 -1:0] sc2mac_wt_a_data28;
-reg [8 -1:0] sc2mac_wt_a_data29;
-reg [8 -1:0] sc2mac_wt_a_data30;
-reg [8 -1:0] sc2mac_wt_a_data31;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-reg [32 -1:0] sc2mac_wt_a_mask;
+reg [8 -1:0] sc2mac_wt_a_mask;
 reg sc2mac_wt_a_pvld;
-reg [16/2 -1:0] sc2mac_wt_a_sel;
-//: for(my $i = 0; $i < 32; $i ++) {
+reg [8/2 -1:0] sc2mac_wt_a_sel;
+//: for(my $i = 0; $i < 8; $i ++) {
 //: print qq(reg [7:0] sc2mac_wt_b_data${i};\n);
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -335,35 +215,11 @@ reg [7:0] sc2mac_wt_b_data4;
 reg [7:0] sc2mac_wt_b_data5;
 reg [7:0] sc2mac_wt_b_data6;
 reg [7:0] sc2mac_wt_b_data7;
-reg [7:0] sc2mac_wt_b_data8;
-reg [7:0] sc2mac_wt_b_data9;
-reg [7:0] sc2mac_wt_b_data10;
-reg [7:0] sc2mac_wt_b_data11;
-reg [7:0] sc2mac_wt_b_data12;
-reg [7:0] sc2mac_wt_b_data13;
-reg [7:0] sc2mac_wt_b_data14;
-reg [7:0] sc2mac_wt_b_data15;
-reg [7:0] sc2mac_wt_b_data16;
-reg [7:0] sc2mac_wt_b_data17;
-reg [7:0] sc2mac_wt_b_data18;
-reg [7:0] sc2mac_wt_b_data19;
-reg [7:0] sc2mac_wt_b_data20;
-reg [7:0] sc2mac_wt_b_data21;
-reg [7:0] sc2mac_wt_b_data22;
-reg [7:0] sc2mac_wt_b_data23;
-reg [7:0] sc2mac_wt_b_data24;
-reg [7:0] sc2mac_wt_b_data25;
-reg [7:0] sc2mac_wt_b_data26;
-reg [7:0] sc2mac_wt_b_data27;
-reg [7:0] sc2mac_wt_b_data28;
-reg [7:0] sc2mac_wt_b_data29;
-reg [7:0] sc2mac_wt_b_data30;
-reg [7:0] sc2mac_wt_b_data31;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-reg [32 -1:0] sc2mac_wt_b_mask;
+reg [8 -1:0] sc2mac_wt_b_mask;
 reg sc2mac_wt_b_pvld;
-reg [16/2 -1:0] sc2mac_wt_b_sel;
+reg [8/2 -1:0] sc2mac_wt_b_sel;
 reg [4:0] stripe_cnt;
 reg [2:0] sub_h_total;
 reg [4:0] weight_bank;
@@ -371,14 +227,14 @@ reg [17:0] wl_in_pd_d1;
 reg wl_in_pvld_d1;
 reg [10:0] wmb_element_avl;
 reg [10:0] wmb_element_avl_last;
-reg [256 -1:0] wmb_emask_remain;
-reg [256 -1:0] wmb_emask_remain_last;
+reg [64 -1:0] wmb_emask_remain;
+reg [64 -1:0] wmb_emask_remain_last;
 reg [8:0] wmb_entry_avl;
 reg [8:0] wmb_entry_end;
 reg [8:0] wmb_entry_st;
 reg wmb_pipe_valid_d1;
-reg [12 -1:0] wmb_req_addr;
-reg [12 -1:0] wmb_req_addr_last;
+reg [14 -1:0] wmb_req_addr;
+reg [14 -1:0] wmb_req_addr_last;
 reg wmb_req_channel_end_d1;
 reg [1:0] wmb_req_cur_sub_h_d1;
 reg [7:0] wmb_req_element_d1;
@@ -393,21 +249,21 @@ reg [9:0] wmb_rsp_bit_remain;
 reg [9:0] wmb_rsp_bit_remain_last;
 reg [7:0] wt_byte_avl;
 reg [7:0] wt_byte_avl_last;
-reg [256 -1:0] wt_data_remain;
-reg [256 -1:0] wt_data_remain_last;
+reg [64 -1:0] wt_data_remain;
+reg [64 -1:0] wt_data_remain_last;
 reg [15 -1:0] wt_entry_avl;
 reg [15 -1:0] wt_entry_end;
 reg [15 -1:0] wt_entry_st;
-reg [12 -1:0] wt_req_addr;
-reg [12 -1:0] wt_req_addr_last;
+reg [14 -1:0] wt_req_addr;
+reg [14 -1:0] wt_req_addr_last;
 reg [7:0] wt_req_bytes_d1;
 reg wt_req_channel_end;
 reg wt_req_channel_end_d1;
 reg [1:0] wt_req_cur_sub_h;
-reg [32 -1:0] wt_req_emask;
+reg [8 -1:0] wt_req_emask;
 reg wt_req_group_end;
 reg wt_req_group_end_d1;
-reg [32 -1:0] wt_req_mask_d1;
+reg [8 -1:0] wt_req_mask_d1;
 reg wt_req_mask_en_d1;
 reg [6:0] wt_req_ori_element;
 reg [6:0] wt_req_ori_sft_3;
@@ -425,13 +281,13 @@ reg wt_rls_cnt_vld;
 reg [6:0] wt_rsp_byte_remain;
 reg [6:0] wt_rsp_byte_remain_last;
 reg wt_rsp_last_stripe_end;
-reg [16 -1:0] wt_rsp_sel_d1;
+reg [8 -1:0] wt_rsp_sel_d1;
 wire addr_init;
 wire cbuf_reset;
 wire [4:0] data_bank_w;
-wire [256 -1:0] dbg_csc_wt_a;
-wire [256 -1:0] dbg_csc_wt_b;
-//: for(my $i = 0; $i < 32; $i ++) {
+wire [64 -1:0] dbg_csc_wt_a;
+wire [64 -1:0] dbg_csc_wt_b;
+//: for(my $i = 0; $i < 8; $i ++) {
 //: print qq(wire [8 -1:0] dbg_csc_wt_a_${i};\n);
 //: print qq(wire [8 -1:0] dbg_csc_wt_b_${i};\n);
 //: }
@@ -452,57 +308,9 @@ wire [8 -1:0] dbg_csc_wt_a_6;
 wire [8 -1:0] dbg_csc_wt_b_6;
 wire [8 -1:0] dbg_csc_wt_a_7;
 wire [8 -1:0] dbg_csc_wt_b_7;
-wire [8 -1:0] dbg_csc_wt_a_8;
-wire [8 -1:0] dbg_csc_wt_b_8;
-wire [8 -1:0] dbg_csc_wt_a_9;
-wire [8 -1:0] dbg_csc_wt_b_9;
-wire [8 -1:0] dbg_csc_wt_a_10;
-wire [8 -1:0] dbg_csc_wt_b_10;
-wire [8 -1:0] dbg_csc_wt_a_11;
-wire [8 -1:0] dbg_csc_wt_b_11;
-wire [8 -1:0] dbg_csc_wt_a_12;
-wire [8 -1:0] dbg_csc_wt_b_12;
-wire [8 -1:0] dbg_csc_wt_a_13;
-wire [8 -1:0] dbg_csc_wt_b_13;
-wire [8 -1:0] dbg_csc_wt_a_14;
-wire [8 -1:0] dbg_csc_wt_b_14;
-wire [8 -1:0] dbg_csc_wt_a_15;
-wire [8 -1:0] dbg_csc_wt_b_15;
-wire [8 -1:0] dbg_csc_wt_a_16;
-wire [8 -1:0] dbg_csc_wt_b_16;
-wire [8 -1:0] dbg_csc_wt_a_17;
-wire [8 -1:0] dbg_csc_wt_b_17;
-wire [8 -1:0] dbg_csc_wt_a_18;
-wire [8 -1:0] dbg_csc_wt_b_18;
-wire [8 -1:0] dbg_csc_wt_a_19;
-wire [8 -1:0] dbg_csc_wt_b_19;
-wire [8 -1:0] dbg_csc_wt_a_20;
-wire [8 -1:0] dbg_csc_wt_b_20;
-wire [8 -1:0] dbg_csc_wt_a_21;
-wire [8 -1:0] dbg_csc_wt_b_21;
-wire [8 -1:0] dbg_csc_wt_a_22;
-wire [8 -1:0] dbg_csc_wt_b_22;
-wire [8 -1:0] dbg_csc_wt_a_23;
-wire [8 -1:0] dbg_csc_wt_b_23;
-wire [8 -1:0] dbg_csc_wt_a_24;
-wire [8 -1:0] dbg_csc_wt_b_24;
-wire [8 -1:0] dbg_csc_wt_a_25;
-wire [8 -1:0] dbg_csc_wt_b_25;
-wire [8 -1:0] dbg_csc_wt_a_26;
-wire [8 -1:0] dbg_csc_wt_b_26;
-wire [8 -1:0] dbg_csc_wt_a_27;
-wire [8 -1:0] dbg_csc_wt_b_27;
-wire [8 -1:0] dbg_csc_wt_a_28;
-wire [8 -1:0] dbg_csc_wt_b_28;
-wire [8 -1:0] dbg_csc_wt_a_29;
-wire [8 -1:0] dbg_csc_wt_b_29;
-wire [8 -1:0] dbg_csc_wt_a_30;
-wire [8 -1:0] dbg_csc_wt_b_30;
-wire [8 -1:0] dbg_csc_wt_a_31;
-wire [8 -1:0] dbg_csc_wt_b_31;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-wire [16 -1:0] dec_input_sel;
+wire [8 -1:0] dec_input_sel;
 wire is_compressed;
 wire is_sg_done;
 wire is_sg_idle;
@@ -538,11 +346,11 @@ wire mon_wt_rls_cnt_inc;
 wire [1:0] mon_wt_rsp_byte_remain_w;
 wire mon_wt_shift_remain;
 wire reuse_rls;
-wire [32 -1:0] sc2mac_out_a_mask;
-wire [16/2 -1:0] sc2mac_out_a_sel_w;
-wire [32 -1:0] sc2mac_out_b_mask;
-wire [16/2 -1:0] sc2mac_out_b_sel_w;
-//: for(my $i = 0; $i < 32; $i ++) {
+wire [8 -1:0] sc2mac_out_a_mask;
+wire [8/2 -1:0] sc2mac_out_a_sel_w;
+wire [8 -1:0] sc2mac_out_b_mask;
+wire [8/2 -1:0] sc2mac_out_b_sel_w;
+//: for(my $i = 0; $i < 8; $i ++) {
 //: print qq(wire [8 -1:0] sc2mac_out_data${i};\n);
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -554,44 +362,20 @@ wire [8 -1:0] sc2mac_out_data4;
 wire [8 -1:0] sc2mac_out_data5;
 wire [8 -1:0] sc2mac_out_data6;
 wire [8 -1:0] sc2mac_out_data7;
-wire [8 -1:0] sc2mac_out_data8;
-wire [8 -1:0] sc2mac_out_data9;
-wire [8 -1:0] sc2mac_out_data10;
-wire [8 -1:0] sc2mac_out_data11;
-wire [8 -1:0] sc2mac_out_data12;
-wire [8 -1:0] sc2mac_out_data13;
-wire [8 -1:0] sc2mac_out_data14;
-wire [8 -1:0] sc2mac_out_data15;
-wire [8 -1:0] sc2mac_out_data16;
-wire [8 -1:0] sc2mac_out_data17;
-wire [8 -1:0] sc2mac_out_data18;
-wire [8 -1:0] sc2mac_out_data19;
-wire [8 -1:0] sc2mac_out_data20;
-wire [8 -1:0] sc2mac_out_data21;
-wire [8 -1:0] sc2mac_out_data22;
-wire [8 -1:0] sc2mac_out_data23;
-wire [8 -1:0] sc2mac_out_data24;
-wire [8 -1:0] sc2mac_out_data25;
-wire [8 -1:0] sc2mac_out_data26;
-wire [8 -1:0] sc2mac_out_data27;
-wire [8 -1:0] sc2mac_out_data28;
-wire [8 -1:0] sc2mac_out_data29;
-wire [8 -1:0] sc2mac_out_data30;
-wire [8 -1:0] sc2mac_out_data31;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-wire [32 -1:0] sc2mac_out_mask;
+wire [8 -1:0] sc2mac_out_mask;
 wire sc2mac_out_pvld;
-wire [16 -1:0] sc2mac_out_sel;
+wire [8 -1:0] sc2mac_out_sel;
 wire sc2mac_wt_a_pvld_w;
 wire sc2mac_wt_b_pvld_w;
 wire [4:0] stripe_cnt_inc;
 wire stripe_cnt_reg_en;
 wire [4:0] stripe_cnt_w;
 wire [4:0] stripe_length;
-wire [32 -1:0] sub_h_mask_1;
-wire [32 -1:0] sub_h_mask_2;
-wire [32 -1:0] sub_h_mask_3;
+wire [8 -1:0] sub_h_mask_1;
+wire [8 -1:0] sub_h_mask_2;
+wire [8 -1:0] sub_h_mask_3;
 wire [2:0] sub_h_total_w;
 wire sub_rls;
 wire [8:0] sub_rls_wmb_entries;
@@ -615,12 +399,12 @@ wire wmb_element_avl_last_reg_en;
 wire wmb_element_avl_reg_en;
 wire [7:0] wmb_element_avl_sub;
 wire [10:0] wmb_element_avl_w;
-wire [32 -1:0] wmb_emask_rd_ls;
-wire [256 -1:0] wmb_emask_rd_rs;
+wire [8 -1:0] wmb_emask_rd_ls;
+wire [64 -1:0] wmb_emask_rd_rs;
 wire wmb_emask_remain_last_reg_en;
 wire wmb_emask_remain_reg_en;
-wire [256 -1:0] wmb_emask_remain_rs;
-wire [256 -1:0] wmb_emask_remain_w;
+wire [64 -1:0] wmb_emask_remain_rs;
+wire [64 -1:0] wmb_emask_remain_w;
 wire [8:0] wmb_entry_avl_add;
 wire [8:0] wmb_entry_avl_sub;
 wire [8:0] wmb_entry_avl_w;
@@ -629,10 +413,10 @@ wire [8:0] wmb_entry_end_w;
 wire [8:0] wmb_entry_st_inc;
 wire [8:0] wmb_entry_st_w;
 wire wmb_pipe_valid;
-wire [12 -1:0] wmb_req_addr_inc;
+wire [14 -1:0] wmb_req_addr_inc;
 wire wmb_req_addr_last_reg_en;
 wire wmb_req_addr_reg_en;
-wire [12 -1:0] wmb_req_addr_w;
+wire [14 -1:0] wmb_req_addr_w;
 wire [7:0] wmb_req_cycle_element;
 wire wmb_req_d1_channel_end;
 wire [1:0] wmb_req_d1_cur_sub_h;
@@ -659,8 +443,8 @@ wire [9:0] wmb_rsp_bit_remain_w;
 wire wmb_rsp_channel_end;
 wire [1:0] wmb_rsp_cur_sub_h;
 wire [7:0] wmb_rsp_element;
-wire [32 -1:0] wmb_rsp_emask;
-wire [32 -1:0] wmb_rsp_emask_in;
+wire [8 -1:0] wmb_rsp_emask;
+wire [8 -1:0] wmb_rsp_emask_in;
 wire wmb_rsp_group_end;
 wire [6:0] wmb_rsp_ori_element;
 wire [6:0] wmb_rsp_ori_sft_3;
@@ -671,21 +455,21 @@ wire wmb_rsp_pipe_pvld_d0;
 wire wmb_rsp_rls;
 wire [8:0] wmb_rsp_rls_entries;
 wire wmb_rsp_stripe_end;
-wire [32 -1:0] wmb_rsp_vld_s;
+wire [8 -1:0] wmb_rsp_vld_s;
 wire [7:0] wmb_shift_remain;
 wire [7:0] wt_byte_avl_add;
 wire [7:0] wt_byte_avl_inc;
 wire [7:0] wt_byte_avl_sub;
 wire [7:0] wt_byte_avl_w;
 wire wt_byte_last_reg_en;
-wire [256 -1:0] wt_data_input_ls;
-wire [256 -1:0] wt_data_input_rs;
-wire [256 -1:0] wt_data_input_sft;
+wire [64 -1:0] wt_data_input_ls;
+wire [64 -1:0] wt_data_input_rs;
+wire [64 -1:0] wt_data_input_sft;
 wire wt_data_remain_last_reg_en;
-wire [256 -1:0] wt_data_remain_masked;
+wire [64 -1:0] wt_data_remain_masked;
 wire wt_data_remain_reg_en;
-wire [256 -1:0] wt_data_remain_rs;
-wire [256 -1:0] wt_data_remain_w;
+wire [64 -1:0] wt_data_remain_rs;
+wire [64 -1:0] wt_data_remain_w;
 wire [15 -1:0] wt_entry_avl_add;
 wire [15 -1:0] wt_entry_avl_sub;
 wire [15 -1:0] wt_entry_avl_w;
@@ -697,13 +481,13 @@ wire [15 -1:0] wt_entry_st_inc_wrap;
 wire [15 -1:0] wt_entry_st_w;
 wire mon_wt_entry_end_inc;
 wire mon_wt_entry_st_inc;
-wire [12 -1:0] wt_req_addr_inc;
-wire [12 -1:0] wt_req_addr_inc_wrap;
+wire [14 -1:0] wt_req_addr_inc;
+wire [14 -1:0] wt_req_addr_inc_wrap;
 wire wt_req_addr_last_reg_en;
-wire [12 -1:0] wt_req_addr_out;
+wire [14 -1:0] wt_req_addr_out;
 wire wt_req_addr_reg_en;
-wire [12 -1:0] wt_req_addr_w;
-wire [32 -1:0] wt_req_bmask;
+wire [14 -1:0] wt_req_addr_w;
+wire [8 -1:0] wt_req_bmask;
 wire [7:0] wt_req_bytes;
 wire [7:0] wt_req_d1_bytes;
 wire wt_req_d1_channel_end;
@@ -712,18 +496,18 @@ wire wt_req_d1_rls;
 wire wt_req_d1_stripe_end;
 wire [8:0] wt_req_d1_wmb_rls_entries;
 wire [15 -1:0] wt_req_d1_wt_rls_entries;
-wire [32 -1:0] wt_req_emask_p0;
-wire [32 -1:0] wt_req_emask_p1;
-wire [32 -1:0] wt_req_emask_p2;
-wire [32 -1:0] wt_req_emask_p3;
+wire [8 -1:0] wt_req_emask_p0;
+wire [8 -1:0] wt_req_emask_p1;
+wire [8 -1:0] wt_req_emask_p2;
+wire [8 -1:0] wt_req_emask_p3;
 wire wt_req_mask_en;
-wire [32 -1:0] wt_req_mask_w;
+wire [8 -1:0] wt_req_mask_w;
 wire [6:0] wt_req_ori_sft_1;
 wire [6:0] wt_req_ori_sft_2;
 wire [35:0] wt_req_pipe_pd;
 wire wt_req_pipe_pvld;
 wire wt_req_valid;
-wire [32 -1:0] wt_req_vld_bit;
+wire [8 -1:0] wt_req_vld_bit;
 wire wt_rls;
 wire [15 -1:0] wt_rls_cnt_inc;
 wire wt_rls_cnt_reg_en;
@@ -739,11 +523,11 @@ wire wt_rsp_byte_remain_last_en;
 wire [6:0] wt_rsp_byte_remain_w;
 wire [7:0] wt_rsp_bytes;
 wire wt_rsp_channel_end;
-wire [256 -1:0] wt_rsp_data;
+wire [64 -1:0] wt_rsp_data;
 wire wt_rsp_group_end;
-wire [32 -1:0] wt_rsp_mask;
-wire [32 -1:0] wt_rsp_mask_d0;
-wire [32 -1:0] wt_rsp_mask_d1_w;
+wire [8 -1:0] wt_rsp_mask;
+wire [8 -1:0] wt_rsp_mask_d0;
+wire [8 -1:0] wt_rsp_mask_d1_w;
 wire wt_rsp_mask_en;
 wire wt_rsp_mask_en_d0;
 wire [35:0] wt_rsp_pipe_pd;
@@ -751,7 +535,7 @@ wire [35:0] wt_rsp_pipe_pd_d0;
 wire wt_rsp_pipe_pvld;
 wire wt_rsp_pipe_pvld_d0;
 wire wt_rsp_rls;
-wire [16 -1:0] wt_rsp_sel_w;
+wire [8 -1:0] wt_rsp_sel_w;
 wire wt_rsp_stripe_end;
 wire [8:0] wt_rsp_wmb_rls_entries;
 wire [15 -1:0] wt_rsp_wt_rls_entries;
@@ -806,9 +590,9 @@ assign {mon_weight_bank_w,weight_bank_w} = reg2dp_weight_bank + 1'b1;
 //assign is_int8 = (reg2dp_proc_precision == 2'h0 );
 assign is_compressed = (reg2dp_weight_format == 1'h1 );
 assign {sub_h_total_w,mon_sub_h_total_w} = (6'h9 << reg2dp_y_extension);
-assign last_wmb_entries_w = is_compressed_d1 ? reg2dp_wmb_bytes[8+5 :5] : 9'b0;
+assign last_wmb_entries_w = is_compressed_d1 ? reg2dp_wmb_bytes[8+3 :3] : 9'b0;
 //: my $kk=15;
-//: my $jj=5;
+//: my $jj=3;
 //: &eperl::flop("-nodeclare   -rval \"{5{1'b0}}\"  -en \"layer_st\" -d \"data_bank_w\" -q data_bank");
 //: &eperl::flop("-nodeclare   -rval \"{5{1'b0}}\"  -en \"layer_st\" -d \"weight_bank_w\" -q weight_bank");
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"is_sg_done & reg2dp_skip_weight_rls\" -d \"reg2dp_weight_bytes[${kk}-1+${jj}:${jj}]\" -q last_weight_entries");
@@ -849,7 +633,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        last_weight_entries <= {15{1'b0}};
    end else begin
        if ((is_sg_done & reg2dp_skip_weight_rls) == 1'b1) begin
-           last_weight_entries <= reg2dp_weight_bytes[15-1+5:5];
+           last_weight_entries <= reg2dp_weight_bytes[15-1+3:3];
        // VCS coverage off
        end else if ((is_sg_done & reg2dp_skip_weight_rls) == 1'b0) begin
        end else begin
@@ -920,16 +704,16 @@ assign wmb_entry_avl_sub = wt_rls ? wt_rls_wmb_entries : 9'b0;
 assign {mon_wmb_entry_avl_w,wmb_entry_avl_w} = (cbuf_reset) ? 10'b0 : wmb_entry_avl + wmb_entry_avl_add - wmb_entry_avl_sub;
 //////////////////////////////////// calculate weight entries start offset ////////////////////////////////////
 assign {mon_wt_entry_st_inc,wt_entry_st_inc} = wt_entry_st + wt_rls_wt_entries;
-assign {mon_wt_entry_st_inc_wrap,wt_entry_st_inc_wrap} = wt_entry_st_inc[15 -1:0] - {weight_bank, {7{1'b0}}};
-assign is_wt_entry_st_wrap = (wt_entry_st_inc >= {1'b0, weight_bank, {7{1'b0}}});
+assign {mon_wt_entry_st_inc_wrap,wt_entry_st_inc_wrap} = wt_entry_st_inc[15 -1:0] - {weight_bank, {9{1'b0}}};
+assign is_wt_entry_st_wrap = (wt_entry_st_inc >= {1'b0, weight_bank, {9{1'b0}}});
 assign wt_entry_st_w = (cbuf_reset) ? {15{1'b0}} :
                        (~wt_rls) ? wt_entry_st :
                        is_wt_entry_st_wrap ? wt_entry_st_inc_wrap :
                        wt_entry_st_inc[15 -1:0];
 //////////////////////////////////// calculate weight entries end offset ////////////////////////////////////
 assign {mon_wt_entry_end_inc,wt_entry_end_inc} = wt_entry_end + cdma2sc_wt_entries;
-assign {mon_wt_entry_end_inc_wrap,wt_entry_end_inc_wrap} = wt_entry_end_inc[15 -1:0] - {weight_bank, {7{1'b0}}};
-assign is_wt_entry_end_wrap = (wt_entry_end_inc >= {1'b0, weight_bank, {7{1'b0}}});
+assign {mon_wt_entry_end_inc_wrap,wt_entry_end_inc_wrap} = wt_entry_end_inc[15 -1:0] - {weight_bank, {9{1'b0}}};
+assign is_wt_entry_end_wrap = (wt_entry_end_inc >= {1'b0, weight_bank, {9{1'b0}}});
 assign wt_entry_end_w = (cbuf_reset) ? {15{1'b0}} : is_wt_entry_end_wrap ? wt_entry_end_inc_wrap : wt_entry_end_inc[15 -1:0];
 //////////////////////////////////// calculate wmb entries start offset ////////////////////////////////////
 assign {mon_wmb_entry_st_inc,wmb_entry_st_inc} = wmb_entry_st + wt_rls_wmb_entries;
@@ -1176,7 +960,7 @@ end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //////////////////////////////////// generate wmb_req_valid siganal ////////////////////////////////////
-assign wmb_element_avl_add = ~wmb_req_valid ? 11'b0 : 11'h100;
+assign wmb_element_avl_add = ~wmb_req_valid ? 11'b0 : 11'h40;
 assign wmb_element_avl_sub = wmb_pipe_valid ? wmb_req_element : 8'h0;
 assign {mon_wmb_element_avl_inc,wmb_element_avl_inc} = wmb_element_avl + wmb_element_avl_add - wmb_element_avl_sub;
 assign wmb_element_avl_w = layer_st ? 11'b0 : (is_stripe_end & ~wl_group_end & wl_channel_end) ? wmb_element_avl_last : wmb_element_avl_inc;
@@ -1224,19 +1008,19 @@ end
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //////////////////////////////////// generate wmb read address ////////////////////////////////////
 assign {mon_wmb_req_addr_inc,wmb_req_addr_inc} = wmb_req_addr + 1'b1;
-assign wmb_req_addr_w = addr_init ? {{12 -9{1'b0}},wmb_entry_st_w} :
+assign wmb_req_addr_w = addr_init ? {{14 -9{1'b0}},wmb_entry_st_w} :
                         (is_stripe_end & wl_channel_end & ~wl_group_end) ? wmb_req_addr_last :
                         wmb_req_valid ? wmb_req_addr_inc :
                         wmb_req_addr;
 assign wmb_req_addr_reg_en = is_compressed_d1 & (addr_init | wmb_req_valid | (wmb_pipe_valid & is_stripe_end & wl_channel_end));
 assign wmb_req_addr_last_reg_en = is_compressed_d1 & (addr_init | (wmb_pipe_valid & is_stripe_end & wl_group_end));
-//: my $kk=12;
+//: my $kk=14;
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"wmb_req_addr_reg_en\" -d \"wmb_req_addr_w\" -q wmb_req_addr");
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"wmb_req_addr_last_reg_en\" -d \"wmb_req_addr_w\" -q wmb_req_addr_last");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wmb_req_addr <= {12{1'b0}};
+       wmb_req_addr <= {14{1'b0}};
    end else begin
        if ((wmb_req_addr_reg_en) == 1'b1) begin
            wmb_req_addr <= wmb_req_addr_w;
@@ -1250,7 +1034,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wmb_req_addr_last <= {12{1'b0}};
+       wmb_req_addr_last <= {14{1'b0}};
    end else begin
        if ((wmb_req_addr_last_reg_en) == 1'b1) begin
            wmb_req_addr_last <= wmb_req_addr_w;
@@ -1299,7 +1083,7 @@ end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //////////////////////////////////// send wmb read request ////////////////////////////////////
-//: my $kk=12;
+//: my $kk=14;
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"   -d \"wmb_req_valid\" -q sc2buf_wmb_rd_en");
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"wmb_req_valid\" -d \"wmb_req_addr\" -q sc2buf_wmb_rd_addr");
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"   -d \"wmb_pipe_valid\" -q wmb_pipe_valid_d1");
@@ -1321,7 +1105,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       sc2buf_wmb_rd_addr <= {12{1'b0}};
+       sc2buf_wmb_rd_addr <= {14{1'b0}};
    end else begin
        if ((wmb_req_valid) == 1'b1) begin
            sc2buf_wmb_rd_addr <= wmb_req_addr;
@@ -1653,7 +1437,7 @@ assign wmb_rsp_group_end = wmb_rsp_pipe_pd[26];
 assign wmb_rsp_rls = wmb_rsp_pipe_pd[27];
 assign wmb_rsp_cur_sub_h[1:0] = wmb_rsp_pipe_pd[30:29];
 //////////////////////////////////// wmb remain counter ////////////////////////////////////
-assign wmb_rsp_bit_remain_add = sc2buf_wmb_rd_valid ? 11'h100 : 11'h0;
+assign wmb_rsp_bit_remain_add = sc2buf_wmb_rd_valid ? 11'h40 : 11'h0;
 assign wmb_rsp_bit_remain_sub = wmb_rsp_pipe_pvld ? wmb_rsp_element : 8'b0;
 //how many mask bits is stored currently
 assign {mon_wmb_rsp_bit_remain_w,wmb_rsp_bit_remain_w} = (layer_st) ? 11'b0 :
@@ -1695,16 +1479,16 @@ end
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //////////////////////////////////// generate element mask for both compressed and compressed case ////////////////////////////////////
 //emask for element mask, NOT byte mask
-assign wmb_emask_rd_ls = ~sc2buf_wmb_rd_valid ? {32{1'b0}} : (sc2buf_wmb_rd_data[32 -1:0] << wmb_rsp_bit_remain[6:0]);
-assign wmb_rsp_emask_in = (wmb_emask_rd_ls | wmb_emask_remain[32 -1:0] | {32{~is_compressed_d1}}); //wmb for current atomic op
-assign wmb_rsp_vld_s = ~({32{1'b1}} << wmb_rsp_element);
-assign wmb_rsp_emask = wmb_rsp_emask_in[32 -1:0] & wmb_rsp_vld_s; //the mask needed
-//: my $kk=32;
+assign wmb_emask_rd_ls = ~sc2buf_wmb_rd_valid ? {8{1'b0}} : (sc2buf_wmb_rd_data[8 -1:0] << wmb_rsp_bit_remain[6:0]);
+assign wmb_rsp_emask_in = (wmb_emask_rd_ls | wmb_emask_remain[8 -1:0] | {8{~is_compressed_d1}}); //wmb for current atomic op
+assign wmb_rsp_vld_s = ~({8{1'b1}} << wmb_rsp_element);
+assign wmb_rsp_emask = wmb_rsp_emask_in[8 -1:0] & wmb_rsp_vld_s; //the mask needed
+//: my $kk=8;
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"wmb_rsp_pipe_pvld\" -d \"wmb_rsp_emask\" -q wt_req_emask");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wt_req_emask <= {32{1'b0}};
+       wt_req_emask <= {8{1'b0}};
    end else begin
        if ((wmb_rsp_pipe_pvld) == 1'b1) begin
            wt_req_emask <= wmb_rsp_emask;
@@ -1723,20 +1507,20 @@ assign {mon_wmb_shift_remain,wmb_shift_remain} = wmb_rsp_element - wmb_rsp_bit_r
 assign wmb_emask_rd_rs = (sc2buf_wmb_rd_data >> wmb_shift_remain); //read 1 entry wmb and be partial used
 assign wmb_emask_remain_rs = (wmb_emask_remain >> wmb_rsp_element); //remain wmb and partial used
 //all wmb remain, no more than 1 entry
-assign wmb_emask_remain_w = layer_st ? {256{1'b0}} :
+assign wmb_emask_remain_w = layer_st ? {64{1'b0}} :
                             (wmb_rsp_channel_end & ~wmb_rsp_group_end) ? wmb_emask_remain_last :
                             sc2buf_wmb_rd_valid ? wmb_emask_rd_rs :
                             wmb_emask_remain_rs;
 assign wmb_emask_remain_reg_en = layer_st | (wmb_rsp_pipe_pvld & is_compressed_d1);
 assign wmb_emask_remain_last_reg_en = layer_st | (wmb_rsp_pipe_pvld & wmb_rsp_group_end & is_compressed_d1);
 assign wmb_rsp_ori_sft_3 = {wmb_rsp_ori_element[4:0], 1'b0} + wmb_rsp_ori_element[4:0];
-//: my $kk=256;
+//: my $kk=64;
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"wmb_emask_remain_reg_en\" -d \"wmb_emask_remain_w\" -q wmb_emask_remain");
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"wmb_emask_remain_last_reg_en\" -d \"wmb_emask_remain_w\" -q wmb_emask_remain_last");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wmb_emask_remain <= {256{1'b0}};
+       wmb_emask_remain <= {64{1'b0}};
    end else begin
        if ((wmb_emask_remain_reg_en) == 1'b1) begin
            wmb_emask_remain <= wmb_emask_remain_w;
@@ -1750,7 +1534,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wmb_emask_remain_last <= {256{1'b0}};
+       wmb_emask_remain_last <= {64{1'b0}};
    end else begin
        if ((wmb_emask_remain_last_reg_en) == 1'b1) begin
            wmb_emask_remain_last <= wmb_emask_remain_w;
@@ -1903,7 +1687,7 @@ end
 ////CAUSION! wt_req_bmask is byte mask, not elemnet mask!////
 assign wt_req_bmask = wt_req_emask;
 //: print "assign wt_req_bytes =  \n";
-//: my $j=int(32/4);
+//: my $j=int(8/4);
 //: for(my $i=0; $i<$j; $i++){
 //: print "wt_req_bmask[4*${i}+0] + wt_req_bmask[4*${i}+1] + wt_req_bmask[4*${i}+2] + wt_req_bmask[4*${i}+3] + \n";
 //: }
@@ -1912,20 +1696,14 @@ assign wt_req_bmask = wt_req_emask;
 assign wt_req_bytes =  
 wt_req_bmask[4*0+0] + wt_req_bmask[4*0+1] + wt_req_bmask[4*0+2] + wt_req_bmask[4*0+3] + 
 wt_req_bmask[4*1+0] + wt_req_bmask[4*1+1] + wt_req_bmask[4*1+2] + wt_req_bmask[4*1+3] + 
-wt_req_bmask[4*2+0] + wt_req_bmask[4*2+1] + wt_req_bmask[4*2+2] + wt_req_bmask[4*2+3] + 
-wt_req_bmask[4*3+0] + wt_req_bmask[4*3+1] + wt_req_bmask[4*3+2] + wt_req_bmask[4*3+3] + 
-wt_req_bmask[4*4+0] + wt_req_bmask[4*4+1] + wt_req_bmask[4*4+2] + wt_req_bmask[4*4+3] + 
-wt_req_bmask[4*5+0] + wt_req_bmask[4*5+1] + wt_req_bmask[4*5+2] + wt_req_bmask[4*5+3] + 
-wt_req_bmask[4*6+0] + wt_req_bmask[4*6+1] + wt_req_bmask[4*6+2] + wt_req_bmask[4*6+3] + 
-wt_req_bmask[4*7+0] + wt_req_bmask[4*7+1] + wt_req_bmask[4*7+2] + wt_req_bmask[4*7+3] + 
 1'b0; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //////////////////////////////////// generate element mask for decoding////////////////////////////////////
 //valid bit for each sub h line
-assign wt_req_vld_bit = ~({32{1'b1}} << wt_req_ori_element);
+assign wt_req_vld_bit = ~({8{1'b1}} << wt_req_ori_element);
 //valid bit to select sub h line
-//: my $kk=32;
+//: my $kk=8;
 //: print qq(
 //: assign sub_h_mask_1 = (wt_req_cur_sub_h >= 2'h1) ? {${kk}{1'b1}} : {${kk}{1'h0}};
 //: assign sub_h_mask_2 = (wt_req_cur_sub_h >= 2'h2) ? {${kk}{1'b1}} : {${kk}{1'h0}};
@@ -1933,30 +1711,30 @@ assign wt_req_vld_bit = ~({32{1'b1}} << wt_req_ori_element);
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign sub_h_mask_1 = (wt_req_cur_sub_h >= 2'h1) ? {32{1'b1}} : {32{1'h0}};
-assign sub_h_mask_2 = (wt_req_cur_sub_h >= 2'h2) ? {32{1'b1}} : {32{1'h0}};
-assign sub_h_mask_3 = (wt_req_cur_sub_h == 2'h3) ? {32{1'b1}} : {32{1'h0}};
+assign sub_h_mask_1 = (wt_req_cur_sub_h >= 2'h1) ? {8{1'b1}} : {8{1'h0}};
+assign sub_h_mask_2 = (wt_req_cur_sub_h >= 2'h2) ? {8{1'b1}} : {8{1'h0}};
+assign sub_h_mask_3 = (wt_req_cur_sub_h == 2'h3) ? {8{1'b1}} : {8{1'h0}};
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //element number to be shifted
 assign wt_req_ori_sft_1 = wt_req_ori_element;
 assign wt_req_ori_sft_2 = {wt_req_ori_element[5:0], 1'b0};
-assign wt_req_emask_p0 = wt_req_emask[32 -1:0] & wt_req_vld_bit;
-assign wt_req_emask_p1 = (wt_req_emask[32 -1:0] >> wt_req_ori_sft_1) & wt_req_vld_bit & sub_h_mask_1;
-assign wt_req_emask_p2 = (wt_req_emask[32 -1:0] >> wt_req_ori_sft_2) & wt_req_vld_bit & sub_h_mask_2;
-assign wt_req_emask_p3 = (wt_req_emask[32 -1:0] >> wt_req_ori_sft_3) & wt_req_vld_bit & sub_h_mask_3;
+assign wt_req_emask_p0 = wt_req_emask[8 -1:0] & wt_req_vld_bit;
+assign wt_req_emask_p1 = (wt_req_emask[8 -1:0] >> wt_req_ori_sft_1) & wt_req_vld_bit & sub_h_mask_1;
+assign wt_req_emask_p2 = (wt_req_emask[8 -1:0] >> wt_req_ori_sft_2) & wt_req_vld_bit & sub_h_mask_2;
+assign wt_req_emask_p3 = (wt_req_emask[8 -1:0] >> wt_req_ori_sft_3) & wt_req_vld_bit & sub_h_mask_3;
 //Caution! Must reset wt_req_mask to all zero when layer started
 //other width wt_req_mask_en may gate wt_rsp_mask_d1_w improperly!
-assign wt_req_mask_w = layer_st ? {32{1'b0}} :
+assign wt_req_mask_w = layer_st ? {8{1'b0}} :
                        (sub_h_total == 3'h1) ? {wt_req_emask_p0} :
-                       (sub_h_total == 3'h2) ? {wt_req_emask_p1[32/2-1:0], wt_req_emask_p0[32/2-1:0]} :
-                       {wt_req_emask_p3[32/4-1:0], wt_req_emask_p2[32/4-1:0], wt_req_emask_p1[32/4-1:0], wt_req_emask_p0[32/4-1:0]};
-//assign wt_req_mask_w = layer_st ? {32{1'b0}} : wt_req_emask_p0; //need update for image 
+                       (sub_h_total == 3'h2) ? {wt_req_emask_p1[8/2-1:0], wt_req_emask_p0[8/2-1:0]} :
+                       {wt_req_emask_p3[8/4-1:0], wt_req_emask_p2[8/4-1:0], wt_req_emask_p1[8/4-1:0], wt_req_emask_p0[8/4-1:0]};
+//assign wt_req_mask_w = layer_st ? {8{1'b0}} : wt_req_emask_p0; //need update for image 
 assign wt_req_mask_en = wt_req_pipe_valid & (wt_req_mask_w != wt_req_mask_d1);
 //////////////////////////////////// generate weight read request ////////////////////////////////////
 assign wt_req_valid = wt_req_pipe_valid & (wt_byte_avl < wt_req_bytes);
 //////////////////////////////////// generate weight avaliable bytes ////////////////////////////////////
-assign wt_byte_avl_add = ~wt_req_valid ? 8'b0 : 7'h20;
+assign wt_byte_avl_add = ~wt_req_valid ? 8'b0 : 7'h8;
 assign wt_byte_avl_sub = wt_req_bytes;
 assign {mon_wt_byte_avl_inc,wt_byte_avl_inc} = wt_byte_avl + wt_byte_avl_add - wt_byte_avl_sub;
 assign wt_byte_avl_w = layer_st ? 8'b0 : ( ~wt_req_group_end & wt_req_channel_end) ? wt_byte_avl_last : wt_byte_avl_inc;
@@ -1996,22 +1774,22 @@ end
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //////////////////////////////////// generate weight read address ////////////////////////////////////
 assign {mon_wt_req_addr_inc,wt_req_addr_inc} = wt_req_addr + 1'b1;
-assign is_wr_req_addr_wrap = (wt_req_addr_inc == {weight_bank, {7{1'b0}}});
-assign wt_req_addr_inc_wrap = is_wr_req_addr_wrap ? {12{1'b0}} : wt_req_addr_inc;
-assign wt_req_addr_w = addr_init ? wt_entry_st_w[12 -1:0] :
+assign is_wr_req_addr_wrap = (wt_req_addr_inc == {weight_bank, {9{1'b0}}});
+assign wt_req_addr_inc_wrap = is_wr_req_addr_wrap ? {14{1'b0}} : wt_req_addr_inc;
+assign wt_req_addr_w = addr_init ? wt_entry_st_w[14 -1:0] :
                        (wt_req_channel_end & ~wt_req_group_end) ? wt_req_addr_last :
                        wt_req_valid ? wt_req_addr_inc_wrap :
                        wt_req_addr;
 assign wt_req_addr_reg_en = addr_init | wt_req_valid | (wt_req_pipe_valid & wt_req_channel_end);
 assign wt_req_addr_last_reg_en = addr_init | (wt_req_pipe_valid & wt_req_pipe_valid & wt_req_group_end);
-assign {mon_wt_req_addr_out,wt_req_addr_out} = wt_req_addr + {data_bank, {7{1'b0}}};
-//: my $kk=12;
+assign {mon_wt_req_addr_out,wt_req_addr_out} = wt_req_addr + {data_bank, {9{1'b0}}};
+//: my $kk=14;
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"wt_req_addr_reg_en\" -d \"wt_req_addr_w\" -q wt_req_addr");
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"wt_req_addr_last_reg_en\" -d \"wt_req_addr_w\" -q wt_req_addr_last");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wt_req_addr <= {12{1'b0}};
+       wt_req_addr <= {14{1'b0}};
    end else begin
        if ((wt_req_addr_reg_en) == 1'b1) begin
            wt_req_addr <= wt_req_addr_w;
@@ -2025,7 +1803,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wt_req_addr_last <= {12{1'b0}};
+       wt_req_addr_last <= {14{1'b0}};
    end else begin
        if ((wt_req_addr_last_reg_en) == 1'b1) begin
            wt_req_addr_last <= wt_req_addr_w;
@@ -2073,7 +1851,7 @@ end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //////////////////////////////////// send weight read request ////////////////////////////////////
-//: my $kk=12;
+//: my $kk=14;
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"   -d \"wt_req_valid\" -q sc2buf_wt_rd_en");
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"wt_req_valid\" -d \"wt_req_addr_out\" -q sc2buf_wt_rd_addr");
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"   -d \"wt_req_pipe_valid\" -q wt_req_pipe_valid_d1");
@@ -2092,7 +1870,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       sc2buf_wt_rd_addr <= {12{1'b0}};
+       sc2buf_wt_rd_addr <= {14{1'b0}};
    end else begin
        if ((wt_req_valid) == 1'b1) begin
            sc2buf_wt_rd_addr <= wt_req_addr_out;
@@ -2184,7 +1962,7 @@ end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //Caution! Here wt_req_mask is still element mask
-//: my $kk=32;
+//: my $kk=8;
 //: my $jj=15;
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"layer_st | wt_req_pipe_valid\" -d \"wt_req_mask_w\" -q wt_req_mask_d1");
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"   -d \"wt_req_mask_en\" -q wt_req_mask_en_d1");
@@ -2193,7 +1971,7 @@ end
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wt_req_mask_d1 <= {32{1'b0}};
+       wt_req_mask_d1 <= {8{1'b0}};
    end else begin
        if ((layer_st | wt_req_pipe_valid) == 1'b1) begin
            wt_req_mask_d1 <= wt_req_mask_w;
@@ -2264,7 +2042,7 @@ assign wt_req_pipe_pd[35] = wt_req_d1_rls ;
 //: my $pipe_depth = 6;
 //: my $i;
 //: my $j;
-//: my $kk=32;
+//: my $kk=8;
 //: if($pipe_depth == 0) {
 //: print "assign wt_rsp_pipe_pvld = wt_req_pipe_pvld;\n";
 //: print "assign wt_rsp_pipe_pd = wt_req_pipe_pd;\n";
@@ -2324,10 +2102,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        wt_rsp_mask_en_d1 <= wt_rsp_mask_en_d0;
    end
 end
-reg [31:0] wt_rsp_mask_d1;
+reg [7:0] wt_rsp_mask_d1;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wt_rsp_mask_d1 <= {32{1'b0}};
+       wt_rsp_mask_d1 <= {8{1'b0}};
    end else begin
        if ((wt_rsp_mask_en_d0) == 1'b1) begin
            wt_rsp_mask_d1 <= wt_rsp_mask_d0;
@@ -2370,10 +2148,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        wt_rsp_mask_en_d2 <= wt_rsp_mask_en_d1;
    end
 end
-reg [31:0] wt_rsp_mask_d2;
+reg [7:0] wt_rsp_mask_d2;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wt_rsp_mask_d2 <= {32{1'b0}};
+       wt_rsp_mask_d2 <= {8{1'b0}};
    end else begin
        if ((wt_rsp_mask_en_d1) == 1'b1) begin
            wt_rsp_mask_d2 <= wt_rsp_mask_d1;
@@ -2416,10 +2194,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        wt_rsp_mask_en_d3 <= wt_rsp_mask_en_d2;
    end
 end
-reg [31:0] wt_rsp_mask_d3;
+reg [7:0] wt_rsp_mask_d3;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wt_rsp_mask_d3 <= {32{1'b0}};
+       wt_rsp_mask_d3 <= {8{1'b0}};
    end else begin
        if ((wt_rsp_mask_en_d2) == 1'b1) begin
            wt_rsp_mask_d3 <= wt_rsp_mask_d2;
@@ -2462,10 +2240,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        wt_rsp_mask_en_d4 <= wt_rsp_mask_en_d3;
    end
 end
-reg [31:0] wt_rsp_mask_d4;
+reg [7:0] wt_rsp_mask_d4;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wt_rsp_mask_d4 <= {32{1'b0}};
+       wt_rsp_mask_d4 <= {8{1'b0}};
    end else begin
        if ((wt_rsp_mask_en_d3) == 1'b1) begin
            wt_rsp_mask_d4 <= wt_rsp_mask_d3;
@@ -2508,10 +2286,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        wt_rsp_mask_en_d5 <= wt_rsp_mask_en_d4;
    end
 end
-reg [31:0] wt_rsp_mask_d5;
+reg [7:0] wt_rsp_mask_d5;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wt_rsp_mask_d5 <= {32{1'b0}};
+       wt_rsp_mask_d5 <= {8{1'b0}};
    end else begin
        if ((wt_rsp_mask_en_d4) == 1'b1) begin
            wt_rsp_mask_d5 <= wt_rsp_mask_d4;
@@ -2554,10 +2332,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        wt_rsp_mask_en_d6 <= wt_rsp_mask_en_d5;
    end
 end
-reg [31:0] wt_rsp_mask_d6;
+reg [7:0] wt_rsp_mask_d6;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       wt_rsp_mask_d6 <= {32{1'b0}};
+       wt_rsp_mask_d6 <= {8{1'b0}};
    end else begin
        if ((wt_rsp_mask_en_d5) == 1'b1) begin
            wt_rsp_mask_d6 <= wt_rsp_mask_d5;
@@ -2591,7 +2369,7 @@ assign wt_rsp_rls = wt_rsp_pipe_pd[35];
 //////////////////////////////////// generate byte mask for decoding ////////////////////////////////////
 assign wt_rsp_mask_d1_w = wt_rsp_mask ;
 //////////////////////////////////// weight remain counter ////////////////////////////////////
-assign wt_rsp_byte_remain_add = sc2buf_wt_rd_valid ? 7'h20 : 8'h0;
+assign wt_rsp_byte_remain_add = sc2buf_wt_rd_valid ? 7'h8 : 8'h0;
 assign {mon_wt_rsp_byte_remain_w,wt_rsp_byte_remain_w} = (layer_st) ? 8'b0 :
                                (wt_rsp_channel_end & ~wt_rsp_group_end) ? {2'b0, wt_rsp_byte_remain_last} :
                                wt_rsp_byte_remain + wt_rsp_byte_remain_add - wt_rsp_bytes;
@@ -2632,18 +2410,18 @@ end
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //////////////////////////////////// generate local remain bytes ////////////////////////////////////
 assign {mon_wt_shift_remain,wt_shift_remain} = wt_rsp_bytes - wt_rsp_byte_remain[6:0];
-assign wt_data_input_rs = (sc2buf_wt_rd_data[256 -1:0] >> {wt_shift_remain, 3'b0});
-assign wt_data_remain_masked = ~(|wt_rsp_byte_remain) ? {256{1'b0}}: wt_data_remain;
+assign wt_data_input_rs = (sc2buf_wt_rd_data[64 -1:0] >> {wt_shift_remain, 3'b0});
+assign wt_data_remain_masked = ~(|wt_rsp_byte_remain) ? {64{1'b0}}: wt_data_remain;
 assign wt_data_remain_rs = (wt_data_remain >> {wt_rsp_bytes, 3'b0});
 //weight data local remain, 1 entry at most
-assign wt_data_remain_w = layer_st ? {256{1'b0}} :
+assign wt_data_remain_w = layer_st ? {64{1'b0}} :
                           (wt_rsp_channel_end & ~wt_rsp_group_end & (|wt_rsp_byte_remain_last)) ? wt_data_remain_last :
                           sc2buf_wt_rd_valid ? wt_data_input_rs :
                           wt_data_remain_rs;
 assign wt_data_remain_reg_en = layer_st | (wt_rsp_pipe_pvld & (|wt_rsp_byte_remain_w));
 assign wt_data_remain_last_reg_en = layer_st | (wt_rsp_pipe_pvld & wt_rsp_group_end & (|wt_rsp_byte_remain_w));
 assign wt_data_input_ls = (sc2buf_wt_rd_data << {wt_rsp_byte_remain[6:0], 3'b0});
-assign wt_data_input_sft = (sc2buf_wt_rd_valid) ? wt_data_input_ls : {256{1'b0}};
+assign wt_data_input_sft = (sc2buf_wt_rd_valid) ? wt_data_input_ls : {64{1'b0}};
 //: &eperl::flop("-nodeclare  -norst -en \"wt_data_remain_reg_en\" -d \"wt_data_remain_w\" -q wt_data_remain");
 //: &eperl::flop("-nodeclare  -norst -en \"wt_data_remain_last_reg_en\" -d \"wt_data_remain_w\" -q wt_data_remain_last");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -2671,12 +2449,12 @@ end
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //////////////////////////////////// generate bytes for decoding ////////////////////////////////////
 assign wt_rsp_data = (wt_data_input_sft | wt_data_remain_masked);
-//: my $kk=256;
+//: my $kk=64;
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"wt_rsp_pipe_pvld\" -d \"wt_rsp_data\" -q dec_input_data");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       dec_input_data <= {256{1'b0}};
+       dec_input_data <= {64{1'b0}};
    end else begin
        if ((wt_rsp_pipe_pvld) == 1'b1) begin
            dec_input_data <= wt_rsp_data;
@@ -2691,7 +2469,7 @@ end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //////////////////////////////////// generate select signal ////////////////////////////////////
-assign wt_rsp_sel_w = wt_rsp_last_stripe_end ? {{(16 -1){1'h0}},1'h1} : {wt_rsp_sel_d1[16 -2:0], wt_rsp_sel_d1[16 -1]};
+assign wt_rsp_sel_w = wt_rsp_last_stripe_end ? {{(8 -1){1'h0}},1'h1} : {wt_rsp_sel_d1[8 -2:0], wt_rsp_sel_d1[8 -1]};
 //: &eperl::flop("-nodeclare   -rval \"1'b1\"  -en \"wt_rsp_pipe_pvld\" -d \"wt_rsp_stripe_end\" -q wt_rsp_last_stripe_end");
 //: &eperl::flop("-nodeclare   -rval \"'h1\"  -en \"wt_rsp_pipe_pvld\" -d \"wt_rsp_sel_w\" -q wt_rsp_sel_d1");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -2727,7 +2505,7 @@ end
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign dec_input_sel = wt_rsp_sel_d1;
 //////////////////////////////////// prepare other signals ////////////////////////////////////
-//: my $kk=32;
+//: my $kk=8;
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"   -d \"wt_rsp_pipe_pvld\" -q dec_input_pipe_valid");
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"wt_rsp_mask_en\" -d \"wt_rsp_mask_d1_w\" -q dec_input_mask");
 //: &eperl::flop("-nodeclare   -rval \"{10{1'b0}}\"   -d \"{10{wt_rsp_mask_en}}\" -q dec_input_mask_en");
@@ -2741,7 +2519,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       dec_input_mask <= {32{1'b0}};
+       dec_input_mask <= {8{1'b0}};
    end else begin
        if ((wt_rsp_mask_en) == 1'b1) begin
            dec_input_mask <= wt_rsp_mask_d1_w;
@@ -2765,12 +2543,12 @@ end
 NV_NVDLA_CSC_WL_dec u_dec (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
-  ,.input_data (dec_input_data[32*8 -1:0]) //|< r
-  ,.input_mask (dec_input_mask[32 -1:0]) //|< r
+  ,.input_data (dec_input_data[8*8 -1:0]) //|< r
+  ,.input_mask (dec_input_mask[8 -1:0]) //|< r
   ,.input_mask_en (dec_input_mask_en[9:0]) //|< r
   ,.input_pipe_valid (dec_input_pipe_valid) //|< r
-  ,.input_sel (dec_input_sel[16 -1:0]) //|< w
-//: for(my $i = 0; $i < 32; $i ++) {
+  ,.input_sel (dec_input_sel[8 -1:0]) //|< w
+//: for(my $i = 0; $i < 8; $i ++) {
 //: print qq(,.output_data${i} (sc2mac_out_data${i}) //|> w\n);
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -2782,61 +2560,37 @@ NV_NVDLA_CSC_WL_dec u_dec (
 ,.output_data5 (sc2mac_out_data5) //|> w
 ,.output_data6 (sc2mac_out_data6) //|> w
 ,.output_data7 (sc2mac_out_data7) //|> w
-,.output_data8 (sc2mac_out_data8) //|> w
-,.output_data9 (sc2mac_out_data9) //|> w
-,.output_data10 (sc2mac_out_data10) //|> w
-,.output_data11 (sc2mac_out_data11) //|> w
-,.output_data12 (sc2mac_out_data12) //|> w
-,.output_data13 (sc2mac_out_data13) //|> w
-,.output_data14 (sc2mac_out_data14) //|> w
-,.output_data15 (sc2mac_out_data15) //|> w
-,.output_data16 (sc2mac_out_data16) //|> w
-,.output_data17 (sc2mac_out_data17) //|> w
-,.output_data18 (sc2mac_out_data18) //|> w
-,.output_data19 (sc2mac_out_data19) //|> w
-,.output_data20 (sc2mac_out_data20) //|> w
-,.output_data21 (sc2mac_out_data21) //|> w
-,.output_data22 (sc2mac_out_data22) //|> w
-,.output_data23 (sc2mac_out_data23) //|> w
-,.output_data24 (sc2mac_out_data24) //|> w
-,.output_data25 (sc2mac_out_data25) //|> w
-,.output_data26 (sc2mac_out_data26) //|> w
-,.output_data27 (sc2mac_out_data27) //|> w
-,.output_data28 (sc2mac_out_data28) //|> w
-,.output_data29 (sc2mac_out_data29) //|> w
-,.output_data30 (sc2mac_out_data30) //|> w
-,.output_data31 (sc2mac_out_data31) //|> w
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-  ,.output_mask (sc2mac_out_mask[32 -1:0]) //|> w
+  ,.output_mask (sc2mac_out_mask[8 -1:0]) //|> w
   ,.output_pvld (sc2mac_out_pvld) //|> w
-  ,.output_sel (sc2mac_out_sel[16 -1:0]) //|> w
+  ,.output_sel (sc2mac_out_sel[8 -1:0]) //|> w
   ,.is_fp16 (1'b0) //|< i
   ,.is_int8 (1'b1) //|< i
   );
 //////////////////////////////////////////////////////////////
 ///// registers for retiming                             /////
 //////////////////////////////////////////////////////////////
-assign sc2mac_out_a_sel_w = {16/2{sc2mac_out_pvld}} & sc2mac_out_sel[16/2 -1:0];
-assign sc2mac_out_b_sel_w = {16/2{sc2mac_out_pvld}} & sc2mac_out_sel[16 -1:16/2];
+assign sc2mac_out_a_sel_w = {8/2{sc2mac_out_pvld}} & sc2mac_out_sel[8/2 -1:0];
+assign sc2mac_out_b_sel_w = {8/2{sc2mac_out_pvld}} & sc2mac_out_sel[8 -1:8/2];
 assign sc2mac_wt_a_pvld_w = (|sc2mac_out_a_sel_w);
 assign sc2mac_wt_b_pvld_w = (|sc2mac_out_b_sel_w);
-assign sc2mac_out_a_mask = sc2mac_out_mask & {32{sc2mac_wt_a_pvld_w}};
-assign sc2mac_out_b_mask = sc2mac_out_mask & {32{sc2mac_wt_b_pvld_w}};
-//: my $kk=32;
-//: my $jj=16/2;
+assign sc2mac_out_a_mask = sc2mac_out_mask & {8{sc2mac_wt_a_pvld_w}};
+assign sc2mac_out_b_mask = sc2mac_out_mask & {8{sc2mac_wt_b_pvld_w}};
+//: my $kk=8;
+//: my $jj=8/2;
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"   -d \"sc2mac_wt_a_pvld_w\" -q sc2mac_wt_a_pvld");
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"   -d \"sc2mac_wt_b_pvld_w\" -q sc2mac_wt_b_pvld");
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"sc2mac_wt_a_pvld_w | sc2mac_wt_a_pvld\" -d \"sc2mac_out_a_mask\" -q sc2mac_wt_a_mask");
 //: &eperl::flop("-nodeclare   -rval \"{${kk}{1'b0}}\"  -en \"sc2mac_wt_b_pvld_w | sc2mac_wt_b_pvld\" -d \"sc2mac_out_b_mask\" -q sc2mac_wt_b_mask");
 //: &eperl::flop("-nodeclare   -rval \"{${jj}{1'b0}}\"  -en \"sc2mac_wt_a_pvld_w | sc2mac_wt_a_pvld\" -d \"sc2mac_out_a_sel_w\" -q sc2mac_wt_a_sel");
 //: &eperl::flop("-nodeclare   -rval \"{${jj}{1'b0}}\"  -en \"sc2mac_wt_b_pvld_w | sc2mac_wt_b_pvld\" -d \"sc2mac_out_b_sel_w\" -q sc2mac_wt_b_sel");
-//: for(my $i = 0; $i < 32; $i ++) {
+//: for(my $i = 0; $i < 8; $i ++) {
 //: &eperl::flop("-nodeclare  -norst -en \"sc2mac_out_a_mask[${i}]\" -d \"sc2mac_out_data${i}\" -q sc2mac_wt_a_data${i}");
 //: }
 //: print "\n\n";
 //:
-//: for(my $i = 0; $i < 32; $i ++) {
+//: for(my $i = 0; $i < 8; $i ++) {
 //: &eperl::flop("-nodeclare  -norst -en \"sc2mac_out_b_mask[${i}]\" -d \"sc2mac_out_data${i}\" -q sc2mac_wt_b_data${i}");
 //: }
 //: print "\n\n";
@@ -2857,7 +2611,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       sc2mac_wt_a_mask <= {32{1'b0}};
+       sc2mac_wt_a_mask <= {8{1'b0}};
    end else begin
        if ((sc2mac_wt_a_pvld_w | sc2mac_wt_a_pvld) == 1'b1) begin
            sc2mac_wt_a_mask <= sc2mac_out_a_mask;
@@ -2871,7 +2625,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       sc2mac_wt_b_mask <= {32{1'b0}};
+       sc2mac_wt_b_mask <= {8{1'b0}};
    end else begin
        if ((sc2mac_wt_b_pvld_w | sc2mac_wt_b_pvld) == 1'b1) begin
            sc2mac_wt_b_mask <= sc2mac_out_b_mask;
@@ -2885,7 +2639,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       sc2mac_wt_a_sel <= {8{1'b0}};
+       sc2mac_wt_a_sel <= {4{1'b0}};
    end else begin
        if ((sc2mac_wt_a_pvld_w | sc2mac_wt_a_pvld) == 1'b1) begin
            sc2mac_wt_a_sel <= sc2mac_out_a_sel_w;
@@ -2899,7 +2653,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       sc2mac_wt_b_sel <= {8{1'b0}};
+       sc2mac_wt_b_sel <= {4{1'b0}};
    end else begin
        if ((sc2mac_wt_b_pvld_w | sc2mac_wt_b_pvld) == 1'b1) begin
            sc2mac_wt_b_sel <= sc2mac_out_b_sel_w;
@@ -2991,246 +2745,6 @@ always @(posedge nvdla_core_clk) begin
        // VCS coverage on
        end
 end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[8]) == 1'b1) begin
-           sc2mac_wt_a_data8 <= sc2mac_out_data8;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[8]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data8 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[9]) == 1'b1) begin
-           sc2mac_wt_a_data9 <= sc2mac_out_data9;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[9]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data9 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[10]) == 1'b1) begin
-           sc2mac_wt_a_data10 <= sc2mac_out_data10;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[10]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data10 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[11]) == 1'b1) begin
-           sc2mac_wt_a_data11 <= sc2mac_out_data11;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[11]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data11 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[12]) == 1'b1) begin
-           sc2mac_wt_a_data12 <= sc2mac_out_data12;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[12]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data12 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[13]) == 1'b1) begin
-           sc2mac_wt_a_data13 <= sc2mac_out_data13;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[13]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data13 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[14]) == 1'b1) begin
-           sc2mac_wt_a_data14 <= sc2mac_out_data14;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[14]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data14 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[15]) == 1'b1) begin
-           sc2mac_wt_a_data15 <= sc2mac_out_data15;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[15]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data15 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[16]) == 1'b1) begin
-           sc2mac_wt_a_data16 <= sc2mac_out_data16;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[16]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data16 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[17]) == 1'b1) begin
-           sc2mac_wt_a_data17 <= sc2mac_out_data17;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[17]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data17 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[18]) == 1'b1) begin
-           sc2mac_wt_a_data18 <= sc2mac_out_data18;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[18]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data18 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[19]) == 1'b1) begin
-           sc2mac_wt_a_data19 <= sc2mac_out_data19;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[19]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data19 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[20]) == 1'b1) begin
-           sc2mac_wt_a_data20 <= sc2mac_out_data20;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[20]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data20 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[21]) == 1'b1) begin
-           sc2mac_wt_a_data21 <= sc2mac_out_data21;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[21]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data21 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[22]) == 1'b1) begin
-           sc2mac_wt_a_data22 <= sc2mac_out_data22;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[22]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data22 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[23]) == 1'b1) begin
-           sc2mac_wt_a_data23 <= sc2mac_out_data23;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[23]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data23 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[24]) == 1'b1) begin
-           sc2mac_wt_a_data24 <= sc2mac_out_data24;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[24]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data24 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[25]) == 1'b1) begin
-           sc2mac_wt_a_data25 <= sc2mac_out_data25;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[25]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data25 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[26]) == 1'b1) begin
-           sc2mac_wt_a_data26 <= sc2mac_out_data26;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[26]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data26 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[27]) == 1'b1) begin
-           sc2mac_wt_a_data27 <= sc2mac_out_data27;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[27]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data27 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[28]) == 1'b1) begin
-           sc2mac_wt_a_data28 <= sc2mac_out_data28;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[28]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data28 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[29]) == 1'b1) begin
-           sc2mac_wt_a_data29 <= sc2mac_out_data29;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[29]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data29 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[30]) == 1'b1) begin
-           sc2mac_wt_a_data30 <= sc2mac_out_data30;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[30]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data30 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_a_mask[31]) == 1'b1) begin
-           sc2mac_wt_a_data31 <= sc2mac_out_data31;
-       // VCS coverage off
-       end else if ((sc2mac_out_a_mask[31]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_a_data31 <= 'bx;
-       // VCS coverage on
-       end
-end
 
 
 always @(posedge nvdla_core_clk) begin
@@ -3313,252 +2827,12 @@ always @(posedge nvdla_core_clk) begin
        // VCS coverage on
        end
 end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[8]) == 1'b1) begin
-           sc2mac_wt_b_data8 <= sc2mac_out_data8;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[8]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data8 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[9]) == 1'b1) begin
-           sc2mac_wt_b_data9 <= sc2mac_out_data9;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[9]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data9 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[10]) == 1'b1) begin
-           sc2mac_wt_b_data10 <= sc2mac_out_data10;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[10]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data10 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[11]) == 1'b1) begin
-           sc2mac_wt_b_data11 <= sc2mac_out_data11;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[11]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data11 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[12]) == 1'b1) begin
-           sc2mac_wt_b_data12 <= sc2mac_out_data12;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[12]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data12 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[13]) == 1'b1) begin
-           sc2mac_wt_b_data13 <= sc2mac_out_data13;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[13]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data13 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[14]) == 1'b1) begin
-           sc2mac_wt_b_data14 <= sc2mac_out_data14;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[14]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data14 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[15]) == 1'b1) begin
-           sc2mac_wt_b_data15 <= sc2mac_out_data15;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[15]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data15 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[16]) == 1'b1) begin
-           sc2mac_wt_b_data16 <= sc2mac_out_data16;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[16]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data16 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[17]) == 1'b1) begin
-           sc2mac_wt_b_data17 <= sc2mac_out_data17;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[17]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data17 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[18]) == 1'b1) begin
-           sc2mac_wt_b_data18 <= sc2mac_out_data18;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[18]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data18 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[19]) == 1'b1) begin
-           sc2mac_wt_b_data19 <= sc2mac_out_data19;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[19]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data19 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[20]) == 1'b1) begin
-           sc2mac_wt_b_data20 <= sc2mac_out_data20;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[20]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data20 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[21]) == 1'b1) begin
-           sc2mac_wt_b_data21 <= sc2mac_out_data21;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[21]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data21 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[22]) == 1'b1) begin
-           sc2mac_wt_b_data22 <= sc2mac_out_data22;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[22]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data22 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[23]) == 1'b1) begin
-           sc2mac_wt_b_data23 <= sc2mac_out_data23;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[23]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data23 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[24]) == 1'b1) begin
-           sc2mac_wt_b_data24 <= sc2mac_out_data24;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[24]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data24 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[25]) == 1'b1) begin
-           sc2mac_wt_b_data25 <= sc2mac_out_data25;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[25]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data25 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[26]) == 1'b1) begin
-           sc2mac_wt_b_data26 <= sc2mac_out_data26;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[26]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data26 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[27]) == 1'b1) begin
-           sc2mac_wt_b_data27 <= sc2mac_out_data27;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[27]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data27 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[28]) == 1'b1) begin
-           sc2mac_wt_b_data28 <= sc2mac_out_data28;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[28]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data28 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[29]) == 1'b1) begin
-           sc2mac_wt_b_data29 <= sc2mac_out_data29;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[29]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data29 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[30]) == 1'b1) begin
-           sc2mac_wt_b_data30 <= sc2mac_out_data30;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[30]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data30 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((sc2mac_out_b_mask[31]) == 1'b1) begin
-           sc2mac_wt_b_data31 <= sc2mac_out_data31;
-       // VCS coverage off
-       end else if ((sc2mac_out_b_mask[31]) == 1'b0) begin
-       end else begin
-           sc2mac_wt_b_data31 <= 'bx;
-       // VCS coverage on
-       end
-end
 
 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 `ifndef SYNTHESIS
-//: my $kk=32;
+//: my $kk=8;
 //: for(my $i = 0; $i < ${kk}; $i ++) {
 //: print "assign dbg_csc_wt_a_${i} = sc2mac_wt_a_mask[${i}] ? sc2mac_wt_a_data${i} : 8'h0;\n";
 //: }
@@ -3574,7 +2848,7 @@ end
 //: print "};\n";
 //: }
 //: }
-//: my $kk=32 -1;
+//: my $kk=8 -1;
 //: print "assign dbg_csc_wt_b = {";
 //: for(my $i = ${kk}; $i >= 0; $i --) {
 //: print "dbg_csc_wt_b_${i}";
@@ -3593,30 +2867,6 @@ assign dbg_csc_wt_a_4 = sc2mac_wt_a_mask[4] ? sc2mac_wt_a_data4 : 8'h0;
 assign dbg_csc_wt_a_5 = sc2mac_wt_a_mask[5] ? sc2mac_wt_a_data5 : 8'h0;
 assign dbg_csc_wt_a_6 = sc2mac_wt_a_mask[6] ? sc2mac_wt_a_data6 : 8'h0;
 assign dbg_csc_wt_a_7 = sc2mac_wt_a_mask[7] ? sc2mac_wt_a_data7 : 8'h0;
-assign dbg_csc_wt_a_8 = sc2mac_wt_a_mask[8] ? sc2mac_wt_a_data8 : 8'h0;
-assign dbg_csc_wt_a_9 = sc2mac_wt_a_mask[9] ? sc2mac_wt_a_data9 : 8'h0;
-assign dbg_csc_wt_a_10 = sc2mac_wt_a_mask[10] ? sc2mac_wt_a_data10 : 8'h0;
-assign dbg_csc_wt_a_11 = sc2mac_wt_a_mask[11] ? sc2mac_wt_a_data11 : 8'h0;
-assign dbg_csc_wt_a_12 = sc2mac_wt_a_mask[12] ? sc2mac_wt_a_data12 : 8'h0;
-assign dbg_csc_wt_a_13 = sc2mac_wt_a_mask[13] ? sc2mac_wt_a_data13 : 8'h0;
-assign dbg_csc_wt_a_14 = sc2mac_wt_a_mask[14] ? sc2mac_wt_a_data14 : 8'h0;
-assign dbg_csc_wt_a_15 = sc2mac_wt_a_mask[15] ? sc2mac_wt_a_data15 : 8'h0;
-assign dbg_csc_wt_a_16 = sc2mac_wt_a_mask[16] ? sc2mac_wt_a_data16 : 8'h0;
-assign dbg_csc_wt_a_17 = sc2mac_wt_a_mask[17] ? sc2mac_wt_a_data17 : 8'h0;
-assign dbg_csc_wt_a_18 = sc2mac_wt_a_mask[18] ? sc2mac_wt_a_data18 : 8'h0;
-assign dbg_csc_wt_a_19 = sc2mac_wt_a_mask[19] ? sc2mac_wt_a_data19 : 8'h0;
-assign dbg_csc_wt_a_20 = sc2mac_wt_a_mask[20] ? sc2mac_wt_a_data20 : 8'h0;
-assign dbg_csc_wt_a_21 = sc2mac_wt_a_mask[21] ? sc2mac_wt_a_data21 : 8'h0;
-assign dbg_csc_wt_a_22 = sc2mac_wt_a_mask[22] ? sc2mac_wt_a_data22 : 8'h0;
-assign dbg_csc_wt_a_23 = sc2mac_wt_a_mask[23] ? sc2mac_wt_a_data23 : 8'h0;
-assign dbg_csc_wt_a_24 = sc2mac_wt_a_mask[24] ? sc2mac_wt_a_data24 : 8'h0;
-assign dbg_csc_wt_a_25 = sc2mac_wt_a_mask[25] ? sc2mac_wt_a_data25 : 8'h0;
-assign dbg_csc_wt_a_26 = sc2mac_wt_a_mask[26] ? sc2mac_wt_a_data26 : 8'h0;
-assign dbg_csc_wt_a_27 = sc2mac_wt_a_mask[27] ? sc2mac_wt_a_data27 : 8'h0;
-assign dbg_csc_wt_a_28 = sc2mac_wt_a_mask[28] ? sc2mac_wt_a_data28 : 8'h0;
-assign dbg_csc_wt_a_29 = sc2mac_wt_a_mask[29] ? sc2mac_wt_a_data29 : 8'h0;
-assign dbg_csc_wt_a_30 = sc2mac_wt_a_mask[30] ? sc2mac_wt_a_data30 : 8'h0;
-assign dbg_csc_wt_a_31 = sc2mac_wt_a_mask[31] ? sc2mac_wt_a_data31 : 8'h0;
 assign dbg_csc_wt_b_0 = sc2mac_wt_b_mask[0] ? sc2mac_wt_b_data0 : 8'h0;
 assign dbg_csc_wt_b_1 = sc2mac_wt_b_mask[1] ? sc2mac_wt_b_data1 : 8'h0;
 assign dbg_csc_wt_b_2 = sc2mac_wt_b_mask[2] ? sc2mac_wt_b_data2 : 8'h0;
@@ -3625,32 +2875,8 @@ assign dbg_csc_wt_b_4 = sc2mac_wt_b_mask[4] ? sc2mac_wt_b_data4 : 8'h0;
 assign dbg_csc_wt_b_5 = sc2mac_wt_b_mask[5] ? sc2mac_wt_b_data5 : 8'h0;
 assign dbg_csc_wt_b_6 = sc2mac_wt_b_mask[6] ? sc2mac_wt_b_data6 : 8'h0;
 assign dbg_csc_wt_b_7 = sc2mac_wt_b_mask[7] ? sc2mac_wt_b_data7 : 8'h0;
-assign dbg_csc_wt_b_8 = sc2mac_wt_b_mask[8] ? sc2mac_wt_b_data8 : 8'h0;
-assign dbg_csc_wt_b_9 = sc2mac_wt_b_mask[9] ? sc2mac_wt_b_data9 : 8'h0;
-assign dbg_csc_wt_b_10 = sc2mac_wt_b_mask[10] ? sc2mac_wt_b_data10 : 8'h0;
-assign dbg_csc_wt_b_11 = sc2mac_wt_b_mask[11] ? sc2mac_wt_b_data11 : 8'h0;
-assign dbg_csc_wt_b_12 = sc2mac_wt_b_mask[12] ? sc2mac_wt_b_data12 : 8'h0;
-assign dbg_csc_wt_b_13 = sc2mac_wt_b_mask[13] ? sc2mac_wt_b_data13 : 8'h0;
-assign dbg_csc_wt_b_14 = sc2mac_wt_b_mask[14] ? sc2mac_wt_b_data14 : 8'h0;
-assign dbg_csc_wt_b_15 = sc2mac_wt_b_mask[15] ? sc2mac_wt_b_data15 : 8'h0;
-assign dbg_csc_wt_b_16 = sc2mac_wt_b_mask[16] ? sc2mac_wt_b_data16 : 8'h0;
-assign dbg_csc_wt_b_17 = sc2mac_wt_b_mask[17] ? sc2mac_wt_b_data17 : 8'h0;
-assign dbg_csc_wt_b_18 = sc2mac_wt_b_mask[18] ? sc2mac_wt_b_data18 : 8'h0;
-assign dbg_csc_wt_b_19 = sc2mac_wt_b_mask[19] ? sc2mac_wt_b_data19 : 8'h0;
-assign dbg_csc_wt_b_20 = sc2mac_wt_b_mask[20] ? sc2mac_wt_b_data20 : 8'h0;
-assign dbg_csc_wt_b_21 = sc2mac_wt_b_mask[21] ? sc2mac_wt_b_data21 : 8'h0;
-assign dbg_csc_wt_b_22 = sc2mac_wt_b_mask[22] ? sc2mac_wt_b_data22 : 8'h0;
-assign dbg_csc_wt_b_23 = sc2mac_wt_b_mask[23] ? sc2mac_wt_b_data23 : 8'h0;
-assign dbg_csc_wt_b_24 = sc2mac_wt_b_mask[24] ? sc2mac_wt_b_data24 : 8'h0;
-assign dbg_csc_wt_b_25 = sc2mac_wt_b_mask[25] ? sc2mac_wt_b_data25 : 8'h0;
-assign dbg_csc_wt_b_26 = sc2mac_wt_b_mask[26] ? sc2mac_wt_b_data26 : 8'h0;
-assign dbg_csc_wt_b_27 = sc2mac_wt_b_mask[27] ? sc2mac_wt_b_data27 : 8'h0;
-assign dbg_csc_wt_b_28 = sc2mac_wt_b_mask[28] ? sc2mac_wt_b_data28 : 8'h0;
-assign dbg_csc_wt_b_29 = sc2mac_wt_b_mask[29] ? sc2mac_wt_b_data29 : 8'h0;
-assign dbg_csc_wt_b_30 = sc2mac_wt_b_mask[30] ? sc2mac_wt_b_data30 : 8'h0;
-assign dbg_csc_wt_b_31 = sc2mac_wt_b_mask[31] ? sc2mac_wt_b_data31 : 8'h0;
-assign dbg_csc_wt_a = {dbg_csc_wt_a_31, dbg_csc_wt_a_30, dbg_csc_wt_a_29, dbg_csc_wt_a_28, dbg_csc_wt_a_27, dbg_csc_wt_a_26, dbg_csc_wt_a_25, dbg_csc_wt_a_24, dbg_csc_wt_a_23, dbg_csc_wt_a_22, dbg_csc_wt_a_21, dbg_csc_wt_a_20, dbg_csc_wt_a_19, dbg_csc_wt_a_18, dbg_csc_wt_a_17, dbg_csc_wt_a_16, dbg_csc_wt_a_15, dbg_csc_wt_a_14, dbg_csc_wt_a_13, dbg_csc_wt_a_12, dbg_csc_wt_a_11, dbg_csc_wt_a_10, dbg_csc_wt_a_9, dbg_csc_wt_a_8, dbg_csc_wt_a_7, dbg_csc_wt_a_6, dbg_csc_wt_a_5, dbg_csc_wt_a_4, dbg_csc_wt_a_3, dbg_csc_wt_a_2, dbg_csc_wt_a_1, dbg_csc_wt_a_0};
-assign dbg_csc_wt_b = {dbg_csc_wt_b_31, dbg_csc_wt_b_30, dbg_csc_wt_b_29, dbg_csc_wt_b_28, dbg_csc_wt_b_27, dbg_csc_wt_b_26, dbg_csc_wt_b_25, dbg_csc_wt_b_24, dbg_csc_wt_b_23, dbg_csc_wt_b_22, dbg_csc_wt_b_21, dbg_csc_wt_b_20, dbg_csc_wt_b_19, dbg_csc_wt_b_18, dbg_csc_wt_b_17, dbg_csc_wt_b_16, dbg_csc_wt_b_15, dbg_csc_wt_b_14, dbg_csc_wt_b_13, dbg_csc_wt_b_12, dbg_csc_wt_b_11, dbg_csc_wt_b_10, dbg_csc_wt_b_9, dbg_csc_wt_b_8, dbg_csc_wt_b_7, dbg_csc_wt_b_6, dbg_csc_wt_b_5, dbg_csc_wt_b_4, dbg_csc_wt_b_3, dbg_csc_wt_b_2, dbg_csc_wt_b_1, dbg_csc_wt_b_0};
+assign dbg_csc_wt_a = {dbg_csc_wt_a_7, dbg_csc_wt_a_6, dbg_csc_wt_a_5, dbg_csc_wt_a_4, dbg_csc_wt_a_3, dbg_csc_wt_a_2, dbg_csc_wt_a_1, dbg_csc_wt_a_0};
+assign dbg_csc_wt_b = {dbg_csc_wt_b_7, dbg_csc_wt_b_6, dbg_csc_wt_b_5, dbg_csc_wt_b_4, dbg_csc_wt_b_3, dbg_csc_wt_b_2, dbg_csc_wt_b_1, dbg_csc_wt_b_0};
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 `ifdef NVDLA_PRINT_WL

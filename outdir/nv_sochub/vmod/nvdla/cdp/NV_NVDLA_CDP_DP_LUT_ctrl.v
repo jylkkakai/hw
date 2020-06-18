@@ -39,7 +39,7 @@ module NV_NVDLA_CDP_DP_LUT_ctrl (
   ,sum2itp_pd //|< i
   ,sum2itp_pvld //|< i
   ,sum2sync_prdy //|< i
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,dp2lut_X_entry_${m}
@@ -54,11 +54,6 @@ module NV_NVDLA_CDP_DP_LUT_ctrl (
 ,dp2lut_Xinfo_0
 ,dp2lut_Y_entry_0
 ,dp2lut_Yinfo_0
-
-,dp2lut_X_entry_1
-,dp2lut_Xinfo_1
-,dp2lut_Y_entry_1
-,dp2lut_Yinfo_1
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,dp2lut_pvld //|> o
@@ -81,19 +76,19 @@ input [7:0] reg2dp_lut_lo_index_select;
 input [5:0] reg2dp_lut_lo_start_high;
 input [31:0] reg2dp_lut_lo_start_low;
 input reg2dp_sqsum_bypass;
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: my $sqsumo = $icvto *2 -1+4; ##(${tp}*2) -1 is for x^2, +4 is after 9 lrn
 //: print "input  [${tp}*${sqsumo}-1:0] sum2itp_pd;  \n";
 //: print "output [${tp}*${sqsumo}-1:0] sum2sync_pd; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-input  [2*21-1:0] sum2itp_pd;  
-output [2*21-1:0] sum2sync_pd; 
+input  [1*21-1:0] sum2itp_pd;  
+output [1*21-1:0] sum2sync_pd; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input sum2itp_pvld;
 output sum2itp_prdy;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: output [9:0] dp2lut_X_entry_${m};
@@ -109,18 +104,13 @@ output [17:0] dp2lut_Xinfo_0;
 output [9:0] dp2lut_Y_entry_0;
 output [17:0] dp2lut_Yinfo_0;
 
-output [9:0] dp2lut_X_entry_1;
-output [17:0] dp2lut_Xinfo_1;
-output [9:0] dp2lut_Y_entry_1;
-output [17:0] dp2lut_Yinfo_1;
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 output dp2lut_pvld;
 input dp2lut_prdy;
 output sum2sync_pvld;
 input sum2sync_prdy;
 ////////////////////////////////////////////////////////////////////////////////////////
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: my $sqsumo = $icvto *2 -1+4;
 //: foreach my $m (0..${tp}-1) {
@@ -140,17 +130,11 @@ wire [17:0] dp2lut_Y_info_0;
 wire [9:0] dp2lut_Y_pd_0;
 wire [21-1:0] sum2itp_pd_0;
 
-wire [17:0] dp2lut_X_info_1;
-wire [9:0] dp2lut_X_pd_1;
-wire [17:0] dp2lut_Y_info_1;
-wire [9:0] dp2lut_Y_pd_1;
-wire [21-1:0] sum2itp_pd_1;
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-wire [2 -1:0] dp2lut_rdy;
-wire [2 -1:0] dp2lut_vld;
-wire [2 -1:0] sum2itp_rdy;
-wire [2 -1:0] sum2itp_vld;
+wire [1 -1:0] dp2lut_rdy;
+wire [1 -1:0] dp2lut_vld;
+wire [1 -1:0] sum2itp_rdy;
+wire [1 -1:0] sum2itp_vld;
 ////////////////////////////////////////////////////////////////////////////////////////
 assign sum2itp_prdy = (&sum2itp_rdy) & sum2sync_prdy;
 //////////////////////////////////////////////////////////////////////
@@ -158,7 +142,7 @@ assign sum2itp_prdy = (&sum2itp_rdy) & sum2sync_prdy;
 assign sum2sync_pvld = sum2itp_pvld & (&sum2itp_rdy);
 assign sum2sync_pd = sum2itp_pd;
 ///////////////////////////////////////////
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: my $sqsumo = $icvto *2 -1+4;
 //: foreach my $m (0..${tp} -1) {
@@ -201,7 +185,7 @@ assign sum2sync_pd = sum2itp_pd;
 //: );
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k -1) {
 //: print qq(
 //: assign dp2lut_X_entry_$m = dp2lut_X_pd_$m;
@@ -213,8 +197,6 @@ assign sum2sync_pd = sum2itp_pd;
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
 assign sum2itp_vld[0] = sum2itp_pvld & sum2sync_prdy
-
-& sum2itp_rdy[1]
 
 ;
 
@@ -242,49 +224,14 @@ NV_NVDLA_CDP_DP_LUT_CTRL_unit u_LUT_CTRL_unit0 (
 ,.dp2lut_prdy (dp2lut_rdy[0])
 );
 
-assign sum2itp_vld[1] = sum2itp_pvld & sum2sync_prdy
-
-& sum2itp_rdy[0]
-
-;
-
-assign sum2itp_pd_1 = sum2itp_pd[21*1+21-1:21*1];
-NV_NVDLA_CDP_DP_LUT_CTRL_unit u_LUT_CTRL_unit1 (
-.nvdla_core_clk (nvdla_core_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.sum2itp_pd (sum2itp_pd_1)
-,.sum2itp_pvld (sum2itp_vld[1])
-,.sum2itp_prdy (sum2itp_rdy[1])
-,.reg2dp_lut_le_function (reg2dp_lut_le_function)
-,.reg2dp_lut_le_index_offset (reg2dp_lut_le_index_offset[7:0])
-,.reg2dp_lut_le_index_select (reg2dp_lut_le_index_select[7:0])
-,.reg2dp_lut_le_start_high (reg2dp_lut_le_start_high[5:0])
-,.reg2dp_lut_le_start_low (reg2dp_lut_le_start_low[31:0])
-,.reg2dp_lut_lo_index_select (reg2dp_lut_lo_index_select[7:0])
-,.reg2dp_lut_lo_start_high (reg2dp_lut_lo_start_high[5:0])
-,.reg2dp_lut_lo_start_low (reg2dp_lut_lo_start_low[31:0])
-,.reg2dp_sqsum_bypass (reg2dp_sqsum_bypass)
-,.dp2lut_X_info (dp2lut_X_info_1)
-,.dp2lut_X_pd (dp2lut_X_pd_1)
-,.dp2lut_Y_info (dp2lut_Y_info_1)
-,.dp2lut_Y_pd (dp2lut_Y_pd_1)
-,.dp2lut_pvld (dp2lut_vld[1])
-,.dp2lut_prdy (dp2lut_rdy[1])
-);
-
 assign dp2lut_X_entry_0 = dp2lut_X_pd_0;
 assign dp2lut_Y_entry_0 = dp2lut_Y_pd_0;
 assign dp2lut_Xinfo_0 = dp2lut_X_info_0;
 assign dp2lut_Yinfo_0 = dp2lut_Y_info_0;
 
-assign dp2lut_X_entry_1 = dp2lut_X_pd_1;
-assign dp2lut_Y_entry_1 = dp2lut_Y_pd_1;
-assign dp2lut_Xinfo_1 = dp2lut_X_info_1;
-assign dp2lut_Yinfo_1 = dp2lut_Y_info_1;
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign dp2lut_pvld = &dp2lut_vld;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k -1) {
 //: print qq(
 //: assign dp2lut_rdy[${m}] = dp2lut_prdy
@@ -303,14 +250,6 @@ assign dp2lut_pvld = &dp2lut_vld;
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
 assign dp2lut_rdy[0] = dp2lut_prdy
-
-& dp2lut_vld[1]
-
-;
-
-assign dp2lut_rdy[1] = dp2lut_prdy
-
-& dp2lut_vld[0]
 
 ;
 

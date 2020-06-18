@@ -20,16 +20,16 @@ module NV_NVDLA_DMAIF_rdrsp (
 //////////////////////////////////////////////
 input nvdla_core_clk;
 input nvdla_core_rstn;
-//: my $dmaif = 128;
-//: my $mask = int($dmaif/16/8);
+//: my $dmaif = 64;
+//: my $mask = int($dmaif/8/8);
 //: my $maskbw;
 //: $maskbw = $mask;
 //: my $dmabw = ( $dmaif + $maskbw );
 //: print qq( input [${dmabw}-1:0] mcif_rd_rsp_pd; \n);
 //: print qq( output [${dmabw}-1:0] dmaif_rd_rsp_pd; \n);
 //| eperl: generated_beg (DO NOT EDIT BELOW)
- input [129-1:0] mcif_rd_rsp_pd; 
- output [129-1:0] dmaif_rd_rsp_pd; 
+ input [65-1:0] mcif_rd_rsp_pd; 
+ output [65-1:0] dmaif_rd_rsp_pd; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input mcif_rd_rsp_valid;
@@ -39,22 +39,22 @@ input dmaif_rd_rsp_prdy;
 //////////////////////////////////////////////
 wire dma_rd_rsp_rdy;
 wire dma_rd_rsp_vld;
-//: my $dmaif = 128;
-//: my $mask = int($dmaif/16/8);
+//: my $dmaif = 64;
+//: my $mask = int($dmaif/8/8);
 //: my $maskbw;
 //: $maskbw = $mask;
 //: my $dmabw = ( $dmaif + $maskbw );
 //: print qq( wire [${dmabw}-1:0] dma_rd_rsp_pd; \n);
 //| eperl: generated_beg (DO NOT EDIT BELOW)
- wire [129-1:0] dma_rd_rsp_pd; 
+ wire [65-1:0] dma_rd_rsp_pd; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //////////////////////////////////////////////
 ///////////////////////////////////////
 // pipe before mux
 ///////////////////////////////////////
-//: my $dmaif = 128;
-//: my $mask = int($dmaif/16/8);
+//: my $dmaif = 64;
+//: my $mask = int($dmaif/8/8);
 //: my $maskbw;
 //: $maskbw = $mask;
 //: my $dmabw = ( $dmaif + $maskbw );
@@ -64,16 +64,16 @@ wire dma_rd_rsp_vld;
 reg mcif_rd_rsp_ready;
 reg skid_flop_mcif_rd_rsp_ready;
 reg skid_flop_mcif_rd_rsp_valid;
-reg [129-1:0] skid_flop_mcif_rd_rsp_pd;
+reg [65-1:0] skid_flop_mcif_rd_rsp_pd;
 reg pipe_skid_mcif_rd_rsp_valid;
-reg [129-1:0] pipe_skid_mcif_rd_rsp_pd;
+reg [65-1:0] pipe_skid_mcif_rd_rsp_pd;
 // Wire
 wire skid_mcif_rd_rsp_valid;
-wire [129-1:0] skid_mcif_rd_rsp_pd;
+wire [65-1:0] skid_mcif_rd_rsp_pd;
 wire skid_mcif_rd_rsp_ready;
 wire pipe_skid_mcif_rd_rsp_ready;
 wire mcif_rd_rsp_valid_d0;
-wire [129-1:0] mcif_rd_rsp_pd_d0;
+wire [65-1:0] mcif_rd_rsp_pd_d0;
 // Code
 // SKID READY
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -101,10 +101,10 @@ assign skid_mcif_rd_rsp_valid = (skid_flop_mcif_rd_rsp_ready) ? mcif_rd_rsp_vali
 // SKID DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_flop_mcif_rd_rsp_ready & mcif_rd_rsp_valid) begin
-        skid_flop_mcif_rd_rsp_pd[129-1:0] <= mcif_rd_rsp_pd[129-1:0];
+        skid_flop_mcif_rd_rsp_pd[65-1:0] <= mcif_rd_rsp_pd[65-1:0];
     end
 end
-assign skid_mcif_rd_rsp_pd[129-1:0] = (skid_flop_mcif_rd_rsp_ready) ? mcif_rd_rsp_pd[129-1:0] : skid_flop_mcif_rd_rsp_pd[129-1:0];
+assign skid_mcif_rd_rsp_pd[65-1:0] = (skid_flop_mcif_rd_rsp_ready) ? mcif_rd_rsp_pd[65-1:0] : skid_flop_mcif_rd_rsp_pd[65-1:0];
 
 
 // PIPE READY
@@ -124,7 +124,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_mcif_rd_rsp_ready && skid_mcif_rd_rsp_valid) begin
-        pipe_skid_mcif_rd_rsp_pd[129-1:0] <= skid_mcif_rd_rsp_pd[129-1:0];
+        pipe_skid_mcif_rd_rsp_pd[65-1:0] <= skid_mcif_rd_rsp_pd[65-1:0];
     end
 end
 
@@ -139,8 +139,8 @@ assign mcif_rd_rsp_pd_d0 = pipe_skid_mcif_rd_rsp_pd;
 //mux
 ///////////////////////////////////////
 assign dma_rd_rsp_vld = mcif_rd_rsp_valid_d0;
-//: my $dmaif = 128;
-//: my $mask = int($dmaif/16/8);
+//: my $dmaif = 64;
+//: my $mask = int($dmaif/8/8);
 //: my $maskbw;
 //: $maskbw = $mask;
 //: my $dmabw = ( $dmaif + $maskbw );
@@ -149,15 +149,15 @@ assign dma_rd_rsp_vld = mcif_rd_rsp_valid_d0;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign dma_rd_rsp_pd = ({129{mcif_rd_rsp_valid_d0}} & mcif_rd_rsp_pd_d0);
+assign dma_rd_rsp_pd = ({65{mcif_rd_rsp_valid_d0}} & mcif_rd_rsp_pd_d0);
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 // //: &eperl::assert(" -type never -desc 'DMAIF: mcif and cvif should never return data both' -expr 'mcif_rd_rsp_valid_d0 & cvif_rd_rsp_valid_d0' ");
 ///////////////////////////////////////
 // pipe after mux
 ///////////////////////////////////////
-//: my $dmaif = 128;
-//: my $mask = int($dmaif/16/8);
+//: my $dmaif = 64;
+//: my $mask = int($dmaif/8/8);
 //: my $maskbw;
 //: $maskbw = $mask;
 //: my $dmabw = ( $dmaif + $maskbw );
@@ -167,16 +167,16 @@ assign dma_rd_rsp_pd = ({129{mcif_rd_rsp_valid_d0}} & mcif_rd_rsp_pd_d0);
 reg dma_rd_rsp_rdy_f;
 reg skid_flop_dma_rd_rsp_rdy_f;
 reg skid_flop_dma_rd_rsp_vld;
-reg [129-1:0] skid_flop_dma_rd_rsp_pd;
+reg [65-1:0] skid_flop_dma_rd_rsp_pd;
 reg pipe_skid_dma_rd_rsp_vld;
-reg [129-1:0] pipe_skid_dma_rd_rsp_pd;
+reg [65-1:0] pipe_skid_dma_rd_rsp_pd;
 // Wire
 wire skid_dma_rd_rsp_vld;
-wire [129-1:0] skid_dma_rd_rsp_pd;
+wire [65-1:0] skid_dma_rd_rsp_pd;
 wire skid_dma_rd_rsp_rdy_f;
 wire pipe_skid_dma_rd_rsp_rdy_f;
 wire dmaif_rd_rsp_pvld;
-wire [129-1:0] dmaif_rd_rsp_pd;
+wire [65-1:0] dmaif_rd_rsp_pd;
 // Code
 // SKID READY
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -204,10 +204,10 @@ assign skid_dma_rd_rsp_vld = (skid_flop_dma_rd_rsp_rdy_f) ? dma_rd_rsp_vld : ski
 // SKID DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_flop_dma_rd_rsp_rdy_f & dma_rd_rsp_vld) begin
-        skid_flop_dma_rd_rsp_pd[129-1:0] <= dma_rd_rsp_pd[129-1:0];
+        skid_flop_dma_rd_rsp_pd[65-1:0] <= dma_rd_rsp_pd[65-1:0];
     end
 end
-assign skid_dma_rd_rsp_pd[129-1:0] = (skid_flop_dma_rd_rsp_rdy_f) ? dma_rd_rsp_pd[129-1:0] : skid_flop_dma_rd_rsp_pd[129-1:0];
+assign skid_dma_rd_rsp_pd[65-1:0] = (skid_flop_dma_rd_rsp_rdy_f) ? dma_rd_rsp_pd[65-1:0] : skid_flop_dma_rd_rsp_pd[65-1:0];
 
 
 // PIPE READY
@@ -227,7 +227,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_dma_rd_rsp_rdy_f && skid_dma_rd_rsp_vld) begin
-        pipe_skid_dma_rd_rsp_pd[129-1:0] <= skid_dma_rd_rsp_pd[129-1:0];
+        pipe_skid_dma_rd_rsp_pd[65-1:0] <= skid_dma_rd_rsp_pd[65-1:0];
     end
 end
 

@@ -82,7 +82,7 @@ module NV_NVDLA_NOCIF_DRAM_WRITE_ig (
 //:print qq(
 //:input client${i}2mcif_wr_req_valid;
 //:output client${i}2mcif_wr_req_ready;
-//:input [128 +(( 128 )/8/16):0] client${i}2mcif_wr_req_pd;
+//:input [64 +(( 64 )/8/8):0] client${i}2mcif_wr_req_pd;
 //:input [7:0] client${i}2mcif_wr_wt;
 //:input [3:0] client${i}2mcif_wr_axid;
 //:);
@@ -91,19 +91,19 @@ module NV_NVDLA_NOCIF_DRAM_WRITE_ig (
 
 input client02mcif_wr_req_valid;
 output client02mcif_wr_req_ready;
-input [128 +(( 128 )/8/16):0] client02mcif_wr_req_pd;
+input [64 +(( 64 )/8/8):0] client02mcif_wr_req_pd;
 input [7:0] client02mcif_wr_wt;
 input [3:0] client02mcif_wr_axid;
 
 input client12mcif_wr_req_valid;
 output client12mcif_wr_req_ready;
-input [128 +(( 128 )/8/16):0] client12mcif_wr_req_pd;
+input [64 +(( 64 )/8/8):0] client12mcif_wr_req_pd;
 input [7:0] client12mcif_wr_wt;
 input [3:0] client12mcif_wr_axid;
 
 input client22mcif_wr_req_valid;
 output client22mcif_wr_req_ready;
-input [128 +(( 128 )/8/16):0] client22mcif_wr_req_pd;
+input [64 +(( 64 )/8/8):0] client22mcif_wr_req_pd;
 input [7:0] client22mcif_wr_wt;
 input [3:0] client22mcif_wr_axid;
 
@@ -122,7 +122,7 @@ output mcif2noc_axi_aw_awvalid; /* data valid */
 input mcif2noc_axi_aw_awready; /* data return handshake */
 output [7:0] mcif2noc_axi_aw_awid;
 output [3:0] mcif2noc_axi_aw_awlen;
-output [64 -1:0] mcif2noc_axi_aw_awaddr;
+output [32 -1:0] mcif2noc_axi_aw_awaddr;
 output mcif2noc_axi_w_wvalid; /* data valid */
 input mcif2noc_axi_w_wready; /* data return handshake */
 output [64 -1:0] mcif2noc_axi_w_wdata;
@@ -133,10 +133,10 @@ output mcif2noc_axi_w_wlast;
 //:print qq(
 //:wire bpt2arb_cmd${i}_valid;
 //:wire bpt2arb_cmd${i}_ready;
-//:wire [64 +12:0] bpt2arb_cmd${i}_pd;
+//:wire [32 +12:0] bpt2arb_cmd${i}_pd;
 //:wire bpt2arb_dat${i}_valid;
 //:wire bpt2arb_dat${i}_ready;
-//:wire [128 +1:0] bpt2arb_dat${i}_pd;
+//:wire [64 +1:0] bpt2arb_dat${i}_pd;
 //:NV_NVDLA_NOCIF_DRAM_WRITE_IG_bpt u_bpt${i} (
 //:.nvdla_core_clk (nvdla_core_clk)
 //:,.nvdla_core_rstn (nvdla_core_rstn)
@@ -158,10 +158,10 @@ output mcif2noc_axi_w_wlast;
 
 wire bpt2arb_cmd0_valid;
 wire bpt2arb_cmd0_ready;
-wire [64 +12:0] bpt2arb_cmd0_pd;
+wire [32 +12:0] bpt2arb_cmd0_pd;
 wire bpt2arb_dat0_valid;
 wire bpt2arb_dat0_ready;
-wire [128 +1:0] bpt2arb_dat0_pd;
+wire [64 +1:0] bpt2arb_dat0_pd;
 NV_NVDLA_NOCIF_DRAM_WRITE_IG_bpt u_bpt0 (
 .nvdla_core_clk (nvdla_core_clk)
 ,.nvdla_core_rstn (nvdla_core_rstn)
@@ -180,10 +180,10 @@ NV_NVDLA_NOCIF_DRAM_WRITE_IG_bpt u_bpt0 (
 
 wire bpt2arb_cmd1_valid;
 wire bpt2arb_cmd1_ready;
-wire [64 +12:0] bpt2arb_cmd1_pd;
+wire [32 +12:0] bpt2arb_cmd1_pd;
 wire bpt2arb_dat1_valid;
 wire bpt2arb_dat1_ready;
-wire [128 +1:0] bpt2arb_dat1_pd;
+wire [64 +1:0] bpt2arb_dat1_pd;
 NV_NVDLA_NOCIF_DRAM_WRITE_IG_bpt u_bpt1 (
 .nvdla_core_clk (nvdla_core_clk)
 ,.nvdla_core_rstn (nvdla_core_rstn)
@@ -202,10 +202,10 @@ NV_NVDLA_NOCIF_DRAM_WRITE_IG_bpt u_bpt1 (
 
 wire bpt2arb_cmd2_valid;
 wire bpt2arb_cmd2_ready;
-wire [64 +12:0] bpt2arb_cmd2_pd;
+wire [32 +12:0] bpt2arb_cmd2_pd;
 wire bpt2arb_dat2_valid;
 wire bpt2arb_dat2_ready;
-wire [128 +1:0] bpt2arb_dat2_pd;
+wire [64 +1:0] bpt2arb_dat2_pd;
 NV_NVDLA_NOCIF_DRAM_WRITE_IG_bpt u_bpt2 (
 .nvdla_core_clk (nvdla_core_clk)
 ,.nvdla_core_rstn (nvdla_core_rstn)
@@ -223,8 +223,8 @@ NV_NVDLA_NOCIF_DRAM_WRITE_IG_bpt u_bpt2 (
 );
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-wire [64 +12:0] arb2spt_cmd_pd;
-wire [128 +1:0] arb2spt_dat_pd;
+wire [32 +12:0] arb2spt_cmd_pd;
+wire [64 +1:0] arb2spt_dat_pd;
 wire arb2spt_cmd_valid, arb2spt_cmd_ready;
 wire spt2cvt_cmd_valid, spt2cvt_cmd_ready;
 NV_NVDLA_NOCIF_DRAM_WRITE_IG_arb u_arb (
@@ -271,29 +271,29 @@ NV_NVDLA_NOCIF_DRAM_WRITE_IG_arb u_arb (
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.arb2spt_cmd_valid (arb2spt_cmd_valid) //|> w
   ,.arb2spt_cmd_ready (arb2spt_cmd_ready) //|< w
-  ,.arb2spt_cmd_pd (arb2spt_cmd_pd[64 +12:0]) //|> w
+  ,.arb2spt_cmd_pd (arb2spt_cmd_pd[32 +12:0]) //|> w
   ,.arb2spt_dat_valid (arb2spt_dat_valid) //|> w
   ,.arb2spt_dat_ready (arb2spt_dat_ready) //|< w
-  ,.arb2spt_dat_pd (arb2spt_dat_pd[128 +1:0]) //|> w
+  ,.arb2spt_dat_pd (arb2spt_dat_pd[64 +1:0]) //|> w
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0]) //|<
 );
-wire [64 +12:0] spt2cvt_cmd_pd;
-wire [128 +1:0] spt2cvt_dat_pd;
+wire [32 +12:0] spt2cvt_cmd_pd;
+wire [64 +1:0] spt2cvt_dat_pd;
 NV_NVDLA_NOCIF_DRAM_WRITE_IG_spt u_spt (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.arb2spt_cmd_valid (arb2spt_cmd_valid) //|< w
   ,.arb2spt_cmd_ready (arb2spt_cmd_ready) //|> w
-  ,.arb2spt_cmd_pd (arb2spt_cmd_pd[64 +12:0]) //|< w
+  ,.arb2spt_cmd_pd (arb2spt_cmd_pd[32 +12:0]) //|< w
   ,.arb2spt_dat_valid (arb2spt_dat_valid) //|< w
   ,.arb2spt_dat_ready (arb2spt_dat_ready) //|> w
-  ,.arb2spt_dat_pd (arb2spt_dat_pd[128 +1:0]) //|< w
+  ,.arb2spt_dat_pd (arb2spt_dat_pd[64 +1:0]) //|< w
   ,.spt2cvt_cmd_valid (spt2cvt_cmd_valid) //|> w
   ,.spt2cvt_cmd_ready (spt2cvt_cmd_ready) //|< w
-  ,.spt2cvt_cmd_pd (spt2cvt_cmd_pd[64 +12:0]) //|> w
+  ,.spt2cvt_cmd_pd (spt2cvt_cmd_pd[32 +12:0]) //|> w
   ,.spt2cvt_dat_valid (spt2cvt_dat_valid) //|> w
   ,.spt2cvt_dat_ready (spt2cvt_dat_ready) //|< w
-  ,.spt2cvt_dat_pd (spt2cvt_dat_pd[128 +1:0]) //|> w
+  ,.spt2cvt_dat_pd (spt2cvt_dat_pd[64 +1:0]) //|> w
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0]) //|< i
   );
 NV_NVDLA_NOCIF_DRAM_WRITE_IG_cvt u_cvt (
@@ -301,10 +301,10 @@ NV_NVDLA_NOCIF_DRAM_WRITE_IG_cvt u_cvt (
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.spt2cvt_cmd_valid (spt2cvt_cmd_valid) //|< w
   ,.spt2cvt_cmd_ready (spt2cvt_cmd_ready) //|> w
-  ,.spt2cvt_cmd_pd (spt2cvt_cmd_pd[64 +12:0]) //|< w
+  ,.spt2cvt_cmd_pd (spt2cvt_cmd_pd[32 +12:0]) //|< w
   ,.spt2cvt_dat_valid (spt2cvt_dat_valid) //|< w
   ,.spt2cvt_dat_ready (spt2cvt_dat_ready) //|> w
-  ,.spt2cvt_dat_pd (spt2cvt_dat_pd[128 +1:0]) //|< w
+  ,.spt2cvt_dat_pd (spt2cvt_dat_pd[64 +1:0]) //|< w
   ,.cq_wr_pvld (cq_wr_pvld) //|> o
   ,.cq_wr_prdy (cq_wr_prdy) //|< i
   ,.cq_wr_thread_id (cq_wr_thread_id[3:0]) //|> o
@@ -313,7 +313,7 @@ NV_NVDLA_NOCIF_DRAM_WRITE_IG_cvt u_cvt (
   ,.mcif2noc_axi_aw_awready (mcif2noc_axi_aw_awready) //|< i
   ,.mcif2noc_axi_aw_awid (mcif2noc_axi_aw_awid[7:0]) //|> o
   ,.mcif2noc_axi_aw_awlen (mcif2noc_axi_aw_awlen[3:0]) //|> o
-  ,.mcif2noc_axi_aw_awaddr (mcif2noc_axi_aw_awaddr[64 -1:0]) //|> o
+  ,.mcif2noc_axi_aw_awaddr (mcif2noc_axi_aw_awaddr[32 -1:0]) //|> o
   ,.mcif2noc_axi_w_wvalid (mcif2noc_axi_w_wvalid) //|> o
   ,.mcif2noc_axi_w_wready (mcif2noc_axi_w_wready) //|< i
   ,.mcif2noc_axi_w_wdata (mcif2noc_axi_w_wdata[64 -1:0]) //|> o

@@ -72,10 +72,10 @@ input nvdla_core_rstn;
 input [2:0] padding_v_cfg;
 input pdp_dp2wdma_ready;
 input pdp_op_start;
-//: my $m = 2*(8 +6);
+//: my $m = 1*(8 +6);
 //: print " input [$m-1:0] pooling1d_pd; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
- input [28-1:0] pooling1d_pd; 
+ input [14-1:0] pooling1d_pd; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input pooling1d_pvld;
@@ -109,10 +109,10 @@ input [9:0] reg2dp_partial_width_out_last;
 input [9:0] reg2dp_partial_width_out_mid;
 input [16:0] reg2dp_recip_height_cfg;
 input [16:0] reg2dp_recip_width_cfg;
-//: my $m = 2*8;
+//: my $m = 1*8;
 //: print "output  [${m}-1:0] pdp_dp2wdma_pd; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-output  [16-1:0] pdp_dp2wdma_pd; 
+output  [8-1:0] pdp_dp2wdma_pd; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 output pdp_dp2wdma_valid;
@@ -140,9 +140,9 @@ wire [3:0] h_pt;
 wire [4:0] h_pt_pb;
 wire init_cnt;
 wire [7:0] init_unit2d_set;
-wire [2*8 -1:0] int_dp2wdma_pd;
+wire [1*8 -1:0] int_dp2wdma_pd;
 wire int_dp2wdma_valid;
-wire [2*(8 +6)+2:0] int_pout_mem_data;
+wire [1*(8 +6)+2:0] int_pout_mem_data;
 wire [3:0] kernel_width_cfg;
 wire last_c;
 wire last_line_in;
@@ -162,14 +162,14 @@ wire load_wr_stage3_all;
 wire [7:0] mem_data_valid;
 wire [8:0] mem_raddr;
 wire [5:0] mem_raddr_2d_sync;
-wire [2*(8 +6)+3:0] mem_rdata_0;
-wire [2*(8 +6)+3:0] mem_rdata_1;
-wire [2*(8 +6)+3:0] mem_rdata_2;
-wire [2*(8 +6)+3:0] mem_rdata_3;
-wire [2*(8 +6)+3:0] mem_rdata_4;
-wire [2*(8 +6)+3:0] mem_rdata_5;
-wire [2*(8 +6)+3:0] mem_rdata_6;
-wire [2*(8 +6)+3:0] mem_rdata_7;
+wire [1*(8 +6)+3:0] mem_rdata_0;
+wire [1*(8 +6)+3:0] mem_rdata_1;
+wire [1*(8 +6)+3:0] mem_rdata_2;
+wire [1*(8 +6)+3:0] mem_rdata_3;
+wire [1*(8 +6)+3:0] mem_rdata_4;
+wire [1*(8 +6)+3:0] mem_rdata_5;
+wire [1*(8 +6)+3:0] mem_rdata_6;
+wire [1*(8 +6)+3:0] mem_rdata_7;
 wire [7:0] mem_re;
 wire [7:0] mem_re1;
 wire [7:0] mem_re1_1st;
@@ -194,14 +194,14 @@ wire [8:0] mem_waddr_4;
 wire [8:0] mem_waddr_5;
 wire [8:0] mem_waddr_6;
 wire [8:0] mem_waddr_7;
-wire [2*(8 +6)+3:0] mem_wdata_0;
-wire [2*(8 +6)+3:0] mem_wdata_1;
-wire [2*(8 +6)+3:0] mem_wdata_2;
-wire [2*(8 +6)+3:0] mem_wdata_3;
-wire [2*(8 +6)+3:0] mem_wdata_4;
-wire [2*(8 +6)+3:0] mem_wdata_5;
-wire [2*(8 +6)+3:0] mem_wdata_6;
-wire [2*(8 +6)+3:0] mem_wdata_7;
+wire [1*(8 +6)+3:0] mem_wdata_0;
+wire [1*(8 +6)+3:0] mem_wdata_1;
+wire [1*(8 +6)+3:0] mem_wdata_2;
+wire [1*(8 +6)+3:0] mem_wdata_3;
+wire [1*(8 +6)+3:0] mem_wdata_4;
+wire [1*(8 +6)+3:0] mem_wdata_5;
+wire [1*(8 +6)+3:0] mem_wdata_6;
+wire [1*(8 +6)+3:0] mem_wdata_7;
 wire [7:0] mem_we;
 wire middle_surface_trig;
 wire [0:0] mon_first_out_num;
@@ -230,7 +230,7 @@ wire [2:0] padding_stride2_num;
 wire [2:0] padding_stride3_num;
 wire [2:0] padding_stride4_num;
 wire pooling1d_norm_rdy;
-wire [2*(8 +6)-1:0] pooling1d_pd_use;
+wire [1*(8 +6)-1:0] pooling1d_pd_use;
 wire pooling1d_prdy_use;
 wire pooling1d_pvld_use;
 wire pooling1d_vld_rebuild;
@@ -245,16 +245,16 @@ wire [3:0] pooling_2d_info_6;
 wire [3:0] pooling_2d_info_7;
 wire [31:0] pooling_2d_info_sync;
 wire pooling_2d_rdy;
-wire [2*(8 +6)-1:0] pooling_2d_result_0;
-wire [2*(8 +6)-1:0] pooling_2d_result_1;
-wire [2*(8 +6)-1:0] pooling_2d_result_2;
-wire [2*(8 +6)-1:0] pooling_2d_result_3;
-wire [2*(8 +6)-1:0] pooling_2d_result_4;
-wire [2*(8 +6)-1:0] pooling_2d_result_5;
-wire [2*(8 +6)-1:0] pooling_2d_result_6;
-wire [2*(8 +6)-1:0] pooling_2d_result_7;
-wire [2*(8 +6)-1:0] pooling_datin;
-wire [2*(8 +6)-1:0] pooling_datin_ext;
+wire [1*(8 +6)-1:0] pooling_2d_result_0;
+wire [1*(8 +6)-1:0] pooling_2d_result_1;
+wire [1*(8 +6)-1:0] pooling_2d_result_2;
+wire [1*(8 +6)-1:0] pooling_2d_result_3;
+wire [1*(8 +6)-1:0] pooling_2d_result_4;
+wire [1*(8 +6)-1:0] pooling_2d_result_5;
+wire [1*(8 +6)-1:0] pooling_2d_result_6;
+wire [1*(8 +6)-1:0] pooling_2d_result_7;
+wire [1*(8 +6)-1:0] pooling_datin;
+wire [1*(8 +6)-1:0] pooling_datin_ext;
 wire [3:0] pooling_size;
 wire [2:0] pooling_size_minus_sride;
 wire [3:0] pooling_size_v;
@@ -264,9 +264,9 @@ wire pout_data_stage0_prdy;
 wire pout_data_stage1_prdy;
 wire pout_data_stage2_prdy;
 wire pout_data_stage3_prdy;
-wire [2*(8 +6)+2:0] pout_mem_data;
-wire [2*(8 +6)+2:0] pout_mem_data_last;
-wire [2*(8 +6)+2:0] pout_mem_data_last_sync;
+wire [1*(8 +6)+2:0] pout_mem_data;
+wire [1*(8 +6)+2:0] pout_mem_data_last;
+wire [1*(8 +6)+2:0] pout_mem_data_last_sync;
 wire [7:0] pout_mem_data_sel;
 wire [7:0] pout_mem_data_sel_0;
 wire [7:0] pout_mem_data_sel_1;
@@ -308,13 +308,13 @@ wire stride_trig_end;
 wire [2:0] strip_ycnt_offset;
 wire stripe_receive_done;
 wire sub_lbuf_dout_done;
-//: my $m = 16;
+//: my $m = 8;
 //: my $k = int(log($m)/log(2));
 //: print "wire     [12-${k}:0] surface_num; \n";
 //: print "reg     [12-${k}:0] surface_cnt_rd; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-wire     [12-4:0] surface_num; 
-reg     [12-4:0] surface_cnt_rd; 
+wire     [12-3:0] surface_num; 
+reg     [12-3:0] surface_cnt_rd; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //wire [9:0] surface_num_0;
@@ -393,20 +393,20 @@ reg cur_datin_disable;
 reg cur_datin_disable_2d;
 reg cur_datin_disable_3d;
 reg cur_datin_disable_d;
-reg [2*(8 +6)-1:0] datin_buf;
-reg [2*(8 +6)-1:0] datin_buf_2d;
+reg [1*(8 +6)-1:0] datin_buf;
+reg [1*(8 +6)-1:0] datin_buf_2d;
 reg [2:0] flush_num;
 reg [2:0] flush_num_cal;
 reg flush_read_en_d;
 reg [8:0] int_mem_waddr;
-reg [2*(8 +6)+3:0] int_mem_wdata_0;
-reg [2*(8 +6)+3:0] int_mem_wdata_1;
-reg [2*(8 +6)+3:0] int_mem_wdata_2;
-reg [2*(8 +6)+3:0] int_mem_wdata_3;
-reg [2*(8 +6)+3:0] int_mem_wdata_4;
-reg [2*(8 +6)+3:0] int_mem_wdata_5;
-reg [2*(8 +6)+3:0] int_mem_wdata_6;
-reg [2*(8 +6)+3:0] int_mem_wdata_7;
+reg [1*(8 +6)+3:0] int_mem_wdata_0;
+reg [1*(8 +6)+3:0] int_mem_wdata_1;
+reg [1*(8 +6)+3:0] int_mem_wdata_2;
+reg [1*(8 +6)+3:0] int_mem_wdata_3;
+reg [1*(8 +6)+3:0] int_mem_wdata_4;
+reg [1*(8 +6)+3:0] int_mem_wdata_5;
+reg [1*(8 +6)+3:0] int_mem_wdata_6;
+reg [1*(8 +6)+3:0] int_mem_wdata_7;
 reg [7:0] int_mem_we;
 reg is_one_width_in;
 reg last_active_line_2d;
@@ -414,22 +414,22 @@ reg last_active_line_d;
 reg [2:0] last_out_cnt;
 reg last_out_en;
 reg [12:0] line_cnt;
-reg [2*(8 +6)+2:0] mem_data0;
-reg [2*(8 +6)+2:0] mem_data0_lst;
-reg [2*(8 +6)+2:0] mem_data1;
-reg [2*(8 +6)+2:0] mem_data1_lst;
-reg [2*(8 +6)+2:0] mem_data2;
-reg [2*(8 +6)+2:0] mem_data2_lst;
-reg [2*(8 +6)+2:0] mem_data3;
-reg [2*(8 +6)+2:0] mem_data3_lst;
-reg [2*(8 +6)+2:0] mem_data4;
-reg [2*(8 +6)+2:0] mem_data4_lst;
-reg [2*(8 +6)+2:0] mem_data5;
-reg [2*(8 +6)+2:0] mem_data5_lst;
-reg [2*(8 +6)+2:0] mem_data6;
-reg [2*(8 +6)+2:0] mem_data6_lst;
-reg [2*(8 +6)+2:0] mem_data7;
-reg [2*(8 +6)+2:0] mem_data7_lst;
+reg [1*(8 +6)+2:0] mem_data0;
+reg [1*(8 +6)+2:0] mem_data0_lst;
+reg [1*(8 +6)+2:0] mem_data1;
+reg [1*(8 +6)+2:0] mem_data1_lst;
+reg [1*(8 +6)+2:0] mem_data2;
+reg [1*(8 +6)+2:0] mem_data2_lst;
+reg [1*(8 +6)+2:0] mem_data3;
+reg [1*(8 +6)+2:0] mem_data3_lst;
+reg [1*(8 +6)+2:0] mem_data4;
+reg [1*(8 +6)+2:0] mem_data4_lst;
+reg [1*(8 +6)+2:0] mem_data5;
+reg [1*(8 +6)+2:0] mem_data5_lst;
+reg [1*(8 +6)+2:0] mem_data6;
+reg [1*(8 +6)+2:0] mem_data6_lst;
+reg [1*(8 +6)+2:0] mem_data7;
+reg [1*(8 +6)+2:0] mem_data7_lst;
 reg [8:0] mem_raddr_2d;
 reg [8:0] mem_raddr_d;
 reg mem_re1_sel;
@@ -491,7 +491,7 @@ reg [2:0] pnum_flush6;
 reg pout_data_stage1_vld;
 reg pout_data_stage2_vld;
 reg pout_data_stage3_vld;
-//: my $k = 2;
+//: my $k = 1;
 //: my $x = 8;
 //: my $j = 8 +3;
 //: my $m = 8 +6;
@@ -556,36 +556,8 @@ wire [8-1:0] data_vmult_8bit_0;
 wire [8-1:0] data_mult_stage1_in0;
 reg [8-1:0] pout_data_stage1_0;
 
-reg [14-1:0] pout_mem_data_1;
-//  wire    [14-1:0] pout_mem_data1; 
-wire [14:0] data_8bit_1;
-wire [14:0] data_8bit_1_ff;
-wire mon_data_8bit_1;
-wire mon_data_8bit_1_ff;
-reg [14:0] pout_data_0_1;
-wire [14+16:0] data_hmult_8bit_1_ext_ff;
-wire [14+16:0] data_hmult_8bit_1_ext;
-wire i8_less_neg_0_5_1;
-wire i8_more_neg_0_5_1;
-wire mon_i8_neg_add1_1;
-wire [11-1:0] i8_neg_add1_1;
-wire [11-1:0] hmult_8bit_1;
-wire [11-1:0] data_hmult_8bit_1;
-wire [11-1:0] data_hmult_stage0_in1;
-reg [11-1:0] pout_data_stage0_1;
-wire [11+16:0] data_vmult_8bit_1_ext_ff;
-wire [11+16:0] data_vmult_8bit_1_ext;
-wire i8_vless_neg_0_5_1;
-wire i8_vmore_neg_0_5_1;
-wire mon_i8_neg_vadd1_1;
-wire [8-1:0] i8_neg_vadd1_1;
-wire [8-1:0] vmult_8bit_1;
-wire [8-1:0] data_vmult_8bit_1;
-wire [8-1:0] data_mult_stage1_in1;
-reg [8-1:0] pout_data_stage1_1;
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-reg [2*(8 +6)+2:0] pout_mem_data_act;
+reg [1*(8 +6)+2:0] pout_mem_data_act;
 reg [2:0] pout_mem_size_v;
 reg [12:0] pout_width_cur_latch;
 reg [2:0] rd_comb_lbuf_cnt;
@@ -702,7 +674,7 @@ reg wr_surface_dat_done_buf;
 //bank depth follows rule of 16 elements in width in worst case
 //it's 64 in t194
 //--------------------------------------------------------------
-//: my $depth = (16/2)*16-1;
+//: my $depth = (8/1)*16-1;
 //: print " assign BANK_DEPTH = 9'd${depth};  \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
  assign BANK_DEPTH = 9'd127;  
@@ -725,8 +697,8 @@ assign average_pooling_en = (pooling_type_cfg== 2'h0 );
 //assign int8_en = (reg2dp_input_data[1:0] == 2'h0 );
 //assign int16_en = (reg2dp_input_data[1:0] == 2'h1 );
 //////////////////////////////////////////////////////////////////////////////////////
-//: my $m = 16;
-//: my $k = 2;
+//: my $m = 8;
+//: my $k = 1;
 //: my $j = int($m/$k -1);
 //: print "assign data_c_end = (c_cnt == 5'd${j}); \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -775,11 +747,11 @@ assign wr_surface_dat_done = wr_line_dat_done & last_line_in;
 //////8bits: INT8
 ////assign surface_num_1[9:0] = {1'b0,cube_out_channel[13:5]} + (|cube_out_channel[4:0]);
 ////assign surface_num        = int8_en ? surface_num_1 : surface_num_0;
-//: my $m = 16;
+//: my $m = 8;
 //: my $k = int(log($m)/log(2));
 //: print "assign surface_num = pooling_channel_cfg[12:${k}]; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign surface_num = pooling_channel_cfg[12:4]; 
+assign surface_num = pooling_channel_cfg[12:3]; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -1706,8 +1678,8 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
             channel_cnt <= 0;
   end
 end
-//: my $m = 16;
-//: my $k = 2;
+//: my $m = 8;
+//: my $k = 1;
 //: my $j = int($m / $k);
 //: print "assign last_c = (channel_cnt==5'd${j}-1) & one_width_norm_rdy; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -2557,7 +2529,7 @@ input[14-1:0] data1;
   end
  endfunction
 //pooling result
-//: my $m = 2*(8 +6);
+//: my $m = 1*(8 +6);
 //: print qq(
 //: function[${m}-1:0] pooling_fun;
 //: input[1:0] pooling_type;
@@ -2567,11 +2539,11 @@ input[14-1:0] data1;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-function[28-1:0] pooling_fun;
+function[14-1:0] pooling_fun;
 input[1:0] pooling_type;
 input data0_valid;
-input[28-1:0] data0_in;
-input[28-1:0] data1_in;
+input[14-1:0] data0_in;
+input[14-1:0] data1_in;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   reg min_pooling;
@@ -2581,7 +2553,7 @@ input[28-1:0] data1_in;
      min_pooling = (pooling_type== 2'h2 );
      max_pooling = (pooling_type== 2'h1 );
      mean_pooling = (pooling_type== 2'h0 );
-//: my $k = 2;
+//: my $k = 1;
 //: my $m = (8 +6);
 //: foreach my $i (0..$k-1) {
 //: print qq(
@@ -2595,10 +2567,6 @@ input[28-1:0] data1_in;
 pooling_fun[14*0+14-1:14*0] = mean_pooling? pooling_SUM(data0_valid,data0_in[14*0+14-1:14*0],data1_in[14*0+14-1:14*0]) :
 min_pooling ? (pooling_MIN(data0_valid,data0_in[14*0+14-1:14*0],data1_in[14*0+14-1:14*0])) :
 max_pooling ? (pooling_MAX(data0_valid,data0_in[14*0+14-1:14*0],data1_in[14*0+14-1:14*0])) : 0;
-
-pooling_fun[14*1+14-1:14*1] = mean_pooling? pooling_SUM(data0_valid,data0_in[14*1+14-1:14*1],data1_in[14*1+14-1:14*1]) :
-min_pooling ? (pooling_MIN(data0_valid,data0_in[14*1+14-1:14*1],data1_in[14*1+14-1:14*1])) :
-max_pooling ? (pooling_MAX(data0_valid,data0_in[14*1+14-1:14*1],data1_in[14*1+14-1:14*1])) : 0;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   end
@@ -2616,14 +2584,14 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     mem_data7_lst <= 0;
   end else begin
      if(flush_read_en_d & wr_data_stage0_prdy) begin
-             mem_data0_lst <= {mem_rdata_0[2*(8 +6)+2:0]};
-             mem_data1_lst <= {mem_rdata_1[2*(8 +6)+2:0]};
-             mem_data2_lst <= {mem_rdata_2[2*(8 +6)+2:0]};
-             mem_data3_lst <= {mem_rdata_3[2*(8 +6)+2:0]};
-             mem_data4_lst <= {mem_rdata_4[2*(8 +6)+2:0]};
-             mem_data5_lst <= {mem_rdata_5[2*(8 +6)+2:0]};
-             mem_data6_lst <= {mem_rdata_6[2*(8 +6)+2:0]};
-             mem_data7_lst <= {mem_rdata_7[2*(8 +6)+2:0]};
+             mem_data0_lst <= {mem_rdata_0[1*(8 +6)+2:0]};
+             mem_data1_lst <= {mem_rdata_1[1*(8 +6)+2:0]};
+             mem_data2_lst <= {mem_rdata_2[1*(8 +6)+2:0]};
+             mem_data3_lst <= {mem_rdata_3[1*(8 +6)+2:0]};
+             mem_data4_lst <= {mem_rdata_4[1*(8 +6)+2:0]};
+             mem_data5_lst <= {mem_rdata_5[1*(8 +6)+2:0]};
+             mem_data6_lst <= {mem_rdata_6[1*(8 +6)+2:0]};
+             mem_data7_lst <= {mem_rdata_7[1*(8 +6)+2:0]};
      end
   end
 end
@@ -2639,14 +2607,14 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     mem_data7 <= 0;
   end else begin
      if(load_wr_stage1) begin//one cycle delay than pooling1d input
-             mem_data0 <= mem_re_1st_d[0]? {unit2d_vsize_cnt_0_d, datin_buf}: { unit2d_vsize_cnt_0_d,mem_rdata_0[2*(8 +6)-1:0]};
-             mem_data1 <= mem_re_1st_d[1]? {unit2d_vsize_cnt_1_d, datin_buf}: { unit2d_vsize_cnt_1_d,mem_rdata_1[2*(8 +6)-1:0]};
-             mem_data2 <= mem_re_1st_d[2]? {unit2d_vsize_cnt_2_d, datin_buf}: { unit2d_vsize_cnt_2_d,mem_rdata_2[2*(8 +6)-1:0]};
-             mem_data3 <= mem_re_1st_d[3]? {unit2d_vsize_cnt_3_d, datin_buf}: { unit2d_vsize_cnt_3_d,mem_rdata_3[2*(8 +6)-1:0]};
-             mem_data4 <= mem_re_1st_d[4]? {unit2d_vsize_cnt_4_d, datin_buf}: { unit2d_vsize_cnt_4_d,mem_rdata_4[2*(8 +6)-1:0]};
-             mem_data5 <= mem_re_1st_d[5]? {unit2d_vsize_cnt_5_d, datin_buf}: { unit2d_vsize_cnt_5_d,mem_rdata_5[2*(8 +6)-1:0]};
-             mem_data6 <= mem_re_1st_d[6]? {unit2d_vsize_cnt_6_d, datin_buf}: { unit2d_vsize_cnt_6_d,mem_rdata_6[2*(8 +6)-1:0]};
-             mem_data7 <= mem_re_1st_d[7]? {unit2d_vsize_cnt_7_d, datin_buf}: { unit2d_vsize_cnt_7_d,mem_rdata_7[2*(8 +6)-1:0]};
+             mem_data0 <= mem_re_1st_d[0]? {unit2d_vsize_cnt_0_d, datin_buf}: { unit2d_vsize_cnt_0_d,mem_rdata_0[1*(8 +6)-1:0]};
+             mem_data1 <= mem_re_1st_d[1]? {unit2d_vsize_cnt_1_d, datin_buf}: { unit2d_vsize_cnt_1_d,mem_rdata_1[1*(8 +6)-1:0]};
+             mem_data2 <= mem_re_1st_d[2]? {unit2d_vsize_cnt_2_d, datin_buf}: { unit2d_vsize_cnt_2_d,mem_rdata_2[1*(8 +6)-1:0]};
+             mem_data3 <= mem_re_1st_d[3]? {unit2d_vsize_cnt_3_d, datin_buf}: { unit2d_vsize_cnt_3_d,mem_rdata_3[1*(8 +6)-1:0]};
+             mem_data4 <= mem_re_1st_d[4]? {unit2d_vsize_cnt_4_d, datin_buf}: { unit2d_vsize_cnt_4_d,mem_rdata_4[1*(8 +6)-1:0]};
+             mem_data5 <= mem_re_1st_d[5]? {unit2d_vsize_cnt_5_d, datin_buf}: { unit2d_vsize_cnt_5_d,mem_rdata_5[1*(8 +6)-1:0]};
+             mem_data6 <= mem_re_1st_d[6]? {unit2d_vsize_cnt_6_d, datin_buf}: { unit2d_vsize_cnt_6_d,mem_rdata_6[1*(8 +6)-1:0]};
+             mem_data7 <= mem_re_1st_d[7]? {unit2d_vsize_cnt_7_d, datin_buf}: { unit2d_vsize_cnt_7_d,mem_rdata_7[1*(8 +6)-1:0]};
      end
   end
 end
@@ -3275,43 +3243,43 @@ assign load_wr_stage3 = wr_data_stage2_vld & pout_data_stage0_prdy & (~cur_datin
 assign pooling_datin = datin_buf_2d;
 //read from memory
 assign mem_data_valid = load_wr_stage2 ? mem_re_2d : 8'h00;
-assign pooling_2d_result_0 = mem_re_1st_2d[0] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[0],pooling_datin,mem_data0[2*(8 +6)-1:0]);
-assign pooling_2d_result_1 = mem_re_1st_2d[1] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[1],pooling_datin,mem_data1[2*(8 +6)-1:0]);
-assign pooling_2d_result_2 = mem_re_1st_2d[2] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[2],pooling_datin,mem_data2[2*(8 +6)-1:0]);
-assign pooling_2d_result_3 = mem_re_1st_2d[3] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[3],pooling_datin,mem_data3[2*(8 +6)-1:0]);
-assign pooling_2d_result_4 = mem_re_1st_2d[4] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[4],pooling_datin,mem_data4[2*(8 +6)-1:0]);
-assign pooling_2d_result_5 = mem_re_1st_2d[5] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[5],pooling_datin,mem_data5[2*(8 +6)-1:0]);
-assign pooling_2d_result_6 = mem_re_1st_2d[6] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[6],pooling_datin,mem_data6[2*(8 +6)-1:0]);
-assign pooling_2d_result_7 = mem_re_1st_2d[7] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[7],pooling_datin,mem_data7[2*(8 +6)-1:0]);
-assign pooling_2d_info_0 = {wr_line_end_2d,mem_data0[2*(8 +6)+2:2*(8 +6)]};
-assign pooling_2d_info_1 = {wr_line_end_2d,mem_data1[2*(8 +6)+2:2*(8 +6)]};
-assign pooling_2d_info_2 = {wr_line_end_2d,mem_data2[2*(8 +6)+2:2*(8 +6)]};
-assign pooling_2d_info_3 = {wr_line_end_2d,mem_data3[2*(8 +6)+2:2*(8 +6)]};
-assign pooling_2d_info_4 = {wr_line_end_2d,mem_data4[2*(8 +6)+2:2*(8 +6)]};
-assign pooling_2d_info_5 = {wr_line_end_2d,mem_data5[2*(8 +6)+2:2*(8 +6)]};
-assign pooling_2d_info_6 = {wr_line_end_2d,mem_data6[2*(8 +6)+2:2*(8 +6)]};
-assign pooling_2d_info_7 = {wr_line_end_2d,mem_data7[2*(8 +6)+2:2*(8 +6)]};
+assign pooling_2d_result_0 = mem_re_1st_2d[0] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[0],pooling_datin,mem_data0[1*(8 +6)-1:0]);
+assign pooling_2d_result_1 = mem_re_1st_2d[1] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[1],pooling_datin,mem_data1[1*(8 +6)-1:0]);
+assign pooling_2d_result_2 = mem_re_1st_2d[2] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[2],pooling_datin,mem_data2[1*(8 +6)-1:0]);
+assign pooling_2d_result_3 = mem_re_1st_2d[3] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[3],pooling_datin,mem_data3[1*(8 +6)-1:0]);
+assign pooling_2d_result_4 = mem_re_1st_2d[4] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[4],pooling_datin,mem_data4[1*(8 +6)-1:0]);
+assign pooling_2d_result_5 = mem_re_1st_2d[5] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[5],pooling_datin,mem_data5[1*(8 +6)-1:0]);
+assign pooling_2d_result_6 = mem_re_1st_2d[6] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[6],pooling_datin,mem_data6[1*(8 +6)-1:0]);
+assign pooling_2d_result_7 = mem_re_1st_2d[7] ? pooling_datin : pooling_fun(pooling_type_cfg[1:0],mem_data_valid[7],pooling_datin,mem_data7[1*(8 +6)-1:0]);
+assign pooling_2d_info_0 = {wr_line_end_2d,mem_data0[1*(8 +6)+2:1*(8 +6)]};
+assign pooling_2d_info_1 = {wr_line_end_2d,mem_data1[1*(8 +6)+2:1*(8 +6)]};
+assign pooling_2d_info_2 = {wr_line_end_2d,mem_data2[1*(8 +6)+2:1*(8 +6)]};
+assign pooling_2d_info_3 = {wr_line_end_2d,mem_data3[1*(8 +6)+2:1*(8 +6)]};
+assign pooling_2d_info_4 = {wr_line_end_2d,mem_data4[1*(8 +6)+2:1*(8 +6)]};
+assign pooling_2d_info_5 = {wr_line_end_2d,mem_data5[1*(8 +6)+2:1*(8 +6)]};
+assign pooling_2d_info_6 = {wr_line_end_2d,mem_data6[1*(8 +6)+2:1*(8 +6)]};
+assign pooling_2d_info_7 = {wr_line_end_2d,mem_data7[1*(8 +6)+2:1*(8 +6)]};
 //memory write data
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-//: my $k = 2*(8 +6)+4;
+//: my $k = 1*(8 +6)+4;
 //: foreach my $i (0..7){
 //: print "    int_mem_wdata_$i <= ${k}'d0; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-    int_mem_wdata_0 <= 32'd0; 
-    int_mem_wdata_1 <= 32'd0; 
-    int_mem_wdata_2 <= 32'd0; 
-    int_mem_wdata_3 <= 32'd0; 
-    int_mem_wdata_4 <= 32'd0; 
-    int_mem_wdata_5 <= 32'd0; 
-    int_mem_wdata_6 <= 32'd0; 
-    int_mem_wdata_7 <= 32'd0; 
+    int_mem_wdata_0 <= 18'd0; 
+    int_mem_wdata_1 <= 18'd0; 
+    int_mem_wdata_2 <= 18'd0; 
+    int_mem_wdata_3 <= 18'd0; 
+    int_mem_wdata_4 <= 18'd0; 
+    int_mem_wdata_5 <= 18'd0; 
+    int_mem_wdata_6 <= 18'd0; 
+    int_mem_wdata_7 <= 18'd0; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   end else begin
     if(load_wr_stage2) begin
-//: my $k = 2*(8 +6)+4;
+//: my $k = 1*(8 +6)+4;
 //: foreach my $i (0..7){
 //: print "    int_mem_wdata_$i <= {pooling_2d_info_${i},pooling_2d_result_$i}; \n";
 //: }
@@ -3422,9 +3390,9 @@ assign mem_waddr_7 = int_mem_waddr;
 //memory line buffer instance
 //
 //-----------------------------------------------------------------------------
-//: my $depth = int(16*(16/2));
+//: my $depth = int(16*(8/1));
 //: my $depth_bw = int( log($depth)/log(2) );
-//: my $width = (2*(8 +6)+4);
+//: my $width = (1*(8 +6)+4);
 //: foreach my $i (0..7) {
 //: print qq(
 //: nv_ram_rws_${depth}x${width} bank${i}_uram_0 (
@@ -3441,7 +3409,7 @@ assign mem_waddr_7 = int_mem_waddr;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-nv_ram_rws_128x32 bank0_uram_0 (
+nv_ram_rws_128x18 bank0_uram_0 (
 .clk (nvdla_core_clk)
 ,.ra (mem_raddr[7-1:0])
 ,.re (mem_re[0] | mem_re_last[0])
@@ -3452,7 +3420,7 @@ nv_ram_rws_128x32 bank0_uram_0 (
 ,.pwrbus_ram_pd (pwrbus_ram_pd)
 );
 
-nv_ram_rws_128x32 bank1_uram_0 (
+nv_ram_rws_128x18 bank1_uram_0 (
 .clk (nvdla_core_clk)
 ,.ra (mem_raddr[7-1:0])
 ,.re (mem_re[1] | mem_re_last[1])
@@ -3463,7 +3431,7 @@ nv_ram_rws_128x32 bank1_uram_0 (
 ,.pwrbus_ram_pd (pwrbus_ram_pd)
 );
 
-nv_ram_rws_128x32 bank2_uram_0 (
+nv_ram_rws_128x18 bank2_uram_0 (
 .clk (nvdla_core_clk)
 ,.ra (mem_raddr[7-1:0])
 ,.re (mem_re[2] | mem_re_last[2])
@@ -3474,7 +3442,7 @@ nv_ram_rws_128x32 bank2_uram_0 (
 ,.pwrbus_ram_pd (pwrbus_ram_pd)
 );
 
-nv_ram_rws_128x32 bank3_uram_0 (
+nv_ram_rws_128x18 bank3_uram_0 (
 .clk (nvdla_core_clk)
 ,.ra (mem_raddr[7-1:0])
 ,.re (mem_re[3] | mem_re_last[3])
@@ -3485,7 +3453,7 @@ nv_ram_rws_128x32 bank3_uram_0 (
 ,.pwrbus_ram_pd (pwrbus_ram_pd)
 );
 
-nv_ram_rws_128x32 bank4_uram_0 (
+nv_ram_rws_128x18 bank4_uram_0 (
 .clk (nvdla_core_clk)
 ,.ra (mem_raddr[7-1:0])
 ,.re (mem_re[4] | mem_re_last[4])
@@ -3496,7 +3464,7 @@ nv_ram_rws_128x32 bank4_uram_0 (
 ,.pwrbus_ram_pd (pwrbus_ram_pd)
 );
 
-nv_ram_rws_128x32 bank5_uram_0 (
+nv_ram_rws_128x18 bank5_uram_0 (
 .clk (nvdla_core_clk)
 ,.ra (mem_raddr[7-1:0])
 ,.re (mem_re[5] | mem_re_last[5])
@@ -3507,7 +3475,7 @@ nv_ram_rws_128x32 bank5_uram_0 (
 ,.pwrbus_ram_pd (pwrbus_ram_pd)
 );
 
-nv_ram_rws_128x32 bank6_uram_0 (
+nv_ram_rws_128x18 bank6_uram_0 (
 .clk (nvdla_core_clk)
 ,.ra (mem_raddr[7-1:0])
 ,.re (mem_re[6] | mem_re_last[6])
@@ -3518,7 +3486,7 @@ nv_ram_rws_128x32 bank6_uram_0 (
 ,.pwrbus_ram_pd (pwrbus_ram_pd)
 );
 
-nv_ram_rws_128x32 bank7_uram_0 (
+nv_ram_rws_128x18 bank7_uram_0 (
 .clk (nvdla_core_clk)
 ,.ra (mem_raddr[7-1:0])
 ,.re (mem_re[7] | mem_re_last[7])
@@ -4659,7 +4627,7 @@ assign pout_mem_data_sel_3_last[5] = (load_wr_stage2 | (cur_datin_disable_2d & w
 assign pout_mem_data_sel_3_last[6] = (load_wr_stage2 | (cur_datin_disable_2d & wr_data_stage1_prdy)) & mem_re_last_2d[6] & (unit2d_cnt_pooling_last_2d==3'd6) & mem_re4_sel;
 assign pout_mem_data_sel_3_last[7] = (load_wr_stage2 | (cur_datin_disable_2d & wr_data_stage1_prdy)) & mem_re_last_2d[7] & (unit2d_cnt_pooling_last_2d==3'd7) & mem_re4_sel;
 assign pout_mem_data_sel_last = pout_mem_data_sel_3_last | pout_mem_data_sel_2_last | pout_mem_data_sel_1_last;
-//: my $k=2*(8 +6)+3;
+//: my $k=1*(8 +6)+3;
 //: print qq(
 //: assign pout_mem_data_last = (mem_data0_lst & {${k}{pout_mem_data_sel_last[0]}}) |
 //: (mem_data1_lst & {${k}{pout_mem_data_sel_last[1]}}) |
@@ -4672,14 +4640,14 @@ assign pout_mem_data_sel_last = pout_mem_data_sel_3_last | pout_mem_data_sel_2_l
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign pout_mem_data_last = (mem_data0_lst & {31{pout_mem_data_sel_last[0]}}) |
-(mem_data1_lst & {31{pout_mem_data_sel_last[1]}}) |
-(mem_data2_lst & {31{pout_mem_data_sel_last[2]}}) |
-(mem_data3_lst & {31{pout_mem_data_sel_last[3]}}) |
-(mem_data4_lst & {31{pout_mem_data_sel_last[4]}}) |
-(mem_data5_lst & {31{pout_mem_data_sel_last[5]}}) |
-(mem_data6_lst & {31{pout_mem_data_sel_last[6]}}) |
-(mem_data7_lst & {31{pout_mem_data_sel_last[7]}}) ;
+assign pout_mem_data_last = (mem_data0_lst & {17{pout_mem_data_sel_last[0]}}) |
+(mem_data1_lst & {17{pout_mem_data_sel_last[1]}}) |
+(mem_data2_lst & {17{pout_mem_data_sel_last[2]}}) |
+(mem_data3_lst & {17{pout_mem_data_sel_last[3]}}) |
+(mem_data4_lst & {17{pout_mem_data_sel_last[4]}}) |
+(mem_data5_lst & {17{pout_mem_data_sel_last[5]}}) |
+(mem_data6_lst & {17{pout_mem_data_sel_last[6]}}) |
+(mem_data7_lst & {17{pout_mem_data_sel_last[7]}}) ;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //==============================================================================
@@ -5002,7 +4970,7 @@ always @(*) begin
       8'h20: pout_mem_data_act = {pooling_2d_info_5[2:0],pooling_2d_result_5};
       8'h40: pout_mem_data_act = {pooling_2d_info_6[2:0],pooling_2d_result_6};
       8'h80: pout_mem_data_act = {pooling_2d_info_7[2:0],pooling_2d_result_7};
-    default: pout_mem_data_act = {(2*(8 +6)+3){1'd0}};
+    default: pout_mem_data_act = {(1*(8 +6)+3){1'd0}};
     endcase
 end
 assign int_pout_mem_data = pout_mem_data_act | pout_mem_data_last;
@@ -5013,20 +4981,19 @@ assign pout_mem_data = int_pout_mem_data;
 //-------------------------------------------------------------
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-//: my $k = 2;
+//: my $k = 1;
 //: my $m = 8 +6;
 //: foreach my $i (0..$k-1) {
 //: print "    pout_mem_data_$i <= {${m}{1'b0}}; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
     pout_mem_data_0 <= {14{1'b0}}; 
-    pout_mem_data_1 <= {14{1'b0}}; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
     pout_mem_size_v <= {3{1'b0}};
   end else begin
     if(rd_pout_data_en) begin
-//: my $k = 2;
+//: my $k = 1;
 //: my $m = 8 +6;
 //: foreach my $i (0..$k-1) {
 //: print "    pout_mem_data_$i <= pout_mem_data[${m}*${i}+${m}-1:${m}*$i]; \n";
@@ -5034,8 +5001,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 //: print "        pout_mem_size_v <= pout_mem_data[${k}*${m}+2:${k}*${m}]; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
     pout_mem_data_0 <= pout_mem_data[14*0+14-1:14*0]; 
-    pout_mem_data_1 <= pout_mem_data[14*1+14-1:14*1]; 
-        pout_mem_size_v <= pout_mem_data[2*14+2:2*14]; 
+        pout_mem_size_v <= pout_mem_data[1*14+2:1*14]; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
     end
@@ -5114,7 +5080,7 @@ assign {mon_pad_value,pad_value[21:0]} = $signed(pad_table_out) * $signed({{1{1'
 // //: );
 // //: }
 //: my $s = "\$signed";
-//: my $k = 2;
+//: my $k = 1;
 //: my $m = 8 +6;
 //: foreach my $i (0..$k-1) {
 //: print qq(
@@ -5127,45 +5093,39 @@ assign {mon_pad_value,pad_value[21:0]} = $signed(pad_table_out) * $signed({{1{1'
 assign {mon_data_8bit_0_ff ,data_8bit_0_ff} = $signed({pout_mem_data_0[14-1],pout_mem_data_0}) + $signed({pad_value[14-1], pad_value[14-1:0]});
 assign {mon_data_8bit_0 ,data_8bit_0} = padding_here ? {mon_data_8bit_0_ff ,data_8bit_0_ff} : {{2{pout_mem_data_0[14-1]}},pout_mem_data_0[14-1:0] };
 
-assign {mon_data_8bit_1_ff ,data_8bit_1_ff} = $signed({pout_mem_data_1[14-1],pout_mem_data_1}) + $signed({pad_value[14-1], pad_value[14-1:0]});
-assign {mon_data_8bit_1 ,data_8bit_1} = padding_here ? {mon_data_8bit_1_ff ,data_8bit_1_ff} : {{2{pout_mem_data_1[14-1]}},pout_mem_data_1[14-1:0] };
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-//: my $k = 2;
+//: my $k = 1;
 //: my $m = 8 +6;
 //: foreach my $i (0..$k-1) {
 //: print "    pout_data_0_$i <= {${m}{1'b0}}; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
     pout_data_0_0 <= {14{1'b0}}; 
-    pout_data_0_1 <= {14{1'b0}}; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   end else begin
    if(average_pooling_en) begin
         if(rd_pout_data_stage0) begin
-//: my $k = 2;
+//: my $k = 1;
 //: my $m = 8 +6;
 //: foreach my $i (0..$k-1) {
 //: print "    pout_data_0_$i <= data_8bit_$i; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
     pout_data_0_0 <= data_8bit_0; 
-    pout_data_0_1 <= data_8bit_1; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
         end
    end else if(rd_pout_data_stage0)begin
-//: my $k = 2;
+//: my $k = 1;
 //: my $m = 8 +6;
 //: foreach my $i (0..$k-1) {
 //: print "    pout_data_0_$i <= {pout_mem_data_${i}[${m}-1],pout_mem_data_${i}}; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
     pout_data_0_0 <= {pout_mem_data_0[14-1],pout_mem_data_0}; 
-    pout_data_0_1 <= {pout_mem_data_1[14-1],pout_mem_data_1}; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
    end
@@ -5191,7 +5151,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 //8bits
 //: my $s = "\$signed";
-//: my $k = 2;
+//: my $k = 1;
 //: my $j = 8 +3;
 //: my $m = 8 +6;
 //: foreach my $i (0..$k-1) {
@@ -5222,22 +5182,11 @@ assign data_hmult_stage0_in0 = data_hmult_8bit_0;
 
 //  &eperl::assert("-type never  -desc 'PDPCore cal2d: the MSB bits should be all same as signed bit' -expr '(rd_pout_data_stage1 & ((&data_hmult_8bit_0_ext[14+16:11+16]) != (|data_hmult_8bit_0_ext[14+16:11+16])))' "); 
 
-assign data_hmult_8bit_1_ext_ff = $signed(pout_data_0_1)* $signed({1'b0,reg2dp_recip_width_use[16:0]});
-assign data_hmult_8bit_1_ext = average_pooling_en ? data_hmult_8bit_1_ext_ff : {pout_data_0_1[14-1],pout_data_0_1[14-1:0] ,16'd0};
-assign i8_less_neg_0_5_1 = data_hmult_8bit_1_ext[14+16] & ((data_hmult_8bit_1_ext[15] & (~(|data_hmult_8bit_1_ext[14:0]))) | (~data_hmult_8bit_1_ext[15]));
-assign i8_more_neg_0_5_1 = data_hmult_8bit_1_ext[14+16] & data_hmult_8bit_1_ext[15] & (|data_hmult_8bit_1_ext[14:0]);
-assign {mon_i8_neg_add1_1,i8_neg_add1_1} = data_hmult_8bit_1_ext[11+16-1:16]+11'd1;
-assign hmult_8bit_1 = (i8_less_neg_0_5_1)? data_hmult_8bit_1_ext[11+16-1:16] : (i8_more_neg_0_5_1)? i8_neg_add1_1 : (data_hmult_8bit_1_ext[11+16-2:16]+data_hmult_8bit_1_ext[15]);//rounding 0.5=1, -0.5=-1
-assign data_hmult_8bit_1 = hmult_8bit_1;
-assign data_hmult_stage0_in1 = data_hmult_8bit_1;
-
-//  &eperl::assert("-type never  -desc 'PDPCore cal2d: the MSB bits should be all same as signed bit' -expr '(rd_pout_data_stage1 & ((&data_hmult_8bit_1_ext[14+16:11+16]) != (|data_hmult_8bit_0_ext[14+16:11+16])))' "); 
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //load data to stage0
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-//: my $k = 2;
+//: my $k = 1;
 //: my $j = 8 +3;
 //: my $m = 8 +6;
 //: foreach my $i (0..$k-1) {
@@ -5245,13 +5194,12 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
     pout_data_stage0_0 <= {11{1'b0}}; 
-    pout_data_stage0_1 <= {11{1'b0}}; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   end else begin
    if(average_pooling_en) begin
        if(rd_pout_data_stage1) begin
-//: my $k = 2;
+//: my $k = 1;
 //: my $j = 8 +3;
 //: my $m = 8 +6;
 //: foreach my $i (0..$k-1) {
@@ -5259,12 +5207,11 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
     pout_data_stage0_0 <= data_hmult_stage0_in0; 
-    pout_data_stage0_1 <= data_hmult_stage0_in1; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
        end
    end else if(rd_pout_data_stage1)begin
-//: my $k = 2;
+//: my $k = 1;
 //: my $j = 8 +3;
 //: my $m = 8 +6;
 //: foreach my $i (0..$k-1) {
@@ -5272,7 +5219,6 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
     pout_data_stage0_0 <= pout_data_0_0[11-1:0]; 
-    pout_data_stage0_1 <= pout_data_0_1[11-1:0]; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
    end
@@ -5282,7 +5228,7 @@ end
 //stage1: (* /kernel_height)
 //8bits
 //: my $s = "\$signed";
-//: my $k = 2;
+//: my $k = 1;
 //: my $x = 8;
 //: my $j = 8 +3;
 //: my $m = 8 +6;
@@ -5314,60 +5260,46 @@ assign data_mult_stage1_in0 = data_vmult_8bit_0;
 
 //  &eperl::assert("-type never  -desc 'PDPCore cal2d: the MSB 4bits should be all same as signed bit' -expr '(rd_pout_data_stage1 & ((&data_vmult_8bit_0_ext[11+16:8+16-1]) != (|data_vmult_8bit_0_ext[11+16:8+16-1])))' "); 
 
-assign data_vmult_8bit_1_ext_ff = $signed(pout_data_stage0_1) * $signed({1'b0,reg2dp_recip_height_use[16:0]});
-assign data_vmult_8bit_1_ext = average_pooling_en ? data_vmult_8bit_1_ext_ff : {pout_data_stage0_1[11-1],pout_data_stage0_1 ,16'd0};
-assign i8_vless_neg_0_5_1 = data_vmult_8bit_1_ext[11+16] & ((data_vmult_8bit_1_ext[15] & (~(|data_vmult_8bit_1_ext[14:0]))) | (~data_vmult_8bit_1_ext[15]));
-assign i8_vmore_neg_0_5_1 = data_vmult_8bit_1_ext[11+16] & data_vmult_8bit_1_ext[15] & (|data_vmult_8bit_1_ext[14:0]);
-assign {mon_i8_neg_vadd1_1,i8_neg_vadd1_1[8-1:0]} = data_vmult_8bit_1_ext[8+16-1:16]+ 8'd1;
-assign vmult_8bit_1 = (i8_vless_neg_0_5_1)? data_vmult_8bit_1_ext[8+16-1:16] : (i8_vmore_neg_0_5_1)? i8_neg_vadd1_1 : (data_vmult_8bit_1_ext[8+16-2:16]+data_vmult_8bit_1_ext[15]);//rounding 0.5=1, -0.5=-1
-assign data_vmult_8bit_1 = vmult_8bit_1;
-assign data_mult_stage1_in1 = data_vmult_8bit_1;
-
-//  &eperl::assert("-type never  -desc 'PDPCore cal2d: the MSB 4bits should be all same as signed bit' -expr '(rd_pout_data_stage1 & ((&data_vmult_8bit_1_ext[11+16:8+16-1]) != (|data_vmult_8bit_1_ext[11+16:8+16-1])))' "); 
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-//: my $k = 2;
+//: my $k = 1;
 //: my $x = 8;
 //: foreach my $i (0..$k-1) {
 //: print "    pout_data_stage1_$i <= {${x}{1'b0}}; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
     pout_data_stage1_0 <= {8{1'b0}}; 
-    pout_data_stage1_1 <= {8{1'b0}}; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   end else begin
    if(average_pooling_en) begin
        if(rd_pout_data_stage2) begin
-//: my $k = 2;
+//: my $k = 1;
 //: my $x = 8;
 //: foreach my $i (0..$k-1) {
 //: print "    pout_data_stage1_$i <= data_mult_stage1_in$i; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
     pout_data_stage1_0 <= data_mult_stage1_in0; 
-    pout_data_stage1_1 <= data_mult_stage1_in1; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
        end
    end else if(rd_pout_data_stage2) begin
-//: my $k = 2;
+//: my $k = 1;
 //: my $x = 8;
 //: foreach my $i (0..$k-1) {
 //: print "    pout_data_stage1_$i <= pout_data_stage0_${i}[${x}-1:0]; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
     pout_data_stage1_0 <= pout_data_stage0_0[8-1:0]; 
-    pout_data_stage1_1 <= pout_data_stage0_1[8-1:0]; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
    end
   end
 end
 assign int_dp2wdma_pd = {
-//: my $k = 2;
+//: my $k = 1;
 //: if($k > 1) {
 //: foreach my $i (0..$k-2) {
 //: my $j = $k -$i -1;
@@ -5375,7 +5307,6 @@ assign int_dp2wdma_pd = {
 //: }
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-pout_data_stage1_1, 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 pout_data_stage1_0};

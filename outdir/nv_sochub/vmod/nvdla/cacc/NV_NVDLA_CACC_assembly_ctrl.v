@@ -41,7 +41,7 @@ input [0:0] reg2dp_op_en;
 input [0:0] reg2dp_conv_mode;
 input [1:0] reg2dp_proc_precision;
 input [4:0] reg2dp_clip_truncate;
-output[4 +1 -1:0]abuf_rd_addr;
+output[3 +1 -1:0]abuf_rd_addr;
 output abuf_rd_en;
 input nvdla_core_clk;
 input nvdla_core_rstn;
@@ -147,15 +147,15 @@ end
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 // get address and other contrl
 reg cfg_winograd;
-reg [4 +1 -1:0] accu_cnt;
-wire [4 +1 -1:0] accu_cnt_w;
-wire [4 +1 -1:0] accu_cnt_inc;
+reg [3 +1 -1:0] accu_cnt;
+wire [3 +1 -1:0] accu_cnt_w;
+wire [3 +1 -1:0] accu_cnt_inc;
 wire mon_accu_cnt_inc;
 reg accu_channel_st;
 wire layer_st = wait_for_op_en & reg2dp_op_en;
 assign {mon_accu_cnt_inc, accu_cnt_inc} = accu_cnt + 1'b1;
-assign accu_cnt_w = (layer_st | accu_stripe_end) ? {4 +1{1'b0}} : accu_cnt_inc;
-wire [4 +1 -1:0] accu_addr = accu_cnt;
+assign accu_cnt_w = (layer_st | accu_stripe_end) ? {3 +1{1'b0}} : accu_cnt_inc;
+wire [3 +1 -1:0] accu_addr = accu_cnt;
 wire accu_channel_st_w = layer_st ? 1'b1 : (accu_valid & accu_stripe_end) ? accu_channel_end : accu_channel_st;
 wire accu_rd_en = accu_valid & (~accu_channel_st);
 wire cfg_in_en_mask_w = 1'b1;
@@ -203,7 +203,7 @@ end
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire accu_ctrl_valid_d0 = accu_valid;
 wire accu_ram_valid_d0 = accu_ram_valid;
-wire [4 +1 -1:0] accu_addr_d0 = accu_addr;
+wire [3 +1 -1:0] accu_addr_d0 = accu_addr;
 wire accu_stripe_end_d0 = accu_stripe_end;
 wire accu_channel_end_d0 = accu_channel_end;
 wire accu_layer_end_d0 = accu_layer_end;
@@ -274,9 +274,9 @@ end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire abuf_rd_en = accu_rd_en;
-wire [4 +1 -1:0] abuf_rd_addr = accu_addr;
+wire [3 +1 -1:0] abuf_rd_addr = accu_addr;
 // regout
-//: my $kk=4 +1;
+//: my $kk=3 +1;
 //: &eperl::flop(" -q  accu_ctrl_valid  -d \"accu_ctrl_valid_d0\" -clk nvdla_core_clk -rst nvdla_core_rstn -rval 0");
 //: &eperl::flop(" -q  accu_ctrl_ram_valid  -d \"accu_ram_valid_d0\" -clk nvdla_core_clk -rst nvdla_core_rstn -rval 0");
 //: &eperl::flop("-wid ${kk} -q  accu_ctrl_addr  -en \"accu_ctrl_valid_d0\" -d  \"accu_addr_d0\" -clk nvdla_core_clk -rst nvdla_core_rstn -rval 0");
@@ -308,7 +308,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        accu_ctrl_ram_valid <= accu_ram_valid_d0;
    end
 end
-reg [4:0] accu_ctrl_addr;
+reg [3:0] accu_ctrl_addr;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        accu_ctrl_addr <= 'b0;
@@ -383,7 +383,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        end
    end
 end
-assign       accu_ctrl_pd[5:0]  =     {{1{1'b0}},accu_ctrl_addr}; 
+assign       accu_ctrl_pd[5:0]  =     {{2{1'b0}},accu_ctrl_addr}; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 // spyglass enable_block NoWidthInBasedNum-ML

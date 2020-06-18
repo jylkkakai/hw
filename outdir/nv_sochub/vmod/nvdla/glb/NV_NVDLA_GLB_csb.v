@@ -21,8 +21,6 @@ module NV_NVDLA_GLB_csb (
   ,csb2glb_req_pvld //|< i
   ,pdp_done_status0 //|< i
   ,pdp_done_status1 //|< i
-  ,rubik_done_status0 //|< i
-  ,rubik_done_status1 //|< i
   ,sdp_done_status0 //|< i
   ,sdp_done_status1 //|< i
   ,cacc_done_mask0 //|> o
@@ -39,8 +37,6 @@ module NV_NVDLA_GLB_csb (
   ,pdp_done_mask0 //|> o
   ,pdp_done_mask1 //|> o
   ,req_wdat //|> o
-  ,rubik_done_mask0 //|> o
-  ,rubik_done_mask1 //|> o
   ,sdp_done_mask0 //|> o
   ,sdp_done_mask1 //|> o
   ,sdp_done_set0_trigger //|> o
@@ -60,8 +56,6 @@ input [62:0] csb2glb_req_pd;
 input csb2glb_req_pvld;
 input pdp_done_status0;
 input pdp_done_status1;
-input rubik_done_status0;
-input rubik_done_status1;
 input sdp_done_status0;
 input sdp_done_status1;
 output cacc_done_mask0;
@@ -78,8 +72,6 @@ output glb2csb_resp_valid;
 output pdp_done_mask0;
 output pdp_done_mask1;
 output [31:0] req_wdat;
-output rubik_done_mask0;
-output rubik_done_mask1;
 output sdp_done_mask0;
 output sdp_done_mask1;
 output sdp_done_set0_trigger;
@@ -222,8 +214,6 @@ NV_NVDLA_GLB_CSB_reg u_reg (
     ,.cdp_done_mask1 (cdp_done_mask1) //|> o
     ,.pdp_done_mask0 (pdp_done_mask0) //|> o
     ,.pdp_done_mask1 (pdp_done_mask1) //|> o
-    ,.rubik_done_mask0 (rubik_done_mask0) //|> o
-    ,.rubik_done_mask1 (rubik_done_mask1) //|> o
     ,.sdp_done_mask0 (sdp_done_mask0) //|> o
     ,.sdp_done_mask1 (sdp_done_mask1) //|> o
     ,.sdp_done_set0_trigger (sdp_done_set0_trigger) //|> o
@@ -256,8 +246,8 @@ NV_NVDLA_GLB_CSB_reg u_reg (
     ,.cdp_done_status1 (cdp_done_status1) //|< i
     ,.pdp_done_status0 (pdp_done_status0) //|< i
     ,.pdp_done_status1 (pdp_done_status1) //|< i
-    ,.rubik_done_status0 (rubik_done_status0) //|< i
-    ,.rubik_done_status1 (rubik_done_status1) //|< i
+    ,.rubik_done_status0 (1'b0) //|< i
+    ,.rubik_done_status1 (1'b0) //|< i
     ,.sdp_done_status0 (sdp_done_status0) //|< i
     ,.sdp_done_status1 (sdp_done_status1) //|< i
 );

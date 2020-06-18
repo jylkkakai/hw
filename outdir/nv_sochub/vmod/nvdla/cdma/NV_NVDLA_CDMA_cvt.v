@@ -29,8 +29,8 @@ module NV_NVDLA_CDMA_cvt (
    nvdla_core_clk
   ,nvdla_core_rstn
   ,dc2cvt_dat_wr_en
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: print qq(
@@ -57,53 +57,14 @@ module NV_NVDLA_CDMA_cvt (
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-,dc2cvt_dat_wr_sel
 ,dc2cvt_dat_wr_addr
 ,dc2cvt_dat_wr_data
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,dc2cvt_dat_wr_info_pd
-  ,wg2cvt_dat_wr_en
-//: my $dmaif=128;
-//: my $atmc=32*8;
-//: if($dmaif < $atmc) {
-//: my $k = int(log(int($atmc/$dmaif))/log(2));
-//: print qq(
-//: ,wg2cvt_dat_wr_sel
-//: ,wg2cvt_dat_wr_addr
-//: ,wg2cvt_dat_wr_data
-//: );
-//: } elsif($dmaif > $atmc) {
-//: my $k = int(log(int($dmaif/$atmc))/log(2));
-//: print qq(
-//: ,wg2cvt_dat_wr_mask
-//: );
-//: foreach my $i (0..$k-1) {
-//: print qq(
-//: ,wg2cvt_dat_wr_addr${i}
-//: ,wg2cvt_dat_wr_data${i}
-//: );
-//: }
-//: } else {
-//: print qq(
-//: ,wg2cvt_dat_wr_addr
-//: ,wg2cvt_dat_wr_data
-//: );
-//: }
-//| eperl: generated_beg (DO NOT EDIT BELOW)
-
-,wg2cvt_dat_wr_sel
-,wg2cvt_dat_wr_addr
-,wg2cvt_dat_wr_data
-
-//| eperl: generated_end (DO NOT EDIT ABOVE)
-// ,wg2cvt_dat_wr_addr
-// ,wg2cvt_dat_wr_hsel
-// ,wg2cvt_dat_wr_data
-  ,wg2cvt_dat_wr_info_pd
   ,img2cvt_dat_wr_en
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: print qq(
@@ -136,7 +97,6 @@ module NV_NVDLA_CDMA_cvt (
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-,img2cvt_dat_wr_sel
 ,img2cvt_dat_wr_addr
 ,img2cvt_dat_wr_data
 ,img2cvt_mn_wr_data
@@ -149,8 +109,8 @@ module NV_NVDLA_CDMA_cvt (
 // ,img2cvt_mn_wr_data
   ,img2cvt_dat_wr_info_pd
   ,cdma2buf_dat_wr_en
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: print qq(
 //: ,cdma2buf_dat_wr_sel
@@ -176,7 +136,6 @@ module NV_NVDLA_CDMA_cvt (
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-,cdma2buf_dat_wr_sel
 ,cdma2buf_dat_wr_addr
 ,cdma2buf_dat_wr_data
 
@@ -206,8 +165,8 @@ module NV_NVDLA_CDMA_cvt (
 input nvdla_core_clk;
 input nvdla_core_rstn;
 input dc2cvt_dat_wr_en;
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: print qq(
@@ -234,60 +193,21 @@ input dc2cvt_dat_wr_en;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-input [1-1:0] dc2cvt_dat_wr_sel;
 input [16:0] dc2cvt_dat_wr_addr;
-input [128-1:0] dc2cvt_dat_wr_data;
+input [64-1:0] dc2cvt_dat_wr_data;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input [11:0] dc2cvt_dat_wr_info_pd;
 // input dc2cvt_dat_wr_en;
 // input [11:0] dc2cvt_dat_wr_addr;
 // input dc2cvt_dat_wr_hsel;
-// input [128 -1:0] dc2cvt_dat_wr_data;
+// input [64 -1:0] dc2cvt_dat_wr_data;
 // input [11:0] dc2cvt_dat_wr_info_pd;
-input wg2cvt_dat_wr_en;
-//: my $dmaif=128;
-//: my $atmc=32*8;
-//: if($dmaif < $atmc) {
-//: my $k = int(log(int($atmc/$dmaif))/log(2));
-//: print qq(
-//: input [${k}-1:0] wg2cvt_dat_wr_sel;
-//: input [16:0] wg2cvt_dat_wr_addr;
-//: input [${dmaif}-1:0] wg2cvt_dat_wr_data;
-//: );
-//: } elsif($dmaif > $atmc) {
-//: my $k = int(log(int($dmaif/$atmc))/log(2));
-//: print qq(
-//: input [${k}-1:0] wg2cvt_dat_wr_mask;
-//: );
-//: foreach my $i (0..$k-1) {
-//: print qq(
-//: input [16:0] wg2cvt_dat_wr_addr${i};
-//: input [${dmaif}-1:0] wg2cvt_dat_wr_data${i};
-//: );
-//: }
-//: } else {
-//: print qq(
-//: input [16:0] wg2cvt_dat_wr_addr;
-//: input [${dmaif}-1:0] wg2cvt_dat_wr_data;
-//: );
-//: }
-//| eperl: generated_beg (DO NOT EDIT BELOW)
-
-input [1-1:0] wg2cvt_dat_wr_sel;
-input [16:0] wg2cvt_dat_wr_addr;
-input [128-1:0] wg2cvt_dat_wr_data;
-
-//| eperl: generated_end (DO NOT EDIT ABOVE)
-// input [11:0] wg2cvt_dat_wr_addr;
-// input wg2cvt_dat_wr_hsel;
-// input [128 -1:0] wg2cvt_dat_wr_data;
-input [11:0] wg2cvt_dat_wr_info_pd;
 //////////////// img
 input img2cvt_dat_wr_en;
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $Bnum = $dmaif / 8;
-//: my $atmc=32*8;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: print qq(
@@ -320,27 +240,26 @@ input img2cvt_dat_wr_en;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-input [1-1:0] img2cvt_dat_wr_sel;
 input [16:0] img2cvt_dat_wr_addr;
-input [128-1:0] img2cvt_dat_wr_data;
-input [16*16-1:0] img2cvt_mn_wr_data;
-input [16-1:0] img2cvt_dat_wr_pad_mask;
+input [64-1:0] img2cvt_dat_wr_data;
+input [8*16-1:0] img2cvt_mn_wr_data;
+input [8-1:0] img2cvt_dat_wr_pad_mask;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input [11:0] img2cvt_dat_wr_info_pd;
 // input [11:0] img2cvt_dat_wr_addr;
 // input img2cvt_dat_wr_hsel;
 // //input [1023:0] img2cvt_dat_wr_data;
-// input [128 -1:0] img2cvt_dat_wr_data;
+// input [64 -1:0] img2cvt_dat_wr_data;
 // //input  [127:0] img2cvt_dat_wr_pad_mask;
 // //input [1023:0] img2cvt_mn_wr_data;
 // //: my $dmaif = NVDLA_CDMA_DMAIF_BW;
 // //: my $Bnum = $dmaif / NVDLA_BPE;
 // //: print qq(input  [$Bnum-1:0] img2cvt_dat_wr_pad_mask; );
-// input [128 -1:0] img2cvt_mn_wr_data;
+// input [64 -1:0] img2cvt_mn_wr_data;
 output cdma2buf_dat_wr_en;
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int($atmc/$dmaif);
 //: print qq(
@@ -367,16 +286,15 @@ output cdma2buf_dat_wr_en;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-output [2-1:0] cdma2buf_dat_wr_sel;
 output [16:0] cdma2buf_dat_wr_addr;
-output [128-1:0] cdma2buf_dat_wr_data;
+output [64-1:0] cdma2buf_dat_wr_data;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 // output cdma2buf_dat_wr_en;
 // output [11:0] cdma2buf_dat_wr_addr;
 // output [1:0] cdma2buf_dat_wr_hsel;
 // //output [1023:0] cdma2buf_dat_wr_data;
-// output [128 -1:0] cdma2buf_dat_wr_data;
+// output [64 -1:0] cdma2buf_dat_wr_data;
 input nvdla_hls_clk;
 output slcg_hls_en;
 input nvdla_core_ng_clk;
@@ -405,8 +323,8 @@ reg cfg_out_int8;
 reg [15:0] cfg_pad_value;
 reg [16:0] cvt_out_addr_d1;
 reg [16:0] cvt_out_addr_reg;
-//: my $dmaif=128;
-//: my $atmm=16;
+//: my $dmaif=64;
+//: my $atmm=8;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: my $atmm_num= $Bnum / $atmm;
@@ -415,18 +333,18 @@ reg [16:0] cvt_out_addr_reg;
 //: print qq(wire [${atmm}*${bpe}-1:0] cvt_out_data_p${k}; \n);
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-reg [16*8-1:0] cvt_out_data_p0_reg; 
-wire [16*8-1:0] cvt_out_data_p0; 
+reg [8*8-1:0] cvt_out_data_p0_reg; 
+wire [8*8-1:0] cvt_out_data_p0; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 reg [3:0] cvt_out_nz_mask_d1;
 reg cvt_out_pad_vld_d1;
 reg cvt_out_vld_d1;
 reg cvt_out_vld_reg;
-reg [128 -1:0] cvt_wr_data_d1;
+reg [64 -1:0] cvt_wr_data_d1;
 reg cvt_wr_en_d1;
 reg cvt_wr_mean_d1;
-reg [128/8*16-1:0] cvt_wr_mean_data_d1;
+reg [64/8*16-1:0] cvt_wr_mean_data_d1;
 reg [17:0] dat_cbuf_flush_idx;
 wire [31:0] dp2reg_inf_data_num;
 wire [31:0] dp2reg_nan_data_num;
@@ -437,7 +355,7 @@ reg [0:0] is_input_int8;
 reg op_en;
 reg op_en_d0;
 reg cvt_wr_uint_d1;
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: foreach my $i (0..$Bnum -1) {
@@ -507,60 +425,12 @@ wire [16:0] oprand_0_7_ori;
 wire [15:0] oprand_1_7_ori;
 wire [15:0] cellout_7;
 
-reg [16:0] oprand_0_8_d0;
-reg [15:0] oprand_1_8_d0;
-wire [16:0] oprand_0_8_ori;
-wire [15:0] oprand_1_8_ori;
-wire [15:0] cellout_8;
-
-reg [16:0] oprand_0_9_d0;
-reg [15:0] oprand_1_9_d0;
-wire [16:0] oprand_0_9_ori;
-wire [15:0] oprand_1_9_ori;
-wire [15:0] cellout_9;
-
-reg [16:0] oprand_0_10_d0;
-reg [15:0] oprand_1_10_d0;
-wire [16:0] oprand_0_10_ori;
-wire [15:0] oprand_1_10_ori;
-wire [15:0] cellout_10;
-
-reg [16:0] oprand_0_11_d0;
-reg [15:0] oprand_1_11_d0;
-wire [16:0] oprand_0_11_ori;
-wire [15:0] oprand_1_11_ori;
-wire [15:0] cellout_11;
-
-reg [16:0] oprand_0_12_d0;
-reg [15:0] oprand_1_12_d0;
-wire [16:0] oprand_0_12_ori;
-wire [15:0] oprand_1_12_ori;
-wire [15:0] cellout_12;
-
-reg [16:0] oprand_0_13_d0;
-reg [15:0] oprand_1_13_d0;
-wire [16:0] oprand_0_13_ori;
-wire [15:0] oprand_1_13_ori;
-wire [15:0] cellout_13;
-
-reg [16:0] oprand_0_14_d0;
-reg [15:0] oprand_1_14_d0;
-wire [16:0] oprand_0_14_ori;
-wire [15:0] oprand_1_14_ori;
-wire [15:0] cellout_14;
-
-reg [16:0] oprand_0_15_d0;
-reg [15:0] oprand_1_15_d0;
-wire [16:0] oprand_0_15_ori;
-wire [15:0] oprand_1_15_ori;
-wire [15:0] cellout_15;
-
-wire [16-1:0] oprand_0_8b_sign;
-wire [16-1:0] mon_cell_op0_ready;
-wire [16-1:0] mon_cell_op1_ready;
-wire [16-1:0] cvt_cell_en;
-reg [16-1:0] cell_en_d0;
-reg [16-1:0] cvt_cell_en_d1;
+wire [8-1:0] oprand_0_8b_sign;
+wire [8-1:0] mon_cell_op0_ready;
+wire [8-1:0] mon_cell_op1_ready;
+wire [8-1:0] cvt_cell_en;
+reg [8-1:0] cell_en_d0;
+reg [8-1:0] cvt_cell_en_d1;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 reg slcg_hls_en_d1;
@@ -568,23 +438,23 @@ reg slcg_hls_en_d2;
 reg slcg_hls_en_d3;
 wire [15:0] cfg_pad_value_w;
 wire cfg_reg_en;
-wire [128 -1:0] cvt_data_cell;
+wire [64 -1:0] cvt_data_cell;
 wire [16:0] cvt_out_addr;
 wire [16:0] cvt_out_addr_bp;
 wire [16:0] cvt_out_addr_reg_w;
-wire [128 -1:0] cvt_out_data_masked;
-wire [128 -1:0] cvt_out_data_mix;
+wire [64 -1:0] cvt_out_data_masked;
+wire [64 -1:0] cvt_out_data_mix;
 wire [3:0] cvt_out_nz_mask_bp;
 wire cvt_out_pad_vld_bp;
 wire cvt_out_vld;
 wire cvt_out_vld_bp;
 wire cvt_out_vld_reg_w;
 wire [16:0] cvt_wr_addr;
-wire [128 -1:0] cvt_wr_data;
+wire [64 -1:0] cvt_wr_data;
 wire cvt_wr_en;
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $Bnum = $dmaif / 8;
-//: my $atmc=32*8;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: my $s = int($atmc/$dmaif);
@@ -612,30 +482,25 @@ wire cvt_wr_en;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-wire [1-1:0] cvt_wr_sel;
-wire [1-1:0] cvt_out_sel;
-reg [1-1:0] cvt_out_sel_d1;
-wire [1-1:0] cvt_out_sel_bp;
-reg [2-1:0] cvt_out_sel_reg;
-wire [1-1:0] cvt_out_reg_en;
-reg [1-1:0] cvt_out_reg_en_d1;
-wire [1-1:0] cvt_out_reg_en_bp;
+wire cvt_out_reg_en;
+reg cvt_out_reg_en_d1;
+wire cvt_out_reg_en_bp;
 
-wire [16-1:0] cvt_wr_pad_mask;
-reg [16-1:0] cvt_out_pad_mask_d1;
-wire [16-1:0] cvt_out_pad_mask_bp;
+wire [8-1:0] cvt_wr_pad_mask;
+reg [8-1:0] cvt_out_pad_mask_d1;
+wire [8-1:0] cvt_out_pad_mask_bp;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire [11:0] cvt_wr_info_pd;
 wire [3:0] cvt_wr_mask;
 wire cvt_wr_mean;
-wire [128/8*16-1:0] cvt_wr_mean_data;
+wire [64/8*16-1:0] cvt_wr_mean_data;
 wire [2:0] cvt_wr_sub_h;
 wire cvt_wr_uint;
 wire [17:0] dat_cbuf_flush_idx_w;
 wire dat_cbuf_flush_vld_w;
 wire [31:0] dat_half_mask;
-wire [128 -1:0] dat_nan_mask;
+wire [64 -1:0] dat_nan_mask;
 wire is_data_expand_w;
 wire is_data_normal_w;
 wire is_input_fp16_w;
@@ -903,7 +768,6 @@ assign slcg_hls_en = slcg_hls_en_d3;
 // Input signals //
 ////////////////////////////////////////////////////////////////////////
 assign cvt_wr_info_pd = ({12 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_info_pd)
-                      | ({12 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_info_pd)
                       | ({12 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_info_pd);
 assign cvt_wr_mask[3:0] = cvt_wr_info_pd[3:0];
 //assign cvt_wr_interleave = cvt_wr_info_pd[4];
@@ -912,41 +776,35 @@ assign cvt_wr_mask[3:0] = cvt_wr_info_pd[3:0];
 assign cvt_wr_mean = cvt_wr_info_pd[7];
 assign cvt_wr_uint = cvt_wr_info_pd[8];
 assign cvt_wr_sub_h[2:0] = cvt_wr_info_pd[11:9];
-assign cvt_wr_en = (dc2cvt_dat_wr_en | wg2cvt_dat_wr_en | img2cvt_dat_wr_en);
-//: my $dmaif=128;
+assign cvt_wr_en = (dc2cvt_dat_wr_en | img2cvt_dat_wr_en);
+//: my $dmaif=64;
 //: my $Bnum = $dmaif / 8;
-//: my $atmc=32*8;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: print qq(
 //: assign cvt_wr_pad_mask = img2cvt_dat_wr_en ? img2cvt_dat_wr_pad_mask : ${Bnum}'d0;
 //: assign cvt_wr_sel = dc2cvt_dat_wr_en ? dc2cvt_dat_wr_sel
-//: : wg2cvt_dat_wr_en ? wg2cvt_dat_wr_sel
 //: : img2cvt_dat_wr_en ? img2cvt_dat_wr_sel : 0;
 //: assign cvt_wr_addr = ({17 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_addr)
-//: | ({17 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_addr)
 //: | ({17 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_addr);
-//: assign cvt_wr_data = ({128 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data)
-//: | ({128 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_data)
-//: | ({128 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data);
+//: assign cvt_wr_data = ({64 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data)
+//: | ({64 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data);
 //: assign cvt_wr_mean_data = img2cvt_mn_wr_data;
 //: );
 //: } elsif($dmaif > $atmc) {
 //: my $k = int(log(int($dmaif/$atmc))/log(2));
 //: print qq(
 //: assign cvt_dat_wr_mask = (dc2cvt_dat_wr_en & dc2cvt_dat_wr_mask)
-//: | (wg2cvt_dat_wr_en & wg2cvt_dat_wr_mask)
 //: | (img2cvt_dat_wr_en & img2cvt_dat_wr_mask);
 //: );
 //: foreach my $i (0..$k-1) {
 //: print qq(
 //: assign cvt_wr_pad_mask${i} = img2cvt_dat_wr_en ? img2cvt_dat_wr_pad_mask${i} : ${Bnum}'d0;
 //: assign cvt_wr_addr${i} = ({17 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_addr${i})
-//: | ({17 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_addr${i})
 //: | ({17 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_addr${i});
-//: assign cvt_wr_data${i} = ({128 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data${i})
-//: | ({128 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_data${i})
-//: | ({128 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data${i});
+//: assign cvt_wr_data${i} = ({64 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data${i})
+//: | ({64 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data${i});
 //: assign cvt_wr_mean_data${i} = img2cvt_mn_wr_data${i};
 //: );
 //: }
@@ -954,34 +812,27 @@ assign cvt_wr_en = (dc2cvt_dat_wr_en | wg2cvt_dat_wr_en | img2cvt_dat_wr_en);
 //: print qq(
 //: assign cvt_wr_pad_mask = img2cvt_dat_wr_en ? img2cvt_dat_wr_pad_mask : ${Bnum}'d0;
 //: assign cvt_wr_addr = ({17 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_addr)
-//: | ({17 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_addr)
 //: | ({17 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_addr);
-//: assign cvt_wr_data = ({128 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data)
-//: | ({128 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_data)
-//: | ({128 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data);
+//: assign cvt_wr_data = ({64 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data)
+//: | ({64 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data);
 //: assign cvt_wr_mean_data = img2cvt_mn_wr_data;
 //: );
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign cvt_wr_pad_mask = img2cvt_dat_wr_en ? img2cvt_dat_wr_pad_mask : 16'd0;
-assign cvt_wr_sel = dc2cvt_dat_wr_en ? dc2cvt_dat_wr_sel
-: wg2cvt_dat_wr_en ? wg2cvt_dat_wr_sel
-: img2cvt_dat_wr_en ? img2cvt_dat_wr_sel : 0;
+assign cvt_wr_pad_mask = img2cvt_dat_wr_en ? img2cvt_dat_wr_pad_mask : 8'd0;
 assign cvt_wr_addr = ({17 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_addr)
-| ({17 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_addr)
 | ({17 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_addr);
-assign cvt_wr_data = ({128 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data)
-| ({128 {wg2cvt_dat_wr_en}} & wg2cvt_dat_wr_data)
-| ({128 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data);
+assign cvt_wr_data = ({64 {dc2cvt_dat_wr_en}} & dc2cvt_dat_wr_data)
+| ({64 {img2cvt_dat_wr_en}} & img2cvt_dat_wr_data);
 assign cvt_wr_mean_data = img2cvt_mn_wr_data;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 ////////////////////////////////////////////////////////////////////////
 // generator mux control signals //
 ////////////////////////////////////////////////////////////////////////
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: print qq(
 //: assign cvt_out_sel = cvt_wr_sel;
@@ -995,14 +846,14 @@ assign cvt_wr_mean_data = img2cvt_mn_wr_data;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign cvt_out_sel = cvt_wr_sel;
-assign cvt_out_reg_en = cvt_wr_en ? cvt_out_sel : 0;
+//assign cvt_out_reg_en = cvt_wr_en;
+assign cvt_out_reg_en = 1'b0;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign cvt_out_addr = cvt_wr_addr;
 assign cvt_out_vld = cvt_wr_en;
-//: my $dmaif=128;
-//: my $atmm=16;
+//: my $dmaif=64;
+//: my $atmm=8;
 //: my $Bnum = $dmaif / 8;
 //: my $atmm_num = $Bnum / $atmm;
 //: if($atmm_num == 1) {
@@ -1020,7 +871,7 @@ assign cvt_out_vld = cvt_wr_en;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign cvt_cell_en = (cvt_wr_en & cfg_cvt_en[0]) ? {16{cvt_wr_mask[0]}} : 16'b0;
+assign cvt_cell_en = (cvt_wr_en & cfg_cvt_en[0]) ? {8{cvt_wr_mask[0]}} : 8'b0;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //assign cvt_out_reg_en = cvt_wr_en ? {{4{cvt_out_sel[1]}}, {4{cvt_out_sel[0]}}} : 8'b0;
@@ -1032,7 +883,7 @@ assign cvt_cell_en = (cvt_wr_en & cfg_cvt_en[0]) ? {16{cvt_wr_mask[0]}} : 16'b0;
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"        -en \"cvt_wr_en\"          -d \"cvt_wr_uint\"           -q cvt_wr_uint_d1");
 //: &eperl::flop("-nodeclare  -norst                 -en \"cvt_wr_en & cvt_wr_mean\" -d \"cvt_wr_mean_data\" -q cvt_wr_mean_data_d1");
 //: &eperl::flop("-nodeclare  -norst                 -en \"cvt_wr_en\"          -d \"cvt_wr_data\"           -q cvt_wr_data_d1");
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: &eperl::flop("-nodeclare   -rval \"${Bnum}'b0\"           -en \"cvt_wr_en | cvt_wr_en_d1\" -d \"cvt_cell_en\"     -q cvt_cell_en_d1");
@@ -1041,7 +892,7 @@ assign cvt_cell_en = (cvt_wr_en & cfg_cvt_en[0]) ? {16{cvt_wr_mask[0]}} : 16'b0;
 //: &eperl::flop("-nodeclare   -rval \"{17{1'b0}}\"  -en \"cvt_wr_en\"          -d \"cvt_out_addr\"          -q cvt_out_addr_d1");
 //: &eperl::flop("-nodeclare   -rval \"{4{1'b0}}\"   -en \"cvt_wr_en\"          -d \"cvt_wr_mask\"           -q cvt_out_nz_mask_d1");
 //: &eperl::flop("-nodeclare   -rval \"${Bnum}'b0\"           -en \"img2cvt_dat_wr_en\"  -d \"cvt_wr_pad_mask\"       -q cvt_out_pad_mask_d1");
-//: my $atmc=32*8;
+//: my $atmc=8*8;
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: if($dmaif < $atmc) {
 //: &eperl::flop("-nodeclare   -rval \"${k}'b0\"                                      -d \"cvt_out_reg_en\"        -q cvt_out_reg_en_d1");
@@ -1107,7 +958,7 @@ always @(posedge nvdla_core_clk) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       cvt_cell_en_d1 <= 16'b0;
+       cvt_cell_en_d1 <= 8'b0;
    end else begin
        if ((cvt_wr_en | cvt_wr_en_d1) == 1'b1) begin
            cvt_cell_en_d1 <= cvt_cell_en;
@@ -1163,7 +1014,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       cvt_out_pad_mask_d1 <= 16'b0;
+       cvt_out_pad_mask_d1 <= 8'b0;
    end else begin
        if ((img2cvt_dat_wr_en) == 1'b1) begin
            cvt_out_pad_mask_d1 <= cvt_wr_pad_mask;
@@ -1182,26 +1033,12 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        cvt_out_reg_en_d1 <= cvt_out_reg_en;
    end
 end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       cvt_out_sel_d1 <= {2{1'b0}};
-   end else begin
-       if ((cvt_wr_en) == 1'b1) begin
-           cvt_out_sel_d1 <= cvt_out_sel;
-       // VCS coverage off
-       end else if ((cvt_wr_en) == 1'b0) begin
-       end else begin
-           cvt_out_sel_d1 <= 'bx;
-       // VCS coverage on
-       end
-   end
-end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 ////////////////////////////////////////////////////////////////////////
 // generate input signals for convertor cells //
 ////////////////////////////////////////////////////////////////////////
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: foreach my $i(0..$Bnum-1) {
@@ -1408,201 +1245,9 @@ always @(posedge nvdla_core_clk) begin
        end
 end
 
-assign oprand_0_8b_sign[8] = (cvt_wr_data_d1[9*8-1] & ~cvt_wr_uint_d1);
-assign oprand_0_8_ori = {{(17-8){oprand_0_8b_sign[8]}}, cvt_wr_data_d1[9*8-1:8*8]} ;
-assign oprand_1_8_ori = cvt_wr_mean_d1 ? cvt_wr_mean_data_d1[9*16-1:8*16] : cfg_offset[15:0];
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[8]) == 1'b1) begin
-           oprand_0_8_d0 <= oprand_0_8_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[8]) == 1'b0) begin
-       end else begin
-           oprand_0_8_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[8]) == 1'b1) begin
-           oprand_1_8_d0 <= oprand_1_8_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[8]) == 1'b0) begin
-       end else begin
-           oprand_1_8_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-
-assign oprand_0_8b_sign[9] = (cvt_wr_data_d1[10*8-1] & ~cvt_wr_uint_d1);
-assign oprand_0_9_ori = {{(17-8){oprand_0_8b_sign[9]}}, cvt_wr_data_d1[10*8-1:9*8]} ;
-assign oprand_1_9_ori = cvt_wr_mean_d1 ? cvt_wr_mean_data_d1[10*16-1:9*16] : cfg_offset[15:0];
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[9]) == 1'b1) begin
-           oprand_0_9_d0 <= oprand_0_9_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[9]) == 1'b0) begin
-       end else begin
-           oprand_0_9_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[9]) == 1'b1) begin
-           oprand_1_9_d0 <= oprand_1_9_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[9]) == 1'b0) begin
-       end else begin
-           oprand_1_9_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-
-assign oprand_0_8b_sign[10] = (cvt_wr_data_d1[11*8-1] & ~cvt_wr_uint_d1);
-assign oprand_0_10_ori = {{(17-8){oprand_0_8b_sign[10]}}, cvt_wr_data_d1[11*8-1:10*8]} ;
-assign oprand_1_10_ori = cvt_wr_mean_d1 ? cvt_wr_mean_data_d1[11*16-1:10*16] : cfg_offset[15:0];
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[10]) == 1'b1) begin
-           oprand_0_10_d0 <= oprand_0_10_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[10]) == 1'b0) begin
-       end else begin
-           oprand_0_10_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[10]) == 1'b1) begin
-           oprand_1_10_d0 <= oprand_1_10_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[10]) == 1'b0) begin
-       end else begin
-           oprand_1_10_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-
-assign oprand_0_8b_sign[11] = (cvt_wr_data_d1[12*8-1] & ~cvt_wr_uint_d1);
-assign oprand_0_11_ori = {{(17-8){oprand_0_8b_sign[11]}}, cvt_wr_data_d1[12*8-1:11*8]} ;
-assign oprand_1_11_ori = cvt_wr_mean_d1 ? cvt_wr_mean_data_d1[12*16-1:11*16] : cfg_offset[15:0];
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[11]) == 1'b1) begin
-           oprand_0_11_d0 <= oprand_0_11_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[11]) == 1'b0) begin
-       end else begin
-           oprand_0_11_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[11]) == 1'b1) begin
-           oprand_1_11_d0 <= oprand_1_11_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[11]) == 1'b0) begin
-       end else begin
-           oprand_1_11_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-
-assign oprand_0_8b_sign[12] = (cvt_wr_data_d1[13*8-1] & ~cvt_wr_uint_d1);
-assign oprand_0_12_ori = {{(17-8){oprand_0_8b_sign[12]}}, cvt_wr_data_d1[13*8-1:12*8]} ;
-assign oprand_1_12_ori = cvt_wr_mean_d1 ? cvt_wr_mean_data_d1[13*16-1:12*16] : cfg_offset[15:0];
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[12]) == 1'b1) begin
-           oprand_0_12_d0 <= oprand_0_12_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[12]) == 1'b0) begin
-       end else begin
-           oprand_0_12_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[12]) == 1'b1) begin
-           oprand_1_12_d0 <= oprand_1_12_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[12]) == 1'b0) begin
-       end else begin
-           oprand_1_12_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-
-assign oprand_0_8b_sign[13] = (cvt_wr_data_d1[14*8-1] & ~cvt_wr_uint_d1);
-assign oprand_0_13_ori = {{(17-8){oprand_0_8b_sign[13]}}, cvt_wr_data_d1[14*8-1:13*8]} ;
-assign oprand_1_13_ori = cvt_wr_mean_d1 ? cvt_wr_mean_data_d1[14*16-1:13*16] : cfg_offset[15:0];
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[13]) == 1'b1) begin
-           oprand_0_13_d0 <= oprand_0_13_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[13]) == 1'b0) begin
-       end else begin
-           oprand_0_13_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[13]) == 1'b1) begin
-           oprand_1_13_d0 <= oprand_1_13_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[13]) == 1'b0) begin
-       end else begin
-           oprand_1_13_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-
-assign oprand_0_8b_sign[14] = (cvt_wr_data_d1[15*8-1] & ~cvt_wr_uint_d1);
-assign oprand_0_14_ori = {{(17-8){oprand_0_8b_sign[14]}}, cvt_wr_data_d1[15*8-1:14*8]} ;
-assign oprand_1_14_ori = cvt_wr_mean_d1 ? cvt_wr_mean_data_d1[15*16-1:14*16] : cfg_offset[15:0];
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[14]) == 1'b1) begin
-           oprand_0_14_d0 <= oprand_0_14_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[14]) == 1'b0) begin
-       end else begin
-           oprand_0_14_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[14]) == 1'b1) begin
-           oprand_1_14_d0 <= oprand_1_14_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[14]) == 1'b0) begin
-       end else begin
-           oprand_1_14_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-
-assign oprand_0_8b_sign[15] = (cvt_wr_data_d1[16*8-1] & ~cvt_wr_uint_d1);
-assign oprand_0_15_ori = {{(17-8){oprand_0_8b_sign[15]}}, cvt_wr_data_d1[16*8-1:15*8]} ;
-assign oprand_1_15_ori = cvt_wr_mean_d1 ? cvt_wr_mean_data_d1[16*16-1:15*16] : cfg_offset[15:0];
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[15]) == 1'b1) begin
-           oprand_0_15_d0 <= oprand_0_15_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[15]) == 1'b0) begin
-       end else begin
-           oprand_0_15_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-always @(posedge nvdla_core_clk) begin
-       if ((cvt_cell_en_d1[15]) == 1'b1) begin
-           oprand_1_15_d0 <= oprand_1_15_ori;
-       // VCS coverage off
-       end else if ((cvt_cell_en_d1[15]) == 1'b0) begin
-       end else begin
-           oprand_1_15_d0 <= 'bx;
-       // VCS coverage on
-       end
-end
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 ////////////////////////////////////////////////////////////////////////
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = ($dmaif / $bpe);
 //: &eperl::flop("-nodeclare -rval \"1'b0\"                               -d \"cvt_wr_en_d1\"   -q op_en_d0");
@@ -1617,7 +1262,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       cell_en_d0 <= 16'b0;
+       cell_en_d0 <= 8'b0;
    end else begin
        if ((cvt_wr_en_d1 | op_en_d0) == 1'b1) begin
            cell_en_d0 <= cvt_cell_en_d1;
@@ -1634,7 +1279,7 @@ end
 ////////////////////////////////////////////////////////////////////////
 // instance of convert cells //
 ////////////////////////////////////////////////////////////////////////
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: foreach my $i (0..$Bnum-1) {
@@ -1840,186 +1485,10 @@ NV_NVDLA_CDMA_CVT_cell u_cell_7 (
 ,.chn_data_out_rsc_lz ( )
 );
 
-NV_NVDLA_CDMA_CVT_cell u_cell_8 (
-.nvdla_core_clk (nvdla_hls_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.chn_data_in_rsc_z (oprand_0_8_d0[16:0])
-,.chn_data_in_rsc_vz (cell_en_d0[8])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_data_in_rsc_lz (mon_cell_op0_ready[8])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_z (oprand_1_8_d0[15:0])
-,.chn_alu_in_rsc_vz (cell_en_d0[8])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_lz (mon_cell_op1_ready[8])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.cfg_mul_in_rsc_z (cfg_scale[15:0])
-,.cfg_in_precision (cfg_in_precision[1:0])
-,.cfg_out_precision (cfg_proc_precision[1:0])
-,.cfg_truncate (cfg_truncate[5:0])
-,.chn_data_out_rsc_z (cellout_8[15:0])
-,.chn_data_out_rsc_vz (1'b1)
-,.chn_data_out_rsc_lz ( )
-);
-
-NV_NVDLA_CDMA_CVT_cell u_cell_9 (
-.nvdla_core_clk (nvdla_hls_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.chn_data_in_rsc_z (oprand_0_9_d0[16:0])
-,.chn_data_in_rsc_vz (cell_en_d0[9])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_data_in_rsc_lz (mon_cell_op0_ready[9])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_z (oprand_1_9_d0[15:0])
-,.chn_alu_in_rsc_vz (cell_en_d0[9])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_lz (mon_cell_op1_ready[9])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.cfg_mul_in_rsc_z (cfg_scale[15:0])
-,.cfg_in_precision (cfg_in_precision[1:0])
-,.cfg_out_precision (cfg_proc_precision[1:0])
-,.cfg_truncate (cfg_truncate[5:0])
-,.chn_data_out_rsc_z (cellout_9[15:0])
-,.chn_data_out_rsc_vz (1'b1)
-,.chn_data_out_rsc_lz ( )
-);
-
-NV_NVDLA_CDMA_CVT_cell u_cell_10 (
-.nvdla_core_clk (nvdla_hls_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.chn_data_in_rsc_z (oprand_0_10_d0[16:0])
-,.chn_data_in_rsc_vz (cell_en_d0[10])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_data_in_rsc_lz (mon_cell_op0_ready[10])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_z (oprand_1_10_d0[15:0])
-,.chn_alu_in_rsc_vz (cell_en_d0[10])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_lz (mon_cell_op1_ready[10])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.cfg_mul_in_rsc_z (cfg_scale[15:0])
-,.cfg_in_precision (cfg_in_precision[1:0])
-,.cfg_out_precision (cfg_proc_precision[1:0])
-,.cfg_truncate (cfg_truncate[5:0])
-,.chn_data_out_rsc_z (cellout_10[15:0])
-,.chn_data_out_rsc_vz (1'b1)
-,.chn_data_out_rsc_lz ( )
-);
-
-NV_NVDLA_CDMA_CVT_cell u_cell_11 (
-.nvdla_core_clk (nvdla_hls_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.chn_data_in_rsc_z (oprand_0_11_d0[16:0])
-,.chn_data_in_rsc_vz (cell_en_d0[11])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_data_in_rsc_lz (mon_cell_op0_ready[11])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_z (oprand_1_11_d0[15:0])
-,.chn_alu_in_rsc_vz (cell_en_d0[11])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_lz (mon_cell_op1_ready[11])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.cfg_mul_in_rsc_z (cfg_scale[15:0])
-,.cfg_in_precision (cfg_in_precision[1:0])
-,.cfg_out_precision (cfg_proc_precision[1:0])
-,.cfg_truncate (cfg_truncate[5:0])
-,.chn_data_out_rsc_z (cellout_11[15:0])
-,.chn_data_out_rsc_vz (1'b1)
-,.chn_data_out_rsc_lz ( )
-);
-
-NV_NVDLA_CDMA_CVT_cell u_cell_12 (
-.nvdla_core_clk (nvdla_hls_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.chn_data_in_rsc_z (oprand_0_12_d0[16:0])
-,.chn_data_in_rsc_vz (cell_en_d0[12])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_data_in_rsc_lz (mon_cell_op0_ready[12])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_z (oprand_1_12_d0[15:0])
-,.chn_alu_in_rsc_vz (cell_en_d0[12])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_lz (mon_cell_op1_ready[12])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.cfg_mul_in_rsc_z (cfg_scale[15:0])
-,.cfg_in_precision (cfg_in_precision[1:0])
-,.cfg_out_precision (cfg_proc_precision[1:0])
-,.cfg_truncate (cfg_truncate[5:0])
-,.chn_data_out_rsc_z (cellout_12[15:0])
-,.chn_data_out_rsc_vz (1'b1)
-,.chn_data_out_rsc_lz ( )
-);
-
-NV_NVDLA_CDMA_CVT_cell u_cell_13 (
-.nvdla_core_clk (nvdla_hls_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.chn_data_in_rsc_z (oprand_0_13_d0[16:0])
-,.chn_data_in_rsc_vz (cell_en_d0[13])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_data_in_rsc_lz (mon_cell_op0_ready[13])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_z (oprand_1_13_d0[15:0])
-,.chn_alu_in_rsc_vz (cell_en_d0[13])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_lz (mon_cell_op1_ready[13])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.cfg_mul_in_rsc_z (cfg_scale[15:0])
-,.cfg_in_precision (cfg_in_precision[1:0])
-,.cfg_out_precision (cfg_proc_precision[1:0])
-,.cfg_truncate (cfg_truncate[5:0])
-,.chn_data_out_rsc_z (cellout_13[15:0])
-,.chn_data_out_rsc_vz (1'b1)
-,.chn_data_out_rsc_lz ( )
-);
-
-NV_NVDLA_CDMA_CVT_cell u_cell_14 (
-.nvdla_core_clk (nvdla_hls_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.chn_data_in_rsc_z (oprand_0_14_d0[16:0])
-,.chn_data_in_rsc_vz (cell_en_d0[14])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_data_in_rsc_lz (mon_cell_op0_ready[14])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_z (oprand_1_14_d0[15:0])
-,.chn_alu_in_rsc_vz (cell_en_d0[14])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_lz (mon_cell_op1_ready[14])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.cfg_mul_in_rsc_z (cfg_scale[15:0])
-,.cfg_in_precision (cfg_in_precision[1:0])
-,.cfg_out_precision (cfg_proc_precision[1:0])
-,.cfg_truncate (cfg_truncate[5:0])
-,.chn_data_out_rsc_z (cellout_14[15:0])
-,.chn_data_out_rsc_vz (1'b1)
-,.chn_data_out_rsc_lz ( )
-);
-
-NV_NVDLA_CDMA_CVT_cell u_cell_15 (
-.nvdla_core_clk (nvdla_hls_clk)
-,.nvdla_core_rstn (nvdla_core_rstn)
-,.chn_data_in_rsc_z (oprand_0_15_d0[16:0])
-,.chn_data_in_rsc_vz (cell_en_d0[15])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_data_in_rsc_lz (mon_cell_op0_ready[15])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_z (oprand_1_15_d0[15:0])
-,.chn_alu_in_rsc_vz (cell_en_d0[15])
-// spyglass disable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.chn_alu_in_rsc_lz (mon_cell_op1_ready[15])
-// spyglass enable_block UnloadedNet-ML UnloadedOutTerm-ML W528 W123 W287a
-,.cfg_mul_in_rsc_z (cfg_scale[15:0])
-,.cfg_in_precision (cfg_in_precision[1:0])
-,.cfg_out_precision (cfg_proc_precision[1:0])
-,.cfg_truncate (cfg_truncate[5:0])
-,.chn_data_out_rsc_z (cellout_15[15:0])
-,.chn_data_out_rsc_vz (1'b1)
-,.chn_data_out_rsc_lz ( )
-);
-
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign cvt_data_cell = {
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: if($Bnum > 1) {
@@ -2030,15 +1499,15 @@ assign cvt_data_cell = {
 //: }
 //: print qq(cellout_0[${bpe}-1:0]}; \n);
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-cellout_15[8-1:0], cellout_14[8-1:0], cellout_13[8-1:0], cellout_12[8-1:0], cellout_11[8-1:0], cellout_10[8-1:0], cellout_9[8-1:0], cellout_8[8-1:0], cellout_7[8-1:0], cellout_6[8-1:0], cellout_5[8-1:0], cellout_4[8-1:0], cellout_3[8-1:0], cellout_2[8-1:0], cellout_1[8-1:0], cellout_0[8-1:0]}; 
+cellout_7[8-1:0], cellout_6[8-1:0], cellout_5[8-1:0], cellout_4[8-1:0], cellout_3[8-1:0], cellout_2[8-1:0], cellout_1[8-1:0], cellout_0[8-1:0]}; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 ////////////////////////////////////////////////////////////////////////
 // stage 2: pipeline to match latency of conver cells //
 ////////////////////////////////////////////////////////////////////////
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $Bnum = $dmaif / 8;
-//: my $atmc=32*8;
+//: my $atmc=8*8;
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: for(my $i = 1; $i <= 3 +1; $i ++) {
 //: my $j = $i + 1;
@@ -2086,25 +1555,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        cvt_out_pad_vld_d2 <= cvt_out_pad_vld_d1;
    end
 end
-reg  cvt_out_sel_d2;
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       cvt_out_sel_d2 <= {1{1'b0}};
-   end else begin
-       if ((cvt_out_vld_d1) == 1'b1) begin
-           cvt_out_sel_d2 <= cvt_out_sel_d1;
-       // VCS coverage off
-       end else if ((cvt_out_vld_d1) == 1'b0) begin
-       end else begin
-           cvt_out_sel_d2 <= 'bx;
-       // VCS coverage on
-       end
-   end
-end
 reg  cvt_out_reg_en_d2;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       cvt_out_reg_en_d2 <= {1{1'b0}};
+       cvt_out_reg_en_d2 <= 1'b0;
    end else begin
        if ((cvt_out_vld_d1 | cvt_out_vld_d2) == 1'b1) begin
            cvt_out_reg_en_d2 <= cvt_out_reg_en_d1;
@@ -2146,10 +1600,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        end
    end
 end
-reg [15:0] cvt_out_pad_mask_d2;
+reg [7:0] cvt_out_pad_mask_d2;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       cvt_out_pad_mask_d2 <= {16{1'b0}};
+       cvt_out_pad_mask_d2 <= {8{1'b0}};
    end else begin
        if ((cvt_out_pad_vld_d1) == 1'b1) begin
            cvt_out_pad_mask_d2 <= cvt_out_pad_mask_d1;
@@ -2179,25 +1633,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        cvt_out_pad_vld_d3 <= cvt_out_pad_vld_d2;
    end
 end
-reg  cvt_out_sel_d3;
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       cvt_out_sel_d3 <= {1{1'b0}};
-   end else begin
-       if ((cvt_out_vld_d2) == 1'b1) begin
-           cvt_out_sel_d3 <= cvt_out_sel_d2;
-       // VCS coverage off
-       end else if ((cvt_out_vld_d2) == 1'b0) begin
-       end else begin
-           cvt_out_sel_d3 <= 'bx;
-       // VCS coverage on
-       end
-   end
-end
 reg  cvt_out_reg_en_d3;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       cvt_out_reg_en_d3 <= {1{1'b0}};
+       cvt_out_reg_en_d3 <= 1'b0;
    end else begin
        if ((cvt_out_vld_d2 | cvt_out_vld_d2) == 1'b1) begin
            cvt_out_reg_en_d3 <= cvt_out_reg_en_d2;
@@ -2239,10 +1678,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        end
    end
 end
-reg [15:0] cvt_out_pad_mask_d3;
+reg [7:0] cvt_out_pad_mask_d3;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       cvt_out_pad_mask_d3 <= {16{1'b0}};
+       cvt_out_pad_mask_d3 <= {8{1'b0}};
    end else begin
        if ((cvt_out_pad_vld_d2) == 1'b1) begin
            cvt_out_pad_mask_d3 <= cvt_out_pad_mask_d2;
@@ -2272,25 +1711,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        cvt_out_pad_vld_d4 <= cvt_out_pad_vld_d3;
    end
 end
-reg  cvt_out_sel_d4;
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       cvt_out_sel_d4 <= {1{1'b0}};
-   end else begin
-       if ((cvt_out_vld_d3) == 1'b1) begin
-           cvt_out_sel_d4 <= cvt_out_sel_d3;
-       // VCS coverage off
-       end else if ((cvt_out_vld_d3) == 1'b0) begin
-       end else begin
-           cvt_out_sel_d4 <= 'bx;
-       // VCS coverage on
-       end
-   end
-end
 reg  cvt_out_reg_en_d4;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       cvt_out_reg_en_d4 <= {1{1'b0}};
+       cvt_out_reg_en_d4 <= 1'b0;
    end else begin
        if ((cvt_out_vld_d3 | cvt_out_vld_d2) == 1'b1) begin
            cvt_out_reg_en_d4 <= cvt_out_reg_en_d3;
@@ -2332,10 +1756,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        end
    end
 end
-reg [15:0] cvt_out_pad_mask_d4;
+reg [7:0] cvt_out_pad_mask_d4;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       cvt_out_pad_mask_d4 <= {16{1'b0}};
+       cvt_out_pad_mask_d4 <= {8{1'b0}};
    end else begin
        if ((cvt_out_pad_vld_d3) == 1'b1) begin
            cvt_out_pad_mask_d4 <= cvt_out_pad_mask_d3;
@@ -2365,25 +1789,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        cvt_out_pad_vld_d5 <= cvt_out_pad_vld_d4;
    end
 end
-reg  cvt_out_sel_d5;
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       cvt_out_sel_d5 <= {1{1'b0}};
-   end else begin
-       if ((cvt_out_vld_d4) == 1'b1) begin
-           cvt_out_sel_d5 <= cvt_out_sel_d4;
-       // VCS coverage off
-       end else if ((cvt_out_vld_d4) == 1'b0) begin
-       end else begin
-           cvt_out_sel_d5 <= 'bx;
-       // VCS coverage on
-       end
-   end
-end
 reg  cvt_out_reg_en_d5;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       cvt_out_reg_en_d5 <= {1{1'b0}};
+       cvt_out_reg_en_d5 <= 1'b0;
    end else begin
        if ((cvt_out_vld_d4 | cvt_out_vld_d2) == 1'b1) begin
            cvt_out_reg_en_d5 <= cvt_out_reg_en_d4;
@@ -2425,10 +1834,10 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        end
    end
 end
-reg [15:0] cvt_out_pad_mask_d5;
+reg [7:0] cvt_out_pad_mask_d5;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       cvt_out_pad_mask_d5 <= {16{1'b0}};
+       cvt_out_pad_mask_d5 <= {8{1'b0}};
    end else begin
        if ((cvt_out_pad_vld_d4) == 1'b1) begin
            cvt_out_pad_mask_d5 <= cvt_out_pad_mask_d4;
@@ -2443,13 +1852,11 @@ end
 
 
 
-assign cvt_out_sel_bp = cfg_cvt_en[1] ? cvt_out_sel_d5 : cvt_out_sel_d1;
-
 assign cvt_out_vld_bp = cfg_cvt_en[1] ? cvt_out_vld_d5 : cvt_out_vld_d1;
 assign cvt_out_addr_bp = cfg_cvt_en[1] ? cvt_out_addr_d5 : cvt_out_addr_d1;
 assign cvt_out_nz_mask_bp = cfg_cvt_en[2] ? cvt_out_nz_mask_d5 : cvt_out_nz_mask_d1;
 assign cvt_out_pad_vld_bp = cfg_cvt_en[3] ? cvt_out_pad_vld_d5 : cvt_out_pad_vld_d1;
-assign cvt_out_pad_mask_bp = ~cvt_out_pad_vld_bp ? 16'b0 : (cfg_cvt_en[3] ? cvt_out_pad_mask_d5 : cvt_out_pad_mask_d1);
+assign cvt_out_pad_mask_bp = ~cvt_out_pad_vld_bp ? 8'b0 : (cfg_cvt_en[3] ? cvt_out_pad_mask_d5 : cvt_out_pad_mask_d1);
 assign cvt_out_reg_en_bp = cfg_cvt_en[4] ? cvt_out_reg_en_d5 : cvt_out_reg_en_d1;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
@@ -2457,8 +1864,8 @@ assign cvt_out_reg_en_bp = cfg_cvt_en[4] ? cvt_out_reg_en_d5 : cvt_out_reg_en_d1
 // stage 3: final pipeline stage //
 ////////////////////////////////////////////////////////////////////////
 assign cvt_out_data_mix = cfg_cvt_en[5] ? cvt_data_cell : cvt_wr_data_d1;
-//: my $dmaif=128;
-//: my $atmm=16;
+//: my $dmaif=64;
+//: my $atmm=8;
 //: my $bpe = 8;
 //: my $atmmbw= $atmm * $bpe;
 //: my $Bnum = $dmaif / $bpe;
@@ -2482,18 +1889,10 @@ assign cvt_out_data_masked[39:32] = cvt_out_pad_mask_bp[4] ? cfg_pad_value[8-1:0
 assign cvt_out_data_masked[47:40] = cvt_out_pad_mask_bp[5] ? cfg_pad_value[8-1:0] : cvt_out_data_mix[47:40]; 
 assign cvt_out_data_masked[55:48] = cvt_out_pad_mask_bp[6] ? cfg_pad_value[8-1:0] : cvt_out_data_mix[55:48]; 
 assign cvt_out_data_masked[63:56] = cvt_out_pad_mask_bp[7] ? cfg_pad_value[8-1:0] : cvt_out_data_mix[63:56]; 
-assign cvt_out_data_masked[71:64] = cvt_out_pad_mask_bp[8] ? cfg_pad_value[8-1:0] : cvt_out_data_mix[71:64]; 
-assign cvt_out_data_masked[79:72] = cvt_out_pad_mask_bp[9] ? cfg_pad_value[8-1:0] : cvt_out_data_mix[79:72]; 
-assign cvt_out_data_masked[87:80] = cvt_out_pad_mask_bp[10] ? cfg_pad_value[8-1:0] : cvt_out_data_mix[87:80]; 
-assign cvt_out_data_masked[95:88] = cvt_out_pad_mask_bp[11] ? cfg_pad_value[8-1:0] : cvt_out_data_mix[95:88]; 
-assign cvt_out_data_masked[103:96] = cvt_out_pad_mask_bp[12] ? cfg_pad_value[8-1:0] : cvt_out_data_mix[103:96]; 
-assign cvt_out_data_masked[111:104] = cvt_out_pad_mask_bp[13] ? cfg_pad_value[8-1:0] : cvt_out_data_mix[111:104]; 
-assign cvt_out_data_masked[119:112] = cvt_out_pad_mask_bp[14] ? cfg_pad_value[8-1:0] : cvt_out_data_mix[119:112]; 
-assign cvt_out_data_masked[127:120] = cvt_out_pad_mask_bp[15] ? cfg_pad_value[8-1:0] : cvt_out_data_mix[127:120]; 
-assign cvt_out_data_p0 = cvt_out_nz_mask_bp[0] ? cvt_out_data_masked[(0+1)*128-1:0*128] : 0; 
+assign cvt_out_data_p0 = cvt_out_nz_mask_bp[0] ? cvt_out_data_masked[(0+1)*64-1:0*64] : 0; 
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       cvt_out_data_p0_reg <= 128'b0;
+       cvt_out_data_p0_reg <= 64'b0;
    end else begin
        cvt_out_data_p0_reg <= cvt_out_data_p0;
    end
@@ -2501,18 +1900,18 @@ end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign cvt_out_vld_reg_w = cvt_out_vld_bp | dat_cbuf_flush_vld_w;
-//: my $dmaif=128/8;
-//: my $atmc=32;
+//: my $dmaif=64/8;
+//: my $atmc=8;
 //: if ( $dmaif < $atmc ) {
 //: my $k = int( log( int($atmc/$dmaif) ) / log(2) );
 //: print "assign cvt_out_addr_reg_w = dat_cbuf_flush_vld_w ? dat_cbuf_flush_idx[17:${k}] : cvt_out_addr_bp; \n";
 //: } else {
 //: print "assign cvt_out_addr_reg_w = dat_cbuf_flush_vld_w ? dat_cbuf_flush_idx[16:0] : cvt_out_addr_bp; \n";
 //: }
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
-//: my $atmc=32;
+//: my $atmc=8;
 //: if($Bnum < $atmc) {
 //: my $dmaif_num = $atmc / $Bnum;
 //: my $k = int(log($dmaif_num)/log(2));
@@ -2531,23 +1930,7 @@ assign cvt_out_vld_reg_w = cvt_out_vld_bp | dat_cbuf_flush_vld_w;
 //: &eperl::flop("-nodeclare -clk nvdla_core_ng_clk  -rval \"${dmaif_num}'b0\"  -en \"cvt_out_vld_reg_w\" -d \"cvt_out_sel_reg_w\" -q cvt_out_sel_reg");
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign cvt_out_addr_reg_w = dat_cbuf_flush_vld_w ? dat_cbuf_flush_idx[17:1] : cvt_out_addr_bp; 
-wire [2-1:0] cvt_out_sel_reg_w; 
-assign cvt_out_sel_reg_w = dat_cbuf_flush_vld_w ? {dat_cbuf_flush_idx[0], ~dat_cbuf_flush_idx[0]} : {cvt_out_sel_bp[0],~cvt_out_sel_bp[0]}; 
-always @(posedge nvdla_core_ng_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       cvt_out_sel_reg <= 2'b0;
-   end else begin
-       if ((cvt_out_vld_reg_w) == 1'b1) begin
-           cvt_out_sel_reg <= cvt_out_sel_reg_w;
-       // VCS coverage off
-       end else if ((cvt_out_vld_reg_w) == 1'b0) begin
-       end else begin
-           cvt_out_sel_reg <= 'bx;
-       // VCS coverage on
-       end
-   end
-end
+assign cvt_out_addr_reg_w = dat_cbuf_flush_vld_w ? dat_cbuf_flush_idx[16:0] : cvt_out_addr_bp; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //================ Non-SLCG clock domain ================//
@@ -2582,10 +1965,10 @@ end
 ////////////////////////////////////////////////////////////////////////
 assign {mon_dat_cbuf_flush_idx_w,
         dat_cbuf_flush_idx_w} = dat_cbuf_flush_idx + 1'b1;
-//: my $bank_entry = 32 * 128;
+//: my $bank_entry = 32 * 512;
 //: my $bank_entry_bw = int( log( $bank_entry)/log(2) );
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: my $k;
 //: if($dmaif < $atmc) {
 //: $k = int(log(int($atmc/$dmaif))/log(2));
@@ -2598,8 +1981,8 @@ assign {mon_dat_cbuf_flush_idx_w,
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign dat_cbuf_flush_vld_w = ~dat_cbuf_flush_idx[12+1-1];//max value = half bank entry * 2^1
-assign dp2reg_dat_flush_done = dat_cbuf_flush_idx[12+1-1];
+assign dat_cbuf_flush_vld_w = ~dat_cbuf_flush_idx[14+0-1];//max value = half bank entry * 2^0
+assign dp2reg_dat_flush_done = dat_cbuf_flush_idx[14+0-1];
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //assign dat_cbuf_flush_vld_w = ~dat_cbuf_flush_idx[17];
@@ -2628,20 +2011,19 @@ end
 ////////////////////////////////////////////////////////////////////////
 assign cdma2buf_dat_wr_en = cvt_out_vld_reg;
 assign cdma2buf_dat_wr_addr = cvt_out_addr_reg;
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
-//: my $atmc=32;
+//: my $atmc=8;
 //: if($Bnum < $atmc) {
 //: print qq(assign cdma2buf_dat_wr_sel = cvt_out_sel_reg; \n );
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign cdma2buf_dat_wr_sel = cvt_out_sel_reg; 
- 
+
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign cdma2buf_dat_wr_data = {
-//: my $dmaif=128;
-//: my $atmm=16;
+//: my $dmaif=64;
+//: my $atmm=8;
 //: my $bpe = 8;
 //: my $Bnum = $dmaif / $bpe;
 //: my $atmm_num= $Bnum / $atmm;
@@ -2655,7 +2037,7 @@ assign cdma2buf_dat_wr_data = {
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
  cvt_out_data_p0_reg};
-assign dat_nan_mask = {128{1'b1}};
+assign dat_nan_mask = {64{1'b1}};
 assign dp2reg_nan_data_num = 32'b0;
 assign dp2reg_inf_data_num = 32'b0;
 ////////////////////////////////////////////////////////////////////////
@@ -2754,11 +2136,7 @@ assign dp2reg_inf_data_num = 32'b0;
   nv_assert_no_x #(0,1,0,"No X's allowed on control signals") zzz_assert_no_x_101x (nvdla_core_ng_clk, `ASSERT_RESET, 1'd1, (^(dat_cbuf_flush_vld_w))); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_no_x #(0,1,0,"No X's allowed on control signals") zzz_assert_no_x_102x (nvdla_core_clk, `ASSERT_RESET, 1'd1, (^(nan_reg_en))); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_no_x #(0,1,0,"No X's allowed on control signals") zzz_assert_no_x_103x (nvdla_core_clk, `ASSERT_RESET, 1'd1, (^(inf_reg_en))); // spyglass disable W504 SelfDeterminedExpr-ML 
-  nv_assert_zero_one_hot #(0,3,0,"Error! CVT input conflict!") zzz_assert_zero_one_hot_16x (nvdla_core_clk, `ASSERT_RESET, {dc2cvt_dat_wr_en, wg2cvt_dat_wr_en, img2cvt_dat_wr_en}); // spyglass disable W504 SelfDeterminedExpr-ML 
-  nv_assert_never #(0,0,"Error! Wg set two high masks") zzz_assert_never_19x (nvdla_core_clk, `ASSERT_RESET, (wg2cvt_dat_wr_en & (|cvt_wr_mask[3:2]))); // spyglass disable W504 SelfDeterminedExpr-ML 
-  nv_assert_never #(0,0,"Error! Wg set mean flag") zzz_assert_never_22x (nvdla_core_clk, `ASSERT_RESET, (wg2cvt_dat_wr_en & cvt_wr_mean)); // spyglass disable W504 SelfDeterminedExpr-ML 
-  nv_assert_never #(0,0,"Error! Wg set uint flag") zzz_assert_never_24x (nvdla_core_clk, `ASSERT_RESET, (wg2cvt_dat_wr_en & cvt_wr_uint)); // spyglass disable W504 SelfDeterminedExpr-ML 
-  nv_assert_never #(0,0,"Error! Wg set sub h flag") zzz_assert_never_26x (nvdla_core_clk, `ASSERT_RESET, (wg2cvt_dat_wr_en & (|cvt_wr_sub_h))); // spyglass disable W504 SelfDeterminedExpr-ML 
+  nv_assert_zero_one_hot #(0,2,0,"Error! CVT input conflict!") zzz_assert_zero_one_hot_16x (nvdla_core_clk, `ASSERT_RESET, {dc2cvt_dat_wr_en, img2cvt_dat_wr_en}); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_never #(0,0,"Error! Disable when input data") zzz_assert_never_17x (nvdla_core_clk, `ASSERT_RESET, (~op_en & cvt_wr_en)); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_never #(0,0,"Error! Dc set two high masks") zzz_assert_never_18x (nvdla_core_clk, `ASSERT_RESET, (dc2cvt_dat_wr_en & (|cvt_wr_mask[3:2]))); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_never #(0,0,"Error! Img set two hight masks when int8 input") zzz_assert_never_20x (nvdla_core_clk, `ASSERT_RESET, (img2cvt_dat_wr_en & (|cvt_wr_mask[3:2]) & is_input_int8[0])); // spyglass disable W504 SelfDeterminedExpr-ML 

@@ -35,12 +35,6 @@ module NV_NVDLA_CDMA_shared_buffer (
   ,dc2sbuf_p1_wr_en //|< i
   ,dc2sbuf_p1_wr_addr //|< i
   ,dc2sbuf_p1_wr_data //|< i
-  ,wg2sbuf_p0_wr_en //|< i
-  ,wg2sbuf_p0_wr_addr //|< i
-  ,wg2sbuf_p0_wr_data //|< i
-  ,wg2sbuf_p1_wr_en //|< i
-  ,wg2sbuf_p1_wr_addr //|< i
-  ,wg2sbuf_p1_wr_data //|< i
   ,img2sbuf_p0_wr_en //|< i
   ,img2sbuf_p0_wr_addr //|< i
   ,img2sbuf_p0_wr_data //|< i
@@ -53,12 +47,6 @@ module NV_NVDLA_CDMA_shared_buffer (
   ,dc2sbuf_p1_rd_en //|< i
   ,dc2sbuf_p1_rd_addr //|< i
   ,dc2sbuf_p1_rd_data //|> o
-  ,wg2sbuf_p0_rd_en //|< i
-  ,wg2sbuf_p0_rd_addr //|< i
-  ,wg2sbuf_p0_rd_data //|> o
-  ,wg2sbuf_p1_rd_en //|< i
-  ,wg2sbuf_p1_rd_addr //|< i
-  ,wg2sbuf_p1_rd_data //|> o
   ,img2sbuf_p0_rd_en //|< i
   ,img2sbuf_p0_rd_addr //|< i
   ,img2sbuf_p0_rd_data //|> o
@@ -74,40 +62,28 @@ input nvdla_core_rstn;
 input [31:0] pwrbus_ram_pd;
 input dc2sbuf_p0_wr_en; /* data valid */
 input [7:0] dc2sbuf_p0_wr_addr;
-input [16*8 -1:0] dc2sbuf_p0_wr_data;
+input [8*8 -1:0] dc2sbuf_p0_wr_data;
 input dc2sbuf_p1_wr_en; /* data valid */
 input [7:0] dc2sbuf_p1_wr_addr;
-input [16*8 -1:0] dc2sbuf_p1_wr_data;
-input wg2sbuf_p0_wr_en; /* data valid */
-input [7:0] wg2sbuf_p0_wr_addr;
-input [16*8 -1:0] wg2sbuf_p0_wr_data;
-input wg2sbuf_p1_wr_en; /* data valid */
-input [7:0] wg2sbuf_p1_wr_addr;
-input [16*8 -1:0] wg2sbuf_p1_wr_data;
+input [8*8 -1:0] dc2sbuf_p1_wr_data;
 input img2sbuf_p0_wr_en; /* data valid */
 input [7:0] img2sbuf_p0_wr_addr;
-input [16*8 -1:0] img2sbuf_p0_wr_data;
+input [8*8 -1:0] img2sbuf_p0_wr_data;
 input img2sbuf_p1_wr_en; /* data valid */
 input [7:0] img2sbuf_p1_wr_addr;
-input [16*8 -1:0] img2sbuf_p1_wr_data;
+input [8*8 -1:0] img2sbuf_p1_wr_data;
 input dc2sbuf_p0_rd_en; /* data valid */
 input [7:0] dc2sbuf_p0_rd_addr;
-output [16*8 -1:0] dc2sbuf_p0_rd_data;
+output [8*8 -1:0] dc2sbuf_p0_rd_data;
 input dc2sbuf_p1_rd_en; /* data valid */
 input [7:0] dc2sbuf_p1_rd_addr;
-output [16*8 -1:0] dc2sbuf_p1_rd_data;
-input wg2sbuf_p0_rd_en; /* data valid */
-input [7:0] wg2sbuf_p0_rd_addr;
-output [16*8 -1:0] wg2sbuf_p0_rd_data;
-input wg2sbuf_p1_rd_en; /* data valid */
-input [7:0] wg2sbuf_p1_rd_addr;
-output [16*8 -1:0] wg2sbuf_p1_rd_data;
+output [8*8 -1:0] dc2sbuf_p1_rd_data;
 input img2sbuf_p0_rd_en; /* data valid */
 input [7:0] img2sbuf_p0_rd_addr;
-output [16*8 -1:0] img2sbuf_p0_rd_data;
+output [8*8 -1:0] img2sbuf_p0_rd_data;
 input img2sbuf_p1_rd_en; /* data valid */
 input [7:0] img2sbuf_p1_rd_addr;
-output [16*8 -1:0] img2sbuf_p1_rd_data;
+output [8*8 -1:0] img2sbuf_p1_rd_data;
 //////////////
 // REGS //
 //////////////
@@ -118,7 +94,7 @@ output [16*8 -1:0] img2sbuf_p1_rd_data;
 //: my $b0;
 //: my $val;
 //: my @input_list;
-//: my $def_wino = 1;
+//: my $def_wino = 0;
 //: if($def_wino) {
 //: @input_list = ("dc", "wg", "img");
 //: } else {
@@ -132,7 +108,7 @@ output [16*8 -1:0] img2sbuf_p1_rd_data;
 //: print qq(reg sbuf_p${k}_re_${serial}_norm_d1;\n);
 //: }
 //: }
-//: $b0 = 16*8 - 1;
+//: $b0 = 8*8 - 1;
 //: for($k = 0; $k < 2; $k ++) {
 //: print qq(reg [${b0}:0] sbuf_p${k}_rdat_d2;\n);
 //: print qq(reg sbuf_p${k}_rd_en_d1;\n);
@@ -184,26 +160,10 @@ reg sbuf_p0_re_14_norm_d1;
 reg sbuf_p1_re_14_norm_d1;
 reg sbuf_p0_re_15_norm_d1;
 reg sbuf_p1_re_15_norm_d1;
-reg [127:0] sbuf_p0_rdat_d2;
+reg [63:0] sbuf_p0_rdat_d2;
 reg sbuf_p0_rd_en_d1;
-reg [127:0] sbuf_p1_rdat_d2;
+reg [63:0] sbuf_p1_rdat_d2;
 reg sbuf_p1_rd_en_d1;
-reg sbuf_p0_re_00_wg_d1;
-reg sbuf_p1_re_00_wg_d1;
-reg sbuf_p0_re_01_wg_d1;
-reg sbuf_p1_re_01_wg_d1;
-reg sbuf_p0_re_02_wg_d1;
-reg sbuf_p1_re_02_wg_d1;
-reg sbuf_p0_re_03_wg_d1;
-reg sbuf_p1_re_03_wg_d1;
-reg sbuf_p0_wg_sel_q0_d1;
-reg sbuf_p0_wg_sel_q1_d1;
-reg sbuf_p0_wg_sel_q2_d1;
-reg sbuf_p0_wg_sel_q3_d1;
-reg sbuf_p1_wg_sel_q0_d1;
-reg sbuf_p1_wg_sel_q1_d1;
-reg sbuf_p1_wg_sel_q2_d1;
-reg sbuf_p1_wg_sel_q3_d1;
 
 
 
@@ -218,7 +178,7 @@ reg sbuf_p1_wg_sel_q3_d1;
 //: my $b0;
 //: my $val;
 //: my @input_list;
-//: my $def_wino = 1;
+//: my $def_wino = 0;
 //: if($def_wino) {
 //: @input_list = ("dc", "wg", "img");
 //: } else {
@@ -253,7 +213,7 @@ reg sbuf_p1_wg_sel_q3_d1;
 //: }
 //: for($j = 0; $j < 16; $j ++) {
 //: $serial = sprintf("%02d", $j);
-//: $b0 = 16*8 - 1;
+//: $b0 = 8*8 - 1;
 //: print qq (wire [${b0}:0] sbuf_wdat_${serial};\n);
 //: }
 //: $b0 = int(log(16)/log(2)) - 1;
@@ -282,7 +242,7 @@ reg sbuf_p1_wg_sel_q3_d1;
 //: $serial = sprintf("%02d", $j);
 //: print qq (wire sbuf_re_${serial};\n);
 //: }
-//: $b0 = 16*8 - 1;
+//: $b0 = 8*8 - 1;
 //: for($i = 0; $i < 16; $i ++) {
 //: $serial = sprintf("%02d", $i);
 //: print qq (wire [${b0}:0] sbuf_rdat_${serial};\n);
@@ -299,7 +259,7 @@ reg sbuf_p1_wg_sel_q3_d1;
 //: $b0 = int(log(256)/log(2)) - int(log(16)/log(2)) - 1;
 //: print qq (wire [${b0}:0] sbuf_ra_${serial};\n);
 //: }
-//: $b0 = 16*8 - 1;
+//: $b0 = 8*8 - 1;
 //: for($k = 0; $k < 2; $k ++) {
 //: print qq (wire [${b0}:0] sbuf_p${k}_norm_rdat;\n);
 //: }
@@ -324,7 +284,7 @@ reg sbuf_p1_wg_sel_q3_d1;
 //: print qq (
 //: wire [${b0}:0] wg2sbuf_p0_rd_esel;
 //: wire [${b0}:0] wg2sbuf_p1_rd_esel;\n);
-//: $b0 = 16*8 - 1;
+//: $b0 = 8*8 - 1;
 //: for($k = 0; $k < 2; $k ++) {
 //: for($i = 0; $i < 4; $i ++) {
 //: print qq (wire [${b0}:0] sbuf_p${k}_wg_rdat_src_${i};\n);
@@ -344,105 +304,70 @@ reg sbuf_p1_wg_sel_q3_d1;
 wire [3:0] dc2sbuf_p0_wr_bsel;
 wire [3:0] dc2sbuf_p1_wr_bsel;
 
-wire [3:0] wg2sbuf_p0_wr_bsel;
-wire [3:0] wg2sbuf_p1_wr_bsel;
-
 wire [3:0] img2sbuf_p0_wr_bsel;
 wire [3:0] img2sbuf_p1_wr_bsel;
 wire dc2sbuf_p0_wr_sel_00;
 wire dc2sbuf_p1_wr_sel_00;
-wire wg2sbuf_p0_wr_sel_00;
-wire wg2sbuf_p1_wr_sel_00;
 wire img2sbuf_p0_wr_sel_00;
 wire img2sbuf_p1_wr_sel_00;
 wire dc2sbuf_p0_wr_sel_01;
 wire dc2sbuf_p1_wr_sel_01;
-wire wg2sbuf_p0_wr_sel_01;
-wire wg2sbuf_p1_wr_sel_01;
 wire img2sbuf_p0_wr_sel_01;
 wire img2sbuf_p1_wr_sel_01;
 wire dc2sbuf_p0_wr_sel_02;
 wire dc2sbuf_p1_wr_sel_02;
-wire wg2sbuf_p0_wr_sel_02;
-wire wg2sbuf_p1_wr_sel_02;
 wire img2sbuf_p0_wr_sel_02;
 wire img2sbuf_p1_wr_sel_02;
 wire dc2sbuf_p0_wr_sel_03;
 wire dc2sbuf_p1_wr_sel_03;
-wire wg2sbuf_p0_wr_sel_03;
-wire wg2sbuf_p1_wr_sel_03;
 wire img2sbuf_p0_wr_sel_03;
 wire img2sbuf_p1_wr_sel_03;
 wire dc2sbuf_p0_wr_sel_04;
 wire dc2sbuf_p1_wr_sel_04;
-wire wg2sbuf_p0_wr_sel_04;
-wire wg2sbuf_p1_wr_sel_04;
 wire img2sbuf_p0_wr_sel_04;
 wire img2sbuf_p1_wr_sel_04;
 wire dc2sbuf_p0_wr_sel_05;
 wire dc2sbuf_p1_wr_sel_05;
-wire wg2sbuf_p0_wr_sel_05;
-wire wg2sbuf_p1_wr_sel_05;
 wire img2sbuf_p0_wr_sel_05;
 wire img2sbuf_p1_wr_sel_05;
 wire dc2sbuf_p0_wr_sel_06;
 wire dc2sbuf_p1_wr_sel_06;
-wire wg2sbuf_p0_wr_sel_06;
-wire wg2sbuf_p1_wr_sel_06;
 wire img2sbuf_p0_wr_sel_06;
 wire img2sbuf_p1_wr_sel_06;
 wire dc2sbuf_p0_wr_sel_07;
 wire dc2sbuf_p1_wr_sel_07;
-wire wg2sbuf_p0_wr_sel_07;
-wire wg2sbuf_p1_wr_sel_07;
 wire img2sbuf_p0_wr_sel_07;
 wire img2sbuf_p1_wr_sel_07;
 wire dc2sbuf_p0_wr_sel_08;
 wire dc2sbuf_p1_wr_sel_08;
-wire wg2sbuf_p0_wr_sel_08;
-wire wg2sbuf_p1_wr_sel_08;
 wire img2sbuf_p0_wr_sel_08;
 wire img2sbuf_p1_wr_sel_08;
 wire dc2sbuf_p0_wr_sel_09;
 wire dc2sbuf_p1_wr_sel_09;
-wire wg2sbuf_p0_wr_sel_09;
-wire wg2sbuf_p1_wr_sel_09;
 wire img2sbuf_p0_wr_sel_09;
 wire img2sbuf_p1_wr_sel_09;
 wire dc2sbuf_p0_wr_sel_10;
 wire dc2sbuf_p1_wr_sel_10;
-wire wg2sbuf_p0_wr_sel_10;
-wire wg2sbuf_p1_wr_sel_10;
 wire img2sbuf_p0_wr_sel_10;
 wire img2sbuf_p1_wr_sel_10;
 wire dc2sbuf_p0_wr_sel_11;
 wire dc2sbuf_p1_wr_sel_11;
-wire wg2sbuf_p0_wr_sel_11;
-wire wg2sbuf_p1_wr_sel_11;
 wire img2sbuf_p0_wr_sel_11;
 wire img2sbuf_p1_wr_sel_11;
 wire dc2sbuf_p0_wr_sel_12;
 wire dc2sbuf_p1_wr_sel_12;
-wire wg2sbuf_p0_wr_sel_12;
-wire wg2sbuf_p1_wr_sel_12;
 wire img2sbuf_p0_wr_sel_12;
 wire img2sbuf_p1_wr_sel_12;
 wire dc2sbuf_p0_wr_sel_13;
 wire dc2sbuf_p1_wr_sel_13;
-wire wg2sbuf_p0_wr_sel_13;
-wire wg2sbuf_p1_wr_sel_13;
 wire img2sbuf_p0_wr_sel_13;
 wire img2sbuf_p1_wr_sel_13;
 wire dc2sbuf_p0_wr_sel_14;
 wire dc2sbuf_p1_wr_sel_14;
-wire wg2sbuf_p0_wr_sel_14;
-wire wg2sbuf_p1_wr_sel_14;
 wire img2sbuf_p0_wr_sel_14;
 wire img2sbuf_p1_wr_sel_14;
 wire dc2sbuf_p0_wr_sel_15;
 wire dc2sbuf_p1_wr_sel_15;
-wire wg2sbuf_p0_wr_sel_15;
-wire wg2sbuf_p1_wr_sel_15;
 wire img2sbuf_p0_wr_sel_15;
 wire img2sbuf_p1_wr_sel_15;
 wire sbuf_we_00;
@@ -477,22 +402,22 @@ wire [3:0] sbuf_wa_12;
 wire [3:0] sbuf_wa_13;
 wire [3:0] sbuf_wa_14;
 wire [3:0] sbuf_wa_15;
-wire [127:0] sbuf_wdat_00;
-wire [127:0] sbuf_wdat_01;
-wire [127:0] sbuf_wdat_02;
-wire [127:0] sbuf_wdat_03;
-wire [127:0] sbuf_wdat_04;
-wire [127:0] sbuf_wdat_05;
-wire [127:0] sbuf_wdat_06;
-wire [127:0] sbuf_wdat_07;
-wire [127:0] sbuf_wdat_08;
-wire [127:0] sbuf_wdat_09;
-wire [127:0] sbuf_wdat_10;
-wire [127:0] sbuf_wdat_11;
-wire [127:0] sbuf_wdat_12;
-wire [127:0] sbuf_wdat_13;
-wire [127:0] sbuf_wdat_14;
-wire [127:0] sbuf_wdat_15;
+wire [63:0] sbuf_wdat_00;
+wire [63:0] sbuf_wdat_01;
+wire [63:0] sbuf_wdat_02;
+wire [63:0] sbuf_wdat_03;
+wire [63:0] sbuf_wdat_04;
+wire [63:0] sbuf_wdat_05;
+wire [63:0] sbuf_wdat_06;
+wire [63:0] sbuf_wdat_07;
+wire [63:0] sbuf_wdat_08;
+wire [63:0] sbuf_wdat_09;
+wire [63:0] sbuf_wdat_10;
+wire [63:0] sbuf_wdat_11;
+wire [63:0] sbuf_wdat_12;
+wire [63:0] sbuf_wdat_13;
+wire [63:0] sbuf_wdat_14;
+wire [63:0] sbuf_wdat_15;
 
 wire [3:0] dc2sbuf_p0_rd_bsel;
 wire [3:0] dc2sbuf_p1_rd_bsel;
@@ -611,22 +536,22 @@ wire sbuf_re_12;
 wire sbuf_re_13;
 wire sbuf_re_14;
 wire sbuf_re_15;
-wire [127:0] sbuf_rdat_00;
-wire [127:0] sbuf_rdat_01;
-wire [127:0] sbuf_rdat_02;
-wire [127:0] sbuf_rdat_03;
-wire [127:0] sbuf_rdat_04;
-wire [127:0] sbuf_rdat_05;
-wire [127:0] sbuf_rdat_06;
-wire [127:0] sbuf_rdat_07;
-wire [127:0] sbuf_rdat_08;
-wire [127:0] sbuf_rdat_09;
-wire [127:0] sbuf_rdat_10;
-wire [127:0] sbuf_rdat_11;
-wire [127:0] sbuf_rdat_12;
-wire [127:0] sbuf_rdat_13;
-wire [127:0] sbuf_rdat_14;
-wire [127:0] sbuf_rdat_15;
+wire [63:0] sbuf_rdat_00;
+wire [63:0] sbuf_rdat_01;
+wire [63:0] sbuf_rdat_02;
+wire [63:0] sbuf_rdat_03;
+wire [63:0] sbuf_rdat_04;
+wire [63:0] sbuf_rdat_05;
+wire [63:0] sbuf_rdat_06;
+wire [63:0] sbuf_rdat_07;
+wire [63:0] sbuf_rdat_08;
+wire [63:0] sbuf_rdat_09;
+wire [63:0] sbuf_rdat_10;
+wire [63:0] sbuf_rdat_11;
+wire [63:0] sbuf_rdat_12;
+wire [63:0] sbuf_rdat_13;
+wire [63:0] sbuf_rdat_14;
+wire [63:0] sbuf_rdat_15;
 
 wire [3:0] dc2sbuf_p0_rd_esel;
 wire [3:0] dc2sbuf_p1_rd_esel;
@@ -649,66 +574,10 @@ wire [3:0] sbuf_ra_12;
 wire [3:0] sbuf_ra_13;
 wire [3:0] sbuf_ra_14;
 wire [3:0] sbuf_ra_15;
-wire [127:0] sbuf_p0_norm_rdat;
-wire [127:0] sbuf_p1_norm_rdat;
-wire [127:0] sbuf_p0_rdat;
-wire [127:0] sbuf_p1_rdat;
-
-wire [1:0] wg2sbuf_p0_rd_bsel;
-wire [1:0] wg2sbuf_p1_rd_bsel;
-wire wg2sbuf_p0_rd_sel_00;
-wire wg2sbuf_p1_rd_sel_00;
-wire wg2sbuf_p0_rd_sel_01;
-wire wg2sbuf_p1_rd_sel_01;
-wire wg2sbuf_p0_rd_sel_02;
-wire wg2sbuf_p1_rd_sel_02;
-wire wg2sbuf_p0_rd_sel_03;
-wire wg2sbuf_p1_rd_sel_03;
-wire wg2sbuf_p0_rd_sel_04;
-wire wg2sbuf_p1_rd_sel_04;
-wire wg2sbuf_p0_rd_sel_05;
-wire wg2sbuf_p1_rd_sel_05;
-wire wg2sbuf_p0_rd_sel_06;
-wire wg2sbuf_p1_rd_sel_06;
-wire wg2sbuf_p0_rd_sel_07;
-wire wg2sbuf_p1_rd_sel_07;
-wire wg2sbuf_p0_rd_sel_08;
-wire wg2sbuf_p1_rd_sel_08;
-wire wg2sbuf_p0_rd_sel_09;
-wire wg2sbuf_p1_rd_sel_09;
-wire wg2sbuf_p0_rd_sel_10;
-wire wg2sbuf_p1_rd_sel_10;
-wire wg2sbuf_p0_rd_sel_11;
-wire wg2sbuf_p1_rd_sel_11;
-wire wg2sbuf_p0_rd_sel_12;
-wire wg2sbuf_p1_rd_sel_12;
-wire wg2sbuf_p0_rd_sel_13;
-wire wg2sbuf_p1_rd_sel_13;
-wire wg2sbuf_p0_rd_sel_14;
-wire wg2sbuf_p1_rd_sel_14;
-wire wg2sbuf_p0_rd_sel_15;
-wire wg2sbuf_p1_rd_sel_15;
-
-wire [3:0] wg2sbuf_p0_rd_esel;
-wire [3:0] wg2sbuf_p1_rd_esel;
-wire [127:0] sbuf_p0_wg_rdat_src_0;
-wire [127:0] sbuf_p0_wg_rdat_src_1;
-wire [127:0] sbuf_p0_wg_rdat_src_2;
-wire [127:0] sbuf_p0_wg_rdat_src_3;
-wire [127:0] sbuf_p1_wg_rdat_src_0;
-wire [127:0] sbuf_p1_wg_rdat_src_1;
-wire [127:0] sbuf_p1_wg_rdat_src_2;
-wire [127:0] sbuf_p1_wg_rdat_src_3;
-wire [127:0] sbuf_p0_wg_rdat;
-wire [127:0] sbuf_p1_wg_rdat;
-wire sbuf_p0_wg_sel_q0;
-wire sbuf_p0_wg_sel_q1;
-wire sbuf_p0_wg_sel_q2;
-wire sbuf_p0_wg_sel_q3;
-wire sbuf_p1_wg_sel_q0;
-wire sbuf_p1_wg_sel_q1;
-wire sbuf_p1_wg_sel_q2;
-wire sbuf_p1_wg_sel_q3;
+wire [63:0] sbuf_p0_norm_rdat;
+wire [63:0] sbuf_p1_norm_rdat;
+wire [63:0] sbuf_p0_rdat;
+wire [63:0] sbuf_p1_rdat;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 ////////////////////////////////////////////////////////////////////////
@@ -722,7 +591,7 @@ wire sbuf_p1_wg_sel_q3;
 //: my $b0;
 //: my $bits;
 //: my @input_list;
-//: my $def_wino = 1;
+//: my $def_wino = 0;
 //: if($def_wino) {
 //: @input_list = ("dc", "wg", "img");
 //: } else {
@@ -788,7 +657,7 @@ wire sbuf_p1_wg_sel_q3;
 //: }
 //: for($j = 0; $j < 16; $j ++) {
 //: $serial = sprintf("%02d", $j);
-//: $bits = 16*8;
+//: $bits = 8*8;
 //: print qq (assign sbuf_wdat_${serial} = );
 //: for($i = 0; $i < @input_list; $i ++) {
 //: for($k = 0; $k < 2; $k ++) {
@@ -808,113 +677,76 @@ wire sbuf_p1_wg_sel_q3;
 assign dc2sbuf_p0_wr_bsel = dc2sbuf_p0_wr_addr[7:4];
 assign dc2sbuf_p1_wr_bsel = dc2sbuf_p1_wr_addr[7:4];
 
-assign wg2sbuf_p0_wr_bsel = wg2sbuf_p0_wr_addr[7:4];
-assign wg2sbuf_p1_wr_bsel = wg2sbuf_p1_wr_addr[7:4];
-
 assign img2sbuf_p0_wr_bsel = img2sbuf_p0_wr_addr[7:4];
 assign img2sbuf_p1_wr_bsel = img2sbuf_p1_wr_addr[7:4];
 
 
 assign dc2sbuf_p0_wr_sel_00 = (dc2sbuf_p0_wr_bsel == 4'd0) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_00 = (dc2sbuf_p1_wr_bsel == 4'd0) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_00 = (wg2sbuf_p0_wr_bsel == 4'd0) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_00 = (wg2sbuf_p1_wr_bsel == 4'd0) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_00 = (img2sbuf_p0_wr_bsel == 4'd0) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_00 = (img2sbuf_p1_wr_bsel == 4'd0) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_01 = (dc2sbuf_p0_wr_bsel == 4'd1) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_01 = (dc2sbuf_p1_wr_bsel == 4'd1) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_01 = (wg2sbuf_p0_wr_bsel == 4'd1) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_01 = (wg2sbuf_p1_wr_bsel == 4'd1) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_01 = (img2sbuf_p0_wr_bsel == 4'd1) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_01 = (img2sbuf_p1_wr_bsel == 4'd1) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_02 = (dc2sbuf_p0_wr_bsel == 4'd2) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_02 = (dc2sbuf_p1_wr_bsel == 4'd2) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_02 = (wg2sbuf_p0_wr_bsel == 4'd2) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_02 = (wg2sbuf_p1_wr_bsel == 4'd2) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_02 = (img2sbuf_p0_wr_bsel == 4'd2) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_02 = (img2sbuf_p1_wr_bsel == 4'd2) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_03 = (dc2sbuf_p0_wr_bsel == 4'd3) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_03 = (dc2sbuf_p1_wr_bsel == 4'd3) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_03 = (wg2sbuf_p0_wr_bsel == 4'd3) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_03 = (wg2sbuf_p1_wr_bsel == 4'd3) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_03 = (img2sbuf_p0_wr_bsel == 4'd3) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_03 = (img2sbuf_p1_wr_bsel == 4'd3) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_04 = (dc2sbuf_p0_wr_bsel == 4'd4) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_04 = (dc2sbuf_p1_wr_bsel == 4'd4) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_04 = (wg2sbuf_p0_wr_bsel == 4'd4) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_04 = (wg2sbuf_p1_wr_bsel == 4'd4) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_04 = (img2sbuf_p0_wr_bsel == 4'd4) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_04 = (img2sbuf_p1_wr_bsel == 4'd4) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_05 = (dc2sbuf_p0_wr_bsel == 4'd5) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_05 = (dc2sbuf_p1_wr_bsel == 4'd5) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_05 = (wg2sbuf_p0_wr_bsel == 4'd5) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_05 = (wg2sbuf_p1_wr_bsel == 4'd5) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_05 = (img2sbuf_p0_wr_bsel == 4'd5) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_05 = (img2sbuf_p1_wr_bsel == 4'd5) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_06 = (dc2sbuf_p0_wr_bsel == 4'd6) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_06 = (dc2sbuf_p1_wr_bsel == 4'd6) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_06 = (wg2sbuf_p0_wr_bsel == 4'd6) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_06 = (wg2sbuf_p1_wr_bsel == 4'd6) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_06 = (img2sbuf_p0_wr_bsel == 4'd6) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_06 = (img2sbuf_p1_wr_bsel == 4'd6) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_07 = (dc2sbuf_p0_wr_bsel == 4'd7) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_07 = (dc2sbuf_p1_wr_bsel == 4'd7) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_07 = (wg2sbuf_p0_wr_bsel == 4'd7) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_07 = (wg2sbuf_p1_wr_bsel == 4'd7) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_07 = (img2sbuf_p0_wr_bsel == 4'd7) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_07 = (img2sbuf_p1_wr_bsel == 4'd7) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_08 = (dc2sbuf_p0_wr_bsel == 4'd8) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_08 = (dc2sbuf_p1_wr_bsel == 4'd8) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_08 = (wg2sbuf_p0_wr_bsel == 4'd8) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_08 = (wg2sbuf_p1_wr_bsel == 4'd8) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_08 = (img2sbuf_p0_wr_bsel == 4'd8) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_08 = (img2sbuf_p1_wr_bsel == 4'd8) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_09 = (dc2sbuf_p0_wr_bsel == 4'd9) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_09 = (dc2sbuf_p1_wr_bsel == 4'd9) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_09 = (wg2sbuf_p0_wr_bsel == 4'd9) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_09 = (wg2sbuf_p1_wr_bsel == 4'd9) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_09 = (img2sbuf_p0_wr_bsel == 4'd9) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_09 = (img2sbuf_p1_wr_bsel == 4'd9) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_10 = (dc2sbuf_p0_wr_bsel == 4'd10) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_10 = (dc2sbuf_p1_wr_bsel == 4'd10) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_10 = (wg2sbuf_p0_wr_bsel == 4'd10) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_10 = (wg2sbuf_p1_wr_bsel == 4'd10) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_10 = (img2sbuf_p0_wr_bsel == 4'd10) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_10 = (img2sbuf_p1_wr_bsel == 4'd10) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_11 = (dc2sbuf_p0_wr_bsel == 4'd11) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_11 = (dc2sbuf_p1_wr_bsel == 4'd11) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_11 = (wg2sbuf_p0_wr_bsel == 4'd11) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_11 = (wg2sbuf_p1_wr_bsel == 4'd11) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_11 = (img2sbuf_p0_wr_bsel == 4'd11) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_11 = (img2sbuf_p1_wr_bsel == 4'd11) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_12 = (dc2sbuf_p0_wr_bsel == 4'd12) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_12 = (dc2sbuf_p1_wr_bsel == 4'd12) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_12 = (wg2sbuf_p0_wr_bsel == 4'd12) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_12 = (wg2sbuf_p1_wr_bsel == 4'd12) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_12 = (img2sbuf_p0_wr_bsel == 4'd12) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_12 = (img2sbuf_p1_wr_bsel == 4'd12) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_13 = (dc2sbuf_p0_wr_bsel == 4'd13) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_13 = (dc2sbuf_p1_wr_bsel == 4'd13) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_13 = (wg2sbuf_p0_wr_bsel == 4'd13) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_13 = (wg2sbuf_p1_wr_bsel == 4'd13) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_13 = (img2sbuf_p0_wr_bsel == 4'd13) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_13 = (img2sbuf_p1_wr_bsel == 4'd13) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_14 = (dc2sbuf_p0_wr_bsel == 4'd14) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_14 = (dc2sbuf_p1_wr_bsel == 4'd14) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_14 = (wg2sbuf_p0_wr_bsel == 4'd14) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_14 = (wg2sbuf_p1_wr_bsel == 4'd14) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_14 = (img2sbuf_p0_wr_bsel == 4'd14) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_14 = (img2sbuf_p1_wr_bsel == 4'd14) & img2sbuf_p1_wr_en;
 assign dc2sbuf_p0_wr_sel_15 = (dc2sbuf_p0_wr_bsel == 4'd15) & dc2sbuf_p0_wr_en;
 assign dc2sbuf_p1_wr_sel_15 = (dc2sbuf_p1_wr_bsel == 4'd15) & dc2sbuf_p1_wr_en;
-assign wg2sbuf_p0_wr_sel_15 = (wg2sbuf_p0_wr_bsel == 4'd15) & wg2sbuf_p0_wr_en;
-assign wg2sbuf_p1_wr_sel_15 = (wg2sbuf_p1_wr_bsel == 4'd15) & wg2sbuf_p1_wr_en;
 assign img2sbuf_p0_wr_sel_15 = (img2sbuf_p0_wr_bsel == 4'd15) & img2sbuf_p0_wr_en;
 assign img2sbuf_p1_wr_sel_15 = (img2sbuf_p1_wr_bsel == 4'd15) & img2sbuf_p1_wr_en;
 assign sbuf_we_00 = dc2sbuf_p0_wr_sel_00 |
  dc2sbuf_p1_wr_sel_00 |
- wg2sbuf_p0_wr_sel_00 |
- wg2sbuf_p1_wr_sel_00 |
  img2sbuf_p0_wr_sel_00 |
  img2sbuf_p1_wr_sel_00;
 
@@ -922,8 +754,6 @@ assign sbuf_we_00 = dc2sbuf_p0_wr_sel_00 |
 
 assign sbuf_we_01 = dc2sbuf_p0_wr_sel_01 |
  dc2sbuf_p1_wr_sel_01 |
- wg2sbuf_p0_wr_sel_01 |
- wg2sbuf_p1_wr_sel_01 |
  img2sbuf_p0_wr_sel_01 |
  img2sbuf_p1_wr_sel_01;
 
@@ -931,8 +761,6 @@ assign sbuf_we_01 = dc2sbuf_p0_wr_sel_01 |
 
 assign sbuf_we_02 = dc2sbuf_p0_wr_sel_02 |
  dc2sbuf_p1_wr_sel_02 |
- wg2sbuf_p0_wr_sel_02 |
- wg2sbuf_p1_wr_sel_02 |
  img2sbuf_p0_wr_sel_02 |
  img2sbuf_p1_wr_sel_02;
 
@@ -940,8 +768,6 @@ assign sbuf_we_02 = dc2sbuf_p0_wr_sel_02 |
 
 assign sbuf_we_03 = dc2sbuf_p0_wr_sel_03 |
  dc2sbuf_p1_wr_sel_03 |
- wg2sbuf_p0_wr_sel_03 |
- wg2sbuf_p1_wr_sel_03 |
  img2sbuf_p0_wr_sel_03 |
  img2sbuf_p1_wr_sel_03;
 
@@ -949,8 +775,6 @@ assign sbuf_we_03 = dc2sbuf_p0_wr_sel_03 |
 
 assign sbuf_we_04 = dc2sbuf_p0_wr_sel_04 |
  dc2sbuf_p1_wr_sel_04 |
- wg2sbuf_p0_wr_sel_04 |
- wg2sbuf_p1_wr_sel_04 |
  img2sbuf_p0_wr_sel_04 |
  img2sbuf_p1_wr_sel_04;
 
@@ -958,8 +782,6 @@ assign sbuf_we_04 = dc2sbuf_p0_wr_sel_04 |
 
 assign sbuf_we_05 = dc2sbuf_p0_wr_sel_05 |
  dc2sbuf_p1_wr_sel_05 |
- wg2sbuf_p0_wr_sel_05 |
- wg2sbuf_p1_wr_sel_05 |
  img2sbuf_p0_wr_sel_05 |
  img2sbuf_p1_wr_sel_05;
 
@@ -967,8 +789,6 @@ assign sbuf_we_05 = dc2sbuf_p0_wr_sel_05 |
 
 assign sbuf_we_06 = dc2sbuf_p0_wr_sel_06 |
  dc2sbuf_p1_wr_sel_06 |
- wg2sbuf_p0_wr_sel_06 |
- wg2sbuf_p1_wr_sel_06 |
  img2sbuf_p0_wr_sel_06 |
  img2sbuf_p1_wr_sel_06;
 
@@ -976,8 +796,6 @@ assign sbuf_we_06 = dc2sbuf_p0_wr_sel_06 |
 
 assign sbuf_we_07 = dc2sbuf_p0_wr_sel_07 |
  dc2sbuf_p1_wr_sel_07 |
- wg2sbuf_p0_wr_sel_07 |
- wg2sbuf_p1_wr_sel_07 |
  img2sbuf_p0_wr_sel_07 |
  img2sbuf_p1_wr_sel_07;
 
@@ -985,8 +803,6 @@ assign sbuf_we_07 = dc2sbuf_p0_wr_sel_07 |
 
 assign sbuf_we_08 = dc2sbuf_p0_wr_sel_08 |
  dc2sbuf_p1_wr_sel_08 |
- wg2sbuf_p0_wr_sel_08 |
- wg2sbuf_p1_wr_sel_08 |
  img2sbuf_p0_wr_sel_08 |
  img2sbuf_p1_wr_sel_08;
 
@@ -994,8 +810,6 @@ assign sbuf_we_08 = dc2sbuf_p0_wr_sel_08 |
 
 assign sbuf_we_09 = dc2sbuf_p0_wr_sel_09 |
  dc2sbuf_p1_wr_sel_09 |
- wg2sbuf_p0_wr_sel_09 |
- wg2sbuf_p1_wr_sel_09 |
  img2sbuf_p0_wr_sel_09 |
  img2sbuf_p1_wr_sel_09;
 
@@ -1003,8 +817,6 @@ assign sbuf_we_09 = dc2sbuf_p0_wr_sel_09 |
 
 assign sbuf_we_10 = dc2sbuf_p0_wr_sel_10 |
  dc2sbuf_p1_wr_sel_10 |
- wg2sbuf_p0_wr_sel_10 |
- wg2sbuf_p1_wr_sel_10 |
  img2sbuf_p0_wr_sel_10 |
  img2sbuf_p1_wr_sel_10;
 
@@ -1012,8 +824,6 @@ assign sbuf_we_10 = dc2sbuf_p0_wr_sel_10 |
 
 assign sbuf_we_11 = dc2sbuf_p0_wr_sel_11 |
  dc2sbuf_p1_wr_sel_11 |
- wg2sbuf_p0_wr_sel_11 |
- wg2sbuf_p1_wr_sel_11 |
  img2sbuf_p0_wr_sel_11 |
  img2sbuf_p1_wr_sel_11;
 
@@ -1021,8 +831,6 @@ assign sbuf_we_11 = dc2sbuf_p0_wr_sel_11 |
 
 assign sbuf_we_12 = dc2sbuf_p0_wr_sel_12 |
  dc2sbuf_p1_wr_sel_12 |
- wg2sbuf_p0_wr_sel_12 |
- wg2sbuf_p1_wr_sel_12 |
  img2sbuf_p0_wr_sel_12 |
  img2sbuf_p1_wr_sel_12;
 
@@ -1030,8 +838,6 @@ assign sbuf_we_12 = dc2sbuf_p0_wr_sel_12 |
 
 assign sbuf_we_13 = dc2sbuf_p0_wr_sel_13 |
  dc2sbuf_p1_wr_sel_13 |
- wg2sbuf_p0_wr_sel_13 |
- wg2sbuf_p1_wr_sel_13 |
  img2sbuf_p0_wr_sel_13 |
  img2sbuf_p1_wr_sel_13;
 
@@ -1039,8 +845,6 @@ assign sbuf_we_13 = dc2sbuf_p0_wr_sel_13 |
 
 assign sbuf_we_14 = dc2sbuf_p0_wr_sel_14 |
  dc2sbuf_p1_wr_sel_14 |
- wg2sbuf_p0_wr_sel_14 |
- wg2sbuf_p1_wr_sel_14 |
  img2sbuf_p0_wr_sel_14 |
  img2sbuf_p1_wr_sel_14;
 
@@ -1048,8 +852,6 @@ assign sbuf_we_14 = dc2sbuf_p0_wr_sel_14 |
 
 assign sbuf_we_15 = dc2sbuf_p0_wr_sel_15 |
  dc2sbuf_p1_wr_sel_15 |
- wg2sbuf_p0_wr_sel_15 |
- wg2sbuf_p1_wr_sel_15 |
  img2sbuf_p0_wr_sel_15 |
  img2sbuf_p1_wr_sel_15;
 
@@ -1057,8 +859,6 @@ assign sbuf_we_15 = dc2sbuf_p0_wr_sel_15 |
 
 assign sbuf_wa_00 = ({4{dc2sbuf_p0_wr_sel_00}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_00}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_00}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_00}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_00}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_00}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1066,8 +866,6 @@ assign sbuf_wa_00 = ({4{dc2sbuf_p0_wr_sel_00}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_01 = ({4{dc2sbuf_p0_wr_sel_01}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_01}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_01}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_01}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_01}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_01}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1075,8 +873,6 @@ assign sbuf_wa_01 = ({4{dc2sbuf_p0_wr_sel_01}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_02 = ({4{dc2sbuf_p0_wr_sel_02}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_02}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_02}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_02}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_02}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_02}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1084,8 +880,6 @@ assign sbuf_wa_02 = ({4{dc2sbuf_p0_wr_sel_02}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_03 = ({4{dc2sbuf_p0_wr_sel_03}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_03}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_03}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_03}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_03}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_03}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1093,8 +887,6 @@ assign sbuf_wa_03 = ({4{dc2sbuf_p0_wr_sel_03}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_04 = ({4{dc2sbuf_p0_wr_sel_04}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_04}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_04}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_04}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_04}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_04}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1102,8 +894,6 @@ assign sbuf_wa_04 = ({4{dc2sbuf_p0_wr_sel_04}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_05 = ({4{dc2sbuf_p0_wr_sel_05}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_05}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_05}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_05}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_05}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_05}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1111,8 +901,6 @@ assign sbuf_wa_05 = ({4{dc2sbuf_p0_wr_sel_05}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_06 = ({4{dc2sbuf_p0_wr_sel_06}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_06}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_06}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_06}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_06}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_06}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1120,8 +908,6 @@ assign sbuf_wa_06 = ({4{dc2sbuf_p0_wr_sel_06}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_07 = ({4{dc2sbuf_p0_wr_sel_07}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_07}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_07}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_07}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_07}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_07}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1129,8 +915,6 @@ assign sbuf_wa_07 = ({4{dc2sbuf_p0_wr_sel_07}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_08 = ({4{dc2sbuf_p0_wr_sel_08}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_08}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_08}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_08}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_08}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_08}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1138,8 +922,6 @@ assign sbuf_wa_08 = ({4{dc2sbuf_p0_wr_sel_08}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_09 = ({4{dc2sbuf_p0_wr_sel_09}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_09}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_09}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_09}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_09}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_09}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1147,8 +929,6 @@ assign sbuf_wa_09 = ({4{dc2sbuf_p0_wr_sel_09}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_10 = ({4{dc2sbuf_p0_wr_sel_10}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_10}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_10}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_10}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_10}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_10}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1156,8 +936,6 @@ assign sbuf_wa_10 = ({4{dc2sbuf_p0_wr_sel_10}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_11 = ({4{dc2sbuf_p0_wr_sel_11}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_11}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_11}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_11}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_11}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_11}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1165,8 +943,6 @@ assign sbuf_wa_11 = ({4{dc2sbuf_p0_wr_sel_11}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_12 = ({4{dc2sbuf_p0_wr_sel_12}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_12}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_12}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_12}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_12}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_12}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1174,8 +950,6 @@ assign sbuf_wa_12 = ({4{dc2sbuf_p0_wr_sel_12}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_13 = ({4{dc2sbuf_p0_wr_sel_13}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_13}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_13}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_13}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_13}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_13}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1183,8 +957,6 @@ assign sbuf_wa_13 = ({4{dc2sbuf_p0_wr_sel_13}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_14 = ({4{dc2sbuf_p0_wr_sel_14}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_14}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_14}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_14}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_14}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_14}} & img2sbuf_p1_wr_addr[3:0]);
 
@@ -1192,154 +964,120 @@ assign sbuf_wa_14 = ({4{dc2sbuf_p0_wr_sel_14}} & dc2sbuf_p0_wr_addr[3:0]) |
 
 assign sbuf_wa_15 = ({4{dc2sbuf_p0_wr_sel_15}} & dc2sbuf_p0_wr_addr[3:0]) |
  ({4{dc2sbuf_p1_wr_sel_15}} & dc2sbuf_p1_wr_addr[3:0]) |
- ({4{wg2sbuf_p0_wr_sel_15}} & wg2sbuf_p0_wr_addr[3:0]) |
- ({4{wg2sbuf_p1_wr_sel_15}} & wg2sbuf_p1_wr_addr[3:0]) |
  ({4{img2sbuf_p0_wr_sel_15}} & img2sbuf_p0_wr_addr[3:0]) |
  ({4{img2sbuf_p1_wr_sel_15}} & img2sbuf_p1_wr_addr[3:0]);
 
 
 
-assign sbuf_wdat_00 = ({128{dc2sbuf_p0_wr_sel_00}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_00}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_00}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_00}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_00}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_00}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_00 = ({64{dc2sbuf_p0_wr_sel_00}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_00}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_00}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_00}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_01 = ({128{dc2sbuf_p0_wr_sel_01}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_01}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_01}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_01}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_01}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_01}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_01 = ({64{dc2sbuf_p0_wr_sel_01}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_01}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_01}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_01}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_02 = ({128{dc2sbuf_p0_wr_sel_02}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_02}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_02}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_02}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_02}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_02}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_02 = ({64{dc2sbuf_p0_wr_sel_02}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_02}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_02}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_02}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_03 = ({128{dc2sbuf_p0_wr_sel_03}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_03}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_03}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_03}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_03}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_03}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_03 = ({64{dc2sbuf_p0_wr_sel_03}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_03}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_03}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_03}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_04 = ({128{dc2sbuf_p0_wr_sel_04}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_04}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_04}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_04}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_04}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_04}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_04 = ({64{dc2sbuf_p0_wr_sel_04}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_04}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_04}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_04}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_05 = ({128{dc2sbuf_p0_wr_sel_05}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_05}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_05}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_05}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_05}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_05}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_05 = ({64{dc2sbuf_p0_wr_sel_05}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_05}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_05}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_05}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_06 = ({128{dc2sbuf_p0_wr_sel_06}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_06}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_06}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_06}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_06}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_06}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_06 = ({64{dc2sbuf_p0_wr_sel_06}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_06}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_06}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_06}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_07 = ({128{dc2sbuf_p0_wr_sel_07}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_07}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_07}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_07}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_07}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_07}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_07 = ({64{dc2sbuf_p0_wr_sel_07}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_07}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_07}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_07}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_08 = ({128{dc2sbuf_p0_wr_sel_08}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_08}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_08}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_08}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_08}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_08}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_08 = ({64{dc2sbuf_p0_wr_sel_08}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_08}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_08}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_08}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_09 = ({128{dc2sbuf_p0_wr_sel_09}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_09}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_09}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_09}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_09}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_09}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_09 = ({64{dc2sbuf_p0_wr_sel_09}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_09}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_09}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_09}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_10 = ({128{dc2sbuf_p0_wr_sel_10}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_10}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_10}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_10}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_10}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_10}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_10 = ({64{dc2sbuf_p0_wr_sel_10}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_10}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_10}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_10}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_11 = ({128{dc2sbuf_p0_wr_sel_11}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_11}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_11}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_11}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_11}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_11}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_11 = ({64{dc2sbuf_p0_wr_sel_11}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_11}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_11}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_11}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_12 = ({128{dc2sbuf_p0_wr_sel_12}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_12}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_12}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_12}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_12}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_12}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_12 = ({64{dc2sbuf_p0_wr_sel_12}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_12}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_12}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_12}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_13 = ({128{dc2sbuf_p0_wr_sel_13}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_13}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_13}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_13}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_13}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_13}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_13 = ({64{dc2sbuf_p0_wr_sel_13}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_13}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_13}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_13}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_14 = ({128{dc2sbuf_p0_wr_sel_14}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_14}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_14}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_14}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_14}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_14}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_14 = ({64{dc2sbuf_p0_wr_sel_14}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_14}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_14}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_14}} & img2sbuf_p1_wr_data);
 
 
 
-assign sbuf_wdat_15 = ({128{dc2sbuf_p0_wr_sel_15}} & dc2sbuf_p0_wr_data) |
- ({128{dc2sbuf_p1_wr_sel_15}} & dc2sbuf_p1_wr_data) |
- ({128{wg2sbuf_p0_wr_sel_15}} & wg2sbuf_p0_wr_data) |
- ({128{wg2sbuf_p1_wr_sel_15}} & wg2sbuf_p1_wr_data) |
- ({128{img2sbuf_p0_wr_sel_15}} & img2sbuf_p0_wr_data) |
- ({128{img2sbuf_p1_wr_sel_15}} & img2sbuf_p1_wr_data);
+assign sbuf_wdat_15 = ({64{dc2sbuf_p0_wr_sel_15}} & dc2sbuf_p0_wr_data) |
+ ({64{dc2sbuf_p1_wr_sel_15}} & dc2sbuf_p1_wr_data) |
+ ({64{img2sbuf_p0_wr_sel_15}} & img2sbuf_p0_wr_data) |
+ ({64{img2sbuf_p1_wr_sel_15}} & img2sbuf_p1_wr_data);
 
 
 
@@ -1352,7 +1090,7 @@ assign sbuf_wdat_15 = ({128{dc2sbuf_p0_wr_sel_15}} & dc2sbuf_p0_wr_data) |
 //: my $serial;
 //: my $bits;
 //: my $depth;
-//: $bits = 16*8;
+//: $bits = 8*8;
 //: $depth = 256 / 16;
 //: for($i = 0; $i < 16; $i ++) {
 //: $serial = sprintf("%02d", $i);
@@ -1370,7 +1108,7 @@ assign sbuf_wdat_15 = ({128{dc2sbuf_p0_wr_sel_15}} & dc2sbuf_p0_wr_data) |
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-nv_ram_rws_16x128 u_shared_buffer_00 (
+nv_ram_rws_16x64 u_shared_buffer_00 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_00) //|< r
 ,.re (sbuf_re_00) //|< r
@@ -1382,7 +1120,7 @@ nv_ram_rws_16x128 u_shared_buffer_00 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_01 (
+nv_ram_rws_16x64 u_shared_buffer_01 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_01) //|< r
 ,.re (sbuf_re_01) //|< r
@@ -1394,7 +1132,7 @@ nv_ram_rws_16x128 u_shared_buffer_01 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_02 (
+nv_ram_rws_16x64 u_shared_buffer_02 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_02) //|< r
 ,.re (sbuf_re_02) //|< r
@@ -1406,7 +1144,7 @@ nv_ram_rws_16x128 u_shared_buffer_02 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_03 (
+nv_ram_rws_16x64 u_shared_buffer_03 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_03) //|< r
 ,.re (sbuf_re_03) //|< r
@@ -1418,7 +1156,7 @@ nv_ram_rws_16x128 u_shared_buffer_03 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_04 (
+nv_ram_rws_16x64 u_shared_buffer_04 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_04) //|< r
 ,.re (sbuf_re_04) //|< r
@@ -1430,7 +1168,7 @@ nv_ram_rws_16x128 u_shared_buffer_04 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_05 (
+nv_ram_rws_16x64 u_shared_buffer_05 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_05) //|< r
 ,.re (sbuf_re_05) //|< r
@@ -1442,7 +1180,7 @@ nv_ram_rws_16x128 u_shared_buffer_05 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_06 (
+nv_ram_rws_16x64 u_shared_buffer_06 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_06) //|< r
 ,.re (sbuf_re_06) //|< r
@@ -1454,7 +1192,7 @@ nv_ram_rws_16x128 u_shared_buffer_06 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_07 (
+nv_ram_rws_16x64 u_shared_buffer_07 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_07) //|< r
 ,.re (sbuf_re_07) //|< r
@@ -1466,7 +1204,7 @@ nv_ram_rws_16x128 u_shared_buffer_07 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_08 (
+nv_ram_rws_16x64 u_shared_buffer_08 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_08) //|< r
 ,.re (sbuf_re_08) //|< r
@@ -1478,7 +1216,7 @@ nv_ram_rws_16x128 u_shared_buffer_08 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_09 (
+nv_ram_rws_16x64 u_shared_buffer_09 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_09) //|< r
 ,.re (sbuf_re_09) //|< r
@@ -1490,7 +1228,7 @@ nv_ram_rws_16x128 u_shared_buffer_09 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_10 (
+nv_ram_rws_16x64 u_shared_buffer_10 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_10) //|< r
 ,.re (sbuf_re_10) //|< r
@@ -1502,7 +1240,7 @@ nv_ram_rws_16x128 u_shared_buffer_10 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_11 (
+nv_ram_rws_16x64 u_shared_buffer_11 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_11) //|< r
 ,.re (sbuf_re_11) //|< r
@@ -1514,7 +1252,7 @@ nv_ram_rws_16x128 u_shared_buffer_11 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_12 (
+nv_ram_rws_16x64 u_shared_buffer_12 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_12) //|< r
 ,.re (sbuf_re_12) //|< r
@@ -1526,7 +1264,7 @@ nv_ram_rws_16x128 u_shared_buffer_12 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_13 (
+nv_ram_rws_16x64 u_shared_buffer_13 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_13) //|< r
 ,.re (sbuf_re_13) //|< r
@@ -1538,7 +1276,7 @@ nv_ram_rws_16x128 u_shared_buffer_13 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_14 (
+nv_ram_rws_16x64 u_shared_buffer_14 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_14) //|< r
 ,.re (sbuf_re_14) //|< r
@@ -1550,7 +1288,7 @@ nv_ram_rws_16x128 u_shared_buffer_14 (
 );
 
 
-nv_ram_rws_16x128 u_shared_buffer_15 (
+nv_ram_rws_16x64 u_shared_buffer_15 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (sbuf_ra_15) //|< r
 ,.re (sbuf_re_15) //|< r
@@ -1571,7 +1309,7 @@ nv_ram_rws_16x128 u_shared_buffer_15 (
 //: my $k;
 //: my $serial;
 //: my @input_list;
-//: my $def_wino = 1;
+//: my $def_wino = 0;
 //: if($def_wino) {
 //: @input_list = ("dc", "wg", "img");
 //: } else {
@@ -1699,11 +1437,6 @@ assign dc2sbuf_p1_rd_bsel = dc2sbuf_p1_rd_addr[7:4];
 
 assign img2sbuf_p0_rd_bsel = img2sbuf_p0_rd_addr[7:4];
 assign img2sbuf_p1_rd_bsel = img2sbuf_p1_rd_addr[7:4];
-
-assign wg2sbuf_p0_rd_bsel = wg2sbuf_p0_rd_addr[7:6];
-assign wg2sbuf_p1_rd_bsel = wg2sbuf_p1_rd_addr[7:6];
-
-
 assign dc2sbuf_p0_rd_sel_00 = (dc2sbuf_p0_rd_bsel == 4'd0) & dc2sbuf_p0_rd_en;
 assign dc2sbuf_p1_rd_sel_00 = (dc2sbuf_p1_rd_bsel == 4'd0) & dc2sbuf_p1_rd_en;
 assign img2sbuf_p0_rd_sel_00 = (img2sbuf_p0_rd_bsel == 4'd0) & img2sbuf_p0_rd_en;
@@ -1770,72 +1503,38 @@ assign img2sbuf_p0_rd_sel_15 = (img2sbuf_p0_rd_bsel == 4'd15) & img2sbuf_p0_rd_e
 assign img2sbuf_p1_rd_sel_15 = (img2sbuf_p1_rd_bsel == 4'd15) & img2sbuf_p1_rd_en;
 
 
-assign wg2sbuf_p0_rd_sel_00 = (wg2sbuf_p0_rd_bsel == 2'd0) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_00 = (wg2sbuf_p1_rd_bsel == 2'd0) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_01 = (wg2sbuf_p0_rd_bsel == 2'd0) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_01 = (wg2sbuf_p1_rd_bsel == 2'd0) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_02 = (wg2sbuf_p0_rd_bsel == 2'd0) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_02 = (wg2sbuf_p1_rd_bsel == 2'd0) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_03 = (wg2sbuf_p0_rd_bsel == 2'd0) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_03 = (wg2sbuf_p1_rd_bsel == 2'd0) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_04 = (wg2sbuf_p0_rd_bsel == 2'd1) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_04 = (wg2sbuf_p1_rd_bsel == 2'd1) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_05 = (wg2sbuf_p0_rd_bsel == 2'd1) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_05 = (wg2sbuf_p1_rd_bsel == 2'd1) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_06 = (wg2sbuf_p0_rd_bsel == 2'd1) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_06 = (wg2sbuf_p1_rd_bsel == 2'd1) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_07 = (wg2sbuf_p0_rd_bsel == 2'd1) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_07 = (wg2sbuf_p1_rd_bsel == 2'd1) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_08 = (wg2sbuf_p0_rd_bsel == 2'd2) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_08 = (wg2sbuf_p1_rd_bsel == 2'd2) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_09 = (wg2sbuf_p0_rd_bsel == 2'd2) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_09 = (wg2sbuf_p1_rd_bsel == 2'd2) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_10 = (wg2sbuf_p0_rd_bsel == 2'd2) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_10 = (wg2sbuf_p1_rd_bsel == 2'd2) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_11 = (wg2sbuf_p0_rd_bsel == 2'd2) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_11 = (wg2sbuf_p1_rd_bsel == 2'd2) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_12 = (wg2sbuf_p0_rd_bsel == 2'd3) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_12 = (wg2sbuf_p1_rd_bsel == 2'd3) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_13 = (wg2sbuf_p0_rd_bsel == 2'd3) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_13 = (wg2sbuf_p1_rd_bsel == 2'd3) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_14 = (wg2sbuf_p0_rd_bsel == 2'd3) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_14 = (wg2sbuf_p1_rd_bsel == 2'd3) & wg2sbuf_p1_rd_en;
-assign wg2sbuf_p0_rd_sel_15 = (wg2sbuf_p0_rd_bsel == 2'd3) & wg2sbuf_p0_rd_en;
-assign wg2sbuf_p1_rd_sel_15 = (wg2sbuf_p1_rd_bsel == 2'd3) & wg2sbuf_p1_rd_en;
-
-
-assign sbuf_p0_re_00 = dc2sbuf_p0_rd_sel_00 | wg2sbuf_p0_rd_sel_00 | img2sbuf_p0_rd_sel_00;
-assign sbuf_p1_re_00 = dc2sbuf_p1_rd_sel_00 | wg2sbuf_p1_rd_sel_00 | img2sbuf_p1_rd_sel_00;
-assign sbuf_p0_re_01 = dc2sbuf_p0_rd_sel_01 | wg2sbuf_p0_rd_sel_01 | img2sbuf_p0_rd_sel_01;
-assign sbuf_p1_re_01 = dc2sbuf_p1_rd_sel_01 | wg2sbuf_p1_rd_sel_01 | img2sbuf_p1_rd_sel_01;
-assign sbuf_p0_re_02 = dc2sbuf_p0_rd_sel_02 | wg2sbuf_p0_rd_sel_02 | img2sbuf_p0_rd_sel_02;
-assign sbuf_p1_re_02 = dc2sbuf_p1_rd_sel_02 | wg2sbuf_p1_rd_sel_02 | img2sbuf_p1_rd_sel_02;
-assign sbuf_p0_re_03 = dc2sbuf_p0_rd_sel_03 | wg2sbuf_p0_rd_sel_03 | img2sbuf_p0_rd_sel_03;
-assign sbuf_p1_re_03 = dc2sbuf_p1_rd_sel_03 | wg2sbuf_p1_rd_sel_03 | img2sbuf_p1_rd_sel_03;
-assign sbuf_p0_re_04 = dc2sbuf_p0_rd_sel_04 | wg2sbuf_p0_rd_sel_04 | img2sbuf_p0_rd_sel_04;
-assign sbuf_p1_re_04 = dc2sbuf_p1_rd_sel_04 | wg2sbuf_p1_rd_sel_04 | img2sbuf_p1_rd_sel_04;
-assign sbuf_p0_re_05 = dc2sbuf_p0_rd_sel_05 | wg2sbuf_p0_rd_sel_05 | img2sbuf_p0_rd_sel_05;
-assign sbuf_p1_re_05 = dc2sbuf_p1_rd_sel_05 | wg2sbuf_p1_rd_sel_05 | img2sbuf_p1_rd_sel_05;
-assign sbuf_p0_re_06 = dc2sbuf_p0_rd_sel_06 | wg2sbuf_p0_rd_sel_06 | img2sbuf_p0_rd_sel_06;
-assign sbuf_p1_re_06 = dc2sbuf_p1_rd_sel_06 | wg2sbuf_p1_rd_sel_06 | img2sbuf_p1_rd_sel_06;
-assign sbuf_p0_re_07 = dc2sbuf_p0_rd_sel_07 | wg2sbuf_p0_rd_sel_07 | img2sbuf_p0_rd_sel_07;
-assign sbuf_p1_re_07 = dc2sbuf_p1_rd_sel_07 | wg2sbuf_p1_rd_sel_07 | img2sbuf_p1_rd_sel_07;
-assign sbuf_p0_re_08 = dc2sbuf_p0_rd_sel_08 | wg2sbuf_p0_rd_sel_08 | img2sbuf_p0_rd_sel_08;
-assign sbuf_p1_re_08 = dc2sbuf_p1_rd_sel_08 | wg2sbuf_p1_rd_sel_08 | img2sbuf_p1_rd_sel_08;
-assign sbuf_p0_re_09 = dc2sbuf_p0_rd_sel_09 | wg2sbuf_p0_rd_sel_09 | img2sbuf_p0_rd_sel_09;
-assign sbuf_p1_re_09 = dc2sbuf_p1_rd_sel_09 | wg2sbuf_p1_rd_sel_09 | img2sbuf_p1_rd_sel_09;
-assign sbuf_p0_re_10 = dc2sbuf_p0_rd_sel_10 | wg2sbuf_p0_rd_sel_10 | img2sbuf_p0_rd_sel_10;
-assign sbuf_p1_re_10 = dc2sbuf_p1_rd_sel_10 | wg2sbuf_p1_rd_sel_10 | img2sbuf_p1_rd_sel_10;
-assign sbuf_p0_re_11 = dc2sbuf_p0_rd_sel_11 | wg2sbuf_p0_rd_sel_11 | img2sbuf_p0_rd_sel_11;
-assign sbuf_p1_re_11 = dc2sbuf_p1_rd_sel_11 | wg2sbuf_p1_rd_sel_11 | img2sbuf_p1_rd_sel_11;
-assign sbuf_p0_re_12 = dc2sbuf_p0_rd_sel_12 | wg2sbuf_p0_rd_sel_12 | img2sbuf_p0_rd_sel_12;
-assign sbuf_p1_re_12 = dc2sbuf_p1_rd_sel_12 | wg2sbuf_p1_rd_sel_12 | img2sbuf_p1_rd_sel_12;
-assign sbuf_p0_re_13 = dc2sbuf_p0_rd_sel_13 | wg2sbuf_p0_rd_sel_13 | img2sbuf_p0_rd_sel_13;
-assign sbuf_p1_re_13 = dc2sbuf_p1_rd_sel_13 | wg2sbuf_p1_rd_sel_13 | img2sbuf_p1_rd_sel_13;
-assign sbuf_p0_re_14 = dc2sbuf_p0_rd_sel_14 | wg2sbuf_p0_rd_sel_14 | img2sbuf_p0_rd_sel_14;
-assign sbuf_p1_re_14 = dc2sbuf_p1_rd_sel_14 | wg2sbuf_p1_rd_sel_14 | img2sbuf_p1_rd_sel_14;
-assign sbuf_p0_re_15 = dc2sbuf_p0_rd_sel_15 | wg2sbuf_p0_rd_sel_15 | img2sbuf_p0_rd_sel_15;
-assign sbuf_p1_re_15 = dc2sbuf_p1_rd_sel_15 | wg2sbuf_p1_rd_sel_15 | img2sbuf_p1_rd_sel_15;
+assign sbuf_p0_re_00 = dc2sbuf_p0_rd_sel_00 | img2sbuf_p0_rd_sel_00;
+assign sbuf_p1_re_00 = dc2sbuf_p1_rd_sel_00 | img2sbuf_p1_rd_sel_00;
+assign sbuf_p0_re_01 = dc2sbuf_p0_rd_sel_01 | img2sbuf_p0_rd_sel_01;
+assign sbuf_p1_re_01 = dc2sbuf_p1_rd_sel_01 | img2sbuf_p1_rd_sel_01;
+assign sbuf_p0_re_02 = dc2sbuf_p0_rd_sel_02 | img2sbuf_p0_rd_sel_02;
+assign sbuf_p1_re_02 = dc2sbuf_p1_rd_sel_02 | img2sbuf_p1_rd_sel_02;
+assign sbuf_p0_re_03 = dc2sbuf_p0_rd_sel_03 | img2sbuf_p0_rd_sel_03;
+assign sbuf_p1_re_03 = dc2sbuf_p1_rd_sel_03 | img2sbuf_p1_rd_sel_03;
+assign sbuf_p0_re_04 = dc2sbuf_p0_rd_sel_04 | img2sbuf_p0_rd_sel_04;
+assign sbuf_p1_re_04 = dc2sbuf_p1_rd_sel_04 | img2sbuf_p1_rd_sel_04;
+assign sbuf_p0_re_05 = dc2sbuf_p0_rd_sel_05 | img2sbuf_p0_rd_sel_05;
+assign sbuf_p1_re_05 = dc2sbuf_p1_rd_sel_05 | img2sbuf_p1_rd_sel_05;
+assign sbuf_p0_re_06 = dc2sbuf_p0_rd_sel_06 | img2sbuf_p0_rd_sel_06;
+assign sbuf_p1_re_06 = dc2sbuf_p1_rd_sel_06 | img2sbuf_p1_rd_sel_06;
+assign sbuf_p0_re_07 = dc2sbuf_p0_rd_sel_07 | img2sbuf_p0_rd_sel_07;
+assign sbuf_p1_re_07 = dc2sbuf_p1_rd_sel_07 | img2sbuf_p1_rd_sel_07;
+assign sbuf_p0_re_08 = dc2sbuf_p0_rd_sel_08 | img2sbuf_p0_rd_sel_08;
+assign sbuf_p1_re_08 = dc2sbuf_p1_rd_sel_08 | img2sbuf_p1_rd_sel_08;
+assign sbuf_p0_re_09 = dc2sbuf_p0_rd_sel_09 | img2sbuf_p0_rd_sel_09;
+assign sbuf_p1_re_09 = dc2sbuf_p1_rd_sel_09 | img2sbuf_p1_rd_sel_09;
+assign sbuf_p0_re_10 = dc2sbuf_p0_rd_sel_10 | img2sbuf_p0_rd_sel_10;
+assign sbuf_p1_re_10 = dc2sbuf_p1_rd_sel_10 | img2sbuf_p1_rd_sel_10;
+assign sbuf_p0_re_11 = dc2sbuf_p0_rd_sel_11 | img2sbuf_p0_rd_sel_11;
+assign sbuf_p1_re_11 = dc2sbuf_p1_rd_sel_11 | img2sbuf_p1_rd_sel_11;
+assign sbuf_p0_re_12 = dc2sbuf_p0_rd_sel_12 | img2sbuf_p0_rd_sel_12;
+assign sbuf_p1_re_12 = dc2sbuf_p1_rd_sel_12 | img2sbuf_p1_rd_sel_12;
+assign sbuf_p0_re_13 = dc2sbuf_p0_rd_sel_13 | img2sbuf_p0_rd_sel_13;
+assign sbuf_p1_re_13 = dc2sbuf_p1_rd_sel_13 | img2sbuf_p1_rd_sel_13;
+assign sbuf_p0_re_14 = dc2sbuf_p0_rd_sel_14 | img2sbuf_p0_rd_sel_14;
+assign sbuf_p1_re_14 = dc2sbuf_p1_rd_sel_14 | img2sbuf_p1_rd_sel_14;
+assign sbuf_p0_re_15 = dc2sbuf_p0_rd_sel_15 | img2sbuf_p0_rd_sel_15;
+assign sbuf_p1_re_15 = dc2sbuf_p1_rd_sel_15 | img2sbuf_p1_rd_sel_15;
 
 
 assign sbuf_re_00 = sbuf_p0_re_00 | sbuf_p1_re_00;
@@ -1862,133 +1561,86 @@ assign dc2sbuf_p1_rd_esel = dc2sbuf_p1_rd_addr[3:0];
 
 assign img2sbuf_p0_rd_esel = img2sbuf_p0_rd_addr[3:0];
 assign img2sbuf_p1_rd_esel = img2sbuf_p1_rd_addr[3:0];
-
-assign wg2sbuf_p0_rd_esel = wg2sbuf_p0_rd_addr[5:2];
-assign wg2sbuf_p1_rd_esel = wg2sbuf_p1_rd_addr[5:2];
-
-
 assign sbuf_ra_00 = ({4{dc2sbuf_p0_rd_sel_00}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_00}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_00}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_00}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_00}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_00}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_01 = ({4{dc2sbuf_p0_rd_sel_01}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_01}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_01}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_01}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_01}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_01}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_02 = ({4{dc2sbuf_p0_rd_sel_02}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_02}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_02}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_02}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_02}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_02}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_03 = ({4{dc2sbuf_p0_rd_sel_03}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_03}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_03}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_03}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_03}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_03}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_04 = ({4{dc2sbuf_p0_rd_sel_04}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_04}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_04}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_04}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_04}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_04}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_05 = ({4{dc2sbuf_p0_rd_sel_05}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_05}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_05}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_05}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_05}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_05}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_06 = ({4{dc2sbuf_p0_rd_sel_06}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_06}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_06}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_06}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_06}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_06}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_07 = ({4{dc2sbuf_p0_rd_sel_07}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_07}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_07}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_07}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_07}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_07}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_08 = ({4{dc2sbuf_p0_rd_sel_08}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_08}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_08}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_08}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_08}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_08}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_09 = ({4{dc2sbuf_p0_rd_sel_09}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_09}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_09}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_09}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_09}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_09}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_10 = ({4{dc2sbuf_p0_rd_sel_10}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_10}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_10}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_10}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_10}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_10}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_11 = ({4{dc2sbuf_p0_rd_sel_11}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_11}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_11}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_11}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_11}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_11}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_12 = ({4{dc2sbuf_p0_rd_sel_12}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_12}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_12}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_12}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_12}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_12}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_13 = ({4{dc2sbuf_p0_rd_sel_13}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_13}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_13}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_13}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_13}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_13}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_14 = ({4{dc2sbuf_p0_rd_sel_14}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_14}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_14}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_14}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_14}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_14}} & img2sbuf_p1_rd_esel);
 
 assign sbuf_ra_15 = ({4{dc2sbuf_p0_rd_sel_15}} & dc2sbuf_p0_rd_esel) |
  ({4{dc2sbuf_p1_rd_sel_15}} & dc2sbuf_p1_rd_esel) |
- ({4{wg2sbuf_p0_rd_sel_15}} & wg2sbuf_p0_rd_esel) |
- ({4{wg2sbuf_p1_rd_sel_15}} & wg2sbuf_p1_rd_esel) |
  ({4{img2sbuf_p0_rd_sel_15}} & img2sbuf_p0_rd_esel) |
  ({4{img2sbuf_p1_rd_sel_15}} & img2sbuf_p1_rd_esel);
 
-
-
-assign sbuf_p0_wg_sel_q0 = (wg2sbuf_p0_rd_addr[1:0] == 2'h0) & wg2sbuf_p0_rd_en;
-assign sbuf_p0_wg_sel_q1 = (wg2sbuf_p0_rd_addr[1:0] == 2'h1) & wg2sbuf_p0_rd_en;
-assign sbuf_p0_wg_sel_q2 = (wg2sbuf_p0_rd_addr[1:0] == 2'h2) & wg2sbuf_p0_rd_en;
-assign sbuf_p0_wg_sel_q3 = (wg2sbuf_p0_rd_addr[1:0] == 2'h3) & wg2sbuf_p0_rd_en;
-assign sbuf_p1_wg_sel_q0 = (wg2sbuf_p1_rd_addr[1:0] == 2'h0) & wg2sbuf_p1_rd_en;
-assign sbuf_p1_wg_sel_q1 = (wg2sbuf_p1_rd_addr[1:0] == 2'h1) & wg2sbuf_p1_rd_en;
-assign sbuf_p1_wg_sel_q2 = (wg2sbuf_p1_rd_addr[1:0] == 2'h2) & wg2sbuf_p1_rd_en;
-assign sbuf_p1_wg_sel_q3 = (wg2sbuf_p1_rd_addr[1:0] == 2'h3) & wg2sbuf_p1_rd_en;
 
 
 
@@ -2002,7 +1654,7 @@ assign sbuf_p1_wg_sel_q3 = (wg2sbuf_p1_rd_addr[1:0] == 2'h3) & wg2sbuf_p1_rd_en;
 //: my $serial;
 //: my $val;
 //: my @input_list;
-//: my $def_wino = 1;
+//: my $def_wino = 0;
 //: if($def_wino) {
 //: @input_list = ("dc", "wg", "img");
 //: } else {
@@ -2053,340 +1705,224 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_00_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_00_norm_d1 <= sbuf_p0_re_00 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_00_norm_d1 <= sbuf_p0_re_00;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_00_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_00_norm_d1 <= sbuf_p1_re_00 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_00_norm_d1 <= sbuf_p1_re_00;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_01_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_01_norm_d1 <= sbuf_p0_re_01 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_01_norm_d1 <= sbuf_p0_re_01;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_01_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_01_norm_d1 <= sbuf_p1_re_01 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_01_norm_d1 <= sbuf_p1_re_01;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_02_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_02_norm_d1 <= sbuf_p0_re_02 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_02_norm_d1 <= sbuf_p0_re_02;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_02_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_02_norm_d1 <= sbuf_p1_re_02 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_02_norm_d1 <= sbuf_p1_re_02;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_03_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_03_norm_d1 <= sbuf_p0_re_03 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_03_norm_d1 <= sbuf_p0_re_03;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_03_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_03_norm_d1 <= sbuf_p1_re_03 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_03_norm_d1 <= sbuf_p1_re_03;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_04_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_04_norm_d1 <= sbuf_p0_re_04 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_04_norm_d1 <= sbuf_p0_re_04;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_04_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_04_norm_d1 <= sbuf_p1_re_04 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_04_norm_d1 <= sbuf_p1_re_04;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_05_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_05_norm_d1 <= sbuf_p0_re_05 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_05_norm_d1 <= sbuf_p0_re_05;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_05_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_05_norm_d1 <= sbuf_p1_re_05 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_05_norm_d1 <= sbuf_p1_re_05;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_06_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_06_norm_d1 <= sbuf_p0_re_06 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_06_norm_d1 <= sbuf_p0_re_06;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_06_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_06_norm_d1 <= sbuf_p1_re_06 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_06_norm_d1 <= sbuf_p1_re_06;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_07_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_07_norm_d1 <= sbuf_p0_re_07 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_07_norm_d1 <= sbuf_p0_re_07;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_07_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_07_norm_d1 <= sbuf_p1_re_07 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_07_norm_d1 <= sbuf_p1_re_07;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_08_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_08_norm_d1 <= sbuf_p0_re_08 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_08_norm_d1 <= sbuf_p0_re_08;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_08_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_08_norm_d1 <= sbuf_p1_re_08 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_08_norm_d1 <= sbuf_p1_re_08;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_09_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_09_norm_d1 <= sbuf_p0_re_09 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_09_norm_d1 <= sbuf_p0_re_09;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_09_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_09_norm_d1 <= sbuf_p1_re_09 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_09_norm_d1 <= sbuf_p1_re_09;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_10_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_10_norm_d1 <= sbuf_p0_re_10 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_10_norm_d1 <= sbuf_p0_re_10;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_10_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_10_norm_d1 <= sbuf_p1_re_10 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_10_norm_d1 <= sbuf_p1_re_10;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_11_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_11_norm_d1 <= sbuf_p0_re_11 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_11_norm_d1 <= sbuf_p0_re_11;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_11_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_11_norm_d1 <= sbuf_p1_re_11 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_11_norm_d1 <= sbuf_p1_re_11;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_12_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_12_norm_d1 <= sbuf_p0_re_12 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_12_norm_d1 <= sbuf_p0_re_12;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_12_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_12_norm_d1 <= sbuf_p1_re_12 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_12_norm_d1 <= sbuf_p1_re_12;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_13_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_13_norm_d1 <= sbuf_p0_re_13 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_13_norm_d1 <= sbuf_p0_re_13;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_13_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_13_norm_d1 <= sbuf_p1_re_13 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_13_norm_d1 <= sbuf_p1_re_13;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_14_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_14_norm_d1 <= sbuf_p0_re_14 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_14_norm_d1 <= sbuf_p0_re_14;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_14_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_14_norm_d1 <= sbuf_p1_re_14 & ~wg2sbuf_p1_rd_en;
+       sbuf_p1_re_14_norm_d1 <= sbuf_p1_re_14;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_re_15_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p0_re_15_norm_d1 <= sbuf_p0_re_15 & ~wg2sbuf_p0_rd_en;
+       sbuf_p0_re_15_norm_d1 <= sbuf_p0_re_15;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_re_15_norm_d1 <= 1'b0;
    end else begin
-       sbuf_p1_re_15_norm_d1 <= sbuf_p1_re_15 & ~wg2sbuf_p1_rd_en;
-   end
-end
-
-
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p0_re_00_wg_d1 <= 1'b0;
-   end else begin
-       sbuf_p0_re_00_wg_d1 <= sbuf_p0_re_00 & wg2sbuf_p0_rd_en;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p1_re_00_wg_d1 <= 1'b0;
-   end else begin
-       sbuf_p1_re_00_wg_d1 <= sbuf_p1_re_00 & wg2sbuf_p1_rd_en;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p0_re_01_wg_d1 <= 1'b0;
-   end else begin
-       sbuf_p0_re_01_wg_d1 <= sbuf_p0_re_04 & wg2sbuf_p0_rd_en;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p1_re_01_wg_d1 <= 1'b0;
-   end else begin
-       sbuf_p1_re_01_wg_d1 <= sbuf_p1_re_04 & wg2sbuf_p1_rd_en;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p0_re_02_wg_d1 <= 1'b0;
-   end else begin
-       sbuf_p0_re_02_wg_d1 <= sbuf_p0_re_08 & wg2sbuf_p0_rd_en;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p1_re_02_wg_d1 <= 1'b0;
-   end else begin
-       sbuf_p1_re_02_wg_d1 <= sbuf_p1_re_08 & wg2sbuf_p1_rd_en;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p0_re_03_wg_d1 <= 1'b0;
-   end else begin
-       sbuf_p0_re_03_wg_d1 <= sbuf_p0_re_12 & wg2sbuf_p0_rd_en;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p1_re_03_wg_d1 <= 1'b0;
-   end else begin
-       sbuf_p1_re_03_wg_d1 <= sbuf_p1_re_12 & wg2sbuf_p1_rd_en;
-   end
-end
-
-
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p0_wg_sel_q0_d1 <= 1'b0;
-   end else begin
-       sbuf_p0_wg_sel_q0_d1 <= sbuf_p0_wg_sel_q0;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p0_wg_sel_q1_d1 <= 1'b0;
-   end else begin
-       sbuf_p0_wg_sel_q1_d1 <= sbuf_p0_wg_sel_q1;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p0_wg_sel_q2_d1 <= 1'b0;
-   end else begin
-       sbuf_p0_wg_sel_q2_d1 <= sbuf_p0_wg_sel_q2;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p0_wg_sel_q3_d1 <= 1'b0;
-   end else begin
-       sbuf_p0_wg_sel_q3_d1 <= sbuf_p0_wg_sel_q3;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p1_wg_sel_q0_d1 <= 1'b0;
-   end else begin
-       sbuf_p1_wg_sel_q0_d1 <= sbuf_p1_wg_sel_q0;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p1_wg_sel_q1_d1 <= 1'b0;
-   end else begin
-       sbuf_p1_wg_sel_q1_d1 <= sbuf_p1_wg_sel_q1;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p1_wg_sel_q2_d1 <= 1'b0;
-   end else begin
-       sbuf_p1_wg_sel_q2_d1 <= sbuf_p1_wg_sel_q2;
-   end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       sbuf_p1_wg_sel_q3_d1 <= 1'b0;
-   end else begin
-       sbuf_p1_wg_sel_q3_d1 <= sbuf_p1_wg_sel_q3;
+       sbuf_p1_re_15_norm_d1 <= sbuf_p1_re_15;
    end
 end
 
@@ -2395,14 +1931,14 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p0_rd_en_d1 <= 1'b0;
    end else begin
-       sbuf_p0_rd_en_d1 <= dc2sbuf_p0_rd_en | wg2sbuf_p0_rd_en | img2sbuf_p0_rd_en;
+       sbuf_p0_rd_en_d1 <= dc2sbuf_p0_rd_en | img2sbuf_p0_rd_en;
    end
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        sbuf_p1_rd_en_d1 <= 1'b0;
    end else begin
-       sbuf_p1_rd_en_d1 <= dc2sbuf_p1_rd_en | wg2sbuf_p1_rd_en | img2sbuf_p1_rd_en;
+       sbuf_p1_rd_en_d1 <= dc2sbuf_p1_rd_en | img2sbuf_p1_rd_en;
    end
 end
 
@@ -2419,13 +1955,13 @@ end
 //: my $b0;
 //: my $val;
 //: my $serial;
-//: my $def_wino = 1;
+//: my $def_wino = 0;
 //:
 //: for($k = 0; $k < 2; $k ++) {
 //: print qq (assign sbuf_p${k}_norm_rdat = );
 //: for($j = 0; $j < 16; $j ++) {
 //: $serial = sprintf("%02d", $j);
-//: print qq (({16*8{sbuf_p${k}_re_${serial}_norm_d1}} & sbuf_rdat_${serial}));
+//: print qq (({8*8{sbuf_p${k}_re_${serial}_norm_d1}} & sbuf_rdat_${serial}));
 //: if($j != 16 - 1) {
 //: print qq ( |\n );
 //: } else {
@@ -2443,7 +1979,7 @@ end
 //: for($j = 0; $j < 16/4; $j ++) {
 //: $val = sprintf("%02d", $j);
 //: $serial = sprintf("%02d", $j*4 + $i);
-//: print qq (({16*8{sbuf_p${k}_re_${val}_wg_d1}} & sbuf_rdat_${serial}));
+//: print qq (({8*8{sbuf_p${k}_re_${val}_wg_d1}} & sbuf_rdat_${serial}));
 //: if($j != 16/4 - 1) {
 //: print qq ( |\n );
 //: } else {
@@ -2458,9 +1994,9 @@ end
 //: for($k = 0; $k < 2; $k ++) {
 //: print qq(assign sbuf_p${k}_wg_rdat = );
 //: for($i = 0; $i < 4; $i ++) {
-//: $b1 = int(16*8/4 * ($i + 1) - 1);
-//: $b0 = int(16*8/4 * $i);
-//: print qq(\({16*8{sbuf_p${k}_wg_sel_q${i}_d1}} & \{);
+//: $b1 = int(8*8/4 * ($i + 1) - 1);
+//: $b0 = int(8*8/4 * $i);
+//: print qq(\({8*8{sbuf_p${k}_wg_sel_q${i}_d1}} & \{);
 //: for($j = 3; $j >= 0; $j --) {
 //: print qq(sbuf_p${k}_wg_rdat_src_${j}[${b1}:${b0}]);
 //: if($j != 0) {
@@ -2489,108 +2025,46 @@ end
 //: }
 //: print qq (\n\n);
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign sbuf_p0_norm_rdat = ({16*8{sbuf_p0_re_00_norm_d1}} & sbuf_rdat_00) |
- ({16*8{sbuf_p0_re_01_norm_d1}} & sbuf_rdat_01) |
- ({16*8{sbuf_p0_re_02_norm_d1}} & sbuf_rdat_02) |
- ({16*8{sbuf_p0_re_03_norm_d1}} & sbuf_rdat_03) |
- ({16*8{sbuf_p0_re_04_norm_d1}} & sbuf_rdat_04) |
- ({16*8{sbuf_p0_re_05_norm_d1}} & sbuf_rdat_05) |
- ({16*8{sbuf_p0_re_06_norm_d1}} & sbuf_rdat_06) |
- ({16*8{sbuf_p0_re_07_norm_d1}} & sbuf_rdat_07) |
- ({16*8{sbuf_p0_re_08_norm_d1}} & sbuf_rdat_08) |
- ({16*8{sbuf_p0_re_09_norm_d1}} & sbuf_rdat_09) |
- ({16*8{sbuf_p0_re_10_norm_d1}} & sbuf_rdat_10) |
- ({16*8{sbuf_p0_re_11_norm_d1}} & sbuf_rdat_11) |
- ({16*8{sbuf_p0_re_12_norm_d1}} & sbuf_rdat_12) |
- ({16*8{sbuf_p0_re_13_norm_d1}} & sbuf_rdat_13) |
- ({16*8{sbuf_p0_re_14_norm_d1}} & sbuf_rdat_14) |
- ({16*8{sbuf_p0_re_15_norm_d1}} & sbuf_rdat_15);
+assign sbuf_p0_norm_rdat = ({8*8{sbuf_p0_re_00_norm_d1}} & sbuf_rdat_00) |
+ ({8*8{sbuf_p0_re_01_norm_d1}} & sbuf_rdat_01) |
+ ({8*8{sbuf_p0_re_02_norm_d1}} & sbuf_rdat_02) |
+ ({8*8{sbuf_p0_re_03_norm_d1}} & sbuf_rdat_03) |
+ ({8*8{sbuf_p0_re_04_norm_d1}} & sbuf_rdat_04) |
+ ({8*8{sbuf_p0_re_05_norm_d1}} & sbuf_rdat_05) |
+ ({8*8{sbuf_p0_re_06_norm_d1}} & sbuf_rdat_06) |
+ ({8*8{sbuf_p0_re_07_norm_d1}} & sbuf_rdat_07) |
+ ({8*8{sbuf_p0_re_08_norm_d1}} & sbuf_rdat_08) |
+ ({8*8{sbuf_p0_re_09_norm_d1}} & sbuf_rdat_09) |
+ ({8*8{sbuf_p0_re_10_norm_d1}} & sbuf_rdat_10) |
+ ({8*8{sbuf_p0_re_11_norm_d1}} & sbuf_rdat_11) |
+ ({8*8{sbuf_p0_re_12_norm_d1}} & sbuf_rdat_12) |
+ ({8*8{sbuf_p0_re_13_norm_d1}} & sbuf_rdat_13) |
+ ({8*8{sbuf_p0_re_14_norm_d1}} & sbuf_rdat_14) |
+ ({8*8{sbuf_p0_re_15_norm_d1}} & sbuf_rdat_15);
 
 
-assign sbuf_p1_norm_rdat = ({16*8{sbuf_p1_re_00_norm_d1}} & sbuf_rdat_00) |
- ({16*8{sbuf_p1_re_01_norm_d1}} & sbuf_rdat_01) |
- ({16*8{sbuf_p1_re_02_norm_d1}} & sbuf_rdat_02) |
- ({16*8{sbuf_p1_re_03_norm_d1}} & sbuf_rdat_03) |
- ({16*8{sbuf_p1_re_04_norm_d1}} & sbuf_rdat_04) |
- ({16*8{sbuf_p1_re_05_norm_d1}} & sbuf_rdat_05) |
- ({16*8{sbuf_p1_re_06_norm_d1}} & sbuf_rdat_06) |
- ({16*8{sbuf_p1_re_07_norm_d1}} & sbuf_rdat_07) |
- ({16*8{sbuf_p1_re_08_norm_d1}} & sbuf_rdat_08) |
- ({16*8{sbuf_p1_re_09_norm_d1}} & sbuf_rdat_09) |
- ({16*8{sbuf_p1_re_10_norm_d1}} & sbuf_rdat_10) |
- ({16*8{sbuf_p1_re_11_norm_d1}} & sbuf_rdat_11) |
- ({16*8{sbuf_p1_re_12_norm_d1}} & sbuf_rdat_12) |
- ({16*8{sbuf_p1_re_13_norm_d1}} & sbuf_rdat_13) |
- ({16*8{sbuf_p1_re_14_norm_d1}} & sbuf_rdat_14) |
- ({16*8{sbuf_p1_re_15_norm_d1}} & sbuf_rdat_15);
-
-
-
-
-assign sbuf_p0_wg_rdat_src_0 = ({16*8{sbuf_p0_re_00_wg_d1}} & sbuf_rdat_00) |
- ({16*8{sbuf_p0_re_01_wg_d1}} & sbuf_rdat_04) |
- ({16*8{sbuf_p0_re_02_wg_d1}} & sbuf_rdat_08) |
- ({16*8{sbuf_p0_re_03_wg_d1}} & sbuf_rdat_12);
-
-
-assign sbuf_p0_wg_rdat_src_1 = ({16*8{sbuf_p0_re_00_wg_d1}} & sbuf_rdat_01) |
- ({16*8{sbuf_p0_re_01_wg_d1}} & sbuf_rdat_05) |
- ({16*8{sbuf_p0_re_02_wg_d1}} & sbuf_rdat_09) |
- ({16*8{sbuf_p0_re_03_wg_d1}} & sbuf_rdat_13);
-
-
-assign sbuf_p0_wg_rdat_src_2 = ({16*8{sbuf_p0_re_00_wg_d1}} & sbuf_rdat_02) |
- ({16*8{sbuf_p0_re_01_wg_d1}} & sbuf_rdat_06) |
- ({16*8{sbuf_p0_re_02_wg_d1}} & sbuf_rdat_10) |
- ({16*8{sbuf_p0_re_03_wg_d1}} & sbuf_rdat_14);
-
-
-assign sbuf_p0_wg_rdat_src_3 = ({16*8{sbuf_p0_re_00_wg_d1}} & sbuf_rdat_03) |
- ({16*8{sbuf_p0_re_01_wg_d1}} & sbuf_rdat_07) |
- ({16*8{sbuf_p0_re_02_wg_d1}} & sbuf_rdat_11) |
- ({16*8{sbuf_p0_re_03_wg_d1}} & sbuf_rdat_15);
-
-
-assign sbuf_p1_wg_rdat_src_0 = ({16*8{sbuf_p1_re_00_wg_d1}} & sbuf_rdat_00) |
- ({16*8{sbuf_p1_re_01_wg_d1}} & sbuf_rdat_04) |
- ({16*8{sbuf_p1_re_02_wg_d1}} & sbuf_rdat_08) |
- ({16*8{sbuf_p1_re_03_wg_d1}} & sbuf_rdat_12);
-
-
-assign sbuf_p1_wg_rdat_src_1 = ({16*8{sbuf_p1_re_00_wg_d1}} & sbuf_rdat_01) |
- ({16*8{sbuf_p1_re_01_wg_d1}} & sbuf_rdat_05) |
- ({16*8{sbuf_p1_re_02_wg_d1}} & sbuf_rdat_09) |
- ({16*8{sbuf_p1_re_03_wg_d1}} & sbuf_rdat_13);
-
-
-assign sbuf_p1_wg_rdat_src_2 = ({16*8{sbuf_p1_re_00_wg_d1}} & sbuf_rdat_02) |
- ({16*8{sbuf_p1_re_01_wg_d1}} & sbuf_rdat_06) |
- ({16*8{sbuf_p1_re_02_wg_d1}} & sbuf_rdat_10) |
- ({16*8{sbuf_p1_re_03_wg_d1}} & sbuf_rdat_14);
-
-
-assign sbuf_p1_wg_rdat_src_3 = ({16*8{sbuf_p1_re_00_wg_d1}} & sbuf_rdat_03) |
- ({16*8{sbuf_p1_re_01_wg_d1}} & sbuf_rdat_07) |
- ({16*8{sbuf_p1_re_02_wg_d1}} & sbuf_rdat_11) |
- ({16*8{sbuf_p1_re_03_wg_d1}} & sbuf_rdat_15);
+assign sbuf_p1_norm_rdat = ({8*8{sbuf_p1_re_00_norm_d1}} & sbuf_rdat_00) |
+ ({8*8{sbuf_p1_re_01_norm_d1}} & sbuf_rdat_01) |
+ ({8*8{sbuf_p1_re_02_norm_d1}} & sbuf_rdat_02) |
+ ({8*8{sbuf_p1_re_03_norm_d1}} & sbuf_rdat_03) |
+ ({8*8{sbuf_p1_re_04_norm_d1}} & sbuf_rdat_04) |
+ ({8*8{sbuf_p1_re_05_norm_d1}} & sbuf_rdat_05) |
+ ({8*8{sbuf_p1_re_06_norm_d1}} & sbuf_rdat_06) |
+ ({8*8{sbuf_p1_re_07_norm_d1}} & sbuf_rdat_07) |
+ ({8*8{sbuf_p1_re_08_norm_d1}} & sbuf_rdat_08) |
+ ({8*8{sbuf_p1_re_09_norm_d1}} & sbuf_rdat_09) |
+ ({8*8{sbuf_p1_re_10_norm_d1}} & sbuf_rdat_10) |
+ ({8*8{sbuf_p1_re_11_norm_d1}} & sbuf_rdat_11) |
+ ({8*8{sbuf_p1_re_12_norm_d1}} & sbuf_rdat_12) |
+ ({8*8{sbuf_p1_re_13_norm_d1}} & sbuf_rdat_13) |
+ ({8*8{sbuf_p1_re_14_norm_d1}} & sbuf_rdat_14) |
+ ({8*8{sbuf_p1_re_15_norm_d1}} & sbuf_rdat_15);
 
 
 
 
-assign sbuf_p0_wg_rdat = ({16*8{sbuf_p0_wg_sel_q0_d1}} & {sbuf_p0_wg_rdat_src_3[31:0], sbuf_p0_wg_rdat_src_2[31:0], sbuf_p0_wg_rdat_src_1[31:0], sbuf_p0_wg_rdat_src_0[31:0]}) |
- ({16*8{sbuf_p0_wg_sel_q1_d1}} & {sbuf_p0_wg_rdat_src_3[63:32], sbuf_p0_wg_rdat_src_2[63:32], sbuf_p0_wg_rdat_src_1[63:32], sbuf_p0_wg_rdat_src_0[63:32]}) |
- ({16*8{sbuf_p0_wg_sel_q2_d1}} & {sbuf_p0_wg_rdat_src_3[95:64], sbuf_p0_wg_rdat_src_2[95:64], sbuf_p0_wg_rdat_src_1[95:64], sbuf_p0_wg_rdat_src_0[95:64]}) |
- ({16*8{sbuf_p0_wg_sel_q3_d1}} & {sbuf_p0_wg_rdat_src_3[127:96], sbuf_p0_wg_rdat_src_2[127:96], sbuf_p0_wg_rdat_src_1[127:96], sbuf_p0_wg_rdat_src_0[127:96]});
-
-assign sbuf_p1_wg_rdat = ({16*8{sbuf_p1_wg_sel_q0_d1}} & {sbuf_p1_wg_rdat_src_3[31:0], sbuf_p1_wg_rdat_src_2[31:0], sbuf_p1_wg_rdat_src_1[31:0], sbuf_p1_wg_rdat_src_0[31:0]}) |
- ({16*8{sbuf_p1_wg_sel_q1_d1}} & {sbuf_p1_wg_rdat_src_3[63:32], sbuf_p1_wg_rdat_src_2[63:32], sbuf_p1_wg_rdat_src_1[63:32], sbuf_p1_wg_rdat_src_0[63:32]}) |
- ({16*8{sbuf_p1_wg_sel_q2_d1}} & {sbuf_p1_wg_rdat_src_3[95:64], sbuf_p1_wg_rdat_src_2[95:64], sbuf_p1_wg_rdat_src_1[95:64], sbuf_p1_wg_rdat_src_0[95:64]}) |
- ({16*8{sbuf_p1_wg_sel_q3_d1}} & {sbuf_p1_wg_rdat_src_3[127:96], sbuf_p1_wg_rdat_src_2[127:96], sbuf_p1_wg_rdat_src_1[127:96], sbuf_p1_wg_rdat_src_0[127:96]});
-
-
-
-assign sbuf_p0_rdat = sbuf_p0_norm_rdat | sbuf_p0_wg_rdat;
-assign sbuf_p1_rdat = sbuf_p1_norm_rdat | sbuf_p1_wg_rdat;
+assign sbuf_p0_rdat = sbuf_p0_norm_rdat;
+assign sbuf_p1_rdat = sbuf_p1_norm_rdat;
 
 
 
@@ -2634,7 +2108,7 @@ end
 //: my $i;
 //: my $k;
 //: my @input_list;
-//: my $def_wino = 1;
+//: my $def_wino = 0;
 //: if($def_wino) {
 //: @input_list = ("dc", "wg", "img");
 //: } else {
@@ -2650,10 +2124,8 @@ end
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 assign dc2sbuf_p0_rd_data = sbuf_p0_rdat_d2;
-assign wg2sbuf_p0_rd_data = sbuf_p0_rdat_d2;
 assign img2sbuf_p0_rd_data = sbuf_p0_rdat_d2;
 assign dc2sbuf_p1_rd_data = sbuf_p1_rdat_d2;
-assign wg2sbuf_p1_rd_data = sbuf_p1_rdat_d2;
 assign img2sbuf_p1_rd_data = sbuf_p1_rdat_d2;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
@@ -2689,13 +2161,11 @@ assign img2sbuf_p1_rd_data = sbuf_p1_rdat_d2;
 `endif // FV_ASSERT_ON
 `ifndef SYNTHESIS
 // VCS coverage off
-  nv_assert_never #(0,0,"multiple write to shared buffer") zzz_assert_never_1x (nvdla_core_clk, `ASSERT_RESET, ((dc2sbuf_p0_wr_en | dc2sbuf_p1_wr_en) & (wg2sbuf_p0_wr_en | wg2sbuf_p1_wr_en)) | ((dc2sbuf_p0_wr_en | dc2sbuf_p1_wr_en) & (img2sbuf_p0_wr_en | img2sbuf_p1_wr_en)) | ((wg2sbuf_p0_wr_en | wg2sbuf_p1_wr_en) & (img2sbuf_p0_wr_en | img2sbuf_p1_wr_en))); // spyglass disable W504 SelfDeterminedExpr-ML 
-  nv_assert_never #(0,0,"multiple read to shared buffer") zzz_assert_never_2x (nvdla_core_clk, `ASSERT_RESET, ((dc2sbuf_p0_rd_en | dc2sbuf_p1_rd_en) & (wg2sbuf_p0_rd_en | wg2sbuf_p1_rd_en)) | ((dc2sbuf_p0_rd_en | dc2sbuf_p1_rd_en) & (img2sbuf_p0_rd_en | img2sbuf_p1_rd_en)) | ((wg2sbuf_p0_rd_en | wg2sbuf_p1_rd_en) & (img2sbuf_p0_rd_en | img2sbuf_p1_rd_en))); // spyglass disable W504 SelfDeterminedExpr-ML 
+  nv_assert_never #(0,0,"multiple write to shared buffer") zzz_assert_never_1x (nvdla_core_clk, `ASSERT_RESET, ((dc2sbuf_p0_wr_en | dc2sbuf_p1_wr_en) & (img2sbuf_p0_wr_en | img2sbuf_p1_wr_en))); // spyglass disable W504 SelfDeterminedExpr-ML 
+  nv_assert_never #(0,0,"multiple read to shared buffer") zzz_assert_never_2x (nvdla_core_clk, `ASSERT_RESET, ((dc2sbuf_p0_rd_en | dc2sbuf_p1_rd_en) & (img2sbuf_p0_rd_en | img2sbuf_p1_rd_en))); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_never #(0,0,"dc write same buffer") zzz_assert_never_3x (nvdla_core_clk, `ASSERT_RESET, (dc2sbuf_p0_wr_en & dc2sbuf_p1_wr_en & (dc2sbuf_p0_wr_bsel == dc2sbuf_p1_wr_bsel))); // spyglass disable W504 SelfDeterminedExpr-ML 
-  nv_assert_never #(0,0,"wg write same buffer") zzz_assert_never_4x (nvdla_core_clk, `ASSERT_RESET, (wg2sbuf_p0_wr_en & wg2sbuf_p1_wr_en & (wg2sbuf_p0_wr_bsel == wg2sbuf_p1_wr_bsel))); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_never #(0,0,"img write same buffer") zzz_assert_never_5x (nvdla_core_clk, `ASSERT_RESET, (img2sbuf_p0_wr_en & img2sbuf_p1_wr_en & (img2sbuf_p0_wr_bsel == img2sbuf_p1_wr_bsel))); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_never #(0,0,"dc read same buffer") zzz_assert_never_6x (nvdla_core_clk, `ASSERT_RESET, (dc2sbuf_p0_rd_en & dc2sbuf_p1_rd_en & (dc2sbuf_p0_rd_bsel == dc2sbuf_p1_rd_bsel))); // spyglass disable W504 SelfDeterminedExpr-ML 
-  nv_assert_never #(0,0,"wg read same buffer") zzz_assert_never_7x (nvdla_core_clk, `ASSERT_RESET, (wg2sbuf_p0_rd_en & wg2sbuf_p1_rd_en & (wg2sbuf_p0_rd_bsel == wg2sbuf_p1_rd_bsel))); // spyglass disable W504 SelfDeterminedExpr-ML 
   nv_assert_never #(0,0,"img read same buffer") zzz_assert_never_8x (nvdla_core_clk, `ASSERT_RESET, (img2sbuf_p0_rd_en & img2sbuf_p1_rd_en & (img2sbuf_p0_rd_bsel == img2sbuf_p1_rd_bsel))); // spyglass disable W504 SelfDeterminedExpr-ML 
 //for(my $i = 0; $i < 16; $i ++) {
 // my $j = sprintf("%02d", $i);

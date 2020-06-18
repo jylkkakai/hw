@@ -39,7 +39,6 @@
 // this distribution for more information.
 // ================================================================
 // File Name: NV_NVDLA_CMAC.h
-`define DESIGNWARE_NOEXIST 1
 module NV_NVDLA_partition_a (
    cacc2sdp_ready
   ,csb2cacc_req_pvld
@@ -51,7 +50,7 @@ module NV_NVDLA_partition_a (
   ,direct_reset_
   ,dla_reset_rstn
   ,global_clk_ovr_on
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
 //: ,mac_a2accu_data${i} )
 //: }
@@ -61,16 +60,12 @@ module NV_NVDLA_partition_a (
 ,mac_a2accu_data1 
 ,mac_a2accu_data2 
 ,mac_a2accu_data3 
-,mac_a2accu_data4 
-,mac_a2accu_data5 
-,mac_a2accu_data6 
-,mac_a2accu_data7 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,mac_a2accu_mask
   ,mac_a2accu_mode
   ,mac_a2accu_pd
   ,mac_a2accu_pvld
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
 //: ,mac_b2accu_data${i} )
 //: }
@@ -80,10 +75,6 @@ module NV_NVDLA_partition_a (
 ,mac_b2accu_data1 
 ,mac_b2accu_data2 
 ,mac_b2accu_data3 
-,mac_b2accu_data4 
-,mac_b2accu_data5 
-,mac_b2accu_data6 
-,mac_b2accu_data7 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,mac_b2accu_mask
   ,mac_b2accu_mode
@@ -116,43 +107,35 @@ output csb2cacc_req_prdy; /* data return handshake */
 input [62:0] csb2cacc_req_pd;
 output cacc2sdp_valid; /* data valid */
 input cacc2sdp_ready; /* data return handshake */
-output [32*4 +2 -1:0] cacc2sdp_pd;
+output [32*1 +2 -1:0] cacc2sdp_pd;
 input mac_a2accu_pvld; /* data valid */
-input [16/2 -1:0] mac_a2accu_mask;
+input [8/2 -1:0] mac_a2accu_mask;
 input mac_a2accu_mode;
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
-//: input [21 -1:0] mac_a2accu_data${i}; )
+//: input [19 -1:0] mac_a2accu_data${i}; )
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-input [21 -1:0] mac_a2accu_data0; 
-input [21 -1:0] mac_a2accu_data1; 
-input [21 -1:0] mac_a2accu_data2; 
-input [21 -1:0] mac_a2accu_data3; 
-input [21 -1:0] mac_a2accu_data4; 
-input [21 -1:0] mac_a2accu_data5; 
-input [21 -1:0] mac_a2accu_data6; 
-input [21 -1:0] mac_a2accu_data7; 
+input [19 -1:0] mac_a2accu_data0; 
+input [19 -1:0] mac_a2accu_data1; 
+input [19 -1:0] mac_a2accu_data2; 
+input [19 -1:0] mac_a2accu_data3; 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input [8:0] mac_a2accu_pd;
 input mac_b2accu_pvld; /* data valid */
-input [16/2 -1:0] mac_b2accu_mask;
+input [8/2 -1:0] mac_b2accu_mask;
 input mac_b2accu_mode;
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
-//: input [21 -1:0] mac_b2accu_data${i}; )
+//: input [19 -1:0] mac_b2accu_data${i}; )
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-input [21 -1:0] mac_b2accu_data0; 
-input [21 -1:0] mac_b2accu_data1; 
-input [21 -1:0] mac_b2accu_data2; 
-input [21 -1:0] mac_b2accu_data3; 
-input [21 -1:0] mac_b2accu_data4; 
-input [21 -1:0] mac_b2accu_data5; 
-input [21 -1:0] mac_b2accu_data6; 
-input [21 -1:0] mac_b2accu_data7; 
+input [19 -1:0] mac_b2accu_data0; 
+input [19 -1:0] mac_b2accu_data1; 
+input [19 -1:0] mac_b2accu_data2; 
+input [19 -1:0] mac_b2accu_data3; 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input [8:0] mac_b2accu_pd;
 input [31:0] pwrbus_ram_pd;
@@ -163,22 +146,18 @@ input dla_reset_rstn;
 input nvdla_clk_ovr_on;
 wire dla_clk_ovr_on_sync;
 wire global_clk_ovr_on_sync;
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
-//: wire [21 -1:0] mac_b2accu_data${i}; )
+//: wire [19 -1:0] mac_b2accu_data${i}; )
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-wire [21 -1:0] mac_b2accu_data0; 
-wire [21 -1:0] mac_b2accu_data1; 
-wire [21 -1:0] mac_b2accu_data2; 
-wire [21 -1:0] mac_b2accu_data3; 
-wire [21 -1:0] mac_b2accu_data4; 
-wire [21 -1:0] mac_b2accu_data5; 
-wire [21 -1:0] mac_b2accu_data6; 
-wire [21 -1:0] mac_b2accu_data7; 
+wire [19 -1:0] mac_b2accu_data0; 
+wire [19 -1:0] mac_b2accu_data1; 
+wire [19 -1:0] mac_b2accu_data2; 
+wire [19 -1:0] mac_b2accu_data3; 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-wire [16/2 -1:0] mac_b2accu_mask;
+wire [8/2 -1:0] mac_b2accu_mask;
 wire mac_b2accu_mode;
 wire [8:0] mac_b2accu_pd;
 wire mac_b2accu_pvld;
@@ -222,9 +201,9 @@ NV_NVDLA_cacc u_NV_NVDLA_cacc (
   ,.cacc2csb_resp_pd (cacc2csb_resp_pd)
   ,.cacc2glb_done_intr_pd (cacc2glb_done_intr_pd)
   ,.mac_a2accu_pvld (mac_a2accu_pvld) //|< i
-  ,.mac_a2accu_mask (mac_a2accu_mask[16/2 -1:0]) //|< i
+  ,.mac_a2accu_mask (mac_a2accu_mask[8/2 -1:0]) //|< i
   ,.mac_a2accu_mode (mac_a2accu_mode) //|< i
-//:for(my $i=0; $i<16/2; $i++){
+//:for(my $i=0; $i<8/2; $i++){
 //: print ",.mac_a2accu_data${i}              (mac_a2accu_data${i}) \n"; #//|< i
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -232,17 +211,13 @@ NV_NVDLA_cacc u_NV_NVDLA_cacc (
 ,.mac_a2accu_data1              (mac_a2accu_data1) 
 ,.mac_a2accu_data2              (mac_a2accu_data2) 
 ,.mac_a2accu_data3              (mac_a2accu_data3) 
-,.mac_a2accu_data4              (mac_a2accu_data4) 
-,.mac_a2accu_data5              (mac_a2accu_data5) 
-,.mac_a2accu_data6              (mac_a2accu_data6) 
-,.mac_a2accu_data7              (mac_a2accu_data7) 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.mac_a2accu_pd (mac_a2accu_pd[8:0]) //|< i
   ,.mac_b2accu_pvld (mac_b2accu_pvld) //|< w
-  ,.mac_b2accu_mask (mac_b2accu_mask[16/2 -1:0]) //|< w
+  ,.mac_b2accu_mask (mac_b2accu_mask[8/2 -1:0]) //|< w
   ,.mac_b2accu_mode (mac_b2accu_mode) //|< w
-//:for(my $i=0; $i<16/2; $i++){
+//:for(my $i=0; $i<8/2; $i++){
 //: print ",.mac_b2accu_data${i}              (mac_b2accu_data${i}) \n"; #//|< i
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -250,10 +225,6 @@ NV_NVDLA_cacc u_NV_NVDLA_cacc (
 ,.mac_b2accu_data1              (mac_b2accu_data1) 
 ,.mac_b2accu_data2              (mac_b2accu_data2) 
 ,.mac_b2accu_data3              (mac_b2accu_data3) 
-,.mac_b2accu_data4              (mac_b2accu_data4) 
-,.mac_b2accu_data5              (mac_b2accu_data5) 
-,.mac_b2accu_data6              (mac_b2accu_data6) 
-,.mac_b2accu_data7              (mac_b2accu_data7) 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.mac_b2accu_pd (mac_b2accu_pd[8:0]) //|< w

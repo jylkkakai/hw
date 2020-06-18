@@ -28,5 +28,6 @@ PYTHON   := /usr/bin/python3
 VERDI_HOME := /home/tools/debussy/verdi3_2016.06-SP2-9
 NOVAS_HOME := /home/tools/debussy/verdi3_2016.06-SP2-9
 VCS_HOME   := /home/tools/vcs/mx-2016.06-SP2-4
-CLANG      := /home/utils/llvm-4.0.1/bin/clang
+CLANG      := /opt/rh/llvm-toolset-7/root/usr/bin/clang
+
 VERILATOR  := verilator

@@ -14,14 +14,13 @@
 // this distribution for more information.
 // ================================================================
 // File Name: NV_NVDLA_CMAC.h
-`define DESIGNWARE_NOEXIST 1
 module NV_NVDLA_CMAC_CORE_rt_out (
    nvdla_core_clk
   ,nvdla_wg_clk
   ,nvdla_core_rstn
   ,cfg_is_wg
   ,cfg_reg_en
-//: for(my $i=0; $i<16/2; $i++){
+//: for(my $i=0; $i<8/2; $i++){
 //: print qq(
 //: ,out_data${i} )
 //: }
@@ -31,16 +30,12 @@ module NV_NVDLA_CMAC_CORE_rt_out (
 ,out_data1 
 ,out_data2 
 ,out_data3 
-,out_data4 
-,out_data5 
-,out_data6 
-,out_data7 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,out_mask
   ,out_pd
   ,out_pvld
   ,dp2reg_done
-//: for(my $i=0; $i<16/2; $i++){
+//: for(my $i=0; $i<8/2; $i++){
 //: print qq(
 //: ,mac2accu_data${i} )
 //: }
@@ -50,10 +45,6 @@ module NV_NVDLA_CMAC_CORE_rt_out (
 ,mac2accu_data1 
 ,mac2accu_data2 
 ,mac2accu_data3 
-,mac2accu_data4 
-,mac2accu_data5 
-,mac2accu_data6 
-,mac2accu_data7 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,mac2accu_mask
   ,mac2accu_pd
@@ -64,44 +55,36 @@ input nvdla_wg_clk;
 input nvdla_core_rstn;
 input cfg_is_wg;
 input cfg_reg_en;
-//: for(my $i=0; $i<16/2; $i++){
+//: for(my $i=0; $i<8/2; $i++){
 //: print qq(
-//: input[21 -1:0] out_data${i}; )
+//: input[19 -1:0] out_data${i}; )
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-input[21 -1:0] out_data0; 
-input[21 -1:0] out_data1; 
-input[21 -1:0] out_data2; 
-input[21 -1:0] out_data3; 
-input[21 -1:0] out_data4; 
-input[21 -1:0] out_data5; 
-input[21 -1:0] out_data6; 
-input[21 -1:0] out_data7; 
+input[19 -1:0] out_data0; 
+input[19 -1:0] out_data1; 
+input[19 -1:0] out_data2; 
+input[19 -1:0] out_data3; 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-input [16/2 -1:0] out_mask;
+input [8/2 -1:0] out_mask;
 input [8:0] out_pd;
 input out_pvld;
 output dp2reg_done;
-//: for(my $i=0; $i<16/2; $i++){
+//: for(my $i=0; $i<8/2; $i++){
 //: print qq(
-//: output[21 -1:0] mac2accu_data${i}; )
+//: output[19 -1:0] mac2accu_data${i}; )
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-output[21 -1:0] mac2accu_data0; 
-output[21 -1:0] mac2accu_data1; 
-output[21 -1:0] mac2accu_data2; 
-output[21 -1:0] mac2accu_data3; 
-output[21 -1:0] mac2accu_data4; 
-output[21 -1:0] mac2accu_data5; 
-output[21 -1:0] mac2accu_data6; 
-output[21 -1:0] mac2accu_data7; 
+output[19 -1:0] mac2accu_data0; 
+output[19 -1:0] mac2accu_data1; 
+output[19 -1:0] mac2accu_data2; 
+output[19 -1:0] mac2accu_data3; 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-output [16/2 -1:0] mac2accu_mask;
+output [8/2 -1:0] mac2accu_mask;
 output [8:0] mac2accu_pd;
 output mac2accu_pvld;
-wire [16/2 -1:0] mac2accu_mask;
+wire [8/2 -1:0] mac2accu_mask;
 wire [8:0] mac2accu_pd;
 wire mac2accu_pvld;
 wire out_layer_done;
@@ -143,8 +126,8 @@ end
 assign out_layer_done = out_pd[8] &
                             out_pd[6] &
                             out_pvld;
-//: my $kk = 16/2;
-//: my $jj = 21;
+//: my $kk = 8/2;
+//: my $jj = 19;
 //: print "wire             out_rt_pvld_d0 = out_pvld;\n";
 //: print "wire [$kk-1:0]   out_rt_mask_d0 = out_mask;\n";
 //: print "wire [8:0]       out_rt_pd_d0   = out_pd;\n";
@@ -152,8 +135,8 @@ assign out_layer_done = out_pd[8] &
 //: print "wire [${jj}-1:0]    out_rt_data${k}_d0 =  out_data${k};\n";
 //: }
 //: my $latency = 2;
-//: my $kk = 16/2;
-//: my $res_width = 21;
+//: my $kk = 8/2;
+//: my $res_width = 19;
 //: for(my $i = 0; $i < $latency; $i ++) {
 //: my $j = $i + 1;
 //: &eperl::flop(" -q  out_rt_pvld_d${j}  -d \"out_rt_pvld_d${i}\" -clk nvdla_core_clk -rst nvdla_core_rstn ");
@@ -168,23 +151,19 @@ assign out_layer_done = out_pd[8] &
 //: print "assign    mac2accu_pvld = out_rt_pvld_d${i};\n";
 //: print "assign    mac2accu_mask = out_rt_mask_d${i};\n";
 //: print "assign    mac2accu_pd = out_rt_pd_d${i};\n";
-//: my $kk = 16/2;
+//: my $kk = 8/2;
 //: for(my $k = 0; $k < $kk; $k ++) {
 //: print "assign    mac2accu_data${k} = out_rt_data${k}_d${i};\n";
 //: }
 //:
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 wire             out_rt_pvld_d0 = out_pvld;
-wire [8-1:0]   out_rt_mask_d0 = out_mask;
+wire [4-1:0]   out_rt_mask_d0 = out_mask;
 wire [8:0]       out_rt_pd_d0   = out_pd;
-wire [21-1:0]    out_rt_data0_d0 =  out_data0;
-wire [21-1:0]    out_rt_data1_d0 =  out_data1;
-wire [21-1:0]    out_rt_data2_d0 =  out_data2;
-wire [21-1:0]    out_rt_data3_d0 =  out_data3;
-wire [21-1:0]    out_rt_data4_d0 =  out_data4;
-wire [21-1:0]    out_rt_data5_d0 =  out_data5;
-wire [21-1:0]    out_rt_data6_d0 =  out_data6;
-wire [21-1:0]    out_rt_data7_d0 =  out_data7;
+wire [19-1:0]    out_rt_data0_d0 =  out_data0;
+wire [19-1:0]    out_rt_data1_d0 =  out_data1;
+wire [19-1:0]    out_rt_data2_d0 =  out_data2;
+wire [19-1:0]    out_rt_data3_d0 =  out_data3;
 reg  out_rt_pvld_d1;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
@@ -193,7 +172,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        out_rt_pvld_d1 <= out_rt_pvld_d0;
    end
 end
-reg [7:0] out_rt_mask_d1;
+reg [3:0] out_rt_mask_d1;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        out_rt_mask_d1 <= 'b0;
@@ -216,7 +195,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        end
    end
 end
-reg [20:0] out_rt_data0_d1;
+reg [18:0] out_rt_data0_d1;
 always @(posedge nvdla_core_clk) begin
        if ((out_rt_mask_d0[0]) == 1'b1) begin
            out_rt_data0_d1 <= out_rt_data0_d0;
@@ -227,7 +206,7 @@ always @(posedge nvdla_core_clk) begin
        // VCS coverage on
        end
 end
-reg [20:0] out_rt_data1_d1;
+reg [18:0] out_rt_data1_d1;
 always @(posedge nvdla_core_clk) begin
        if ((out_rt_mask_d0[1]) == 1'b1) begin
            out_rt_data1_d1 <= out_rt_data1_d0;
@@ -238,7 +217,7 @@ always @(posedge nvdla_core_clk) begin
        // VCS coverage on
        end
 end
-reg [20:0] out_rt_data2_d1;
+reg [18:0] out_rt_data2_d1;
 always @(posedge nvdla_core_clk) begin
        if ((out_rt_mask_d0[2]) == 1'b1) begin
            out_rt_data2_d1 <= out_rt_data2_d0;
@@ -249,7 +228,7 @@ always @(posedge nvdla_core_clk) begin
        // VCS coverage on
        end
 end
-reg [20:0] out_rt_data3_d1;
+reg [18:0] out_rt_data3_d1;
 always @(posedge nvdla_core_clk) begin
        if ((out_rt_mask_d0[3]) == 1'b1) begin
            out_rt_data3_d1 <= out_rt_data3_d0;
@@ -257,50 +236,6 @@ always @(posedge nvdla_core_clk) begin
        end else if ((out_rt_mask_d0[3]) == 1'b0) begin
        end else begin
            out_rt_data3_d1 <= 'bx;
-       // VCS coverage on
-       end
-end
-reg [20:0] out_rt_data4_d1;
-always @(posedge nvdla_core_clk) begin
-       if ((out_rt_mask_d0[4]) == 1'b1) begin
-           out_rt_data4_d1 <= out_rt_data4_d0;
-       // VCS coverage off
-       end else if ((out_rt_mask_d0[4]) == 1'b0) begin
-       end else begin
-           out_rt_data4_d1 <= 'bx;
-       // VCS coverage on
-       end
-end
-reg [20:0] out_rt_data5_d1;
-always @(posedge nvdla_core_clk) begin
-       if ((out_rt_mask_d0[5]) == 1'b1) begin
-           out_rt_data5_d1 <= out_rt_data5_d0;
-       // VCS coverage off
-       end else if ((out_rt_mask_d0[5]) == 1'b0) begin
-       end else begin
-           out_rt_data5_d1 <= 'bx;
-       // VCS coverage on
-       end
-end
-reg [20:0] out_rt_data6_d1;
-always @(posedge nvdla_core_clk) begin
-       if ((out_rt_mask_d0[6]) == 1'b1) begin
-           out_rt_data6_d1 <= out_rt_data6_d0;
-       // VCS coverage off
-       end else if ((out_rt_mask_d0[6]) == 1'b0) begin
-       end else begin
-           out_rt_data6_d1 <= 'bx;
-       // VCS coverage on
-       end
-end
-reg [20:0] out_rt_data7_d1;
-always @(posedge nvdla_core_clk) begin
-       if ((out_rt_mask_d0[7]) == 1'b1) begin
-           out_rt_data7_d1 <= out_rt_data7_d0;
-       // VCS coverage off
-       end else if ((out_rt_mask_d0[7]) == 1'b0) begin
-       end else begin
-           out_rt_data7_d1 <= 'bx;
        // VCS coverage on
        end
 end
@@ -312,7 +247,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        out_rt_pvld_d2 <= out_rt_pvld_d1;
    end
 end
-reg [7:0] out_rt_mask_d2;
+reg [3:0] out_rt_mask_d2;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        out_rt_mask_d2 <= 'b0;
@@ -335,7 +270,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
        end
    end
 end
-reg [20:0] out_rt_data0_d2;
+reg [18:0] out_rt_data0_d2;
 always @(posedge nvdla_core_clk) begin
        if ((out_rt_mask_d1[0]) == 1'b1) begin
            out_rt_data0_d2 <= out_rt_data0_d1;
@@ -346,7 +281,7 @@ always @(posedge nvdla_core_clk) begin
        // VCS coverage on
        end
 end
-reg [20:0] out_rt_data1_d2;
+reg [18:0] out_rt_data1_d2;
 always @(posedge nvdla_core_clk) begin
        if ((out_rt_mask_d1[1]) == 1'b1) begin
            out_rt_data1_d2 <= out_rt_data1_d1;
@@ -357,7 +292,7 @@ always @(posedge nvdla_core_clk) begin
        // VCS coverage on
        end
 end
-reg [20:0] out_rt_data2_d2;
+reg [18:0] out_rt_data2_d2;
 always @(posedge nvdla_core_clk) begin
        if ((out_rt_mask_d1[2]) == 1'b1) begin
            out_rt_data2_d2 <= out_rt_data2_d1;
@@ -368,7 +303,7 @@ always @(posedge nvdla_core_clk) begin
        // VCS coverage on
        end
 end
-reg [20:0] out_rt_data3_d2;
+reg [18:0] out_rt_data3_d2;
 always @(posedge nvdla_core_clk) begin
        if ((out_rt_mask_d1[3]) == 1'b1) begin
            out_rt_data3_d2 <= out_rt_data3_d1;
@@ -379,50 +314,6 @@ always @(posedge nvdla_core_clk) begin
        // VCS coverage on
        end
 end
-reg [20:0] out_rt_data4_d2;
-always @(posedge nvdla_core_clk) begin
-       if ((out_rt_mask_d1[4]) == 1'b1) begin
-           out_rt_data4_d2 <= out_rt_data4_d1;
-       // VCS coverage off
-       end else if ((out_rt_mask_d1[4]) == 1'b0) begin
-       end else begin
-           out_rt_data4_d2 <= 'bx;
-       // VCS coverage on
-       end
-end
-reg [20:0] out_rt_data5_d2;
-always @(posedge nvdla_core_clk) begin
-       if ((out_rt_mask_d1[5]) == 1'b1) begin
-           out_rt_data5_d2 <= out_rt_data5_d1;
-       // VCS coverage off
-       end else if ((out_rt_mask_d1[5]) == 1'b0) begin
-       end else begin
-           out_rt_data5_d2 <= 'bx;
-       // VCS coverage on
-       end
-end
-reg [20:0] out_rt_data6_d2;
-always @(posedge nvdla_core_clk) begin
-       if ((out_rt_mask_d1[6]) == 1'b1) begin
-           out_rt_data6_d2 <= out_rt_data6_d1;
-       // VCS coverage off
-       end else if ((out_rt_mask_d1[6]) == 1'b0) begin
-       end else begin
-           out_rt_data6_d2 <= 'bx;
-       // VCS coverage on
-       end
-end
-reg [20:0] out_rt_data7_d2;
-always @(posedge nvdla_core_clk) begin
-       if ((out_rt_mask_d1[7]) == 1'b1) begin
-           out_rt_data7_d2 <= out_rt_data7_d1;
-       // VCS coverage off
-       end else if ((out_rt_mask_d1[7]) == 1'b0) begin
-       end else begin
-           out_rt_data7_d2 <= 'bx;
-       // VCS coverage on
-       end
-end
 assign    mac2accu_pvld = out_rt_pvld_d2;
 assign    mac2accu_mask = out_rt_mask_d2;
 assign    mac2accu_pd = out_rt_pd_d2;
@@ -430,10 +321,6 @@ assign    mac2accu_data0 = out_rt_data0_d2;
 assign    mac2accu_data1 = out_rt_data1_d2;
 assign    mac2accu_data2 = out_rt_data2_d2;
 assign    mac2accu_data3 = out_rt_data3_d2;
-assign    mac2accu_data4 = out_rt_data4_d2;
-assign    mac2accu_data5 = out_rt_data5_d2;
-assign    mac2accu_data6 = out_rt_data6_d2;
-assign    mac2accu_data7 = out_rt_data7_d2;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 // get layer done signal

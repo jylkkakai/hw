@@ -101,7 +101,7 @@ output pixel_packed_10b;
 output pixel_planar;
 output [3:0] pixel_planar0_bundle_limit;
 output [3:0] pixel_planar0_bundle_limit_1st;
-//: my $atmmbw = int( log(16) / log(2) );
+//: my $atmmbw = int( log(8) / log(2) );
 //: print qq(
 //: output [${atmmbw}-1:0] pixel_planar0_byte_sft;
 //: output [${atmmbw}-1:0] pixel_planar1_byte_sft;
@@ -223,7 +223,7 @@ wire pending_req_end;
 wire pixel_data_expand_nxt;
 wire pixel_data_shrink_nxt;
 wire pixel_early_end_w;
-//: my $atmmbw = int( log(16) / log(2) );
+//: my $atmmbw = int( log(8) / log(2) );
 //: print qq(
 //: wire [${atmmbw}-1:0] pixel_element_sft_w ;
 //: wire [${atmmbw}-1:0] pixel_planar0_byte_sft_w;
@@ -252,7 +252,7 @@ wire [2:0] pixel_planar1_rp_burst_w;
 wire pixel_planar1_rp_vld_w;
 wire [2:0] pixel_planar1_tail_width_w;
 wire [1:0] pixel_planar1_total_burst_w;
-//: my $dmaif_bw = int( log(int(128/8)) / log(2) );
+//: my $dmaif_bw = int( log(int(64/8)) / log(2) );
 //: print qq(
 //: wire [${dmaif_bw}-1:0] pixel_planar1_total_width_w;
 //: wire [${dmaif_bw}-1:0] mon_pixel_planar1_tail_width_w;
@@ -371,7 +371,7 @@ always @(*) begin
 //pixel_planar1_sft_nxt // log2(atmm/BytePerPixel(useless in RGB, 2 in YUV))
 //pixel_planar0_mask_nxt // atmm/BytePerPixel -1
 //pixel_planar1_mask_nxt // atmm/BytePerPixel -1
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $Byte_Per_Pixle = 4;
 //: my $p0_sft = int( log($atmm/$Byte_Per_Pixle)/log(2) );
 //: my $p0_mask = int( ($atmm/$Byte_Per_Pixle)-1 );
@@ -385,7 +385,7 @@ always @(*) begin
     6'h0 :
 // 0 T_R8,
     begin
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $Byte_Per_Pixle = 1;
 //: my $p0_sft = int( log($atmm/$Byte_Per_Pixle)/log(2) );
 //: my $p0_mask = int( ($atmm/$Byte_Per_Pixle)-1 );
@@ -427,7 +427,7 @@ always @(*) begin
     begin
         pixel_planar_nxt = 1'h1;
         pixel_order_nxt = 11'h200;
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $Byte_Per_Pixle_p0 = 1;
 //: my $Byte_Per_Pixle_p1 = 2;
 //: my $p0_sft = int( log($atmm/$Byte_Per_Pixle_p0)/log(2) );
@@ -449,7 +449,7 @@ always @(*) begin
 // 1d T_Y8___V8U8_N444,
     begin
         pixel_planar_nxt = 1'h1;
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $Byte_Per_Pixle_p0 = 1;
 //: my $Byte_Per_Pixle_p1 = 2;
 //: my $p0_sft = int( log($atmm/$Byte_Per_Pixle_p0)/log(2) );
@@ -507,7 +507,7 @@ assign byte_per_pixel = ~(|pixel_precision_nxt) ? 3'h3 : 3'h6;
 ////////////////////////////////////////////////
 // early end control
 ////////////////////////////////////////////////
-//: my $dmaif_bw = int( log(int(128/8)) / log(2) );
+//: my $dmaif_bw = int( log(int(64/8)) / log(2) );
 //: print qq(
 //: assign {mon_pixel_planar1_total_width_w,
 //: pixel_planar1_total_width_w} = reg2dp_pad_left + reg2dp_datain_width[${dmaif_bw}-1:0] + reg2dp_pad_right + 1;
@@ -515,8 +515,8 @@ assign byte_per_pixel = ~(|pixel_precision_nxt) ? 3'h3 : 3'h6;
 //: mon_pixel_planar1_tail_width_w} = pixel_planar1_total_width_w * byte_per_pixel + {${dmaif_bw}{1'b1}};
 //: );
 /////////////////////////////
-//: my $dmaif = 128/8;
-//: my $atmm = 16;
+//: my $dmaif = 64/8;
+//: my $atmm = 8;
 //: if($dmaif/$atmm == 1 ) {
 //: print qq(
 //: assign pixel_early_end_w = pixel_planar_nxt & ((pixel_planar1_tail_width_w==3'd1) | (pixel_planar1_tail_width_w==3'd4) | ((pixel_planar1_tail_width_w==3'd2) & {pixel_planar1_total_width_w,1'b0} > $dmaif) );
@@ -540,7 +540,7 @@ assign byte_per_pixel = ~(|pixel_precision_nxt) ? 3'h3 : 3'h6;
 // pixel_planar0_byte_sft_w} = {pixel_element_sft_w, 5'b0} >> pixel_planar0_sft_nxt;
 // assign {mon_pixel_planar1_byte_sft_w[4:0],
 // pixel_planar1_byte_sft_w} = {pixel_element_sft_w, 5'b0} >> pixel_planar1_sft_nxt;
-//: my $atmmbw = int( log(16) / log(2) );
+//: my $atmmbw = int( log(8) / log(2) );
 //: print qq(
 //: assign {mon_pixel_element_sft_w,
 //: pixel_element_sft_w} = (reg2dp_pixel_x_offset - {2'd0,reg2dp_pad_left[${atmmbw}-1:0]});
@@ -558,7 +558,7 @@ assign pixel_planar0_lp_vld_w = (|pixel_planar0_lp_burst_w);
 assign pixel_planar1_lp_vld_w = (|pixel_planar1_lp_burst_w);
 assign pixel_planar0_rp_vld_w = (|pixel_planar0_rp_burst_w);
 assign pixel_planar1_rp_vld_w = (|pixel_planar1_rp_burst_w);
-//: my $atmmbw = int( log(16) / log(2) );
+//: my $atmmbw = int( log(8) / log(2) );
 //: &eperl::flop("-nodeclare   -rval \"1'b0\"  -en \"layer_st\" -d \"pixel_planar_nxt\" -q pixel_planar");
 //: &eperl::flop("-nodeclare   -rval \"{2{1'b0}}\"  -en \"layer_st\" -d \"pixel_precision_nxt\" -q pixel_precision");
 //: &eperl::flop("-nodeclare   -rval \"{11{1'b0}}\"  -en \"layer_st\" -d \"pixel_order_nxt\" -q pixel_order");

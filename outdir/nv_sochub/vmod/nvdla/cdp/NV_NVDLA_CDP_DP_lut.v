@@ -10,7 +10,7 @@ module NV_NVDLA_CDP_DP_lut (
    nvdla_core_clk //|< i
   ,nvdla_core_clk_orig //|< i
   ,nvdla_core_rstn //|< i
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,dp2lut_X_entry_${m}
@@ -26,11 +26,6 @@ module NV_NVDLA_CDP_DP_lut (
 ,dp2lut_Y_entry_0
 ,dp2lut_Yinfo_0
 
-,dp2lut_X_entry_1
-,dp2lut_Xinfo_1
-,dp2lut_Y_entry_1
-,dp2lut_Yinfo_1
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,dp2lut_pvld //|< i
   ,lut2intp_prdy //|< i
@@ -44,7 +39,7 @@ module NV_NVDLA_CDP_DP_lut (
   ,reg2dp_lut_uflow_priority //|< i
   ,dp2lut_prdy //|> o
   ,dp2reg_lut_data //|> o
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,lut2intp_X_data_${m}0 //|> o
@@ -60,11 +55,6 @@ module NV_NVDLA_CDP_DP_lut (
 ,lut2intp_X_data_01 //|> o
 ,lut2intp_X_info_0 //|> o
 
-,lut2intp_X_data_10 //|> o
-,lut2intp_X_data_10_17b //|> o
-,lut2intp_X_data_11 //|> o
-,lut2intp_X_info_1 //|> o
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,lut2intp_X_sel //|> o
   ,lut2intp_Y_sel //|> o
@@ -74,7 +64,7 @@ module NV_NVDLA_CDP_DP_lut (
 input nvdla_core_clk;
 input nvdla_core_clk_orig;
 input nvdla_core_rstn;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: input [9:0] dp2lut_X_entry_${m};
@@ -90,11 +80,6 @@ input [17:0] dp2lut_Xinfo_0;
 input [9:0] dp2lut_Y_entry_0;
 input [17:0] dp2lut_Yinfo_0;
 
-input [9:0] dp2lut_X_entry_1;
-input [17:0] dp2lut_Xinfo_1;
-input [9:0] dp2lut_Y_entry_1;
-input [17:0] dp2lut_Yinfo_1;
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input dp2lut_pvld;
 input lut2intp_prdy;
@@ -108,7 +93,7 @@ input reg2dp_lut_table_id;
 input reg2dp_lut_uflow_priority;
 output dp2lut_prdy;
 output [15:0] dp2reg_lut_data;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: output [31:0] lut2intp_X_data_${m}0;
@@ -124,14 +109,9 @@ output [16:0] lut2intp_X_data_00_17b;
 output [31:0] lut2intp_X_data_01;
 output [19:0] lut2intp_X_info_0;
 
-output [31:0] lut2intp_X_data_10;
-output [16:0] lut2intp_X_data_10_17b;
-output [31:0] lut2intp_X_data_11;
-output [19:0] lut2intp_X_info_1;
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-output [2 -1:0] lut2intp_X_sel;
-output [2 -1:0] lut2intp_Y_sel;
+output [1 -1:0] lut2intp_X_sel;
+output [1 -1:0] lut2intp_Y_sel;
 output lut2intp_pvld;
 ////////////////////////////////////////////////////////////////////////////
 reg [15:0] density_out;
@@ -658,7 +638,7 @@ reg [15:0] density_reg256;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 reg lut2intp_pvld;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: wire [31:0] lut2intp_X_data_${m}0;
@@ -674,17 +654,12 @@ wire [16:0] lut2intp_X_data_00_17b;
 wire [31:0] lut2intp_X_data_01;
 wire [19:0] lut2intp_X_info_0;
 
-wire [31:0] lut2intp_X_data_10;
-wire [16:0] lut2intp_X_data_10_17b;
-wire [31:0] lut2intp_X_data_11;
-wire [19:0] lut2intp_X_info_1;
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-wire [2 -1:0] lut2intp_X_sel;
-wire [2 -1:0] lut2intp_Y_sel;
-reg [2 -1:0] lutX_sel;
-reg [2 -1:0] lutY_sel;
-//: my $k = 2;
+wire [1 -1:0] lut2intp_X_sel;
+wire [1 -1:0] lut2intp_Y_sel;
+reg [1 -1:0] lutX_sel;
+reg [1 -1:0] lutY_sel;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: reg [15:0] lut_X_data_${m}0;
@@ -704,16 +679,9 @@ reg [15:0] lut_Y_data_00;
 reg [15:0] lut_Y_data_01;
 reg [17:0] lut_Y_info_0;
 
-reg [15:0] lut_X_data_10;
-reg [15:0] lut_X_data_11;
-reg [17:0] lut_X_info_1;
-reg [15:0] lut_Y_data_10;
-reg [15:0] lut_Y_data_11;
-reg [17:0] lut_Y_info_1;
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-reg [2 -1:0] lut_X_sel;
-reg [2 -1:0] lut_Y_sel;
+reg [1 -1:0] lut_X_sel;
+reg [1 -1:0] lut_Y_sel;
 reg [15:0] raw_out;
 //: foreach my $m (0..64) {
 //: print qq(
@@ -858,8 +826,8 @@ wire both_of_sel;
 wire both_uf_sel;
 wire dp2lut_prdy_f;
 wire load_din;
-// my $k = 2/2;
-//: my $k = 2;
+// my $k = 1/2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: wire [15:0] lutX_data_${m}0;
@@ -878,13 +846,6 @@ wire [15:0] lutX_info_0;
 wire [31:0] lut_X_dat_00;
 wire [16:0] lut_X_dat_00_fp17;
 wire [31:0] lut_X_dat_01;
-
-wire [15:0] lutX_data_10;
-wire [15:0] lutX_data_11;
-wire [15:0] lutX_info_1;
-wire [31:0] lut_X_dat_10;
-wire [16:0] lut_X_dat_10_fp17;
-wire [31:0] lut_X_dat_11;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire lut_wr_en;
@@ -5039,7 +5000,7 @@ assign dp2lut_prdy = dp2lut_prdy_f;
 assign both_hybrid_sel = (reg2dp_lut_hybrid_priority == 1'h1 );
 assign both_of_sel = (reg2dp_lut_oflow_priority == 1'h1 );
 assign both_uf_sel = (reg2dp_lut_uflow_priority == 1'h1 );
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(*) begin
@@ -5054,7 +5015,7 @@ assign both_uf_sel = (reg2dp_lut_uflow_priority == 1'h1 );
 //: end
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(*) begin
@@ -5083,17 +5044,6 @@ endcase
 end
 
 always @(*) begin
-case({dp2lut_Xinfo_1[17:16],dp2lut_Yinfo_1[17:16]})
-4'b0000,4'b0110,4'b1001: lut_X_sel[1] = ~both_hybrid_sel; //both hit, or one uflow and the other oflow 
-4'b0001,4'b0010: lut_X_sel[1] = 1'b1; //X hit, Y uflow/oflow 
-4'b0100,4'b1000: lut_X_sel[1] = 1'b0; //X uflow/oflow, Y hit 
-4'b0101: lut_X_sel[1] = ~both_uf_sel ; //both uflow 
-4'b1010: lut_X_sel[1] = ~both_of_sel ; //both oflow 
-default: lut_X_sel[1] = 1'd0;
-endcase
-end
-
-always @(*) begin
 case({dp2lut_Xinfo_0[17:16],dp2lut_Yinfo_0[17:16]})
 4'b0000,4'b0110,4'b1001: lut_Y_sel[0] = both_hybrid_sel; //both hit, or one uflow and the other oflow 
 4'b0001,4'b0010: lut_Y_sel[0] = 1'b0; //X hit, Y uflow/oflow 
@@ -5101,17 +5051,6 @@ case({dp2lut_Xinfo_0[17:16],dp2lut_Yinfo_0[17:16]})
 4'b0101: lut_Y_sel[0] = both_uf_sel ; //both uflow 
 4'b1010: lut_Y_sel[0] = both_of_sel ; //both oflow 
 default: lut_Y_sel[0] = 1'd0;
-endcase
-end
-
-always @(*) begin
-case({dp2lut_Xinfo_1[17:16],dp2lut_Yinfo_1[17:16]})
-4'b0000,4'b0110,4'b1001: lut_Y_sel[1] = both_hybrid_sel; //both hit, or one uflow and the other oflow 
-4'b0001,4'b0010: lut_Y_sel[1] = 1'b0; //X hit, Y uflow/oflow 
-4'b0100,4'b1000: lut_Y_sel[1] = 1'b1; //X uflow/oflow, Y hit 
-4'b0101: lut_Y_sel[1] = both_uf_sel ; //both uflow 
-4'b1010: lut_Y_sel[1] = both_of_sel ; //both oflow 
-default: lut_Y_sel[1] = 1'd0;
 endcase
 end
 
@@ -5162,7 +5101,7 @@ end
 // spyglass enable_block WRN_61
 `endif // SPYGLASS_ASSERT_ON
 /////////////////////////////////
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -5556,359 +5495,10 @@ end
 end
 end
 
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-if (!nvdla_core_rstn) begin
-lut_X_data_10[15:0] <= {16{1'b0}};
-lut_X_data_11[15:0] <= {16{1'b0}};
-end else begin
-if(load_din & lut_X_sel[1]) begin
-if(dp2lut_Xinfo_1[16]) begin
-lut_X_data_10[15:0] <= raw_reg0;
-lut_X_data_11[15:0] <= raw_reg0;
-end else if(dp2lut_Xinfo_1[17]) begin
-lut_X_data_10[15:0] <= raw_reg64;
-lut_X_data_11[15:0] <= raw_reg64;
-end else begin
-case(dp2lut_X_entry_1[9:0])
-
-0: begin
-lut_X_data_10[15:0] <= raw_reg0;
-lut_X_data_11[15:0] <= raw_reg1;
-end
-
-1: begin
-lut_X_data_10[15:0] <= raw_reg1;
-lut_X_data_11[15:0] <= raw_reg2;
-end
-
-2: begin
-lut_X_data_10[15:0] <= raw_reg2;
-lut_X_data_11[15:0] <= raw_reg3;
-end
-
-3: begin
-lut_X_data_10[15:0] <= raw_reg3;
-lut_X_data_11[15:0] <= raw_reg4;
-end
-
-4: begin
-lut_X_data_10[15:0] <= raw_reg4;
-lut_X_data_11[15:0] <= raw_reg5;
-end
-
-5: begin
-lut_X_data_10[15:0] <= raw_reg5;
-lut_X_data_11[15:0] <= raw_reg6;
-end
-
-6: begin
-lut_X_data_10[15:0] <= raw_reg6;
-lut_X_data_11[15:0] <= raw_reg7;
-end
-
-7: begin
-lut_X_data_10[15:0] <= raw_reg7;
-lut_X_data_11[15:0] <= raw_reg8;
-end
-
-8: begin
-lut_X_data_10[15:0] <= raw_reg8;
-lut_X_data_11[15:0] <= raw_reg9;
-end
-
-9: begin
-lut_X_data_10[15:0] <= raw_reg9;
-lut_X_data_11[15:0] <= raw_reg10;
-end
-
-10: begin
-lut_X_data_10[15:0] <= raw_reg10;
-lut_X_data_11[15:0] <= raw_reg11;
-end
-
-11: begin
-lut_X_data_10[15:0] <= raw_reg11;
-lut_X_data_11[15:0] <= raw_reg12;
-end
-
-12: begin
-lut_X_data_10[15:0] <= raw_reg12;
-lut_X_data_11[15:0] <= raw_reg13;
-end
-
-13: begin
-lut_X_data_10[15:0] <= raw_reg13;
-lut_X_data_11[15:0] <= raw_reg14;
-end
-
-14: begin
-lut_X_data_10[15:0] <= raw_reg14;
-lut_X_data_11[15:0] <= raw_reg15;
-end
-
-15: begin
-lut_X_data_10[15:0] <= raw_reg15;
-lut_X_data_11[15:0] <= raw_reg16;
-end
-
-16: begin
-lut_X_data_10[15:0] <= raw_reg16;
-lut_X_data_11[15:0] <= raw_reg17;
-end
-
-17: begin
-lut_X_data_10[15:0] <= raw_reg17;
-lut_X_data_11[15:0] <= raw_reg18;
-end
-
-18: begin
-lut_X_data_10[15:0] <= raw_reg18;
-lut_X_data_11[15:0] <= raw_reg19;
-end
-
-19: begin
-lut_X_data_10[15:0] <= raw_reg19;
-lut_X_data_11[15:0] <= raw_reg20;
-end
-
-20: begin
-lut_X_data_10[15:0] <= raw_reg20;
-lut_X_data_11[15:0] <= raw_reg21;
-end
-
-21: begin
-lut_X_data_10[15:0] <= raw_reg21;
-lut_X_data_11[15:0] <= raw_reg22;
-end
-
-22: begin
-lut_X_data_10[15:0] <= raw_reg22;
-lut_X_data_11[15:0] <= raw_reg23;
-end
-
-23: begin
-lut_X_data_10[15:0] <= raw_reg23;
-lut_X_data_11[15:0] <= raw_reg24;
-end
-
-24: begin
-lut_X_data_10[15:0] <= raw_reg24;
-lut_X_data_11[15:0] <= raw_reg25;
-end
-
-25: begin
-lut_X_data_10[15:0] <= raw_reg25;
-lut_X_data_11[15:0] <= raw_reg26;
-end
-
-26: begin
-lut_X_data_10[15:0] <= raw_reg26;
-lut_X_data_11[15:0] <= raw_reg27;
-end
-
-27: begin
-lut_X_data_10[15:0] <= raw_reg27;
-lut_X_data_11[15:0] <= raw_reg28;
-end
-
-28: begin
-lut_X_data_10[15:0] <= raw_reg28;
-lut_X_data_11[15:0] <= raw_reg29;
-end
-
-29: begin
-lut_X_data_10[15:0] <= raw_reg29;
-lut_X_data_11[15:0] <= raw_reg30;
-end
-
-30: begin
-lut_X_data_10[15:0] <= raw_reg30;
-lut_X_data_11[15:0] <= raw_reg31;
-end
-
-31: begin
-lut_X_data_10[15:0] <= raw_reg31;
-lut_X_data_11[15:0] <= raw_reg32;
-end
-
-32: begin
-lut_X_data_10[15:0] <= raw_reg32;
-lut_X_data_11[15:0] <= raw_reg33;
-end
-
-33: begin
-lut_X_data_10[15:0] <= raw_reg33;
-lut_X_data_11[15:0] <= raw_reg34;
-end
-
-34: begin
-lut_X_data_10[15:0] <= raw_reg34;
-lut_X_data_11[15:0] <= raw_reg35;
-end
-
-35: begin
-lut_X_data_10[15:0] <= raw_reg35;
-lut_X_data_11[15:0] <= raw_reg36;
-end
-
-36: begin
-lut_X_data_10[15:0] <= raw_reg36;
-lut_X_data_11[15:0] <= raw_reg37;
-end
-
-37: begin
-lut_X_data_10[15:0] <= raw_reg37;
-lut_X_data_11[15:0] <= raw_reg38;
-end
-
-38: begin
-lut_X_data_10[15:0] <= raw_reg38;
-lut_X_data_11[15:0] <= raw_reg39;
-end
-
-39: begin
-lut_X_data_10[15:0] <= raw_reg39;
-lut_X_data_11[15:0] <= raw_reg40;
-end
-
-40: begin
-lut_X_data_10[15:0] <= raw_reg40;
-lut_X_data_11[15:0] <= raw_reg41;
-end
-
-41: begin
-lut_X_data_10[15:0] <= raw_reg41;
-lut_X_data_11[15:0] <= raw_reg42;
-end
-
-42: begin
-lut_X_data_10[15:0] <= raw_reg42;
-lut_X_data_11[15:0] <= raw_reg43;
-end
-
-43: begin
-lut_X_data_10[15:0] <= raw_reg43;
-lut_X_data_11[15:0] <= raw_reg44;
-end
-
-44: begin
-lut_X_data_10[15:0] <= raw_reg44;
-lut_X_data_11[15:0] <= raw_reg45;
-end
-
-45: begin
-lut_X_data_10[15:0] <= raw_reg45;
-lut_X_data_11[15:0] <= raw_reg46;
-end
-
-46: begin
-lut_X_data_10[15:0] <= raw_reg46;
-lut_X_data_11[15:0] <= raw_reg47;
-end
-
-47: begin
-lut_X_data_10[15:0] <= raw_reg47;
-lut_X_data_11[15:0] <= raw_reg48;
-end
-
-48: begin
-lut_X_data_10[15:0] <= raw_reg48;
-lut_X_data_11[15:0] <= raw_reg49;
-end
-
-49: begin
-lut_X_data_10[15:0] <= raw_reg49;
-lut_X_data_11[15:0] <= raw_reg50;
-end
-
-50: begin
-lut_X_data_10[15:0] <= raw_reg50;
-lut_X_data_11[15:0] <= raw_reg51;
-end
-
-51: begin
-lut_X_data_10[15:0] <= raw_reg51;
-lut_X_data_11[15:0] <= raw_reg52;
-end
-
-52: begin
-lut_X_data_10[15:0] <= raw_reg52;
-lut_X_data_11[15:0] <= raw_reg53;
-end
-
-53: begin
-lut_X_data_10[15:0] <= raw_reg53;
-lut_X_data_11[15:0] <= raw_reg54;
-end
-
-54: begin
-lut_X_data_10[15:0] <= raw_reg54;
-lut_X_data_11[15:0] <= raw_reg55;
-end
-
-55: begin
-lut_X_data_10[15:0] <= raw_reg55;
-lut_X_data_11[15:0] <= raw_reg56;
-end
-
-56: begin
-lut_X_data_10[15:0] <= raw_reg56;
-lut_X_data_11[15:0] <= raw_reg57;
-end
-
-57: begin
-lut_X_data_10[15:0] <= raw_reg57;
-lut_X_data_11[15:0] <= raw_reg58;
-end
-
-58: begin
-lut_X_data_10[15:0] <= raw_reg58;
-lut_X_data_11[15:0] <= raw_reg59;
-end
-
-59: begin
-lut_X_data_10[15:0] <= raw_reg59;
-lut_X_data_11[15:0] <= raw_reg60;
-end
-
-60: begin
-lut_X_data_10[15:0] <= raw_reg60;
-lut_X_data_11[15:0] <= raw_reg61;
-end
-
-61: begin
-lut_X_data_10[15:0] <= raw_reg61;
-lut_X_data_11[15:0] <= raw_reg62;
-end
-
-62: begin
-lut_X_data_10[15:0] <= raw_reg62;
-lut_X_data_11[15:0] <= raw_reg63;
-end
-
-63: begin
-lut_X_data_10[15:0] <= raw_reg63;
-lut_X_data_11[15:0] <= raw_reg64;
-end
-
-64: begin
-lut_X_data_10[15:0] <= raw_reg64;
-lut_X_data_11[15:0] <= raw_reg64;
-end
-default: begin
-lut_X_data_10[15:0] <= raw_reg0;
-lut_X_data_11[15:0] <= raw_reg0;
-end
-endcase
-end
-end
-end
-end
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 /////////////////
 /////////////////
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -7262,1318 +6852,9 @@ end
 end
 end
 
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-if (!nvdla_core_rstn) begin
-lut_Y_data_10[15:0] <= {16{1'b0}};
-lut_Y_data_11[15:0] <= {16{1'b0}};
-end else begin
-if(load_din & lut_Y_sel[1]) begin
-if(dp2lut_Yinfo_1[16]) begin
-lut_Y_data_10[15:0] <= density_reg0;
-lut_Y_data_11[15:0] <= density_reg0;
-end else if(dp2lut_Yinfo_1[17]) begin
-lut_Y_data_10[15:0] <= density_reg256;
-lut_Y_data_11[15:0] <= density_reg256;
-end else begin
-case(dp2lut_Y_entry_1[9:0])
-
-0: begin
-lut_Y_data_10[15:0] <= density_reg0;
-lut_Y_data_11[15:0] <= density_reg1;
-end
-
-1: begin
-lut_Y_data_10[15:0] <= density_reg1;
-lut_Y_data_11[15:0] <= density_reg2;
-end
-
-2: begin
-lut_Y_data_10[15:0] <= density_reg2;
-lut_Y_data_11[15:0] <= density_reg3;
-end
-
-3: begin
-lut_Y_data_10[15:0] <= density_reg3;
-lut_Y_data_11[15:0] <= density_reg4;
-end
-
-4: begin
-lut_Y_data_10[15:0] <= density_reg4;
-lut_Y_data_11[15:0] <= density_reg5;
-end
-
-5: begin
-lut_Y_data_10[15:0] <= density_reg5;
-lut_Y_data_11[15:0] <= density_reg6;
-end
-
-6: begin
-lut_Y_data_10[15:0] <= density_reg6;
-lut_Y_data_11[15:0] <= density_reg7;
-end
-
-7: begin
-lut_Y_data_10[15:0] <= density_reg7;
-lut_Y_data_11[15:0] <= density_reg8;
-end
-
-8: begin
-lut_Y_data_10[15:0] <= density_reg8;
-lut_Y_data_11[15:0] <= density_reg9;
-end
-
-9: begin
-lut_Y_data_10[15:0] <= density_reg9;
-lut_Y_data_11[15:0] <= density_reg10;
-end
-
-10: begin
-lut_Y_data_10[15:0] <= density_reg10;
-lut_Y_data_11[15:0] <= density_reg11;
-end
-
-11: begin
-lut_Y_data_10[15:0] <= density_reg11;
-lut_Y_data_11[15:0] <= density_reg12;
-end
-
-12: begin
-lut_Y_data_10[15:0] <= density_reg12;
-lut_Y_data_11[15:0] <= density_reg13;
-end
-
-13: begin
-lut_Y_data_10[15:0] <= density_reg13;
-lut_Y_data_11[15:0] <= density_reg14;
-end
-
-14: begin
-lut_Y_data_10[15:0] <= density_reg14;
-lut_Y_data_11[15:0] <= density_reg15;
-end
-
-15: begin
-lut_Y_data_10[15:0] <= density_reg15;
-lut_Y_data_11[15:0] <= density_reg16;
-end
-
-16: begin
-lut_Y_data_10[15:0] <= density_reg16;
-lut_Y_data_11[15:0] <= density_reg17;
-end
-
-17: begin
-lut_Y_data_10[15:0] <= density_reg17;
-lut_Y_data_11[15:0] <= density_reg18;
-end
-
-18: begin
-lut_Y_data_10[15:0] <= density_reg18;
-lut_Y_data_11[15:0] <= density_reg19;
-end
-
-19: begin
-lut_Y_data_10[15:0] <= density_reg19;
-lut_Y_data_11[15:0] <= density_reg20;
-end
-
-20: begin
-lut_Y_data_10[15:0] <= density_reg20;
-lut_Y_data_11[15:0] <= density_reg21;
-end
-
-21: begin
-lut_Y_data_10[15:0] <= density_reg21;
-lut_Y_data_11[15:0] <= density_reg22;
-end
-
-22: begin
-lut_Y_data_10[15:0] <= density_reg22;
-lut_Y_data_11[15:0] <= density_reg23;
-end
-
-23: begin
-lut_Y_data_10[15:0] <= density_reg23;
-lut_Y_data_11[15:0] <= density_reg24;
-end
-
-24: begin
-lut_Y_data_10[15:0] <= density_reg24;
-lut_Y_data_11[15:0] <= density_reg25;
-end
-
-25: begin
-lut_Y_data_10[15:0] <= density_reg25;
-lut_Y_data_11[15:0] <= density_reg26;
-end
-
-26: begin
-lut_Y_data_10[15:0] <= density_reg26;
-lut_Y_data_11[15:0] <= density_reg27;
-end
-
-27: begin
-lut_Y_data_10[15:0] <= density_reg27;
-lut_Y_data_11[15:0] <= density_reg28;
-end
-
-28: begin
-lut_Y_data_10[15:0] <= density_reg28;
-lut_Y_data_11[15:0] <= density_reg29;
-end
-
-29: begin
-lut_Y_data_10[15:0] <= density_reg29;
-lut_Y_data_11[15:0] <= density_reg30;
-end
-
-30: begin
-lut_Y_data_10[15:0] <= density_reg30;
-lut_Y_data_11[15:0] <= density_reg31;
-end
-
-31: begin
-lut_Y_data_10[15:0] <= density_reg31;
-lut_Y_data_11[15:0] <= density_reg32;
-end
-
-32: begin
-lut_Y_data_10[15:0] <= density_reg32;
-lut_Y_data_11[15:0] <= density_reg33;
-end
-
-33: begin
-lut_Y_data_10[15:0] <= density_reg33;
-lut_Y_data_11[15:0] <= density_reg34;
-end
-
-34: begin
-lut_Y_data_10[15:0] <= density_reg34;
-lut_Y_data_11[15:0] <= density_reg35;
-end
-
-35: begin
-lut_Y_data_10[15:0] <= density_reg35;
-lut_Y_data_11[15:0] <= density_reg36;
-end
-
-36: begin
-lut_Y_data_10[15:0] <= density_reg36;
-lut_Y_data_11[15:0] <= density_reg37;
-end
-
-37: begin
-lut_Y_data_10[15:0] <= density_reg37;
-lut_Y_data_11[15:0] <= density_reg38;
-end
-
-38: begin
-lut_Y_data_10[15:0] <= density_reg38;
-lut_Y_data_11[15:0] <= density_reg39;
-end
-
-39: begin
-lut_Y_data_10[15:0] <= density_reg39;
-lut_Y_data_11[15:0] <= density_reg40;
-end
-
-40: begin
-lut_Y_data_10[15:0] <= density_reg40;
-lut_Y_data_11[15:0] <= density_reg41;
-end
-
-41: begin
-lut_Y_data_10[15:0] <= density_reg41;
-lut_Y_data_11[15:0] <= density_reg42;
-end
-
-42: begin
-lut_Y_data_10[15:0] <= density_reg42;
-lut_Y_data_11[15:0] <= density_reg43;
-end
-
-43: begin
-lut_Y_data_10[15:0] <= density_reg43;
-lut_Y_data_11[15:0] <= density_reg44;
-end
-
-44: begin
-lut_Y_data_10[15:0] <= density_reg44;
-lut_Y_data_11[15:0] <= density_reg45;
-end
-
-45: begin
-lut_Y_data_10[15:0] <= density_reg45;
-lut_Y_data_11[15:0] <= density_reg46;
-end
-
-46: begin
-lut_Y_data_10[15:0] <= density_reg46;
-lut_Y_data_11[15:0] <= density_reg47;
-end
-
-47: begin
-lut_Y_data_10[15:0] <= density_reg47;
-lut_Y_data_11[15:0] <= density_reg48;
-end
-
-48: begin
-lut_Y_data_10[15:0] <= density_reg48;
-lut_Y_data_11[15:0] <= density_reg49;
-end
-
-49: begin
-lut_Y_data_10[15:0] <= density_reg49;
-lut_Y_data_11[15:0] <= density_reg50;
-end
-
-50: begin
-lut_Y_data_10[15:0] <= density_reg50;
-lut_Y_data_11[15:0] <= density_reg51;
-end
-
-51: begin
-lut_Y_data_10[15:0] <= density_reg51;
-lut_Y_data_11[15:0] <= density_reg52;
-end
-
-52: begin
-lut_Y_data_10[15:0] <= density_reg52;
-lut_Y_data_11[15:0] <= density_reg53;
-end
-
-53: begin
-lut_Y_data_10[15:0] <= density_reg53;
-lut_Y_data_11[15:0] <= density_reg54;
-end
-
-54: begin
-lut_Y_data_10[15:0] <= density_reg54;
-lut_Y_data_11[15:0] <= density_reg55;
-end
-
-55: begin
-lut_Y_data_10[15:0] <= density_reg55;
-lut_Y_data_11[15:0] <= density_reg56;
-end
-
-56: begin
-lut_Y_data_10[15:0] <= density_reg56;
-lut_Y_data_11[15:0] <= density_reg57;
-end
-
-57: begin
-lut_Y_data_10[15:0] <= density_reg57;
-lut_Y_data_11[15:0] <= density_reg58;
-end
-
-58: begin
-lut_Y_data_10[15:0] <= density_reg58;
-lut_Y_data_11[15:0] <= density_reg59;
-end
-
-59: begin
-lut_Y_data_10[15:0] <= density_reg59;
-lut_Y_data_11[15:0] <= density_reg60;
-end
-
-60: begin
-lut_Y_data_10[15:0] <= density_reg60;
-lut_Y_data_11[15:0] <= density_reg61;
-end
-
-61: begin
-lut_Y_data_10[15:0] <= density_reg61;
-lut_Y_data_11[15:0] <= density_reg62;
-end
-
-62: begin
-lut_Y_data_10[15:0] <= density_reg62;
-lut_Y_data_11[15:0] <= density_reg63;
-end
-
-63: begin
-lut_Y_data_10[15:0] <= density_reg63;
-lut_Y_data_11[15:0] <= density_reg64;
-end
-
-64: begin
-lut_Y_data_10[15:0] <= density_reg64;
-lut_Y_data_11[15:0] <= density_reg65;
-end
-
-65: begin
-lut_Y_data_10[15:0] <= density_reg65;
-lut_Y_data_11[15:0] <= density_reg66;
-end
-
-66: begin
-lut_Y_data_10[15:0] <= density_reg66;
-lut_Y_data_11[15:0] <= density_reg67;
-end
-
-67: begin
-lut_Y_data_10[15:0] <= density_reg67;
-lut_Y_data_11[15:0] <= density_reg68;
-end
-
-68: begin
-lut_Y_data_10[15:0] <= density_reg68;
-lut_Y_data_11[15:0] <= density_reg69;
-end
-
-69: begin
-lut_Y_data_10[15:0] <= density_reg69;
-lut_Y_data_11[15:0] <= density_reg70;
-end
-
-70: begin
-lut_Y_data_10[15:0] <= density_reg70;
-lut_Y_data_11[15:0] <= density_reg71;
-end
-
-71: begin
-lut_Y_data_10[15:0] <= density_reg71;
-lut_Y_data_11[15:0] <= density_reg72;
-end
-
-72: begin
-lut_Y_data_10[15:0] <= density_reg72;
-lut_Y_data_11[15:0] <= density_reg73;
-end
-
-73: begin
-lut_Y_data_10[15:0] <= density_reg73;
-lut_Y_data_11[15:0] <= density_reg74;
-end
-
-74: begin
-lut_Y_data_10[15:0] <= density_reg74;
-lut_Y_data_11[15:0] <= density_reg75;
-end
-
-75: begin
-lut_Y_data_10[15:0] <= density_reg75;
-lut_Y_data_11[15:0] <= density_reg76;
-end
-
-76: begin
-lut_Y_data_10[15:0] <= density_reg76;
-lut_Y_data_11[15:0] <= density_reg77;
-end
-
-77: begin
-lut_Y_data_10[15:0] <= density_reg77;
-lut_Y_data_11[15:0] <= density_reg78;
-end
-
-78: begin
-lut_Y_data_10[15:0] <= density_reg78;
-lut_Y_data_11[15:0] <= density_reg79;
-end
-
-79: begin
-lut_Y_data_10[15:0] <= density_reg79;
-lut_Y_data_11[15:0] <= density_reg80;
-end
-
-80: begin
-lut_Y_data_10[15:0] <= density_reg80;
-lut_Y_data_11[15:0] <= density_reg81;
-end
-
-81: begin
-lut_Y_data_10[15:0] <= density_reg81;
-lut_Y_data_11[15:0] <= density_reg82;
-end
-
-82: begin
-lut_Y_data_10[15:0] <= density_reg82;
-lut_Y_data_11[15:0] <= density_reg83;
-end
-
-83: begin
-lut_Y_data_10[15:0] <= density_reg83;
-lut_Y_data_11[15:0] <= density_reg84;
-end
-
-84: begin
-lut_Y_data_10[15:0] <= density_reg84;
-lut_Y_data_11[15:0] <= density_reg85;
-end
-
-85: begin
-lut_Y_data_10[15:0] <= density_reg85;
-lut_Y_data_11[15:0] <= density_reg86;
-end
-
-86: begin
-lut_Y_data_10[15:0] <= density_reg86;
-lut_Y_data_11[15:0] <= density_reg87;
-end
-
-87: begin
-lut_Y_data_10[15:0] <= density_reg87;
-lut_Y_data_11[15:0] <= density_reg88;
-end
-
-88: begin
-lut_Y_data_10[15:0] <= density_reg88;
-lut_Y_data_11[15:0] <= density_reg89;
-end
-
-89: begin
-lut_Y_data_10[15:0] <= density_reg89;
-lut_Y_data_11[15:0] <= density_reg90;
-end
-
-90: begin
-lut_Y_data_10[15:0] <= density_reg90;
-lut_Y_data_11[15:0] <= density_reg91;
-end
-
-91: begin
-lut_Y_data_10[15:0] <= density_reg91;
-lut_Y_data_11[15:0] <= density_reg92;
-end
-
-92: begin
-lut_Y_data_10[15:0] <= density_reg92;
-lut_Y_data_11[15:0] <= density_reg93;
-end
-
-93: begin
-lut_Y_data_10[15:0] <= density_reg93;
-lut_Y_data_11[15:0] <= density_reg94;
-end
-
-94: begin
-lut_Y_data_10[15:0] <= density_reg94;
-lut_Y_data_11[15:0] <= density_reg95;
-end
-
-95: begin
-lut_Y_data_10[15:0] <= density_reg95;
-lut_Y_data_11[15:0] <= density_reg96;
-end
-
-96: begin
-lut_Y_data_10[15:0] <= density_reg96;
-lut_Y_data_11[15:0] <= density_reg97;
-end
-
-97: begin
-lut_Y_data_10[15:0] <= density_reg97;
-lut_Y_data_11[15:0] <= density_reg98;
-end
-
-98: begin
-lut_Y_data_10[15:0] <= density_reg98;
-lut_Y_data_11[15:0] <= density_reg99;
-end
-
-99: begin
-lut_Y_data_10[15:0] <= density_reg99;
-lut_Y_data_11[15:0] <= density_reg100;
-end
-
-100: begin
-lut_Y_data_10[15:0] <= density_reg100;
-lut_Y_data_11[15:0] <= density_reg101;
-end
-
-101: begin
-lut_Y_data_10[15:0] <= density_reg101;
-lut_Y_data_11[15:0] <= density_reg102;
-end
-
-102: begin
-lut_Y_data_10[15:0] <= density_reg102;
-lut_Y_data_11[15:0] <= density_reg103;
-end
-
-103: begin
-lut_Y_data_10[15:0] <= density_reg103;
-lut_Y_data_11[15:0] <= density_reg104;
-end
-
-104: begin
-lut_Y_data_10[15:0] <= density_reg104;
-lut_Y_data_11[15:0] <= density_reg105;
-end
-
-105: begin
-lut_Y_data_10[15:0] <= density_reg105;
-lut_Y_data_11[15:0] <= density_reg106;
-end
-
-106: begin
-lut_Y_data_10[15:0] <= density_reg106;
-lut_Y_data_11[15:0] <= density_reg107;
-end
-
-107: begin
-lut_Y_data_10[15:0] <= density_reg107;
-lut_Y_data_11[15:0] <= density_reg108;
-end
-
-108: begin
-lut_Y_data_10[15:0] <= density_reg108;
-lut_Y_data_11[15:0] <= density_reg109;
-end
-
-109: begin
-lut_Y_data_10[15:0] <= density_reg109;
-lut_Y_data_11[15:0] <= density_reg110;
-end
-
-110: begin
-lut_Y_data_10[15:0] <= density_reg110;
-lut_Y_data_11[15:0] <= density_reg111;
-end
-
-111: begin
-lut_Y_data_10[15:0] <= density_reg111;
-lut_Y_data_11[15:0] <= density_reg112;
-end
-
-112: begin
-lut_Y_data_10[15:0] <= density_reg112;
-lut_Y_data_11[15:0] <= density_reg113;
-end
-
-113: begin
-lut_Y_data_10[15:0] <= density_reg113;
-lut_Y_data_11[15:0] <= density_reg114;
-end
-
-114: begin
-lut_Y_data_10[15:0] <= density_reg114;
-lut_Y_data_11[15:0] <= density_reg115;
-end
-
-115: begin
-lut_Y_data_10[15:0] <= density_reg115;
-lut_Y_data_11[15:0] <= density_reg116;
-end
-
-116: begin
-lut_Y_data_10[15:0] <= density_reg116;
-lut_Y_data_11[15:0] <= density_reg117;
-end
-
-117: begin
-lut_Y_data_10[15:0] <= density_reg117;
-lut_Y_data_11[15:0] <= density_reg118;
-end
-
-118: begin
-lut_Y_data_10[15:0] <= density_reg118;
-lut_Y_data_11[15:0] <= density_reg119;
-end
-
-119: begin
-lut_Y_data_10[15:0] <= density_reg119;
-lut_Y_data_11[15:0] <= density_reg120;
-end
-
-120: begin
-lut_Y_data_10[15:0] <= density_reg120;
-lut_Y_data_11[15:0] <= density_reg121;
-end
-
-121: begin
-lut_Y_data_10[15:0] <= density_reg121;
-lut_Y_data_11[15:0] <= density_reg122;
-end
-
-122: begin
-lut_Y_data_10[15:0] <= density_reg122;
-lut_Y_data_11[15:0] <= density_reg123;
-end
-
-123: begin
-lut_Y_data_10[15:0] <= density_reg123;
-lut_Y_data_11[15:0] <= density_reg124;
-end
-
-124: begin
-lut_Y_data_10[15:0] <= density_reg124;
-lut_Y_data_11[15:0] <= density_reg125;
-end
-
-125: begin
-lut_Y_data_10[15:0] <= density_reg125;
-lut_Y_data_11[15:0] <= density_reg126;
-end
-
-126: begin
-lut_Y_data_10[15:0] <= density_reg126;
-lut_Y_data_11[15:0] <= density_reg127;
-end
-
-127: begin
-lut_Y_data_10[15:0] <= density_reg127;
-lut_Y_data_11[15:0] <= density_reg128;
-end
-
-128: begin
-lut_Y_data_10[15:0] <= density_reg128;
-lut_Y_data_11[15:0] <= density_reg129;
-end
-
-129: begin
-lut_Y_data_10[15:0] <= density_reg129;
-lut_Y_data_11[15:0] <= density_reg130;
-end
-
-130: begin
-lut_Y_data_10[15:0] <= density_reg130;
-lut_Y_data_11[15:0] <= density_reg131;
-end
-
-131: begin
-lut_Y_data_10[15:0] <= density_reg131;
-lut_Y_data_11[15:0] <= density_reg132;
-end
-
-132: begin
-lut_Y_data_10[15:0] <= density_reg132;
-lut_Y_data_11[15:0] <= density_reg133;
-end
-
-133: begin
-lut_Y_data_10[15:0] <= density_reg133;
-lut_Y_data_11[15:0] <= density_reg134;
-end
-
-134: begin
-lut_Y_data_10[15:0] <= density_reg134;
-lut_Y_data_11[15:0] <= density_reg135;
-end
-
-135: begin
-lut_Y_data_10[15:0] <= density_reg135;
-lut_Y_data_11[15:0] <= density_reg136;
-end
-
-136: begin
-lut_Y_data_10[15:0] <= density_reg136;
-lut_Y_data_11[15:0] <= density_reg137;
-end
-
-137: begin
-lut_Y_data_10[15:0] <= density_reg137;
-lut_Y_data_11[15:0] <= density_reg138;
-end
-
-138: begin
-lut_Y_data_10[15:0] <= density_reg138;
-lut_Y_data_11[15:0] <= density_reg139;
-end
-
-139: begin
-lut_Y_data_10[15:0] <= density_reg139;
-lut_Y_data_11[15:0] <= density_reg140;
-end
-
-140: begin
-lut_Y_data_10[15:0] <= density_reg140;
-lut_Y_data_11[15:0] <= density_reg141;
-end
-
-141: begin
-lut_Y_data_10[15:0] <= density_reg141;
-lut_Y_data_11[15:0] <= density_reg142;
-end
-
-142: begin
-lut_Y_data_10[15:0] <= density_reg142;
-lut_Y_data_11[15:0] <= density_reg143;
-end
-
-143: begin
-lut_Y_data_10[15:0] <= density_reg143;
-lut_Y_data_11[15:0] <= density_reg144;
-end
-
-144: begin
-lut_Y_data_10[15:0] <= density_reg144;
-lut_Y_data_11[15:0] <= density_reg145;
-end
-
-145: begin
-lut_Y_data_10[15:0] <= density_reg145;
-lut_Y_data_11[15:0] <= density_reg146;
-end
-
-146: begin
-lut_Y_data_10[15:0] <= density_reg146;
-lut_Y_data_11[15:0] <= density_reg147;
-end
-
-147: begin
-lut_Y_data_10[15:0] <= density_reg147;
-lut_Y_data_11[15:0] <= density_reg148;
-end
-
-148: begin
-lut_Y_data_10[15:0] <= density_reg148;
-lut_Y_data_11[15:0] <= density_reg149;
-end
-
-149: begin
-lut_Y_data_10[15:0] <= density_reg149;
-lut_Y_data_11[15:0] <= density_reg150;
-end
-
-150: begin
-lut_Y_data_10[15:0] <= density_reg150;
-lut_Y_data_11[15:0] <= density_reg151;
-end
-
-151: begin
-lut_Y_data_10[15:0] <= density_reg151;
-lut_Y_data_11[15:0] <= density_reg152;
-end
-
-152: begin
-lut_Y_data_10[15:0] <= density_reg152;
-lut_Y_data_11[15:0] <= density_reg153;
-end
-
-153: begin
-lut_Y_data_10[15:0] <= density_reg153;
-lut_Y_data_11[15:0] <= density_reg154;
-end
-
-154: begin
-lut_Y_data_10[15:0] <= density_reg154;
-lut_Y_data_11[15:0] <= density_reg155;
-end
-
-155: begin
-lut_Y_data_10[15:0] <= density_reg155;
-lut_Y_data_11[15:0] <= density_reg156;
-end
-
-156: begin
-lut_Y_data_10[15:0] <= density_reg156;
-lut_Y_data_11[15:0] <= density_reg157;
-end
-
-157: begin
-lut_Y_data_10[15:0] <= density_reg157;
-lut_Y_data_11[15:0] <= density_reg158;
-end
-
-158: begin
-lut_Y_data_10[15:0] <= density_reg158;
-lut_Y_data_11[15:0] <= density_reg159;
-end
-
-159: begin
-lut_Y_data_10[15:0] <= density_reg159;
-lut_Y_data_11[15:0] <= density_reg160;
-end
-
-160: begin
-lut_Y_data_10[15:0] <= density_reg160;
-lut_Y_data_11[15:0] <= density_reg161;
-end
-
-161: begin
-lut_Y_data_10[15:0] <= density_reg161;
-lut_Y_data_11[15:0] <= density_reg162;
-end
-
-162: begin
-lut_Y_data_10[15:0] <= density_reg162;
-lut_Y_data_11[15:0] <= density_reg163;
-end
-
-163: begin
-lut_Y_data_10[15:0] <= density_reg163;
-lut_Y_data_11[15:0] <= density_reg164;
-end
-
-164: begin
-lut_Y_data_10[15:0] <= density_reg164;
-lut_Y_data_11[15:0] <= density_reg165;
-end
-
-165: begin
-lut_Y_data_10[15:0] <= density_reg165;
-lut_Y_data_11[15:0] <= density_reg166;
-end
-
-166: begin
-lut_Y_data_10[15:0] <= density_reg166;
-lut_Y_data_11[15:0] <= density_reg167;
-end
-
-167: begin
-lut_Y_data_10[15:0] <= density_reg167;
-lut_Y_data_11[15:0] <= density_reg168;
-end
-
-168: begin
-lut_Y_data_10[15:0] <= density_reg168;
-lut_Y_data_11[15:0] <= density_reg169;
-end
-
-169: begin
-lut_Y_data_10[15:0] <= density_reg169;
-lut_Y_data_11[15:0] <= density_reg170;
-end
-
-170: begin
-lut_Y_data_10[15:0] <= density_reg170;
-lut_Y_data_11[15:0] <= density_reg171;
-end
-
-171: begin
-lut_Y_data_10[15:0] <= density_reg171;
-lut_Y_data_11[15:0] <= density_reg172;
-end
-
-172: begin
-lut_Y_data_10[15:0] <= density_reg172;
-lut_Y_data_11[15:0] <= density_reg173;
-end
-
-173: begin
-lut_Y_data_10[15:0] <= density_reg173;
-lut_Y_data_11[15:0] <= density_reg174;
-end
-
-174: begin
-lut_Y_data_10[15:0] <= density_reg174;
-lut_Y_data_11[15:0] <= density_reg175;
-end
-
-175: begin
-lut_Y_data_10[15:0] <= density_reg175;
-lut_Y_data_11[15:0] <= density_reg176;
-end
-
-176: begin
-lut_Y_data_10[15:0] <= density_reg176;
-lut_Y_data_11[15:0] <= density_reg177;
-end
-
-177: begin
-lut_Y_data_10[15:0] <= density_reg177;
-lut_Y_data_11[15:0] <= density_reg178;
-end
-
-178: begin
-lut_Y_data_10[15:0] <= density_reg178;
-lut_Y_data_11[15:0] <= density_reg179;
-end
-
-179: begin
-lut_Y_data_10[15:0] <= density_reg179;
-lut_Y_data_11[15:0] <= density_reg180;
-end
-
-180: begin
-lut_Y_data_10[15:0] <= density_reg180;
-lut_Y_data_11[15:0] <= density_reg181;
-end
-
-181: begin
-lut_Y_data_10[15:0] <= density_reg181;
-lut_Y_data_11[15:0] <= density_reg182;
-end
-
-182: begin
-lut_Y_data_10[15:0] <= density_reg182;
-lut_Y_data_11[15:0] <= density_reg183;
-end
-
-183: begin
-lut_Y_data_10[15:0] <= density_reg183;
-lut_Y_data_11[15:0] <= density_reg184;
-end
-
-184: begin
-lut_Y_data_10[15:0] <= density_reg184;
-lut_Y_data_11[15:0] <= density_reg185;
-end
-
-185: begin
-lut_Y_data_10[15:0] <= density_reg185;
-lut_Y_data_11[15:0] <= density_reg186;
-end
-
-186: begin
-lut_Y_data_10[15:0] <= density_reg186;
-lut_Y_data_11[15:0] <= density_reg187;
-end
-
-187: begin
-lut_Y_data_10[15:0] <= density_reg187;
-lut_Y_data_11[15:0] <= density_reg188;
-end
-
-188: begin
-lut_Y_data_10[15:0] <= density_reg188;
-lut_Y_data_11[15:0] <= density_reg189;
-end
-
-189: begin
-lut_Y_data_10[15:0] <= density_reg189;
-lut_Y_data_11[15:0] <= density_reg190;
-end
-
-190: begin
-lut_Y_data_10[15:0] <= density_reg190;
-lut_Y_data_11[15:0] <= density_reg191;
-end
-
-191: begin
-lut_Y_data_10[15:0] <= density_reg191;
-lut_Y_data_11[15:0] <= density_reg192;
-end
-
-192: begin
-lut_Y_data_10[15:0] <= density_reg192;
-lut_Y_data_11[15:0] <= density_reg193;
-end
-
-193: begin
-lut_Y_data_10[15:0] <= density_reg193;
-lut_Y_data_11[15:0] <= density_reg194;
-end
-
-194: begin
-lut_Y_data_10[15:0] <= density_reg194;
-lut_Y_data_11[15:0] <= density_reg195;
-end
-
-195: begin
-lut_Y_data_10[15:0] <= density_reg195;
-lut_Y_data_11[15:0] <= density_reg196;
-end
-
-196: begin
-lut_Y_data_10[15:0] <= density_reg196;
-lut_Y_data_11[15:0] <= density_reg197;
-end
-
-197: begin
-lut_Y_data_10[15:0] <= density_reg197;
-lut_Y_data_11[15:0] <= density_reg198;
-end
-
-198: begin
-lut_Y_data_10[15:0] <= density_reg198;
-lut_Y_data_11[15:0] <= density_reg199;
-end
-
-199: begin
-lut_Y_data_10[15:0] <= density_reg199;
-lut_Y_data_11[15:0] <= density_reg200;
-end
-
-200: begin
-lut_Y_data_10[15:0] <= density_reg200;
-lut_Y_data_11[15:0] <= density_reg201;
-end
-
-201: begin
-lut_Y_data_10[15:0] <= density_reg201;
-lut_Y_data_11[15:0] <= density_reg202;
-end
-
-202: begin
-lut_Y_data_10[15:0] <= density_reg202;
-lut_Y_data_11[15:0] <= density_reg203;
-end
-
-203: begin
-lut_Y_data_10[15:0] <= density_reg203;
-lut_Y_data_11[15:0] <= density_reg204;
-end
-
-204: begin
-lut_Y_data_10[15:0] <= density_reg204;
-lut_Y_data_11[15:0] <= density_reg205;
-end
-
-205: begin
-lut_Y_data_10[15:0] <= density_reg205;
-lut_Y_data_11[15:0] <= density_reg206;
-end
-
-206: begin
-lut_Y_data_10[15:0] <= density_reg206;
-lut_Y_data_11[15:0] <= density_reg207;
-end
-
-207: begin
-lut_Y_data_10[15:0] <= density_reg207;
-lut_Y_data_11[15:0] <= density_reg208;
-end
-
-208: begin
-lut_Y_data_10[15:0] <= density_reg208;
-lut_Y_data_11[15:0] <= density_reg209;
-end
-
-209: begin
-lut_Y_data_10[15:0] <= density_reg209;
-lut_Y_data_11[15:0] <= density_reg210;
-end
-
-210: begin
-lut_Y_data_10[15:0] <= density_reg210;
-lut_Y_data_11[15:0] <= density_reg211;
-end
-
-211: begin
-lut_Y_data_10[15:0] <= density_reg211;
-lut_Y_data_11[15:0] <= density_reg212;
-end
-
-212: begin
-lut_Y_data_10[15:0] <= density_reg212;
-lut_Y_data_11[15:0] <= density_reg213;
-end
-
-213: begin
-lut_Y_data_10[15:0] <= density_reg213;
-lut_Y_data_11[15:0] <= density_reg214;
-end
-
-214: begin
-lut_Y_data_10[15:0] <= density_reg214;
-lut_Y_data_11[15:0] <= density_reg215;
-end
-
-215: begin
-lut_Y_data_10[15:0] <= density_reg215;
-lut_Y_data_11[15:0] <= density_reg216;
-end
-
-216: begin
-lut_Y_data_10[15:0] <= density_reg216;
-lut_Y_data_11[15:0] <= density_reg217;
-end
-
-217: begin
-lut_Y_data_10[15:0] <= density_reg217;
-lut_Y_data_11[15:0] <= density_reg218;
-end
-
-218: begin
-lut_Y_data_10[15:0] <= density_reg218;
-lut_Y_data_11[15:0] <= density_reg219;
-end
-
-219: begin
-lut_Y_data_10[15:0] <= density_reg219;
-lut_Y_data_11[15:0] <= density_reg220;
-end
-
-220: begin
-lut_Y_data_10[15:0] <= density_reg220;
-lut_Y_data_11[15:0] <= density_reg221;
-end
-
-221: begin
-lut_Y_data_10[15:0] <= density_reg221;
-lut_Y_data_11[15:0] <= density_reg222;
-end
-
-222: begin
-lut_Y_data_10[15:0] <= density_reg222;
-lut_Y_data_11[15:0] <= density_reg223;
-end
-
-223: begin
-lut_Y_data_10[15:0] <= density_reg223;
-lut_Y_data_11[15:0] <= density_reg224;
-end
-
-224: begin
-lut_Y_data_10[15:0] <= density_reg224;
-lut_Y_data_11[15:0] <= density_reg225;
-end
-
-225: begin
-lut_Y_data_10[15:0] <= density_reg225;
-lut_Y_data_11[15:0] <= density_reg226;
-end
-
-226: begin
-lut_Y_data_10[15:0] <= density_reg226;
-lut_Y_data_11[15:0] <= density_reg227;
-end
-
-227: begin
-lut_Y_data_10[15:0] <= density_reg227;
-lut_Y_data_11[15:0] <= density_reg228;
-end
-
-228: begin
-lut_Y_data_10[15:0] <= density_reg228;
-lut_Y_data_11[15:0] <= density_reg229;
-end
-
-229: begin
-lut_Y_data_10[15:0] <= density_reg229;
-lut_Y_data_11[15:0] <= density_reg230;
-end
-
-230: begin
-lut_Y_data_10[15:0] <= density_reg230;
-lut_Y_data_11[15:0] <= density_reg231;
-end
-
-231: begin
-lut_Y_data_10[15:0] <= density_reg231;
-lut_Y_data_11[15:0] <= density_reg232;
-end
-
-232: begin
-lut_Y_data_10[15:0] <= density_reg232;
-lut_Y_data_11[15:0] <= density_reg233;
-end
-
-233: begin
-lut_Y_data_10[15:0] <= density_reg233;
-lut_Y_data_11[15:0] <= density_reg234;
-end
-
-234: begin
-lut_Y_data_10[15:0] <= density_reg234;
-lut_Y_data_11[15:0] <= density_reg235;
-end
-
-235: begin
-lut_Y_data_10[15:0] <= density_reg235;
-lut_Y_data_11[15:0] <= density_reg236;
-end
-
-236: begin
-lut_Y_data_10[15:0] <= density_reg236;
-lut_Y_data_11[15:0] <= density_reg237;
-end
-
-237: begin
-lut_Y_data_10[15:0] <= density_reg237;
-lut_Y_data_11[15:0] <= density_reg238;
-end
-
-238: begin
-lut_Y_data_10[15:0] <= density_reg238;
-lut_Y_data_11[15:0] <= density_reg239;
-end
-
-239: begin
-lut_Y_data_10[15:0] <= density_reg239;
-lut_Y_data_11[15:0] <= density_reg240;
-end
-
-240: begin
-lut_Y_data_10[15:0] <= density_reg240;
-lut_Y_data_11[15:0] <= density_reg241;
-end
-
-241: begin
-lut_Y_data_10[15:0] <= density_reg241;
-lut_Y_data_11[15:0] <= density_reg242;
-end
-
-242: begin
-lut_Y_data_10[15:0] <= density_reg242;
-lut_Y_data_11[15:0] <= density_reg243;
-end
-
-243: begin
-lut_Y_data_10[15:0] <= density_reg243;
-lut_Y_data_11[15:0] <= density_reg244;
-end
-
-244: begin
-lut_Y_data_10[15:0] <= density_reg244;
-lut_Y_data_11[15:0] <= density_reg245;
-end
-
-245: begin
-lut_Y_data_10[15:0] <= density_reg245;
-lut_Y_data_11[15:0] <= density_reg246;
-end
-
-246: begin
-lut_Y_data_10[15:0] <= density_reg246;
-lut_Y_data_11[15:0] <= density_reg247;
-end
-
-247: begin
-lut_Y_data_10[15:0] <= density_reg247;
-lut_Y_data_11[15:0] <= density_reg248;
-end
-
-248: begin
-lut_Y_data_10[15:0] <= density_reg248;
-lut_Y_data_11[15:0] <= density_reg249;
-end
-
-249: begin
-lut_Y_data_10[15:0] <= density_reg249;
-lut_Y_data_11[15:0] <= density_reg250;
-end
-
-250: begin
-lut_Y_data_10[15:0] <= density_reg250;
-lut_Y_data_11[15:0] <= density_reg251;
-end
-
-251: begin
-lut_Y_data_10[15:0] <= density_reg251;
-lut_Y_data_11[15:0] <= density_reg252;
-end
-
-252: begin
-lut_Y_data_10[15:0] <= density_reg252;
-lut_Y_data_11[15:0] <= density_reg253;
-end
-
-253: begin
-lut_Y_data_10[15:0] <= density_reg253;
-lut_Y_data_11[15:0] <= density_reg254;
-end
-
-254: begin
-lut_Y_data_10[15:0] <= density_reg254;
-lut_Y_data_11[15:0] <= density_reg255;
-end
-
-255: begin
-lut_Y_data_10[15:0] <= density_reg255;
-lut_Y_data_11[15:0] <= density_reg256;
-end
-
-256: begin
-lut_Y_data_10[15:0] <= density_reg256;
-lut_Y_data_11[15:0] <= density_reg256;
-end
-default: begin
-lut_Y_data_10[15:0] <= density_reg0;
-lut_Y_data_11[15:0] <= density_reg0;
-end
-endcase
-end
-end
-end
-end
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 ////////////////
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -8595,23 +6876,15 @@ lut_X_info_0 <= dp2lut_Xinfo_0[17:0];
 end
 end
 
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-if (!nvdla_core_rstn) begin
-lut_X_info_1 <= {18{1'b0}};
-end else if (load_din) begin
-lut_X_info_1 <= dp2lut_Xinfo_1[17:0];
-end
-end
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-    lutX_sel <= {2{1'b0}};
+    lutX_sel <= {1{1'b0}};
   end else if (load_din) begin
-    lutX_sel <= lut_X_sel[2 -1:0];
+    lutX_sel <= lut_X_sel[1 -1:0];
   end
 end
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -8633,24 +6906,16 @@ lut_Y_info_0 <= dp2lut_Yinfo_0[17:0];
 end
 end
 
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-if (!nvdla_core_rstn) begin
-lut_Y_info_1 <= {18{1'b0}};
-end else if (load_din) begin
-lut_Y_info_1 <= dp2lut_Yinfo_1[17:0];
-end
-end
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-    lutY_sel <= {2{1'b0}};
+    lutY_sel <= {1{1'b0}};
   end else if (load_din) begin
-    lutY_sel <= lut_Y_sel[2 -1:0];
+    lutY_sel <= lut_Y_sel[1 -1:0];
   end
 end
 ////////////////
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: assign lutX_data_${m}0[15:0] = lutX_sel[$m] ? lut_X_data_${m}0[15:0] : (lutY_sel[$m] ? lut_Y_data_${m}0[15:0] : 16'd0);
@@ -8663,10 +6928,6 @@ end
 assign lutX_data_00[15:0] = lutX_sel[0] ? lut_X_data_00[15:0] : (lutY_sel[0] ? lut_Y_data_00[15:0] : 16'd0);
 assign lutX_data_01[15:0] = lutX_sel[0] ? lut_X_data_01[15:0] : (lutY_sel[0] ? lut_Y_data_01[15:0] : 16'd0);
 assign lutX_info_0[15:0] = lutX_sel[0] ? lut_X_info_0[15:0] : (lutY_sel[0] ? lut_Y_info_0[15:0] : 16'd0);
-
-assign lutX_data_10[15:0] = lutX_sel[1] ? lut_X_data_10[15:0] : (lutY_sel[1] ? lut_Y_data_10[15:0] : 16'd0);
-assign lutX_data_11[15:0] = lutX_sel[1] ? lut_X_data_11[15:0] : (lutY_sel[1] ? lut_Y_data_11[15:0] : 16'd0);
-assign lutX_info_1[15:0] = lutX_sel[1] ? lut_X_info_1[15:0] : (lutY_sel[1] ? lut_Y_info_1[15:0] : 16'd0);
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -8682,7 +6943,7 @@ end
 ///////////////////////////////////////////////////////////////
 //output data
 ///////////////////////////////////////////////////////////////
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: assign lut2intp_X_data_${m}0[31:0] = {{16{lutX_data_${m}0[15]}},lutX_data_${m}0[15:0]};
@@ -8701,13 +6962,6 @@ assign lut2intp_X_data_00_17b[16:0] = {lutX_data_00[15],lutX_data_00[15:0]};
 assign lut2intp_X_info_0[19:0] = {lut_Y_info_0[17:16],lut_X_info_0[17:16],lutX_info_0[15:0]};
 assign lut2intp_X_sel[0] = lutX_sel[0];
 assign lut2intp_Y_sel[0] = lutY_sel[0];
-
-assign lut2intp_X_data_10[31:0] = {{16{lutX_data_10[15]}},lutX_data_10[15:0]};
-assign lut2intp_X_data_11[31:0] = {{16{lutX_data_11[15]}},lutX_data_11[15:0]};
-assign lut2intp_X_data_10_17b[16:0] = {lutX_data_10[15],lutX_data_10[15:0]};
-assign lut2intp_X_info_1[19:0] = {lut_Y_info_1[17:16],lut_X_info_1[17:16],lutX_info_1[15:0]};
-assign lut2intp_X_sel[1] = lutX_sel[1];
-assign lut2intp_Y_sel[1] = lutY_sel[1];
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 /////////////////////////

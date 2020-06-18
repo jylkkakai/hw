@@ -27,19 +27,19 @@ module NV_NVDLA_CACC_assembly_buffer (
   );
 input nvdla_core_clk;
 input nvdla_core_rstn;
-input [4 +1 -1:0] abuf_rd_addr;
+input [3 +1 -1:0] abuf_rd_addr;
 input abuf_rd_en;
-input [4 +1 -1:0] abuf_wr_addr;
-input [34*16 -1:0] abuf_wr_data;
+input [3 +1 -1:0] abuf_wr_addr;
+input [34*8 -1:0] abuf_wr_data;
 input abuf_wr_en;
 input [31:0] pwrbus_ram_pd;
-output [34*16 -1:0] abuf_rd_data;
+output [34*8 -1:0] abuf_rd_data;
 // spyglass disable_block NoWidthInBasedNum-ML
 // instance SRAM
-wire [34*16 -1:0] abuf_rd_data_ecc;
-wire [4 +1 -1:0] abuf_rd_addr;
-//: my $dep= 16*2;
-//: my $wid= 34*16;
+wire [34*8 -1:0] abuf_rd_data_ecc;
+wire [3 +1 -1:0] abuf_rd_addr;
+//: my $dep= 8*2;
+//: my $wid= 34*8;
 //: print qq(
 //: nv_ram_rws_${dep}x${wid} u_accu_abuf_0 (
 //: .clk (nvdla_core_clk) //|< i
@@ -54,7 +54,7 @@ wire [4 +1 -1:0] abuf_rd_addr;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-nv_ram_rws_32x544 u_accu_abuf_0 (
+nv_ram_rws_16x272 u_accu_abuf_0 (
 .clk (nvdla_core_clk) //|< i
 ,.ra (abuf_rd_addr) //|< i
 ,.re (abuf_rd_en) //|< i
@@ -79,13 +79,13 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-wire [34*16 -1:0] abuf_rd_raw_data = abuf_rd_data_ecc;
+wire [34*8 -1:0] abuf_rd_raw_data = abuf_rd_data_ecc;
 // spygalss disable_block STARC-2.10.1.6
 // spyglass disable_block STARC05-3.3.1.4b
-//: my $kk=34*16;
+//: my $kk=34*8;
 //: &eperl::flop("-wid ${kk} -norst -q abuf_rd_raw_data_d1 -en \"abuf_rd_en_d1\" -d \"abuf_rd_raw_data\" -clk nvdla_core_clk");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-reg [543:0] abuf_rd_raw_data_d1;
+reg [271:0] abuf_rd_raw_data_d1;
 always @(posedge nvdla_core_clk) begin
        if ((abuf_rd_en_d1) == 1'b1) begin
            abuf_rd_raw_data_d1 <= abuf_rd_raw_data;

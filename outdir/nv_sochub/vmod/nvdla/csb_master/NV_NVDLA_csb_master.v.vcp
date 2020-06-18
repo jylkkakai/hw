@@ -92,11 +92,6 @@ module NV_NVDLA_csb_master (
   ,csb2cdp_req_pd //|> o
   ,cdp2csb_resp_valid //|< i
   ,cdp2csb_resp_pd //|< i
-  ,csb2rbk_req_pvld //|> o
-  ,csb2rbk_req_prdy //|< i
-  ,csb2rbk_req_pd //|> o
-  ,rbk2csb_resp_valid //|< i
-  ,rbk2csb_resp_pd //|< i
   );
 //
 // NV_NVDLA_csb_master_ports.v
@@ -185,11 +180,6 @@ input csb2cdp_req_prdy; /* data return handshake */
 output [62:0] csb2cdp_req_pd;
 input cdp2csb_resp_valid; /* data valid */
 input [33:0] cdp2csb_resp_pd; /* pkt_id_width=1 pkt_widths=33,33  */
-output csb2rbk_req_pvld; /* data valid */
-input csb2rbk_req_prdy; /* data return handshake */
-output [62:0] csb2rbk_req_pd;
-input rbk2csb_resp_valid; /* data valid */
-input [33:0] rbk2csb_resp_pd; /* pkt_id_width=1 pkt_widths=33,33  */
 /////////////////////////////////////////////////////////////////
 reg [49:0] csb2cfgrom_req_pd_tmp;
 reg csb2cfgrom_req_pvld;
@@ -303,14 +293,6 @@ reg cdp_resp_valid;
 wire csb2cdp_req_en;
 wire csb2cdp_req_pvld_w;
 wire cdp_req_pvld_w;
-reg [49:0] csb2rbk_req_pd_tmp;
-reg csb2rbk_req_pvld;
-reg rbk_req_pvld;
-reg [33:0] rbk_resp_pd;
-reg rbk_resp_valid;
-wire csb2rbk_req_en;
-wire csb2rbk_req_pvld_w;
-wire rbk_req_pvld_w;
 reg csb2dummy_req_nposted;
 reg csb2dummy_req_pvld;
 reg csb2dummy_req_read;
@@ -1056,47 +1038,7 @@ always @(posedge nvdla_core_clk) begin
         cdp_resp_pd <= cdp2csb_resp_pd;
     end
 end
-//////////////// for RUBIK ////////////////
-assign select_rbk = ((core_byte_addr & addr_mask) == 32'h00011000);
-assign rbk_req_pvld_w = (core_req_pop_valid & select_rbk) ? 1'b1 :
-                        (csb2rbk_req_prdy | ~csb2rbk_req_pvld) ? 1'b0 :
-                        rbk_req_pvld;
-assign csb2rbk_req_pvld_w = rbk_req_pvld ? 1'b1 :
-                            csb2rbk_req_prdy ? 1'b0 :
-                            csb2rbk_req_pvld;
-assign csb2rbk_req_en = rbk_req_pvld & (csb2rbk_req_prdy | ~csb2rbk_req_pvld);
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-    if (!nvdla_core_rstn) begin
-        rbk_req_pvld <= 1'b0;
-    end else begin
-        rbk_req_pvld <= rbk_req_pvld_w;
-    end
-end
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-    if (!nvdla_core_rstn) begin
-        csb2rbk_req_pvld <= 1'b0;
-    end else begin
-        csb2rbk_req_pvld <= csb2rbk_req_pvld_w;
-    end
-end
-always @(posedge nvdla_core_clk) begin
-    if ((csb2rbk_req_en) == 1'b1) begin
-        csb2rbk_req_pd_tmp <= core_req_pd_d1;
-    end
-end
-assign csb2rbk_req_pd ={7'h0,csb2rbk_req_pd_tmp[49:16],6'h0,csb2rbk_req_pd_tmp[15:0]};
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-    if (!nvdla_core_rstn) begin
-        rbk_resp_valid <= 1'b0;
-    end else begin
-        rbk_resp_valid <= rbk2csb_resp_valid;
-    end
-end
-always @(posedge nvdla_core_clk) begin
-    if ((rbk2csb_resp_valid) == 1'b1) begin
-        rbk_resp_pd <= rbk2csb_resp_pd;
-    end
-end
+assign select_rbk = 1'b0;
 //////////////// for DUMMY ////////////////
 ////////////////// dummy client //////////////////////
 assign select_dummy = ~(select_cfgrom
@@ -1175,7 +1117,6 @@ assign core_resp_pd = ( ({34 {cfgrom_resp_valid}} & cfgrom_resp_pd)
                       | ({34 {pdp_resp_valid}} & pdp_resp_pd)
                       | ({34 {cdp_resp_valid}} & cdp_resp_pd)
                       | ({34 {cdp_rdma_resp_valid}} & cdp_rdma_resp_pd)
-                      | ({34 {rbk_resp_valid}} & rbk_resp_pd)
                       | ({34 {dummy_resp_valid}} & dummy_resp_pd));
 assign core_resp_pvld = cfgrom_resp_valid |
                         glb_resp_valid |
@@ -1191,7 +1132,6 @@ assign core_resp_pvld = cfgrom_resp_valid |
                         pdp_resp_valid |
                         cdp_rdma_resp_valid |
                         cdp_resp_valid |
-                        rbk_resp_valid |
                         dummy_resp_valid;
 //////////////////////////////////////////////////////////////
 ///// functional point                                   /////

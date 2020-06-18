@@ -49,7 +49,7 @@ input ig2cq_prdy;
 output dma_rd_req_ram_type;
 output dma_rd_req_vld;
 input dma_rd_req_rdy;
-output [79 -1:0] dma_rd_req_pd;
+output [47 -1:0] dma_rd_req_pd;
 input reg2dp_src_ram_type;
 input [4:0] reg2dp_batch_number;
 input [12:0] reg2dp_channel;
@@ -58,9 +58,9 @@ input [12:0] reg2dp_width;
 input [1:0] reg2dp_in_precision;
 input [1:0] reg2dp_proc_precision;
 input [31:0] reg2dp_src_base_addr_high;
-input [31-4:0] reg2dp_src_base_addr_low;
-input [31-4:0] reg2dp_src_line_stride;
-input [31-4:0] reg2dp_src_surface_stride;
+input [31-3:0] reg2dp_src_base_addr_low;
+input [31-3:0] reg2dp_src_line_stride;
+input [31-3:0] reg2dp_src_surface_stride;
 input reg2dp_perf_dma_en;
 output [31:0] dp2reg_mrdma_stall;
 reg cmd_process;
@@ -73,19 +73,19 @@ wire cfg_di_int8;
 wire cfg_do_int8;
 wire cfg_mode_1x1_pack;
 wire cfg_mode_multi_batch;
-wire [31-4:0] cfg_line_stride;
-wire [31-4:0] cfg_surf_stride;
-wire [64 -4 -1:0] cfg_base_addr;
-reg [64 -4 -1:0] base_addr_elem;
-reg [64 -4 -1:0] base_addr_line;
-reg [64 -4 -1:0] base_addr_surf;
-reg [64 -4 -1:0] base_addr_width;
+wire [31-3:0] cfg_line_stride;
+wire [31-3:0] cfg_surf_stride;
+wire [32 -3 -1:0] cfg_base_addr;
+reg [32 -3 -1:0] base_addr_elem;
+reg [32 -3 -1:0] base_addr_line;
+reg [32 -3 -1:0] base_addr_surf;
+reg [32 -3 -1:0] base_addr_width;
 reg mon_base_addr_surf_c;
 reg mon_base_addr_width_c;
 reg mon_base_addr_elem_c;
 reg mon_base_addr_line_c;
 reg [4:0] count_b;
-reg [13-4:0] count_c;
+reg [13-3:0] count_c;
 reg [12:0] count_h;
 reg count_e;
 reg [9:0] count_w;
@@ -99,14 +99,14 @@ wire is_last_h;
 wire is_last_w;
 wire is_line_end;
 wire is_surf_end;
-wire [13-4:0] mode_1x1_req_size;
+wire [13-3:0] mode_1x1_req_size;
 reg [14:0] dma_req_size;
-wire [64 -4 -1:0] req_addr;
-wire [64 -1:0] dma_req_addr;
+wire [32 -3 -1:0] req_addr;
+wire [32 -1:0] dma_req_addr;
 wire [4:0] size_of_batch;
 wire size_of_elem;
 wire [9:0] size_of_width;
-reg [13-4:0] size_of_surf;
+reg [13-3:0] size_of_surf;
 reg mrdma_rd_stall_cnt_cen;
 wire mrdma_rd_stall_cnt_clr;
 wire mrdma_rd_stall_cnt_inc;
@@ -183,7 +183,7 @@ end
 //==============
 // CFG value calculation
 //==============
-assign cfg_base_addr = {reg2dp_src_base_addr_high,reg2dp_src_base_addr_low};
+assign cfg_base_addr = reg2dp_src_base_addr_low;
 assign cfg_line_stride = {reg2dp_src_line_stride};
 assign cfg_surf_stride = {reg2dp_src_surface_stride};
 assign cfg_di_int8 = reg2dp_in_precision == 0 ;
@@ -201,11 +201,11 @@ always @(
   or cfg_di_int16
   ) begin
     if (cfg_di_int8) begin
-        size_of_surf = {1'b0,reg2dp_channel[12:4]};
+        size_of_surf = {1'b0,reg2dp_channel[12:3]};
     end else if (cfg_di_int16) begin
-        size_of_surf = reg2dp_channel[12:4 -1];
+        size_of_surf = reg2dp_channel[12:3 -1];
     end else begin
-        size_of_surf = reg2dp_channel[12:4 -1];
+        size_of_surf = reg2dp_channel[12:3 -1];
     end
 end
 //=================================================
@@ -216,32 +216,13 @@ assign is_elem_end = is_batch_end;
 assign is_line_end = is_elem_end ;
 assign is_surf_end = is_line_end & ( (cfg_mode_1x1_pack) || (is_last_h) );
 assign is_cube_end = is_surf_end & ( (cfg_mode_1x1_pack) || (is_last_c) );
-//==============
-// Batch Count:
-//==============
-assign size_of_batch = reg2dp_batch_number;
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-  if (!nvdla_core_rstn) begin
-    count_b <= {5{1'b0}};
-  end else begin
-    if (cfg_mode_multi_batch) begin
-        if (cmd_accept) begin
-            if (is_batch_end) begin
-                count_b <= 0;
-            end else begin
-                count_b <= count_b + 1'b1;
-            end
-        end
-    end
-  end
-end
-assign is_last_b = (count_b==size_of_batch);
+assign is_last_b = 1'b1;
 //==============
 // CHANNEL Count:
 //==============
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-    count_c <= {(14-4){1'b0}};
+    count_c <= {(14-3){1'b0}};
   end else begin
     if (cmd_accept) begin
         if (is_cube_end) begin
@@ -276,7 +257,7 @@ assign is_last_h = (count_h==reg2dp_height);
 // LINE
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-    base_addr_line <= {(64 -4){1'b0}};
+    base_addr_line <= {(32 -3){1'b0}};
     mon_base_addr_line_c <= 1'b0;
   end else begin
     if (op_load) begin
@@ -340,7 +321,7 @@ end
 // SURF
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-    base_addr_surf <= {(64 -4){1'b0}};
+    base_addr_surf <= {(32 -3){1'b0}};
     mon_base_addr_surf_c <= 1'b0;
   end else begin
     if (op_load) begin
@@ -403,7 +384,7 @@ end
 // DMA Req : Addr : Generation
 //==========================================
 assign req_addr = base_addr_line;
-assign dma_req_addr = {req_addr,{4{1'b0}}};
+assign dma_req_addr = {req_addr,{3{1'b0}}};
 //==============
 // DMA Req : SIZE : Generation
 //==============
@@ -415,7 +396,7 @@ always @(
   or reg2dp_width
   ) begin
     if (cfg_mode_1x1_pack) begin
-        dma_req_size = {{(4 +1){1'b0}}, mode_1x1_req_size};
+        dma_req_size = {{(3 +1){1'b0}}, mode_1x1_req_size};
     end
     else begin
         dma_req_size = {{2{1'b0}}, reg2dp_width};
@@ -476,8 +457,8 @@ assign ig2cq_pvld = cmd_process & dma_rd_req_rdy;
 //==============
 // VALID: clamp when when cq is not ready
 assign dma_rd_req_vld = cmd_process & ig2cq_prdy;
-assign dma_rd_req_pd[64 -1:0] = dma_req_addr[64 -1:0];
-assign dma_rd_req_pd[79 -1:64] = dma_req_size[14:0];
+assign dma_rd_req_pd[32 -1:0] = dma_req_addr[32 -1:0];
+assign dma_rd_req_pd[47 -1:32] = dma_req_size[14:0];
 assign dma_rd_req_ram_type = reg2dp_src_ram_type;
 // Accept
 assign cmd_accept = dma_rd_req_vld & dma_rd_req_rdy;

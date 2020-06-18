@@ -58,19 +58,19 @@ output cmd2dat_spt_prdy;
 input [14:0] cmd2dat_spt_pd;
 input sdp_dp2wdma_valid;
 output sdp_dp2wdma_ready;
-input [16*8 -1:0] sdp_dp2wdma_pd;
+input [8*8 -1:0] sdp_dp2wdma_pd;
 output dfifo0_rd_pvld;
 input dfifo0_rd_prdy;
-output [16*8 -1:0] dfifo0_rd_pd;
+output [8*8 -1:0] dfifo0_rd_pd;
 output dfifo1_rd_pvld;
 input dfifo1_rd_prdy;
-output [16*8 -1:0] dfifo1_rd_pd;
+output [8*8 -1:0] dfifo1_rd_pd;
 output dfifo2_rd_pvld;
 input dfifo2_rd_prdy;
-output [16*8 -1:0] dfifo2_rd_pd;
+output [8*8 -1:0] dfifo2_rd_pd;
 output dfifo3_rd_pvld;
 input dfifo3_rd_prdy;
-output [16*8 -1:0] dfifo3_rd_pd;
+output [8*8 -1:0] dfifo3_rd_pd;
 input [4:0] reg2dp_batch_number;
 input [12:0] reg2dp_height;
 input [1:0] reg2dp_out_precision;
@@ -86,9 +86,9 @@ wire cfg_do_int16;
 wire cfg_mode_1x1_pack;
 wire cfg_mode_batch;
 wire cfg_mode_winograd;
-wire [16*8 -1:0] dp2wdma_data;
-wire [16*8 -1:0] dp2wdma_data_16;
-wire [16*8 -1:0] dp2wdma_data_8;
+wire [8*8 -1:0] dp2wdma_data;
+wire [8*8 -1:0] dp2wdma_data_16;
+wire [8*8 -1:0] dp2wdma_data_8;
 wire cmd2dat_spt_odd;
 wire [13:0] cmd2dat_spt_size;
 reg [13:0] spt_size;
@@ -98,19 +98,19 @@ wire in_dat_accept;
 wire in_dat_rdy;
 wire is_last_beat;
 reg [13:0] beat_count;
-wire [16*8 -1:0] dfifo0_wr_pd;
+wire [8*8 -1:0] dfifo0_wr_pd;
 wire dfifo0_wr_prdy;
 wire dfifo0_wr_pvld;
 wire dfifo0_wr_rdy;
-wire [16*8 -1:0] dfifo1_wr_pd;
+wire [8*8 -1:0] dfifo1_wr_pd;
 wire dfifo1_wr_prdy;
 wire dfifo1_wr_pvld;
 wire dfifo1_wr_rdy;
-wire [16*8 -1:0] dfifo2_wr_pd;
+wire [8*8 -1:0] dfifo2_wr_pd;
 wire dfifo2_wr_prdy;
 wire dfifo2_wr_pvld;
 wire dfifo2_wr_rdy;
-wire [16*8 -1:0] dfifo3_wr_pd;
+wire [8*8 -1:0] dfifo3_wr_pd;
 wire dfifo3_wr_prdy;
 wire dfifo3_wr_pvld;
 wire dfifo3_wr_rdy;
@@ -367,55 +367,55 @@ wire dfifo2_wr_en = beat_count[1:0] == 2'h2;
 wire dfifo3_wr_en = beat_count[1:0] == 2'h3;
 assign dfifo0_wr_pvld = sdp_dp2wdma_valid & dfifo0_wr_en;
 assign dfifo0_wr_rdy = dfifo0_wr_en ? dfifo0_wr_prdy : 1'b1;
-assign dfifo0_wr_pd = dp2wdma_data[16*8 -1:0];
+assign dfifo0_wr_pd = dp2wdma_data[8*8 -1:0];
 assign dfifo1_wr_pvld = sdp_dp2wdma_valid & dfifo1_wr_en;
 assign dfifo1_wr_rdy = dfifo1_wr_en ? dfifo1_wr_prdy : 1'b1;
-assign dfifo1_wr_pd = dp2wdma_data[16*8 -1:0];
+assign dfifo1_wr_pd = dp2wdma_data[8*8 -1:0];
 assign dfifo2_wr_pvld = sdp_dp2wdma_valid & dfifo2_wr_en;
 assign dfifo2_wr_rdy = dfifo2_wr_en ? dfifo2_wr_prdy : 1'b1;
-assign dfifo2_wr_pd = dp2wdma_data[16*8 -1:0];
+assign dfifo2_wr_pd = dp2wdma_data[8*8 -1:0];
 assign dfifo3_wr_pvld = sdp_dp2wdma_valid & dfifo3_wr_en;
 assign dfifo3_wr_rdy = dfifo3_wr_en ? dfifo3_wr_prdy : 1'b1;
-assign dfifo3_wr_pd = dp2wdma_data[16*8 -1:0];
+assign dfifo3_wr_pd = dp2wdma_data[8*8 -1:0];
 NV_NVDLA_SDP_WDMA_DAT_IN_dfifo u_dfifo0 (
    .nvdla_core_clk (nvdla_core_clk)
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.dfifo_wr_prdy (dfifo0_wr_prdy)
   ,.dfifo_wr_pvld (dfifo0_wr_pvld)
-  ,.dfifo_wr_pd (dfifo0_wr_pd[16*8 -1:0])
+  ,.dfifo_wr_pd (dfifo0_wr_pd[8*8 -1:0])
   ,.dfifo_rd_prdy (dfifo0_rd_prdy)
   ,.dfifo_rd_pvld (dfifo0_rd_pvld)
-  ,.dfifo_rd_pd (dfifo0_rd_pd[16*8 -1:0])
+  ,.dfifo_rd_pd (dfifo0_rd_pd[8*8 -1:0])
   );
 NV_NVDLA_SDP_WDMA_DAT_IN_dfifo u_dfifo1 (
    .nvdla_core_clk (nvdla_core_clk)
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.dfifo_wr_prdy (dfifo1_wr_prdy)
   ,.dfifo_wr_pvld (dfifo1_wr_pvld)
-  ,.dfifo_wr_pd (dfifo1_wr_pd[16*8 -1:0])
+  ,.dfifo_wr_pd (dfifo1_wr_pd[8*8 -1:0])
   ,.dfifo_rd_prdy (dfifo1_rd_prdy)
   ,.dfifo_rd_pvld (dfifo1_rd_pvld)
-  ,.dfifo_rd_pd (dfifo1_rd_pd[16*8 -1:0])
+  ,.dfifo_rd_pd (dfifo1_rd_pd[8*8 -1:0])
   );
 NV_NVDLA_SDP_WDMA_DAT_IN_dfifo u_dfifo2 (
    .nvdla_core_clk (nvdla_core_clk)
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.dfifo_wr_prdy (dfifo2_wr_prdy)
   ,.dfifo_wr_pvld (dfifo2_wr_pvld)
-  ,.dfifo_wr_pd (dfifo2_wr_pd[16*8 -1:0])
+  ,.dfifo_wr_pd (dfifo2_wr_pd[8*8 -1:0])
   ,.dfifo_rd_prdy (dfifo2_rd_prdy)
   ,.dfifo_rd_pvld (dfifo2_rd_pvld)
-  ,.dfifo_rd_pd (dfifo2_rd_pd[16*8 -1:0])
+  ,.dfifo_rd_pd (dfifo2_rd_pd[8*8 -1:0])
   );
 NV_NVDLA_SDP_WDMA_DAT_IN_dfifo u_dfifo3 (
    .nvdla_core_clk (nvdla_core_clk)
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.dfifo_wr_prdy (dfifo3_wr_prdy)
   ,.dfifo_wr_pvld (dfifo3_wr_pvld)
-  ,.dfifo_wr_pd (dfifo3_wr_pd[16*8 -1:0])
+  ,.dfifo_wr_pd (dfifo3_wr_pd[8*8 -1:0])
   ,.dfifo_rd_prdy (dfifo3_rd_prdy)
   ,.dfifo_rd_pvld (dfifo3_rd_pvld)
-  ,.dfifo_rd_pd (dfifo3_rd_pd[16*8 -1:0])
+  ,.dfifo_rd_pd (dfifo3_rd_pd[8*8 -1:0])
   );
 endmodule // NV_NVDLA_SDP_WDMA_DAT_in
 module NV_NVDLA_SDP_WDMA_DAT_IN_dfifo (
@@ -432,10 +432,10 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 output dfifo_wr_prdy;
 input dfifo_wr_pvld;
-input [16*8 -1:0] dfifo_wr_pd;
+input [8*8 -1:0] dfifo_wr_pd;
 input dfifo_rd_prdy;
 output dfifo_rd_pvld;
-output [16*8 -1:0] dfifo_rd_pd;
-//: my $dw = 16*8;
+output [8*8 -1:0] dfifo_rd_pd;
+//: my $dw = 8*8;
 //: &eperl::pipe("-is -wid $dw -do dfifo_rd_pd -vo dfifo_rd_pvld -ri dfifo_rd_prdy -di dfifo_wr_pd -vi dfifo_wr_pvld -ro dfifo_wr_prdy");
 endmodule

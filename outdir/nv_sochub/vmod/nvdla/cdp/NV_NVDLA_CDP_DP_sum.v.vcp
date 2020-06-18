@@ -39,7 +39,7 @@ module NV_NVDLA_CDP_DP_sum (
 /////////////////////////////////////////////////////
 input nvdla_core_clk;
 input nvdla_core_rstn;
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: my $k = ${icvto}*(${tp}+8)+17;
 //: print qq(
@@ -62,7 +62,7 @@ wire buf2sum_din_prdy;
 wire buf2sum_rdy_f;
 wire cdp_buf2sum_ready;
 //: my $icvto=(8 +1);
-//: my $tp=2 +8;
+//: my $tp=1 +8;
 //: foreach my $i (0..${tp}-1) {
 //: print qq(
 //: wire [${icvto}-1:0] buf2sum_int8_$i;
@@ -80,7 +80,7 @@ wire [7:0] int8_inv_6;
 wire [7:0] int8_inv_7;
 wire [7:0] int8_inv_8;
 wire [7:0] int8_inv_9;
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: my $k = ${tp}*(${icvto}*2+3);
 //: print qq(
@@ -133,7 +133,7 @@ wire sum_out_pvld;
 ///////////////////////////////////////////
 //==========================================
 //----------------------------------------
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: my $k = ${icvto}*(${tp}+8)+17;
 //: &eperl::pipe(" -wid $k -do cdp_buf2sum_pd -vo cdp_buf2sum_valid -ri cdp_buf2sum_ready -di normalz_buf_data -vi normalz_buf_data_pvld -ro normalz_buf_data_prdy ");
@@ -143,7 +143,7 @@ assign cdp_buf2sum_ready = buf2sum_rdy_f;
 assign buf2sum_rdy_f = buf2sum_din_prdy;
 //==========================================
 //: my $icvto=(8 +1);
-//: my $tp=2 +8;
+//: my $tp=1 +8;
 //: foreach my $i (0..${tp}-1) {
 //: print qq(
 //: assign buf2sum_int8_$i = cdp_buf2sum_pd[${icvto}*${i}+${icvto}-1:${icvto}*${i}];
@@ -152,7 +152,7 @@ assign buf2sum_rdy_f = buf2sum_din_prdy;
 //========================================================
 //int mode
 //--------------------------------------------------------
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: foreach my $i (0..${tp}+8-1) {
 //: print qq(
@@ -225,7 +225,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 assign buf2sum_2d_rdy = ~buf2sum_3d_vld | buf2sum_3d_rdy ;
 assign load_din_2d = buf2sum_2d_vld & buf2sum_2d_rdy;
-//: my $tp=2;
+//: my $tp=1;
 //: my $icvto=(8 +1);
 //: foreach my $i (0..${tp}-1) {
 //: print "int_sum_block_tp1 u_sum_block_$i ( \n";
@@ -264,7 +264,7 @@ assign buf2sum_3d_rdy = sum_out_prdy;
 //data output select
 //-------------------------------------------------------
 assign sum_out_pd = {
-//: my $tp=2;
+//: my $tp=1;
 //: if($tp > 1){
 //: foreach my $i (0..${tp}-2) {
 //: my $j = ${tp} - $i -1;
@@ -280,7 +280,7 @@ assign sum2itp_valid = sum_out_pvld;
 assign sum2itp_data = sum_out_pd;
 //=======================================================
 ////////::pipe -bc -is sum2itp_pd (sum2itp_pvld,sum2itp_prdy) <= sum2itp_data (sum2itp_valid,sum2itp_ready);
-//: my $k = 2*21;
+//: my $k = 1*21;
 //: &eperl::pipe("-wid $k -is -do sum2itp_pd -vo sum2itp_pvld -ri sum2itp_prdy -di sum2itp_data -vi sum2itp_valid -ro sum2itp_ready ");
 assign sum_out_prdy = sum2itp_ready;
 /////////////////////////////////////////////////////////

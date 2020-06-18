@@ -10,7 +10,7 @@ module NV_NVDLA_CDP_DP_lut (
    nvdla_core_clk //|< i
   ,nvdla_core_clk_orig //|< i
   ,nvdla_core_rstn //|< i
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,dp2lut_X_entry_${m}
@@ -31,7 +31,7 @@ module NV_NVDLA_CDP_DP_lut (
   ,reg2dp_lut_uflow_priority //|< i
   ,dp2lut_prdy //|> o
   ,dp2reg_lut_data //|> o
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,lut2intp_X_data_${m}0 //|> o
@@ -48,7 +48,7 @@ module NV_NVDLA_CDP_DP_lut (
 input nvdla_core_clk;
 input nvdla_core_clk_orig;
 input nvdla_core_rstn;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: input [9:0] dp2lut_X_entry_${m};
@@ -69,7 +69,7 @@ input reg2dp_lut_table_id;
 input reg2dp_lut_uflow_priority;
 output dp2lut_prdy;
 output [15:0] dp2reg_lut_data;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: output [31:0] lut2intp_X_data_${m}0;
@@ -78,8 +78,8 @@ output [15:0] dp2reg_lut_data;
 //: output [19:0] lut2intp_X_info_${m};
 //: );
 //: }
-output [2 -1:0] lut2intp_X_sel;
-output [2 -1:0] lut2intp_Y_sel;
+output [1 -1:0] lut2intp_X_sel;
+output [1 -1:0] lut2intp_Y_sel;
 output lut2intp_pvld;
 ////////////////////////////////////////////////////////////////////////////
 reg [15:0] density_out;
@@ -89,7 +89,7 @@ reg [15:0] density_out;
 //: );
 //: }
 reg lut2intp_pvld;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: wire [31:0] lut2intp_X_data_${m}0;
@@ -98,11 +98,11 @@ reg lut2intp_pvld;
 //: wire [19:0] lut2intp_X_info_${m};
 //: );
 //: }
-wire [2 -1:0] lut2intp_X_sel;
-wire [2 -1:0] lut2intp_Y_sel;
-reg [2 -1:0] lutX_sel;
-reg [2 -1:0] lutY_sel;
-//: my $k = 2;
+wire [1 -1:0] lut2intp_X_sel;
+wire [1 -1:0] lut2intp_Y_sel;
+reg [1 -1:0] lutX_sel;
+reg [1 -1:0] lutY_sel;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: reg [15:0] lut_X_data_${m}0;
@@ -113,8 +113,8 @@ reg [2 -1:0] lutY_sel;
 //: reg [17:0] lut_Y_info_${m};
 //: );
 //: }
-reg [2 -1:0] lut_X_sel;
-reg [2 -1:0] lut_Y_sel;
+reg [1 -1:0] lut_X_sel;
+reg [1 -1:0] lut_Y_sel;
 reg [15:0] raw_out;
 //: foreach my $m (0..64) {
 //: print qq(
@@ -126,8 +126,8 @@ wire both_of_sel;
 wire both_uf_sel;
 wire dp2lut_prdy_f;
 wire load_din;
-// my $k = 2/2;
-//: my $k = 2;
+// my $k = 1/2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: wire [15:0] lutX_data_${m}0;
@@ -222,7 +222,7 @@ assign dp2lut_prdy = dp2lut_prdy_f;
 assign both_hybrid_sel = (reg2dp_lut_hybrid_priority == 1'h1 );
 assign both_of_sel = (reg2dp_lut_oflow_priority == 1'h1 );
 assign both_uf_sel = (reg2dp_lut_uflow_priority == 1'h1 );
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(*) begin
@@ -237,7 +237,7 @@ assign both_uf_sel = (reg2dp_lut_uflow_priority == 1'h1 );
 //: end
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(*) begin
@@ -298,7 +298,7 @@ assign both_uf_sel = (reg2dp_lut_uflow_priority == 1'h1 );
 // spyglass enable_block WRN_61
 `endif // SPYGLASS_ASSERT_ON
 /////////////////////////////////
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -343,7 +343,7 @@ assign both_uf_sel = (reg2dp_lut_uflow_priority == 1'h1 );
 //: }
 /////////////////
 /////////////////
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -387,7 +387,7 @@ assign both_uf_sel = (reg2dp_lut_uflow_priority == 1'h1 );
 //: );
 //: }
 ////////////////
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -401,12 +401,12 @@ assign both_uf_sel = (reg2dp_lut_uflow_priority == 1'h1 );
 //: }
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-    lutX_sel <= {2{1'b0}};
+    lutX_sel <= {1{1'b0}};
   end else if (load_din) begin
-    lutX_sel <= lut_X_sel[2 -1:0];
+    lutX_sel <= lut_X_sel[1 -1:0];
   end
 end
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -420,13 +420,13 @@ end
 //: }
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-    lutY_sel <= {2{1'b0}};
+    lutY_sel <= {1{1'b0}};
   end else if (load_din) begin
-    lutY_sel <= lut_Y_sel[2 -1:0];
+    lutY_sel <= lut_Y_sel[1 -1:0];
   end
 end
 ////////////////
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: assign lutX_data_${m}0[15:0] = lutX_sel[$m] ? lut_X_data_${m}0[15:0] : (lutY_sel[$m] ? lut_Y_data_${m}0[15:0] : 16'd0);
@@ -447,7 +447,7 @@ end
 ///////////////////////////////////////////////////////////////
 //output data
 ///////////////////////////////////////////////////////////////
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: assign lut2intp_X_data_${m}0[31:0] = {{16{lutX_data_${m}0[15]}},lutX_data_${m}0[15:0]};

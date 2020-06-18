@@ -28,7 +28,7 @@ module NV_NVDLA_CDP_DP_intp (
   ,nvdla_core_rstn //|< i
   ,dp2reg_done //|< i
   ,intp2mul_prdy //|< i
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,lut2intp_X_data_${m}0 //|> o
@@ -72,7 +72,7 @@ module NV_NVDLA_CDP_DP_intp (
   ,dp2reg_d1_perf_lut_lo_hit //|> o
   ,dp2reg_d1_perf_lut_oflow //|> o
   ,dp2reg_d1_perf_lut_uflow //|> o
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: ,intp2mul_pd_$m //|> o
@@ -87,7 +87,7 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input dp2reg_done;
 input intp2mul_prdy;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: input [31:0] lut2intp_X_data_${m}0;
@@ -96,8 +96,8 @@ input intp2mul_prdy;
 //: input [19:0] lut2intp_X_info_${m};
 //: );
 //: }
-input [2 -1:0] lut2intp_X_sel;
-input [2 -1:0] lut2intp_Y_sel;
+input [1 -1:0] lut2intp_X_sel;
+input [1 -1:0] lut2intp_Y_sel;
 input lut2intp_pvld;
 input [31:0] pwrbus_ram_pd;
 input [5:0] reg2dp_lut_le_end_high;
@@ -119,7 +119,7 @@ input [4:0] reg2dp_lut_lo_slope_uflow_shift;
 input [5:0] reg2dp_lut_lo_start_high;
 input [31:0] reg2dp_lut_lo_start_low;
 input reg2dp_sqsum_bypass;
-//: my $k = 2;
+//: my $k = 1;
 //: my $icvto = (8 +1);
 //: print "input  [${k}*(${icvto}*2+3)-1:0] sync2itp_pd;  \n";
 input sync2itp_pvld;
@@ -133,7 +133,7 @@ output [31:0] dp2reg_d1_perf_lut_le_hit;
 output [31:0] dp2reg_d1_perf_lut_lo_hit;
 output [31:0] dp2reg_d1_perf_lut_oflow;
 output [31:0] dp2reg_d1_perf_lut_uflow;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: output [16:0] intp2mul_pd_$m;
@@ -144,7 +144,7 @@ output lut2intp_prdy;
 output sync2itp_prdy;
 //////////////////////////////////////////////////////////////////////
 reg X_exp;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: reg [38:0] Xinterp_in0_pd_$m;
@@ -155,11 +155,11 @@ reg X_exp;
 //: );
 //: }
 reg [31:0] both_hybrid_counter;
-reg [2 -1:0] both_hybrid_flag;
+reg [1 -1:0] both_hybrid_flag;
 reg [31:0] both_of_counter;
-reg [2 -1:0] both_of_flag;
+reg [1 -1:0] both_of_flag;
 reg [31:0] both_uf_counter;
-reg [2 -1:0] both_uf_flag;
+reg [1 -1:0] both_uf_flag;
 reg [31:0] dp2reg_d0_perf_lut_hybrid;
 reg [31:0] dp2reg_d0_perf_lut_le_hit;
 reg [31:0] dp2reg_d0_perf_lut_lo_hit;
@@ -170,10 +170,10 @@ reg [31:0] dp2reg_d1_perf_lut_le_hit;
 reg [31:0] dp2reg_d1_perf_lut_lo_hit;
 reg [31:0] dp2reg_d1_perf_lut_oflow;
 reg [31:0] dp2reg_d1_perf_lut_uflow;
-//reg [2*17-1:0] intp2mul_pd;
+//reg [1*17-1:0] intp2mul_pd;
 //reg intp2mul_pvld;
 reg intp_pvld_d;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: reg [16:0] ip2mul_pd_$m;
@@ -181,16 +181,16 @@ reg intp_pvld_d;
 //: }
 //reg ip2mul_prdy;
 reg layer_flg;
-//reg [2*103-1:0] lut2intp_data;
+//reg [1*103-1:0] lut2intp_data;
 //reg lut2intp_prdy;
 //reg lut2intp_valid;
 reg [37:0] lut_le_max;
 reg [38:0] lut_le_min;
 reg [37:0] lut_lo_max;
 reg [37:0] lut_lo_min;
-reg [2 -1:0] only_le_hit;
+reg [1 -1:0] only_le_hit;
 reg [31:0] only_le_hit_counter;
-reg [2 -1:0] only_lo_hit;
+reg [1 -1:0] only_lo_hit;
 reg [31:0] only_lo_hit_counter;
 reg [15:0] reg2dp_lut_le_slope_oflow_scale_sync;
 reg [4:0] reg2dp_lut_le_slope_oflow_shift_sync;
@@ -201,7 +201,7 @@ reg [4:0] reg2dp_lut_lo_slope_oflow_shift_sync;
 reg [15:0] reg2dp_lut_lo_slope_uflow_scale_sync;
 reg [4:0] reg2dp_lut_lo_slope_uflow_shift_sync;
 reg sqsum_bypass_enable;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: wire [1:0] X_info_$m;
@@ -214,23 +214,23 @@ reg sqsum_bypass_enable;
 //: wire [37:0] hit_in1_pd_$m;
 //: );
 //: }
-wire [2 -1:0] Xinterp_in_rdy;
-wire [2 -1:0] Xinterp_in_vld;
-wire [2 -1:0] Xinterp_out_rdy;
-wire [2 -1:0] Xinterp_out_vld;
+wire [1 -1:0] Xinterp_in_rdy;
+wire [1 -1:0] Xinterp_in_vld;
+wire [1 -1:0] Xinterp_out_rdy;
+wire [1 -1:0] Xinterp_out_vld;
 wire [31:0] both_hybrid_counter_nxt;
 wire [3:0] both_hybrid_ele;
 wire [31:0] both_of_counter_nxt;
 wire [3:0] both_of_ele;
 wire [31:0] both_uf_counter_nxt;
 wire [3:0] both_uf_ele;
-wire [2*4-1:0] dat_info_in;
-wire [2*2-1:0] info_Xin_pd;
-wire [2*2-1:0] info_Yin_pd;
-wire [2*4-1:0] info_in_pd;
+wire [1*4-1:0] dat_info_in;
+wire [1*2-1:0] info_Xin_pd;
+wire [1*2-1:0] info_Yin_pd;
+wire [1*4-1:0] info_in_pd;
 wire info_in_rdy;
 wire info_in_vld;
-wire [2*4-1:0] info_o_pd;
+wire [1*4-1:0] info_o_pd;
 wire info_o_rdy;
 wire info_o_vld;
 wire intp_in_prdy;
@@ -238,7 +238,7 @@ wire intp_in_pvld;
 wire intp_prdy;
 wire intp_prdy_d;
 wire intp_pvld;
-wire [2*17-1:0] ip2mul_pd;
+wire [1*17-1:0] ip2mul_pd;
 wire ip2mul_pvld;
 wire layer_done;
 wire [127:0] le_offset_exp;
@@ -247,9 +247,9 @@ wire [16:0] le_slope_oflow_scale;
 wire [16:0] le_slope_uflow_scale;
 wire [16:0] lo_slope_oflow_scale;
 wire [16:0] lo_slope_uflow_scale;
-wire [2*103-1:0] lut2intp_pd;
+wire [1*103-1:0] lut2intp_pd;
 wire lut2intp_ready;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: wire [31:0] lut2ip_X_data_${m}0;
@@ -258,8 +258,8 @@ wire lut2intp_ready;
 //: wire [19:0] lut2ip_X_info_$m;
 //: );
 //: }
-wire [2 -1:0] lut2ip_X_sel;
-wire [2 -1:0] lut2ip_Y_sel;
+wire [1 -1:0] lut2ip_X_sel;
+wire [1 -1:0] lut2ip_Y_sel;
 wire [37:0] lut_le_end;
 wire [38:0] lut_le_min_int;
 wire [37:0] lut_le_start;
@@ -354,13 +354,13 @@ assign lo_slope_oflow_scale = {reg2dp_lut_lo_slope_oflow_scale_sync[15],reg2dp_l
 ///////////////////////////////////////////
 //lut2intp pipe sync for timing
 assign lut2intp_pd = {
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: lut2intp_X_data_${m}0[31:0],lut2intp_X_data_${m}0_17b[16:0],lut2intp_X_data_${m}1[31:0],
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: lut2intp_X_info_${m}[19:0],
@@ -369,16 +369,16 @@ assign lut2intp_pd = {
                lut2intp_X_sel,
                lut2intp_Y_sel
                };
-//: my $k = 2*103;
+//: my $k = 1*103;
 //: &eperl::pipe(" -is -wid $k -do lut2intp_data -vo lut2intp_valid -ri lut2intp_ready -di lut2intp_pd -vi lut2intp_pvld -ro lut2intp_prdy ");
 assign {
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: lut2ip_X_data_${m}0[31:0],lut2ip_X_data_${m}0_17b[16:0],lut2ip_X_data_${m}1[31:0],
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: lut2ip_X_info_${m}[19:0],
@@ -394,7 +394,7 @@ assign sync2itp_prdy = intp_in_prdy & lut2intp_valid;
 assign intp_in_pvld = sync2itp_pvld & lut2intp_valid;
 ///////////////////////////////////////////
 assign intp_in_prdy = (&Xinterp_in_rdy) & info_in_rdy;
-//: my $k = 2;
+//: my $k = 1;
 //: my $icvto=(8 +1);
 //: my $sqbw=${icvto}*2+3;
 //: foreach my $m (0..$k -1) {
@@ -442,7 +442,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   end
 end
 /////////////////////////////////////////////////
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: assign X_uflow_${m} = lut2ip_X_info_${m}[16];
@@ -451,7 +451,7 @@ end
 //: assign Y_oflow_${m} = lut2ip_X_info_${m}[19];
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(*) begin
@@ -474,7 +474,7 @@ end
 //: end
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(*) begin
@@ -493,7 +493,7 @@ end
 //: end
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(*) begin
@@ -504,7 +504,7 @@ end
 //: end
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(*) begin
@@ -527,7 +527,7 @@ end
 //: end
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(*) begin
@@ -550,7 +550,7 @@ end
 //: end
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: assign Xinterp_in_vld[$m] = intp_in_pvld & info_in_rdy
@@ -566,7 +566,7 @@ end
 //: ;
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: NV_NVDLA_CDP_DP_INTP_unit u_interp_X$m (
@@ -585,7 +585,7 @@ end
 //: );
 //: );
 //: }
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: assign Xinterp_out_rdy[$m] = intp_prdy & info_o_vld
@@ -606,7 +606,7 @@ assign info_o_rdy = intp_prdy & ((&Xinterp_out_vld));
 //process for normal uflow/oflow info
 assign info_in_vld = intp_in_pvld & (&Xinterp_in_rdy);
 assign info_Xin_pd = {
-//: my $k = 2;
+//: my $k = 1;
 //: if($k > 1) {
 //: foreach my $m (0..$k-2) {
 //: my $i = $k -$m - 1;
@@ -617,7 +617,7 @@ assign info_Xin_pd = {
 //: }
         lut2ip_X_info_0[17:16]};
 assign info_Yin_pd = {
-//: my $k = 2;
+//: my $k = 1;
 //: if($k > 1) {
 //: foreach my $m (0..$k-2) {
 //: my $i = $k -$m - 1;
@@ -629,7 +629,7 @@ assign info_Yin_pd = {
             lut2ip_X_info_0[19:18]};
 assign dat_info_in = {info_Yin_pd,info_Xin_pd};
 assign info_in_pd = dat_info_in;
-//: my $s = 2*4;
+//: my $s = 1*4;
 //: print " NV_NVDLA_CDP_DP_intpinfo_fifo_20x${s} u_intpinfo_sync_fifo (    \n";
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
@@ -641,7 +641,7 @@ assign info_in_pd = dat_info_in;
   ,.intpinfo_rd_pd (info_o_pd) //|> w
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0]) //|< i
   );
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: assign X_info_$m = info_o_pd[${m}*2+1:${m}*2];
@@ -664,7 +664,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 //assign intp_prdy_d = ip2mul_prdy;
 assign ip2mul_pvld = intp_pvld_d;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $m (0..$k-1) {
 //: print qq(
 //: always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -680,7 +680,7 @@ assign ip2mul_pvld = intp_pvld_d;
 //LUT perf counters
 ////////////////////////////////////////////////
 assign layer_done = dp2reg_done;
-//: my $k = 2;
+//: my $k = 1;
 //: foreach my $i (0..$k-1) {
 //: print qq(
 //: always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -718,7 +718,7 @@ function [3:0] fun_bit_sum_8;
     fun_bit_sum_8 = ocnt;
   end
 endfunction
-//: my $tp = 2;
+//: my $tp = 1;
 //: if($tp ==8) {
 //: print qq(
 //: assign both_hybrid_ele = fun_bit_sum_8({both_hybrid_flag});
@@ -736,11 +736,11 @@ endfunction
 //: assign only_lo_hit_ele = fun_bit_sum_8({{(8-${tp}){1'b0}},only_lo_hit});
 //: );
 //: }
-//assign both_hybrid_ele = fun_bit_sum_8({{(8-2){1'b0}},both_hybrid_flag});
-//assign both_of_ele = fun_bit_sum_8({{(8-2){1'b0}},both_of_flag});
-//assign both_uf_ele = fun_bit_sum_8({{(8-2){1'b0}},both_uf_flag});
-//assign only_le_hit_ele = fun_bit_sum_8({{(8-2){1'b0}},only_le_hit});
-//assign only_lo_hit_ele = fun_bit_sum_8({{(8-2){1'b0}},only_lo_hit});
+//assign both_hybrid_ele = fun_bit_sum_8({{(8-1){1'b0}},both_hybrid_flag});
+//assign both_of_ele = fun_bit_sum_8({{(8-1){1'b0}},both_of_flag});
+//assign both_uf_ele = fun_bit_sum_8({{(8-1){1'b0}},both_uf_flag});
+//assign only_le_hit_ele = fun_bit_sum_8({{(8-1){1'b0}},only_le_hit});
+//assign only_lo_hit_ele = fun_bit_sum_8({{(8-1){1'b0}},only_lo_hit});
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
     both_hybrid_counter <= {32{1'b0}};
@@ -1444,7 +1444,7 @@ end
 //intp output pipe sync for timing
 ////////////////////////////////////////////////
 assign ip2mul_pd = {
-//: my $k = 2;
+//: my $k = 1;
 //: if($k > 1) {
 //: foreach my $m (0..$k-2) {
 //: my $i = $k - $m -1;
@@ -1455,11 +1455,11 @@ assign ip2mul_pd = {
 //: }
 ip2mul_pd_0[16:0]};
 ////////::pipe -bc -is intp2mul_pd(intp2mul_pvld,intp2mul_prdy) <= ip2mul_pd(ip2mul_pvld,ip2mul_prdy);
-//: my $k = 2*17;
+//: my $k = 1*17;
 //: &eperl::pipe(" -wid $k -is -do intp2mul_pd -vo intp2mul_pvld -ri intp2mul_prdy -di ip2mul_pd -vi ip2mul_pvld -ro ip2mul_prdy ");
 assign intp_prdy_d = ip2mul_prdy;
 assign {
-//: my $k = 2;
+//: my $k = 1;
 //: if($k > 1) {
 //: foreach my $m (0..$k-2) {
 //: my $i = $k - $m -1;

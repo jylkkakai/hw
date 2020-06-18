@@ -5,7 +5,7 @@
 `ifndef SV_STRUCT_DEFINED_sdp2pdp_if
 `define SV_STRUCT_DEFINED_sdp2pdp_if
 typedef struct packed {
-  bit [3:0][7:0] pd;
+  bit [7:0] pd;
 } sdp2pdp_if_struct;
 `endif
 

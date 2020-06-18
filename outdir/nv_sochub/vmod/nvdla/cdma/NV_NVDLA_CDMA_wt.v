@@ -62,8 +62,8 @@ module NV_NVDLA_CDMA_wt (
   ,sc2cdma_wt_updt //|< i
   ,status2dma_fsm_switch //|< i
   ,cdma2buf_wt_wr_en //|> o
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: print qq(
 //: ,cdma2buf_wt_wr_sel
@@ -89,7 +89,6 @@ module NV_NVDLA_CDMA_wt (
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-,cdma2buf_wt_wr_sel
 ,cdma2buf_wt_wr_addr
 ,cdma2buf_wt_wr_data
 
@@ -118,13 +117,13 @@ input nvdla_core_rstn;
 input [31:0] pwrbus_ram_pd;
 output cdma_wt2mcif_rd_req_valid;
 input cdma_wt2mcif_rd_req_ready;
-output [( 64 + 15 )-1:0] cdma_wt2mcif_rd_req_pd;
+output [( 32 + 15 )-1:0] cdma_wt2mcif_rd_req_pd;
 input mcif2cdma_wt_rd_rsp_valid;
 output mcif2cdma_wt_rd_rsp_ready;
-input [( 128 + (128/8/16) )-1:0] mcif2cdma_wt_rd_rsp_pd;
+input [( 64 + (64/8/8) )-1:0] mcif2cdma_wt_rd_rsp_pd;
 output cdma2buf_wt_wr_en;
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int($atmc/$dmaif);
 //: print qq(
@@ -151,9 +150,8 @@ output cdma2buf_wt_wr_en;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-output [2-1:0] cdma2buf_wt_wr_sel ;
 output [16:0] cdma2buf_wt_wr_addr;
-output [128-1:0] cdma2buf_wt_wr_data;
+output [64-1:0] cdma2buf_wt_wr_data;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input status2dma_fsm_switch;
@@ -179,7 +177,7 @@ input [0:0] reg2dp_weight_format;
 input [17:0] reg2dp_byte_per_kernel;
 input [12:0] reg2dp_weight_kernel;
 input [0:0] reg2dp_weight_ram_type;
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $atmbw = int(log(${atmm})/log(2));
 //: print qq(
 //: input [31-${atmbw}:0] reg2dp_weight_addr_low;
@@ -188,9 +186,9 @@ input [0:0] reg2dp_weight_ram_type;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-input [31-4:0] reg2dp_weight_addr_low;
-input [31-4:0] reg2dp_wgs_addr_low;
-input [31-4:0] reg2dp_wmb_addr_low;
+input [31-3:0] reg2dp_weight_addr_low;
+input [31-3:0] reg2dp_wgs_addr_low;
+input [31-3:0] reg2dp_wmb_addr_low;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input [31:0] reg2dp_weight_addr_high;
@@ -211,8 +209,8 @@ output [31:0] dp2reg_wt_rd_latency;
 reg [18:0] byte_per_kernel;
 reg [16:0] cdma2buf_wt_wr_addr;
 reg cdma2buf_wt_wr_en;
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: my $s = int($atmc/$dmaif);
@@ -222,9 +220,6 @@ reg cdma2buf_wt_wr_en;
 //: );
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-
-reg [2-1:0] cdma2buf_wt_wr_sel ;
-wire [1-1:0] cdma2buf_wt_wr_sel_w;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //reg cdma2buf_wt_wr_sel;
@@ -237,8 +232,8 @@ reg [31:0] dbg_wmb_kernel_bits;
 reg [31:0] dbg_wt_kernel_bytes;
 wire [3:0] dma_req_size;
 wire [2:0] dma_req_size_out;
-//: my $mask = (128/8/16);
-//: my $atmm = (16 * 8);
+//: my $mask = (64/8/8);
+//: my $atmm = (8 * 8);
 //: print qq(
 //: wire [${atmm}-1:0] wt_local_data_w;
 //: reg [${atmm}-1:0] wt_local_data;
@@ -253,20 +248,20 @@ wire [2:0] dma_req_size_out;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-wire [128-1:0] wt_local_data_w;
-reg [128-1:0] wt_local_data;
-wire [128-1:0] wmb_local_data_w;
-reg [128-1:0] wmb_local_data;
-reg [128-1:0] wgs_local_data;
+wire [64-1:0] wt_local_data_w;
+reg [64-1:0] wt_local_data;
+wire [64-1:0] wmb_local_data_w;
+reg [64-1:0] wmb_local_data;
+reg [64-1:0] wgs_local_data;
 
-wire [128-1:0] dma_rsp_data_p0;
+wire [64-1:0] dma_rsp_data_p0;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-wire [128 -1:0] wt_cbuf_wr_data_ori_w;
-wire [128 -1:0] wt_cbuf_wr_data_w;
-reg [128 -1:0] cdma2buf_wt_wr_data;
-wire [128 -1:0] wmb_cbuf_wr_data_w;
-wire [128 -1:0] cdma2buf_wt_wr_data_w;
+wire [64 -1:0] wt_cbuf_wr_data_ori_w;
+wire [64 -1:0] wt_cbuf_wr_data_w;
+reg [64 -1:0] cdma2buf_wt_wr_data;
+wire [64 -1:0] wmb_cbuf_wr_data_w;
+wire [64 -1:0] cdma2buf_wt_wr_data_w;
 wire [3:0] dma_rsp_size;
 reg [3:0] dma_rsp_size_cnt;
 wire [31:0] dp2reg_wt_rd_latency=32'd0;
@@ -382,14 +377,14 @@ wire dbg_src_wr_ptr_en;
 wire dbg_src_wr_ptr_w;
 wire [31:0] dbg_wt_kernel_bytes_w;
 wire [63:0] dma_rd_req_addr;
-wire [64 +14:0] dma_rd_req_pd;
+wire [32 +14:0] dma_rd_req_pd;
 wire dma_rd_req_rdy;
 wire [14:0] dma_rd_req_size;
 wire dma_rd_req_type;
 wire dma_rd_req_vld;
-wire [128 -1:0] dma_rd_rsp_data;
-wire [( 128 + (128/8/16) )-128 -1:0] dma_rd_rsp_mask;
-wire [( 128 + (128/8/16) )-1:0] dma_rd_rsp_pd;
+wire [64 -1:0] dma_rd_rsp_data;
+wire [( 64 + (64/8/8) )-64 -1:0] dma_rd_rsp_mask;
+wire [( 64 + (64/8/8) )-1:0] dma_rd_rsp_pd;
 wire dma_rd_rsp_rdy;
 wire dma_rd_rsp_vld;
 wire [5:0] dma_req_fifo_data;
@@ -480,7 +475,7 @@ wire [31:0] wt_fp16_manti_flag_w;
 wire [31:0] wt_fp16_nan_flag_w;
 wire [5:0] wt_fp16_nan_sum;
 wire wt_fp16_nan_vld_w;
-//: my $mask = (128/8/16);
+//: my $mask = (64/8/8);
 //: if($mask == 4) {
 //: print qq(
 //: wire [2:0] wt_local_data_cnt;
@@ -499,7 +494,7 @@ wire [1:0] wt_local_data_cnt;
 wire wt_local_data_reg_en;
 wire wt_local_data_vld_w;
 //wire [511:0] wt_nan_mask;
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $atmbw = int(log(${atmm})/log(2));
 //: print qq(
 //: wire [64-${atmbw}-1:0] wt_req_addr_w;
@@ -522,7 +517,7 @@ wire wt_local_data_vld_w;
 //: reg [64-${atmbw}-1+9:0] arb_sp_req_package_in_00;
 //: reg [64-${atmbw}-1+9:0] arb_sp_req_package_in_01;
 //: );
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $k = int( log(${atmm}) / log(2) );
 //: print qq(
 //: wire [32-${k}-1:0] wt_req_burst_cnt_w;
@@ -533,31 +528,31 @@ wire wt_local_data_vld_w;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-wire [64-4-1:0] wt_req_addr_w;
-reg [64-4-1:0] wt_req_addr_d2;
-reg [64-4-1:0] wt_req_addr_d3;
-wire [64-4-1:0] dma_req_addr;
-wire [64-4-1-3:0] wt_req_addr_inc;
-wire [64-4-1:0] wmb_req_addr_w;
-reg [64-4-1:0] wmb_req_addr_d2;
-reg [64-4-1:0] wmb_req_addr_d3;
-wire [64-4-1-3:0] wmb_req_addr_inc;
-wire [64-4-1:0] wgs_req_addr_w;
-wire [64-4-1:0] wgs_req_addr_inc;
-reg [64-4-1:0] wgs_req_addr_d1;
-wire [64-4-1+9:0] arb_wrr_req_package_in_00;
-wire [64-4-1+9:0] arb_wrr_req_package_in_01;
-wire [64-4-1+9:0] arb_wrr_out_package_w;
-reg [64-4-1+9:0] arb_wrr_out_package;
-reg [64-4-1+9:0] arb_wrr_out_back_package;
-reg [64-4-1+9:0] arb_sp_req_package_in_00;
-reg [64-4-1+9:0] arb_sp_req_package_in_01;
+wire [64-3-1:0] wt_req_addr_w;
+reg [64-3-1:0] wt_req_addr_d2;
+reg [64-3-1:0] wt_req_addr_d3;
+wire [64-3-1:0] dma_req_addr;
+wire [64-3-1-3:0] wt_req_addr_inc;
+wire [64-3-1:0] wmb_req_addr_w;
+reg [64-3-1:0] wmb_req_addr_d2;
+reg [64-3-1:0] wmb_req_addr_d3;
+wire [64-3-1-3:0] wmb_req_addr_inc;
+wire [64-3-1:0] wgs_req_addr_w;
+wire [64-3-1:0] wgs_req_addr_inc;
+reg [64-3-1:0] wgs_req_addr_d1;
+wire [64-3-1+9:0] arb_wrr_req_package_in_00;
+wire [64-3-1+9:0] arb_wrr_req_package_in_01;
+wire [64-3-1+9:0] arb_wrr_out_package_w;
+reg [64-3-1+9:0] arb_wrr_out_package;
+reg [64-3-1+9:0] arb_wrr_out_back_package;
+reg [64-3-1+9:0] arb_sp_req_package_in_00;
+reg [64-3-1+9:0] arb_sp_req_package_in_01;
 
-wire [32-4-1:0] wt_req_burst_cnt_w;
-reg [32-4-1:0] wt_req_burst_cnt_d1;
-wire [32-4-1:0] wt_req_burst_cnt_dec;
-wire [28-4-1:0] wmb_req_burst_cnt_w;
-wire [28-4-1:0] wmb_req_burst_cnt_dec;
+wire [32-3-1:0] wt_req_burst_cnt_w;
+reg [32-3-1:0] wt_req_burst_cnt_d1;
+wire [32-3-1:0] wt_req_burst_cnt_dec;
+wire [28-3-1:0] wmb_req_burst_cnt_w;
+wire [28-3-1:0] wmb_req_burst_cnt_dec;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire wt_req_done_w;
@@ -777,11 +772,11 @@ end
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign is_int8 = 1'b1;
 assign is_fp16 = 1'b0;
-//: my $atmk = 16;
+//: my $atmk = 8;
 //: my $atmkbw = int(log($atmk) / log(2));
 //: print qq( assign group_op = {{($atmkbw-2){1'b0}}, reg2dp_weight_kernel[12:${atmkbw}]}; );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
- assign group_op = {{(4-2){1'b0}}, reg2dp_weight_kernel[12:4]}; 
+ assign group_op = {{(3-2){1'b0}}, reg2dp_weight_kernel[12:3]}; 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign group_w = group_op + 1'b1;
 assign data_bank_w = reg2dp_data_bank + 1'b1;
@@ -862,11 +857,11 @@ localparam SRC_ID_WGS = 2'b10;
 assign wt_req_reg_en_d0 = wt_req_reg_en;
 assign {mon_wt_req_burst_cnt_dec, wt_req_burst_cnt_dec} = wt_req_burst_cnt_d1 - {{25{1'b0}}, wt_req_size_d1};
 //assign wt_req_burst_cnt_w = layer_st ? {reg2dp_weight_bytes, 2'b0} : wt_req_burst_cnt_dec;
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $k = int( log(${atmm}) / log(2) );
 //: print qq( assign wt_req_burst_cnt_w = layer_st ? reg2dp_weight_bytes[31:${k}] : wt_req_burst_cnt_dec; );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
- assign wt_req_burst_cnt_w = layer_st ? reg2dp_weight_bytes[31:4] : wt_req_burst_cnt_dec; 
+ assign wt_req_burst_cnt_w = layer_st ? reg2dp_weight_bytes[31:3] : wt_req_burst_cnt_dec; 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign wt_req_size_addr_limit = layer_st ? (4'h8 - reg2dp_weight_addr_low[2:0]) : 4'h8;
 assign wt_req_size_w = ( {{25{1'b0}}, wt_req_size_addr_limit} > wt_req_burst_cnt_w) ? wt_req_burst_cnt_w[3:0] : wt_req_size_addr_limit;
@@ -914,14 +909,14 @@ end
 /////////////////// stage 2 ///////////////////
 assign wt_req_reg_en_d1 = wt_req_reg_en;
 assign wt_req_last_w = wt_req_stage_vld_d1 && (wt_req_burst_cnt_d1 == {{25{1'b0}}, wt_req_size_d1});
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $atmbw = int(log(${atmm})/log(2));
 //: print qq(
 //: assign wt_req_addr_inc = wt_req_addr_d2[64-${atmbw}-1:3] + 1'b1;
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign wt_req_addr_inc = wt_req_addr_d2[64-4-1:3] + 1'b1;
+assign wt_req_addr_inc = wt_req_addr_d2[64-3-1:3] + 1'b1;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign wt_req_addr_w = (~wt_req_stage_vld_d2) ? {reg2dp_weight_addr_high,reg2dp_weight_addr_low} : {wt_req_addr_inc, 3'b0};
@@ -1090,16 +1085,16 @@ end
 assign wt_req_src_d3 = SRC_ID_WT;
 /////////////////// overflow control logic ///////////////////
 assign {mon_wt_req_sum, wt_req_sum} = wt_data_onfly + wt_data_stored + wt_data_avl;
-//: my $atmm8 = ((8*16)/32);
-//: my $Cbuf_bank_size = 32 * 128;
-//: my $cdma_addr_align = 16;
+//: my $atmm8 = ((8*8)/8);
+//: my $Cbuf_bank_size = 8 * 512;
+//: my $cdma_addr_align = 8;
 //: my $Cbuf_bank_fetch_bits = int( log($Cbuf_bank_size/$cdma_addr_align)/log(2) );
 //: print qq(
 //: assign wt_req_overflow = is_running && (wt_req_sum > ({weight_bank, ${Cbuf_bank_fetch_bits}'b0} + $atmm8));
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign wt_req_overflow = is_running && (wt_req_sum > ({weight_bank, 8'b0} + 4));
+assign wt_req_overflow = is_running && (wt_req_sum > ({weight_bank, 9'b0} + 8));
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign wt_req_overflow_d3 = wt_req_overflow;
@@ -1133,7 +1128,7 @@ NV_NVDLA_DMAIF_rdreq NV_NVDLA_PDP_RDMA_rdreq(
 );
 wire dmaif_rd_rsp_prdy;
 wire dmaif_rd_rsp_pvld;
-wire [( 128 + (128/8/16) )-1:0] dmaif_rd_rsp_pd;
+wire [( 64 + (64/8/8) )-1:0] dmaif_rd_rsp_pd;
 // rd Channel: Response
 NV_NVDLA_DMAIF_rdrsp NV_NVDLA_PDP_RDMA_rdrsp(
    .nvdla_core_clk (nvdla_core_clk )
@@ -1152,13 +1147,13 @@ NV_NVDLA_DMAIF_rdrsp NV_NVDLA_PDP_RDMA_rdrsp(
 //DorisLei: adding a 8*atmm fifo here for data buffering.
 //use case: Cbuf has empty entries, but empty entry number < 8*atmm
 //continue reading 8*atmm data from memory and then Cbuf can be fully written
-//: my $dmaif = 128;
-//: my $atmm8 = 8 * (16 * 8);
+//: my $dmaif = 64;
+//: my $atmm8 = 8 * (8 * 8);
 //: my $fifo_depth = int( $atmm8/$dmaif );
-//: my $fifo_width = ( 128 + (128/8/16) );
+//: my $fifo_width = ( 64 + (64/8/8) );
 //: print " NV_NVDLA_CDMA_WT_8ATMM_fifo_${fifo_width}x${fifo_depth} u_8atmm_fifo(   \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
- NV_NVDLA_CDMA_WT_8ATMM_fifo_129x8 u_8atmm_fifo(   
+ NV_NVDLA_CDMA_WT_8ATMM_fifo_65x8 u_8atmm_fifo(   
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
      .nvdla_core_clk (nvdla_core_clk )
@@ -1178,17 +1173,17 @@ NV_NVDLA_DMAIF_rdrsp NV_NVDLA_PDP_RDMA_rdrsp(
     ,.pwrbus_ram_pd (32'd0)
     );
 ///////////////////////////////////////////
-assign dma_rd_req_pd[64 -1:0] = dma_rd_req_addr[64 -1:0];
-assign dma_rd_req_pd[64 +14:64] = dma_rd_req_size[14:0];
+assign dma_rd_req_pd[32 -1:0] = dma_rd_req_addr[32 -1:0];
+assign dma_rd_req_pd[32 +14:32] = dma_rd_req_size[14:0];
 assign dma_rd_req_vld = arb_sp_out_vld & dma_req_fifo_ready;
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: my $atmbw = int(log(${atmm})/log(2));
 //: print qq(
 //: assign dma_rd_req_addr = {dma_req_addr, ${atmbw}'b0};
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign dma_rd_req_addr = {dma_req_addr, 4'b0};
+assign dma_rd_req_addr = {dma_req_addr, 3'b0};
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign dma_rd_req_size = {{12{1'b0}}, dma_req_size_out};
@@ -1197,8 +1192,8 @@ assign dma_rd_req_type = reg2dp_weight_ram_type;
 ///////////////////////////////////
 //DorisLei redefine dma_rd_rsp_rdy to block reading process when cbuf is full
 ///////////////////////////////////
-//: my $atmc=32;
-//: my $dmaif=128 / 8;
+//: my $atmc=8;
+//: my $dmaif=64 / 8;
 //: if($dmaif < $atmc) {
 //: my $k = $atmc/$dmaif - 1;
 //: print qq(
@@ -1217,26 +1212,14 @@ assign dma_rd_req_type = reg2dp_weight_ram_type;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-reg [3:0] dmaif_within_atmc_cnt;
-always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
-if (!nvdla_core_rstn)
-dmaif_within_atmc_cnt <= 4'd0;
-else if(wt_cbuf_wr_vld_w) begin
-if(dmaif_within_atmc_cnt == 1)
-dmaif_within_atmc_cnt <= 4'd0;
-else
-dmaif_within_atmc_cnt <= dmaif_within_atmc_cnt + 1'b1;
-end
-end
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 reg [16:0] wt_wr_dmatx_cnt;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     if (!nvdla_core_rstn) begin
         wt_wr_dmatx_cnt <= 17'd0;
     end else if(wt_cbuf_wr_vld_w & (!sc_wt_updt)) begin
-//: my $atmc=32;
-//: my $dmaif=128 / 8;
+//: my $atmc=8;
+//: my $dmaif=64 / 8;
 //: if($dmaif == $atmc) {
 //: print qq(
 //: wt_wr_dmatx_cnt <= wt_wr_dmatx_cnt + 1'b1;
@@ -1256,14 +1239,12 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-if(dmaif_within_atmc_cnt == 1) begin
 wt_wr_dmatx_cnt <= wt_wr_dmatx_cnt + 1'b1;
-end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
     end else if(wt_cbuf_wr_vld_w & sc_wt_updt) begin
-//: my $atmc=32;
-//: my $dmaif=128 / 8;
+//: my $atmc=8;
+//: my $dmaif=64 / 8;
 //: if($dmaif == $atmc) {
 //: print qq(
 //: wt_wr_dmatx_cnt <= wt_wr_dmatx_cnt + 1'b1 - sc_wt_entries;
@@ -1285,11 +1266,7 @@ end
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-if(dmaif_within_atmc_cnt == 1) begin
 wt_wr_dmatx_cnt <= wt_wr_dmatx_cnt + 1'b1 - sc_wt_entries;
-end else begin
-wt_wr_dmatx_cnt <= wt_wr_dmatx_cnt - sc_wt_entries;
-end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
     end else if(!wt_cbuf_wr_vld_w & sc_wt_updt) begin
@@ -1298,13 +1275,13 @@ end
 // wt_wr_dmatx_cnt <= wt_wr_dmatx_cnt + 1'b1 - sc_wt_entries;
     end
 end
-//: my $bank_depth = int( log(128)/log(2) );
+//: my $bank_depth = int( log(512)/log(2) );
 //: print qq(
 //: assign dma_rd_rsp_rdy = wt_wr_dmatx_cnt < {weight_bank, ${bank_depth}'b0};
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign dma_rd_rsp_rdy = wt_wr_dmatx_cnt < {weight_bank, 7'b0};
+assign dma_rd_rsp_rdy = wt_wr_dmatx_cnt < {weight_bank, 9'b0};
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 NV_NVDLA_CDMA_WT_fifo u_fifo (
@@ -1380,11 +1357,11 @@ end
 ////////////////////////////////////////////////////////////////////////
 // CDMA read response connection //
 ////////////////////////////////////////////////////////////////////////
-assign dma_rd_rsp_data[128 -1:0] = dma_rd_rsp_pd[128 -1:0];
-assign dma_rd_rsp_mask[( 128 + (128/8/16) )-128 -1:0] = dma_rd_rsp_pd[( 128 + (128/8/16) )-1:128];
+assign dma_rd_rsp_data[64 -1:0] = dma_rd_rsp_pd[64 -1:0];
+assign dma_rd_rsp_mask[( 64 + (64/8/8) )-64 -1:0] = dma_rd_rsp_pd[( 64 + (64/8/8) )-1:64];
 assign {dma_rsp_src, dma_rsp_size} = dma_rsp_fifo_data;
 assign {mon_dma_rsp_size_cnt_inc, dma_rsp_size_cnt_inc} = dma_rsp_size_cnt
-//: my $mask = (128/8/16);
+//: my $mask = (64/8/8);
 //: foreach my $i(0..$mask-1) {
 //: print qq(
 //: + dma_rd_rsp_mask[$i]
@@ -1400,7 +1377,7 @@ assign dma_rsp_size_cnt_w = (dma_rsp_size_cnt_inc == dma_rsp_size) ? 4'b0 : dma_
 assign dma_rsp_fifo_ready = (dma_rd_rsp_vld & dma_rd_rsp_rdy & (dma_rsp_size_cnt_inc == dma_rsp_size));
 assign wt_rsp_valid = (dma_rd_rsp_vld & dma_rd_rsp_rdy & (dma_rsp_src == SRC_ID_WT));
 assign {
-//: my $mask = (128/8/16);
+//: my $mask = (64/8/8);
 //: if($mask > 1) {
 //: foreach my $i(0..$mask-2) {
 //: my $j = $mask -$i -1;
@@ -1433,14 +1410,14 @@ end
 // WT read data //
 ////////////////////////////////////////////////////////////////////////
 assign wt_local_data_cnt = wt_local_data_vld
-//: my $mask = (128/8/16);
+//: my $mask = (64/8/8);
 //: foreach my $i(0..$mask-1) {
 //: print qq(
 //: + dma_rd_rsp_mask[$i]
 //: );
 //: }
 //: print qq( ; );
-//: my $mask = (128/8/16);
+//: my $mask = (64/8/8);
 //: if($mask == 1) {
 //: print qq(
 //: assign wt_local_data_vld_w = 1'b0;
@@ -1481,8 +1458,8 @@ assign wt_cbuf_wr_data_ori_w = dma_rsp_data_p0;
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign wt_cbuf_wr_idx_inc = wt_cbuf_wr_idx + 1'b1;
 assign wt_cbuf_wr_idx_set = (layer_st & ~(|wt_cbuf_wr_idx));
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: my $k;
 //: if($dmaif < $atmc) {
 //: $k = int(log(int($atmc/$dmaif))/log(2));
@@ -1490,15 +1467,15 @@ assign wt_cbuf_wr_idx_set = (layer_st & ~(|wt_cbuf_wr_idx));
 //: $k = 0;
 //: }
 //:
-//: my $bank_depth_bits = int( log(128)/log(2) + ${k});
+//: my $bank_depth_bits = int( log(512)/log(2) + ${k});
 //: print qq(
 //: assign wt_cbuf_wr_idx_wrap = (wt_cbuf_wr_idx_inc == {2'd0, weight_bank_end, ${bank_depth_bits}'b0});
 //: assign wt_cbuf_wr_idx_w = (clear_all | wt_cbuf_wr_idx_set | wt_cbuf_wr_idx_wrap) ? {2'd0, data_bank_w, ${bank_depth_bits}'b0} : wt_cbuf_wr_idx_inc[(1 + 16 ) -1:0];
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign wt_cbuf_wr_idx_wrap = (wt_cbuf_wr_idx_inc == {2'd0, weight_bank_end, 8'b0});
-assign wt_cbuf_wr_idx_w = (clear_all | wt_cbuf_wr_idx_set | wt_cbuf_wr_idx_wrap) ? {2'd0, data_bank_w, 8'b0} : wt_cbuf_wr_idx_inc[(1 + 16 ) -1:0];
+assign wt_cbuf_wr_idx_wrap = (wt_cbuf_wr_idx_inc == {2'd0, weight_bank_end, 9'b0});
+assign wt_cbuf_wr_idx_w = (clear_all | wt_cbuf_wr_idx_set | wt_cbuf_wr_idx_wrap) ? {2'd0, data_bank_w, 9'b0} : wt_cbuf_wr_idx_inc[(1 + 16 ) -1:0];
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //assign wt_cbuf_wr_data_w = nan_pass ? wt_cbuf_wr_data_ori_w : (wt_cbuf_wr_data_ori_w & wt_nan_mask);
@@ -1554,10 +1531,10 @@ end
 // Non-SLCG clock domain //
 ////////////////////////////////////////////////////////////////////////
 assign {mon_wt_cbuf_flush_idx_w, wt_cbuf_flush_idx_w} = wt_cbuf_flush_idx + 1'b1;
-//: my $bank_entry = 32 * 128;
+//: my $bank_entry = 32 * 512;
 //: my $bank_entry_bw = int( log( $bank_entry)/log(2) );
-//: my $dmaif=128;
-//: my $atmc=32*8;
+//: my $dmaif=64;
+//: my $atmc=8*8;
 //: my $k;
 //: if($dmaif < $atmc) {
 //: $k = int(log(int($atmc/$dmaif))/log(2));
@@ -1571,8 +1548,8 @@ assign {mon_wt_cbuf_flush_idx_w, wt_cbuf_flush_idx_w} = wt_cbuf_flush_idx + 1'b1
 //: &eperl::flop("-nodeclare -clk nvdla_core_ng_clk  -rval \"{18{1'b0}}\"  -en \"wt_cbuf_flush_vld_w\" -d \"wt_cbuf_flush_idx_w\" -q wt_cbuf_flush_idx");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign wt_cbuf_flush_vld_w = ~wt_cbuf_flush_idx[12+1-1];//max value = half bank entry * 2^1
-assign dp2reg_wt_flush_done = wt_cbuf_flush_idx[12+1-1];
+assign wt_cbuf_flush_vld_w = ~wt_cbuf_flush_idx[14+0-1];//max value = half bank entry * 2^0
+assign dp2reg_wt_flush_done = wt_cbuf_flush_idx[14+0-1];
 always @(posedge nvdla_core_ng_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        wt_cbuf_flush_idx <= {18{1'b0}};
@@ -1593,9 +1570,9 @@ end
 // WT and WMB write to convolution buffer //
 ////////////////////////////////////////////////////////////////////////
 assign cdma2buf_wt_wr_en_w = wt_cbuf_wr_vld_w | wt_cbuf_flush_vld_w;
-//: my $dmaif=128;
-//: my $atmc=32*8;
-//: my $half_bank_entry_num = 32 * 128 / 2;
+//: my $dmaif=64;
+//: my $atmc=8*8;
+//: my $half_bank_entry_num = 32 * 512 / 2;
 //: if($dmaif < $atmc) {
 //: my $k = int(log(int($atmc/$dmaif))/log(2));
 //: print qq(
@@ -1623,40 +1600,8 @@ assign cdma2buf_wt_wr_en_w = wt_cbuf_wr_vld_w | wt_cbuf_flush_vld_w;
 //: &eperl::flop("-nodeclare -clk nvdla_core_ng_clk -rval \"{17{1'b0}}\"  -en \"cdma2buf_wt_wr_en_w\" -d \"cdma2buf_wt_wr_addr_w\" -q cdma2buf_wt_wr_addr");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign cdma2buf_wt_wr_addr_w = wt_cbuf_wr_vld_w ? wt_cbuf_wr_idx[(1 + 16 ) -1:1] :
-2048 + wt_cbuf_flush_idx[16:1];
-assign cdma2buf_wt_wr_sel_w = wt_cbuf_wr_vld_w ? wt_cbuf_wr_idx[1-1:0] :
-wt_cbuf_flush_idx[1-1:0];
-assign cdma2buf_wt_wr_data_w = wt_cbuf_wr_vld_w ? wt_cbuf_wr_data_w :
-0;
-always @(posedge nvdla_core_ng_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       cdma2buf_wt_wr_sel[0] <= 1'b0;
-   end else begin
-       if ((cdma2buf_wt_wr_en_w) == 1'b1) begin
-           cdma2buf_wt_wr_sel[0] <= cdma2buf_wt_wr_sel_w==1'd0;
-       // VCS coverage off
-       end else if ((cdma2buf_wt_wr_en_w) == 1'b0) begin
-       end else begin
-           cdma2buf_wt_wr_sel[0] <= 'bx;
-       // VCS coverage on
-       end
-   end
-end
-always @(posedge nvdla_core_ng_clk or negedge nvdla_core_rstn) begin
-   if (!nvdla_core_rstn) begin
-       cdma2buf_wt_wr_sel[1] <= 1'b0;
-   end else begin
-       if ((cdma2buf_wt_wr_en_w) == 1'b1) begin
-           cdma2buf_wt_wr_sel[1] <= cdma2buf_wt_wr_sel_w==1'd1;
-       // VCS coverage off
-       end else if ((cdma2buf_wt_wr_en_w) == 1'b0) begin
-       end else begin
-           cdma2buf_wt_wr_sel[1] <= 'bx;
-       // VCS coverage on
-       end
-   end
-end
+assign cdma2buf_wt_wr_addr_w = wt_cbuf_wr_vld_w ? wt_cbuf_wr_idx : 8192 + wt_cbuf_flush_idx[16:0];
+assign cdma2buf_wt_wr_data_w = wt_cbuf_wr_vld_w ? wt_cbuf_wr_data_w : 0;
 always @(posedge nvdla_core_ng_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        cdma2buf_wt_wr_en <= 1'b0;
@@ -1683,12 +1628,12 @@ end
 ////////////////////////////////////////////////////////////////////////
 // Non-SLCG clock domain end //
 ////////////////////////////////////////////////////////////////////////
-//: my $dmaif=128;
+//: my $dmaif=64;
 //: &eperl::flop("-nodeclare   -rval \"{${dmaif}{1'b0}}\"  -en \"cdma2buf_wt_wr_en_w\" -d \"cdma2buf_wt_wr_data_w\" -q cdma2buf_wt_wr_data");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
-       cdma2buf_wt_wr_data <= {128{1'b0}};
+       cdma2buf_wt_wr_data <= {64{1'b0}};
    end else begin
        if ((cdma2buf_wt_wr_en_w) == 1'b1) begin
            cdma2buf_wt_wr_data <= cdma2buf_wt_wr_data_w;
@@ -1739,9 +1684,9 @@ end
 //cation: the basic unit of data_stored, data_onfly and data_avl is atomic_m bytes, 32 bytes in Xavier
 assign wt_data_onfly_add = (wt_req_reg_en_d2 & wt_req_stage_vld_d2 & ~wt_req_done_d2) ? wt_req_size_d2 : 4'b0;
 //atom_m num per cbuf write, =dmaif/atom_m
-//: my $dmaif = (128 / 8);
-//: my $atmc=32;
-//: my $atmm = 16;
+//: my $dmaif = (64 / 8);
+//: my $atmc=8;
+//: my $atmm = 8;
 //: my $atmm_dmaif = int($dmaif / $atmm);
 //: my $atmm_atmc = int($atmc / $atmm);
 //: print qq(
@@ -1767,8 +1712,8 @@ assign wt_data_onfly_add = (wt_req_reg_en_d2 & wt_req_stage_vld_d2 & ~wt_req_don
 
 assign wt_data_onfly_sub = wt_cbuf_wr_vld_w ? 3'd1 : 3'b0;
 
-assign wt_data_stored_sub = status_update ? {1'b0,incr_wt_entries_w, 1'd0} : 17'b0;
-assign wt_data_avl_sub = sc_wt_updt ? {1'b0,sc_wt_entries, 1'b0} : 17'b0;
+assign wt_data_stored_sub = status_update ? {2'b0,incr_wt_entries_w} : 17'b0;
+assign wt_data_avl_sub = sc_wt_updt ? {2'b0,sc_wt_entries} : 17'b0;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign {mon_wt_data_onfly_w, wt_data_onfly_w} = wt_data_onfly + wt_data_onfly_add - wt_data_onfly_sub;
@@ -1833,14 +1778,14 @@ assign status_last_group = (status_group_cnt_inc == group);
 assign status_group_cnt_w = layer_st ? 12'b0 : status_group_cnt_inc;
 assign status_done_w = layer_st ? 1'b0 :
                        status_last_group ? 1'b1 : status_done;
-//: my $atmk = 16;
+//: my $atmk = 8;
 //: my $atmkbw = int(log($atmk) / log(2));
 //: print qq(
 //: assign normal_bpg = {2'd0, byte_per_kernel, ${atmkbw}'b0};
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign normal_bpg = {2'd0, byte_per_kernel, 4'b0};
+assign normal_bpg = {2'd0, byte_per_kernel, 3'b0};
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign {mon_wt_required_bytes_w,
@@ -1880,10 +1825,10 @@ end
 assign {mon_wt_fetched_cnt_inc, wt_fetched_cnt_inc} = wt_fetched_cnt + 1'b1;
 assign wt_fetched_cnt_w = layer_st ? 26'b0 : wt_fetched_cnt_inc;
 //: my $m = int(log(8)/log(2));
-//: my $dmaif=128/8; ##byte number per dmaif tx
+//: my $dmaif=64/8; ##byte number per dmaif tx
 //: my $k = int(log($dmaif)/log(2));
-//: my $atmc=32 * 8;
-//: my $dmaifbw=128;
+//: my $atmc=8 * 8;
+//: my $dmaifbw=64;
 //: if($atmc > $dmaifbw) {
 //: my $j = int( log( ${atmc}/${dmaifbw} )/log(2) );
 //: print qq(
@@ -1896,7 +1841,7 @@ assign wt_fetched_cnt_w = layer_st ? 26'b0 : wt_fetched_cnt_inc;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign wt_satisfied = is_running & ({wt_fetched_cnt, 4'b0} >= wt_required_bytes) & ~(|wt_fetched_cnt[1-1:0]);
+assign wt_satisfied = is_running & ({3'd0, wt_fetched_cnt, 3'b0} >= wt_required_bytes); // wt_fetched_cnt[0]
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //assign wt_satisfied = is_running & ({wt_fetched_cnt, 6'b0} >= wt_required_bytes) & ~wt_fetched_cnt[0];
@@ -1974,8 +1919,8 @@ end
 assign pre_wt_fetched_cnt_w = status_last_group ? 26'b0 : wt_fetched_cnt;
 assign {mon_incr_wt_cnt, incr_wt_cnt} = wt_fetched_cnt - pre_wt_fetched_cnt;
 // dmaif vs atom_c
-//: my $dmaif=128/8;
-//: my $atmc=32;
+//: my $dmaif=64/8;
+//: my $atmc=8;
 //: if($dmaif == $atmc){
 //: print qq(
 //: assign incr_wt_entries_w = incr_wt_cnt[14:0];
@@ -1993,11 +1938,11 @@ assign {mon_incr_wt_cnt, incr_wt_cnt} = wt_fetched_cnt - pre_wt_fetched_cnt;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign incr_wt_entries_w = {incr_wt_cnt[15+1-1:1]};
+assign incr_wt_entries_w = incr_wt_cnt[14:0];
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //assign incr_wt_entries_w = incr_wt_cnt[12 :1];
-//: my $atmk = 16;
+//: my $atmk = 8;
 //: my $atmkbw = int(log($atmk)/log(2));
 //: print qq(
 //: assign incr_wt_kernels_w = (~status_last_group) ? 6'd${atmk} : (reg2dp_weight_kernel[${atmkbw}-1:0] + 1'b1);
@@ -2040,7 +1985,7 @@ assign incr_wt_entries_w = {incr_wt_cnt[15+1-1:1]};
 //: print "assign cdma2sc_wt_updt = incr_wt_updt_d${j};\n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign incr_wt_kernels_w = (~status_last_group) ? 6'd16 : (reg2dp_weight_kernel[4-1:0] + 1'b1);
+assign incr_wt_kernels_w = (~status_last_group) ? 6'd8 : (reg2dp_weight_kernel[3-1:0] + 1'b1);
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
    if (!nvdla_core_rstn) begin
        incr_wt_updt <= 1'b0;

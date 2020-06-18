@@ -24,14 +24,14 @@ module NV_NVDLA_CACC_calculator (
   ,cfg_in_en_mask //|< i
   ,cfg_is_wg //|< i
   ,cfg_truncate //|< i
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
 //: ,mac_a2accu_data${i} //|< i )
 //: }
   ,mac_a2accu_mask //|< i
   ,mac_a2accu_mode //|< i
   ,mac_a2accu_pvld //|< i
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
 //: ,mac_b2accu_data${i} //|< i )
 //: }
@@ -51,31 +51,31 @@ module NV_NVDLA_CACC_calculator (
 input nvdla_cell_clk;
 input nvdla_core_clk;
 input nvdla_core_rstn;
-input [34*16 -1:0] abuf_rd_data;
+input [34*8 -1:0] abuf_rd_data;
 input [12:0] accu_ctrl_pd;
 input accu_ctrl_ram_valid;
 input accu_ctrl_valid;
 input cfg_in_en_mask;
 input cfg_is_wg;
 input [4:0] cfg_truncate;
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
-//: input [21 -1:0] mac_a2accu_data${i}; )
+//: input [19 -1:0] mac_a2accu_data${i}; )
 //: }
-input [16/2-1:0] mac_a2accu_mask;
+input [8/2-1:0] mac_a2accu_mask;
 input mac_a2accu_mode;
 input mac_a2accu_pvld;
-//: for(my $i=0; $i<16/2 ; $i++){
+//: for(my $i=0; $i<8/2 ; $i++){
 //: print qq(
-//: input [21 -1:0] mac_b2accu_data${i}; )
+//: input [19 -1:0] mac_b2accu_data${i}; )
 //: }
-input [16/2-1:0] mac_b2accu_mask;
+input [8/2-1:0] mac_b2accu_mask;
 input mac_b2accu_mode;
 input mac_b2accu_pvld;
-output [4 +1 -1:0] abuf_wr_addr;
-output [34*16 -1:0] abuf_wr_data;
+output [3 +1 -1:0] abuf_wr_addr;
+output [34*8 -1:0] abuf_wr_data;
 output abuf_wr_en;
-output [32*16 -1:0] dlv_data;
+output [32*8 -1:0] dlv_data;
 output dlv_mask;
 output [1:0] dlv_pd;
 output dlv_valid;
@@ -84,7 +84,7 @@ output [31:0] dp2reg_sat_count;
 // spyglass disable_block STARC-2.10.1.6
 // unpack abuffer read data
 //: my $kk=34;
-//: for(my $i=0; $i<16 ; $i++){
+//: for(my $i=0; $i<8 ; $i++){
 //: print qq(
 //: wire [${kk}-1:0] abuf_in_data_${i} = abuf_rd_data[($i+1)*${kk}-1:$i*${kk}]; )
 //: }
@@ -101,23 +101,23 @@ wire calc_stripe_end = accu_ctrl_pd_d1[9];
 wire calc_channel_end = accu_ctrl_pd_d1[10];
 wire calc_layer_end = accu_ctrl_pd_d1[11];
 wire calc_dlv_elem_mask = accu_ctrl_pd_d1[12];
-//: my $kk=21;
-//: for(my $i = 0; $i < 16/2; $i ++) {
+//: my $kk=19;
+//: for(my $i = 0; $i < 8/2; $i ++) {
 //: print "wire [${kk}-1:0] calc_elem_${i} = mac_a2accu_data${i}; \n";
 //: }
-//: for(my $i = 16/2; $i < 16; $i ++) {
-//: my $j = $i - 16/2;
+//: for(my $i = 8/2; $i < 8; $i ++) {
+//: my $j = $i - 8/2;
 //: print "wire [${kk}-1:0] calc_elem_${i} = mac_b2accu_data${j}; \n";
 //: }
-wire [16 -1:0] calc_in_mask = {mac_b2accu_mask, mac_a2accu_mask};
-wire [16 -1:0] calc_op_en = calc_in_mask & {16{cfg_in_en_mask}};
-wire [16 -1:0] calc_op1_vld = calc_in_mask & {16{cfg_in_en_mask & accu_ctrl_ram_valid}};
+wire [8 -1:0] calc_in_mask = {mac_b2accu_mask, mac_a2accu_mask};
+wire [8 -1:0] calc_op_en = calc_in_mask & {8{cfg_in_en_mask}};
+wire [8 -1:0] calc_op1_vld = calc_in_mask & {8{cfg_in_en_mask & accu_ctrl_ram_valid}};
 wire calc_dlv_valid = calc_valid & calc_channel_end;
 wire calc_wr_en = calc_valid & (~calc_channel_end);
-//: my $hh= 22-21;
+//: my $hh= 22-19;
 //: my $pp= 34;
-//: my $bb= 21;
-//: for(my $i = 0; $i <16; $i ++) {
+//: my $bb= 19;
+//: for(my $i = 0; $i <8; $i ++) {
 //: if($hh == 0) {
 //: print qq(
 //: wire [21:0]calc_op0_${i} = {calc_elem_${i}};
@@ -132,16 +132,16 @@ wire calc_wr_en = calc_valid & (~calc_channel_end);
 //: }
 //: }
 // instance int8 adders
-wire [16 -1:0] calc_fout_sat;
-wire [16 -1:0] calc_pout_vld;
-wire [16 -1:0] calc_fout_vld;
-//: for(my $i = 0; $i <16; $i ++) {
+wire [8 -1:0] calc_fout_sat;
+wire [8 -1:0] calc_pout_vld;
+wire [8 -1:0] calc_fout_vld;
+//: for(my $i = 0; $i <8; $i ++) {
 //: print qq(
 //: wire [34 -1:0] calc_pout_${i}_sum;
 //: wire [32 -1:0] calc_fout_${i}_sum;
 //: )
 //: }
-//: for(my $i = 0; $i <16; $i ++) {
+//: for(my $i = 0; $i <8; $i ++) {
 //: print qq(
 //: NV_NVDLA_CACC_CALC_int8 u_cell_int8_${i} (
 //: .cfg_truncate (cfg_truncate) //|< w
@@ -196,20 +196,20 @@ wire calc_layer_end_d0 = calc_layer_end;
 // Gather of accumulator result
 //: my $int8_out = 34;
 //: my $final_out = 32;
-//: for(my $i=0; $i <16; $i ++) {
+//: for(my $i=0; $i <8; $i ++) {
 //: print qq(
 //: wire [${int8_out}-1:0] calc_pout_${i} = ({${int8_out}{calc_pout_vld[${i}]}} & calc_pout_${i}_sum););
 //: }
-//: for(my $i = 0; $i <16; $i ++) {
+//: for(my $i = 0; $i <8; $i ++) {
 //: print qq(
 //: wire [${final_out}-1:0] calc_fout_${i} = ({${final_out}{calc_fout_vld[${i}]}} & calc_fout_${i}_sum););
 //: }
 // to abuffer, 1 pipe
-wire [34*16 -1:0] abuf_wr_data_w;
+wire [34*8 -1:0] abuf_wr_data_w;
 // spyglass disable_block STARC05-3.3.1.4b
-//: my $kk=34*16;
-//: my $jj=4 +1;
-//: for(my $i = 0; $i < 16; $i ++) {
+//: my $kk=34*8;
+//: my $jj=3 +1;
+//: for(my $i = 0; $i < 8; $i ++) {
 //: print qq (
 //: assign abuf_wr_data_w[34*($i+1)-1:34*$i] = calc_pout_${i}; );
 //: }
@@ -218,10 +218,10 @@ wire [34*16 -1:0] abuf_wr_data_w;
 //: &eperl::flop("-wid ${kk} -q  abuf_wr_data  -en \"calc_wr_en_out\" -d  \"abuf_wr_data_w\" -clk nvdla_core_clk -norst");
 // spyglass enable_block STARC05-3.3.1.4b
 // to dbuffer, 1 pipe.
-wire [32*16 -1:0] dlv_data_w;
+wire [32*8 -1:0] dlv_data_w;
 // spyglass disable_block STARC05-3.3.1.4b
-//: my $kk=32*16;
-//: for(my $i = 0; $i < 16; $i ++) {
+//: my $kk=32*8;
+//: for(my $i = 0; $i < 8; $i ++) {
 //: print qq(
 //: assign dlv_data_w[32*($i+1)-1:32*$i] = calc_fout_${i};);
 //: }
@@ -236,20 +236,20 @@ assign dlv_pd[0] = dlv_stripe_end ;
 assign dlv_pd[1] = dlv_layer_end ;
 // overflow count
 reg dlv_sat_end_d1;
-wire [16 -1:0] dlv_sat_bit = calc_fout_sat;
+wire [8 -1:0] dlv_sat_bit = calc_fout_sat;
 wire dlv_sat_end = calc_layer_end_out & calc_stripe_end_out;
 wire dlv_sat_clr = calc_dlv_valid_out & ~dlv_sat_end & dlv_sat_end_d1;
-//: my $kk= 16;
-//: my $jj= 4;
+//: my $kk= 8;
+//: my $jj= 3;
 //: &eperl::flop(" -q  dlv_sat_vld_d1  -d \"calc_dlv_valid_out\" -clk nvdla_core_clk -rst nvdla_core_rstn -rval 0");
 //: &eperl::flop("-nodeclare  -q  dlv_sat_end_d1  -en \"calc_dlv_valid_out\" -d  \"dlv_sat_end\" -clk nvdla_core_clk -rst nvdla_core_rstn -rval 1");
 //: &eperl::flop(" -wid ${kk} -q  dlv_sat_bit_d1  -en \"calc_dlv_valid_out\" -d  \"dlv_sat_bit\" -clk nvdla_core_clk -rst nvdla_core_rstn -rval 0");
 //: &eperl::flop(" -q  dlv_sat_clr_d1  -d \"dlv_sat_clr\" -clk nvdla_core_clk -rst nvdla_core_rstn -rval 0");
 //: print "wire [${jj}-1:0] sat_sum = ";
-//: for(my $i=0; $i<16 -1 ; $i++){
+//: for(my $i=0; $i<8 -1 ; $i++){
 //: print "dlv_sat_bit_d1[${i}]+";
 //: }
-//: my $i=16 -1;
+//: my $i=8 -1;
 //: print "dlv_sat_bit_d1[${i}]; \n";
 wire [31:0] sat_count_inc;
 reg [31:0] sat_count;

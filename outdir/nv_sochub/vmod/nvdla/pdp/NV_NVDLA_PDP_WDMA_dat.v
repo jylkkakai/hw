@@ -41,9 +41,9 @@ module NV_NVDLA_PDP_WDMA_dat (
   ,reg2dp_partial_width_out_mid //|< i
   ,reg2dp_split_num //|< i
   ,wdma_done //|< i
-//: my $dmaifBW = 128;
-//: my $atomicm = 16*8;
-//: my $pdpbw = 2*8;
+//: my $dmaifBW = 64;
+//: my $atomicm = 8*8;
+//: my $pdpbw = 1*8;
 //: my $Wnum = int( $dmaifBW/$atomicm );
 //: my $Bnum = int($atomicm/$pdpbw);
 //: foreach my $posw (0..$Wnum-1) { ##High...low atomic_m
@@ -102,16 +102,16 @@ input [9:0] reg2dp_partial_width_out_first;
 input [9:0] reg2dp_partial_width_out_last;
 input [9:0] reg2dp_partial_width_out_mid;
 input [7:0] reg2dp_split_num;
-input [2*8 -1:0] dp2wdma_pd;
+input [1*8 -1:0] dp2wdma_pd;
 input dp2wdma_vld;
 output dp2wdma_rdy;
 //&Ports /^spt/;
 input nvdla_core_clk;
 input nvdla_core_rstn;
 input [31:0] pwrbus_ram_pd;
-//: my $dmaifBW = 128;
-//: my $atomicm = 16*8;
-//: my $pdpbw = 2*8;
+//: my $dmaifBW = 64;
+//: my $atomicm = 8*8;
+//: my $pdpbw = 1*8;
 //: my $Wnum = int( $dmaifBW/$atomicm );
 //: my $Bnum = int($atomicm/$pdpbw);
 //: foreach my $posw (0..$Wnum-1) { ##High...low atomic_m
@@ -125,35 +125,35 @@ input [31:0] pwrbus_ram_pd;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-output [16-1:0] dat0_fifo0_rd_pd;
+output [8-1:0] dat0_fifo0_rd_pd;
 input dat0_fifo0_rd_prdy;
 output dat0_fifo0_rd_pvld;
 
-output [16-1:0] dat0_fifo1_rd_pd;
+output [8-1:0] dat0_fifo1_rd_pd;
 input dat0_fifo1_rd_prdy;
 output dat0_fifo1_rd_pvld;
 
-output [16-1:0] dat0_fifo2_rd_pd;
+output [8-1:0] dat0_fifo2_rd_pd;
 input dat0_fifo2_rd_prdy;
 output dat0_fifo2_rd_pvld;
 
-output [16-1:0] dat0_fifo3_rd_pd;
+output [8-1:0] dat0_fifo3_rd_pd;
 input dat0_fifo3_rd_prdy;
 output dat0_fifo3_rd_pvld;
 
-output [16-1:0] dat0_fifo4_rd_pd;
+output [8-1:0] dat0_fifo4_rd_pd;
 input dat0_fifo4_rd_prdy;
 output dat0_fifo4_rd_pvld;
 
-output [16-1:0] dat0_fifo5_rd_pd;
+output [8-1:0] dat0_fifo5_rd_pd;
 input dat0_fifo5_rd_prdy;
 output dat0_fifo5_rd_pvld;
 
-output [16-1:0] dat0_fifo6_rd_pd;
+output [8-1:0] dat0_fifo6_rd_pd;
 input dat0_fifo6_rd_prdy;
 output dat0_fifo6_rd_pvld;
 
-output [16-1:0] dat0_fifo7_rd_pd;
+output [8-1:0] dat0_fifo7_rd_pd;
 input dat0_fifo7_rd_prdy;
 output dat0_fifo7_rd_pvld;
 
@@ -166,11 +166,11 @@ input op_load;
 //reg cfg_do_int8;
 reg [4:0] count_b;
 reg [12:0] count_h;
-//: my $atomicm = 16;
+//: my $atomicm = 8;
 //: my $k = int( log($atomicm)/log(2) );
 //: print "reg     [12-${k}:0] count_surf;  \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-reg     [12-4:0] count_surf;  
+reg     [12-3:0] count_surf;  
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 reg [12:0] count_w;
@@ -183,7 +183,7 @@ wire cfg_mode_split;
 wire dat_fifo_wr_prdy;
 wire dat_fifo_wr_pvld;
 //wire [3:0] dat_is_nan;
-wire [2*8 -1:0] dp2wdma_dat_pd;
+wire [1*8 -1:0] dp2wdma_dat_pd;
 //wire [15:0] fp16_in_pd_0;
 //wire [15:0] fp16_in_pd_1;
 //wire [15:0] fp16_in_pd_2;
@@ -385,8 +385,8 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     end
   end
 end
-//: my $atomicm = 16;
-//: my $pdpth = 2;
+//: my $atomicm = 8;
+//: my $pdpth = 1;
 //: my $k = int( $atomicm/$pdpth );
 //: print "assign is_last_b = (count_b==5'd${k} -1 ); \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -426,14 +426,14 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     end
   end
 end
-//: my $atomicm = 16;
+//: my $atomicm = 8;
 //: my $k = int( log($atomicm)/log(2) );
 //: print qq(
 //: assign is_last_surf = (count_surf== reg2dp_cube_out_channel[12:${k}]);
 //: );
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-assign is_last_surf = (count_surf== reg2dp_cube_out_channel[12:4]);
+assign is_last_surf = (count_surf== reg2dp_cube_out_channel[12:3]);
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //==============
@@ -457,7 +457,7 @@ assign is_last_h = (count_h==reg2dp_cube_out_height);
 // spt information gen
 //==============
 assign spt_posb = count_b;
-//: my $Wnum = 128/16/8;
+//: my $Wnum = 64/8/8;
 //: if($Wnum == 1) {
 //: print qq(
 //: assign spt_posw = 2'b0;
@@ -481,9 +481,9 @@ assign dat_fifo_wr_pvld = dp2wdma_vld;
 assign dp2wdma_rdy = dat_fifo_wr_prdy;
 //: my @dat_wr_rdys;
 //: my @dat_wr_accepts;
-//: my $dmaifBW = 128;
-//: my $atomicm = 16*8;
-//: my $pdpbw = 2*8;
+//: my $dmaifBW = 64;
+//: my $atomicm = 8*8;
+//: my $pdpbw = 1*8;
 //: my $Wnum = int( $dmaifBW/$atomicm );
 //: my $Bnum = int($atomicm/$pdpbw);
 //: foreach my $posw (0..$Wnum-1) { ##High...low atomic_m
@@ -528,7 +528,7 @@ assign dp2wdma_rdy = dat_fifo_wr_prdy;
 //: print "assign spt_dat_accept = dat_fifo_wr_pvld & dat_fifo_wr_prdy;";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-wire [16-1:0] dat0_fifo0_wr_pd;
+wire [8-1:0] dat0_fifo0_wr_pd;
 wire dat0_fifo0_wr_prdy;
 wire dat0_fifo0_wr_pvld;
 // DATA FIFO WRITE SIDE
@@ -537,7 +537,7 @@ assign dat0_fifo0_wr_pvld = dat_fifo_wr_pvld & (spt_posw==0) & (spt_posb == 0);
 assign dat0_fifo0_wr_pd = dp2wdma_dat_pd;
 
 // DATA FIFO INSTANCE
-NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo0 (
+NV_NVDLA_PDP_WDMA_DAT_fifo_32x8 u_dat0_fifo0 (
 .nvdla_core_clk (nvdla_core_clk)
 ,.nvdla_core_rstn (nvdla_core_rstn)
 ,.dat_fifo_wr_prdy (dat0_fifo0_wr_prdy)
@@ -552,7 +552,7 @@ NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo0 (
 // ::assert never "when the first fifo is ready, all the left fifo should be ready" dat0_fifo0_wr_prdy & !dat0_fifo0_wr_prdy;
 // ::assert never "when the last fifo is not ready, all the previous fifo should not be ready" dat0_fifo0_wr_prdy & !dat0_fifo3_wr_prdy;
 
-wire [16-1:0] dat0_fifo1_wr_pd;
+wire [8-1:0] dat0_fifo1_wr_pd;
 wire dat0_fifo1_wr_prdy;
 wire dat0_fifo1_wr_pvld;
 // DATA FIFO WRITE SIDE
@@ -561,7 +561,7 @@ assign dat0_fifo1_wr_pvld = dat_fifo_wr_pvld & (spt_posw==0) & (spt_posb == 1);
 assign dat0_fifo1_wr_pd = dp2wdma_dat_pd;
 
 // DATA FIFO INSTANCE
-NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo1 (
+NV_NVDLA_PDP_WDMA_DAT_fifo_32x8 u_dat0_fifo1 (
 .nvdla_core_clk (nvdla_core_clk)
 ,.nvdla_core_rstn (nvdla_core_rstn)
 ,.dat_fifo_wr_prdy (dat0_fifo1_wr_prdy)
@@ -576,7 +576,7 @@ NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo1 (
 // ::assert never "when the first fifo is ready, all the left fifo should be ready" dat0_fifo0_wr_prdy & !dat0_fifo1_wr_prdy;
 // ::assert never "when the last fifo is not ready, all the previous fifo should not be ready" dat0_fifo1_wr_prdy & !dat0_fifo3_wr_prdy;
 
-wire [16-1:0] dat0_fifo2_wr_pd;
+wire [8-1:0] dat0_fifo2_wr_pd;
 wire dat0_fifo2_wr_prdy;
 wire dat0_fifo2_wr_pvld;
 // DATA FIFO WRITE SIDE
@@ -585,7 +585,7 @@ assign dat0_fifo2_wr_pvld = dat_fifo_wr_pvld & (spt_posw==0) & (spt_posb == 2);
 assign dat0_fifo2_wr_pd = dp2wdma_dat_pd;
 
 // DATA FIFO INSTANCE
-NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo2 (
+NV_NVDLA_PDP_WDMA_DAT_fifo_32x8 u_dat0_fifo2 (
 .nvdla_core_clk (nvdla_core_clk)
 ,.nvdla_core_rstn (nvdla_core_rstn)
 ,.dat_fifo_wr_prdy (dat0_fifo2_wr_prdy)
@@ -600,7 +600,7 @@ NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo2 (
 // ::assert never "when the first fifo is ready, all the left fifo should be ready" dat0_fifo0_wr_prdy & !dat0_fifo2_wr_prdy;
 // ::assert never "when the last fifo is not ready, all the previous fifo should not be ready" dat0_fifo2_wr_prdy & !dat0_fifo3_wr_prdy;
 
-wire [16-1:0] dat0_fifo3_wr_pd;
+wire [8-1:0] dat0_fifo3_wr_pd;
 wire dat0_fifo3_wr_prdy;
 wire dat0_fifo3_wr_pvld;
 // DATA FIFO WRITE SIDE
@@ -609,7 +609,7 @@ assign dat0_fifo3_wr_pvld = dat_fifo_wr_pvld & (spt_posw==0) & (spt_posb == 3);
 assign dat0_fifo3_wr_pd = dp2wdma_dat_pd;
 
 // DATA FIFO INSTANCE
-NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo3 (
+NV_NVDLA_PDP_WDMA_DAT_fifo_32x8 u_dat0_fifo3 (
 .nvdla_core_clk (nvdla_core_clk)
 ,.nvdla_core_rstn (nvdla_core_rstn)
 ,.dat_fifo_wr_prdy (dat0_fifo3_wr_prdy)
@@ -624,7 +624,7 @@ NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo3 (
 // ::assert never "when the first fifo is ready, all the left fifo should be ready" dat0_fifo0_wr_prdy & !dat0_fifo3_wr_prdy;
 // ::assert never "when the last fifo is not ready, all the previous fifo should not be ready" dat0_fifo3_wr_prdy & !dat0_fifo3_wr_prdy;
 
-wire [16-1:0] dat0_fifo4_wr_pd;
+wire [8-1:0] dat0_fifo4_wr_pd;
 wire dat0_fifo4_wr_prdy;
 wire dat0_fifo4_wr_pvld;
 // DATA FIFO WRITE SIDE
@@ -633,7 +633,7 @@ assign dat0_fifo4_wr_pvld = dat_fifo_wr_pvld & (spt_posw==0) & (spt_posb == 4);
 assign dat0_fifo4_wr_pd = dp2wdma_dat_pd;
 
 // DATA FIFO INSTANCE
-NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo4 (
+NV_NVDLA_PDP_WDMA_DAT_fifo_32x8 u_dat0_fifo4 (
 .nvdla_core_clk (nvdla_core_clk)
 ,.nvdla_core_rstn (nvdla_core_rstn)
 ,.dat_fifo_wr_prdy (dat0_fifo4_wr_prdy)
@@ -648,7 +648,7 @@ NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo4 (
 // ::assert never "when the first fifo is ready, all the left fifo should be ready" dat0_fifo0_wr_prdy & !dat0_fifo4_wr_prdy;
 // ::assert never "when the last fifo is not ready, all the previous fifo should not be ready" dat0_fifo4_wr_prdy & !dat0_fifo3_wr_prdy;
 
-wire [16-1:0] dat0_fifo5_wr_pd;
+wire [8-1:0] dat0_fifo5_wr_pd;
 wire dat0_fifo5_wr_prdy;
 wire dat0_fifo5_wr_pvld;
 // DATA FIFO WRITE SIDE
@@ -657,7 +657,7 @@ assign dat0_fifo5_wr_pvld = dat_fifo_wr_pvld & (spt_posw==0) & (spt_posb == 5);
 assign dat0_fifo5_wr_pd = dp2wdma_dat_pd;
 
 // DATA FIFO INSTANCE
-NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo5 (
+NV_NVDLA_PDP_WDMA_DAT_fifo_32x8 u_dat0_fifo5 (
 .nvdla_core_clk (nvdla_core_clk)
 ,.nvdla_core_rstn (nvdla_core_rstn)
 ,.dat_fifo_wr_prdy (dat0_fifo5_wr_prdy)
@@ -672,7 +672,7 @@ NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo5 (
 // ::assert never "when the first fifo is ready, all the left fifo should be ready" dat0_fifo0_wr_prdy & !dat0_fifo5_wr_prdy;
 // ::assert never "when the last fifo is not ready, all the previous fifo should not be ready" dat0_fifo5_wr_prdy & !dat0_fifo3_wr_prdy;
 
-wire [16-1:0] dat0_fifo6_wr_pd;
+wire [8-1:0] dat0_fifo6_wr_pd;
 wire dat0_fifo6_wr_prdy;
 wire dat0_fifo6_wr_pvld;
 // DATA FIFO WRITE SIDE
@@ -681,7 +681,7 @@ assign dat0_fifo6_wr_pvld = dat_fifo_wr_pvld & (spt_posw==0) & (spt_posb == 6);
 assign dat0_fifo6_wr_pd = dp2wdma_dat_pd;
 
 // DATA FIFO INSTANCE
-NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo6 (
+NV_NVDLA_PDP_WDMA_DAT_fifo_32x8 u_dat0_fifo6 (
 .nvdla_core_clk (nvdla_core_clk)
 ,.nvdla_core_rstn (nvdla_core_rstn)
 ,.dat_fifo_wr_prdy (dat0_fifo6_wr_prdy)
@@ -696,7 +696,7 @@ NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo6 (
 // ::assert never "when the first fifo is ready, all the left fifo should be ready" dat0_fifo0_wr_prdy & !dat0_fifo6_wr_prdy;
 // ::assert never "when the last fifo is not ready, all the previous fifo should not be ready" dat0_fifo6_wr_prdy & !dat0_fifo3_wr_prdy;
 
-wire [16-1:0] dat0_fifo7_wr_pd;
+wire [8-1:0] dat0_fifo7_wr_pd;
 wire dat0_fifo7_wr_prdy;
 wire dat0_fifo7_wr_pvld;
 // DATA FIFO WRITE SIDE
@@ -705,7 +705,7 @@ assign dat0_fifo7_wr_pvld = dat_fifo_wr_pvld & (spt_posw==0) & (spt_posb == 7);
 assign dat0_fifo7_wr_pd = dp2wdma_dat_pd;
 
 // DATA FIFO INSTANCE
-NV_NVDLA_PDP_WDMA_DAT_fifo_32x16 u_dat0_fifo7 (
+NV_NVDLA_PDP_WDMA_DAT_fifo_32x8 u_dat0_fifo7 (
 .nvdla_core_clk (nvdla_core_clk)
 ,.nvdla_core_rstn (nvdla_core_rstn)
 ,.dat_fifo_wr_prdy (dat0_fifo7_wr_prdy)

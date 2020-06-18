@@ -18,7 +18,7 @@ module NV_NVDLA_MCIF_read (
   ,nvdla_core_rstn
   ,pwrbus_ram_pd
   ,reg2dp_rd_os_cnt
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","pdp","cdp");
 //: foreach my $client (@rdma_name) {
 //: print("  ,reg2dp_rd_weight_${client}\n"),
 //: }
@@ -37,10 +37,8 @@ module NV_NVDLA_MCIF_read (
   ,reg2dp_rd_weight_sdp
   ,reg2dp_rd_weight_sdp_b
   ,reg2dp_rd_weight_sdp_n
-  ,reg2dp_rd_weight_sdp_e
   ,reg2dp_rd_weight_pdp
   ,reg2dp_rd_weight_cdp
-  ,reg2dp_rd_weight_rbk
   ,cdma_dat2mcif_rd_cdt_lat_fifo_pop
   ,cdma_dat2mcif_rd_req_valid
   ,cdma_dat2mcif_rd_req_ready
@@ -76,13 +74,6 @@ module NV_NVDLA_MCIF_read (
   ,mcif2sdp_n_rd_rsp_valid
   ,mcif2sdp_n_rd_rsp_ready
   ,mcif2sdp_n_rd_rsp_pd
-  ,sdp_e2mcif_rd_cdt_lat_fifo_pop
-  ,sdp_e2mcif_rd_req_valid
-  ,sdp_e2mcif_rd_req_ready
-  ,sdp_e2mcif_rd_req_pd
-  ,mcif2sdp_e_rd_rsp_valid
-  ,mcif2sdp_e_rd_rsp_ready
-  ,mcif2sdp_e_rd_rsp_pd
   ,pdp2mcif_rd_cdt_lat_fifo_pop
   ,pdp2mcif_rd_req_valid
   ,pdp2mcif_rd_req_ready
@@ -97,13 +88,6 @@ module NV_NVDLA_MCIF_read (
   ,mcif2cdp_rd_rsp_valid
   ,mcif2cdp_rd_rsp_ready
   ,mcif2cdp_rd_rsp_pd
-  ,rbk2mcif_rd_cdt_lat_fifo_pop
-  ,rbk2mcif_rd_req_valid
-  ,rbk2mcif_rd_req_ready
-  ,rbk2mcif_rd_req_pd
-  ,mcif2rbk_rd_rsp_valid
-  ,mcif2rbk_rd_rsp_ready
-  ,mcif2rbk_rd_rsp_pd
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,mcif2noc_axi_ar_arvalid
@@ -121,7 +105,7 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input [31:0] pwrbus_ram_pd;
 input [7:0] reg2dp_rd_os_cnt;
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","pdp","cdp");
 //: foreach my $client (@rdma_name) {
 //: print "input  [7:0] reg2dp_rd_weight_${client};\n";
 //: }
@@ -129,10 +113,10 @@ input [7:0] reg2dp_rd_os_cnt;
 //: print("input ${client}2mcif_rd_cdt_lat_fifo_pop;\n");
 //: print("input ${client}2mcif_rd_req_valid;\n");
 //: print("output ${client}2mcif_rd_req_ready;\n");
-//: print qq(input [79 -1:0] ${client}2mcif_rd_req_pd;\n);
+//: print qq(input [47 -1:0] ${client}2mcif_rd_req_pd;\n);
 //: print("output mcif2${client}_rd_rsp_valid;\n");
 //: print("input mcif2${client}_rd_rsp_ready;\n");
-//: print qq(output [129 -1:0] mcif2${client}_rd_rsp_pd;\n);
+//: print qq(output [65 -1:0] mcif2${client}_rd_rsp_pd;\n);
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 input  [7:0] reg2dp_rd_weight_cdma_dat;
@@ -140,73 +124,57 @@ input  [7:0] reg2dp_rd_weight_cdma_wt;
 input  [7:0] reg2dp_rd_weight_sdp;
 input  [7:0] reg2dp_rd_weight_sdp_b;
 input  [7:0] reg2dp_rd_weight_sdp_n;
-input  [7:0] reg2dp_rd_weight_sdp_e;
 input  [7:0] reg2dp_rd_weight_pdp;
 input  [7:0] reg2dp_rd_weight_cdp;
-input  [7:0] reg2dp_rd_weight_rbk;
 input cdma_dat2mcif_rd_cdt_lat_fifo_pop;
 input cdma_dat2mcif_rd_req_valid;
 output cdma_dat2mcif_rd_req_ready;
-input [79 -1:0] cdma_dat2mcif_rd_req_pd;
+input [47 -1:0] cdma_dat2mcif_rd_req_pd;
 output mcif2cdma_dat_rd_rsp_valid;
 input mcif2cdma_dat_rd_rsp_ready;
-output [129 -1:0] mcif2cdma_dat_rd_rsp_pd;
+output [65 -1:0] mcif2cdma_dat_rd_rsp_pd;
 input cdma_wt2mcif_rd_cdt_lat_fifo_pop;
 input cdma_wt2mcif_rd_req_valid;
 output cdma_wt2mcif_rd_req_ready;
-input [79 -1:0] cdma_wt2mcif_rd_req_pd;
+input [47 -1:0] cdma_wt2mcif_rd_req_pd;
 output mcif2cdma_wt_rd_rsp_valid;
 input mcif2cdma_wt_rd_rsp_ready;
-output [129 -1:0] mcif2cdma_wt_rd_rsp_pd;
+output [65 -1:0] mcif2cdma_wt_rd_rsp_pd;
 input sdp2mcif_rd_cdt_lat_fifo_pop;
 input sdp2mcif_rd_req_valid;
 output sdp2mcif_rd_req_ready;
-input [79 -1:0] sdp2mcif_rd_req_pd;
+input [47 -1:0] sdp2mcif_rd_req_pd;
 output mcif2sdp_rd_rsp_valid;
 input mcif2sdp_rd_rsp_ready;
-output [129 -1:0] mcif2sdp_rd_rsp_pd;
+output [65 -1:0] mcif2sdp_rd_rsp_pd;
 input sdp_b2mcif_rd_cdt_lat_fifo_pop;
 input sdp_b2mcif_rd_req_valid;
 output sdp_b2mcif_rd_req_ready;
-input [79 -1:0] sdp_b2mcif_rd_req_pd;
+input [47 -1:0] sdp_b2mcif_rd_req_pd;
 output mcif2sdp_b_rd_rsp_valid;
 input mcif2sdp_b_rd_rsp_ready;
-output [129 -1:0] mcif2sdp_b_rd_rsp_pd;
+output [65 -1:0] mcif2sdp_b_rd_rsp_pd;
 input sdp_n2mcif_rd_cdt_lat_fifo_pop;
 input sdp_n2mcif_rd_req_valid;
 output sdp_n2mcif_rd_req_ready;
-input [79 -1:0] sdp_n2mcif_rd_req_pd;
+input [47 -1:0] sdp_n2mcif_rd_req_pd;
 output mcif2sdp_n_rd_rsp_valid;
 input mcif2sdp_n_rd_rsp_ready;
-output [129 -1:0] mcif2sdp_n_rd_rsp_pd;
-input sdp_e2mcif_rd_cdt_lat_fifo_pop;
-input sdp_e2mcif_rd_req_valid;
-output sdp_e2mcif_rd_req_ready;
-input [79 -1:0] sdp_e2mcif_rd_req_pd;
-output mcif2sdp_e_rd_rsp_valid;
-input mcif2sdp_e_rd_rsp_ready;
-output [129 -1:0] mcif2sdp_e_rd_rsp_pd;
+output [65 -1:0] mcif2sdp_n_rd_rsp_pd;
 input pdp2mcif_rd_cdt_lat_fifo_pop;
 input pdp2mcif_rd_req_valid;
 output pdp2mcif_rd_req_ready;
-input [79 -1:0] pdp2mcif_rd_req_pd;
+input [47 -1:0] pdp2mcif_rd_req_pd;
 output mcif2pdp_rd_rsp_valid;
 input mcif2pdp_rd_rsp_ready;
-output [129 -1:0] mcif2pdp_rd_rsp_pd;
+output [65 -1:0] mcif2pdp_rd_rsp_pd;
 input cdp2mcif_rd_cdt_lat_fifo_pop;
 input cdp2mcif_rd_req_valid;
 output cdp2mcif_rd_req_ready;
-input [79 -1:0] cdp2mcif_rd_req_pd;
+input [47 -1:0] cdp2mcif_rd_req_pd;
 output mcif2cdp_rd_rsp_valid;
 input mcif2cdp_rd_rsp_ready;
-output [129 -1:0] mcif2cdp_rd_rsp_pd;
-input rbk2mcif_rd_cdt_lat_fifo_pop;
-input rbk2mcif_rd_req_valid;
-output rbk2mcif_rd_req_ready;
-input [79 -1:0] rbk2mcif_rd_req_pd;
-output mcif2rbk_rd_rsp_valid;
-input mcif2rbk_rd_rsp_ready;
-output [129 -1:0] mcif2rbk_rd_rsp_pd;
+output [65 -1:0] mcif2cdp_rd_rsp_pd;
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 input noc2mcif_axi_r_rvalid;
@@ -218,14 +186,14 @@ output mcif2noc_axi_ar_arvalid;
 input mcif2noc_axi_ar_arready;
 output [7:0] mcif2noc_axi_ar_arid;
 output [3:0] mcif2noc_axi_ar_arlen;
-output [64 -1:0] mcif2noc_axi_ar_araddr;
+output [32 -1:0] mcif2noc_axi_ar_araddr;
 wire eg2ig_axi_vld;
 NV_NVDLA_MCIF_READ_ig u_ig (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0]) //|< i
   ,.reg2dp_rd_os_cnt (reg2dp_rd_os_cnt)
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","pdp","cdp");
 //: foreach my $client (@rdma_name) {
 //: print("  ,.reg2dp_rd_weight_${client} (reg2dp_rd_weight_${client})\n");
 //: }
@@ -241,10 +209,8 @@ NV_NVDLA_MCIF_READ_ig u_ig (
   ,.reg2dp_rd_weight_sdp (reg2dp_rd_weight_sdp)
   ,.reg2dp_rd_weight_sdp_b (reg2dp_rd_weight_sdp_b)
   ,.reg2dp_rd_weight_sdp_n (reg2dp_rd_weight_sdp_n)
-  ,.reg2dp_rd_weight_sdp_e (reg2dp_rd_weight_sdp_e)
   ,.reg2dp_rd_weight_pdp (reg2dp_rd_weight_pdp)
   ,.reg2dp_rd_weight_cdp (reg2dp_rd_weight_cdp)
-  ,.reg2dp_rd_weight_rbk (reg2dp_rd_weight_rbk)
  ,.cdma_dat2mcif_rd_cdt_lat_fifo_pop (cdma_dat2mcif_rd_cdt_lat_fifo_pop)
  ,.cdma_dat2mcif_rd_req_valid (cdma_dat2mcif_rd_req_valid)
  ,.cdma_dat2mcif_rd_req_ready (cdma_dat2mcif_rd_req_ready)
@@ -265,10 +231,6 @@ NV_NVDLA_MCIF_READ_ig u_ig (
  ,.sdp_n2mcif_rd_req_valid (sdp_n2mcif_rd_req_valid)
  ,.sdp_n2mcif_rd_req_ready (sdp_n2mcif_rd_req_ready)
  ,.sdp_n2mcif_rd_req_pd    (sdp_n2mcif_rd_req_pd)
- ,.sdp_e2mcif_rd_cdt_lat_fifo_pop (sdp_e2mcif_rd_cdt_lat_fifo_pop)
- ,.sdp_e2mcif_rd_req_valid (sdp_e2mcif_rd_req_valid)
- ,.sdp_e2mcif_rd_req_ready (sdp_e2mcif_rd_req_ready)
- ,.sdp_e2mcif_rd_req_pd    (sdp_e2mcif_rd_req_pd)
  ,.pdp2mcif_rd_cdt_lat_fifo_pop (pdp2mcif_rd_cdt_lat_fifo_pop)
  ,.pdp2mcif_rd_req_valid (pdp2mcif_rd_req_valid)
  ,.pdp2mcif_rd_req_ready (pdp2mcif_rd_req_ready)
@@ -277,10 +239,6 @@ NV_NVDLA_MCIF_READ_ig u_ig (
  ,.cdp2mcif_rd_req_valid (cdp2mcif_rd_req_valid)
  ,.cdp2mcif_rd_req_ready (cdp2mcif_rd_req_ready)
  ,.cdp2mcif_rd_req_pd    (cdp2mcif_rd_req_pd)
- ,.rbk2mcif_rd_cdt_lat_fifo_pop (rbk2mcif_rd_cdt_lat_fifo_pop)
- ,.rbk2mcif_rd_req_valid (rbk2mcif_rd_req_valid)
- ,.rbk2mcif_rd_req_ready (rbk2mcif_rd_req_ready)
- ,.rbk2mcif_rd_req_pd    (rbk2mcif_rd_req_pd)
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.mcif2noc_axi_ar_arvalid (mcif2noc_axi_ar_arvalid) //|> o
@@ -295,7 +253,7 @@ NV_NVDLA_MCIF_READ_eg u_eg (
   ,.nvdla_core_rstn (nvdla_core_rstn)
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0]) //|< i
   ,.eg2ig_axi_vld (eg2ig_axi_vld) //|> w
-//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","sdp_e","pdp","cdp","rbk");
+//: my @rdma_name = ("cdma_dat","cdma_wt","sdp", "sdp_b","sdp_n","pdp","cdp");
 //: foreach my $client (@rdma_name) {
 //: print(" ,.mcif2${client}_rd_rsp_valid(mcif2${client}_rd_rsp_valid)\n");
 //: print(" ,.mcif2${client}_rd_rsp_ready(mcif2${client}_rd_rsp_ready)\n");
@@ -317,18 +275,12 @@ NV_NVDLA_MCIF_READ_eg u_eg (
  ,.mcif2sdp_n_rd_rsp_valid(mcif2sdp_n_rd_rsp_valid)
  ,.mcif2sdp_n_rd_rsp_ready(mcif2sdp_n_rd_rsp_ready)
  ,.mcif2sdp_n_rd_rsp_pd(mcif2sdp_n_rd_rsp_pd)
- ,.mcif2sdp_e_rd_rsp_valid(mcif2sdp_e_rd_rsp_valid)
- ,.mcif2sdp_e_rd_rsp_ready(mcif2sdp_e_rd_rsp_ready)
- ,.mcif2sdp_e_rd_rsp_pd(mcif2sdp_e_rd_rsp_pd)
  ,.mcif2pdp_rd_rsp_valid(mcif2pdp_rd_rsp_valid)
  ,.mcif2pdp_rd_rsp_ready(mcif2pdp_rd_rsp_ready)
  ,.mcif2pdp_rd_rsp_pd(mcif2pdp_rd_rsp_pd)
  ,.mcif2cdp_rd_rsp_valid(mcif2cdp_rd_rsp_valid)
  ,.mcif2cdp_rd_rsp_ready(mcif2cdp_rd_rsp_ready)
  ,.mcif2cdp_rd_rsp_pd(mcif2cdp_rd_rsp_pd)
- ,.mcif2rbk_rd_rsp_valid(mcif2rbk_rd_rsp_valid)
- ,.mcif2rbk_rd_rsp_ready(mcif2rbk_rd_rsp_ready)
- ,.mcif2rbk_rd_rsp_pd(mcif2rbk_rd_rsp_pd)
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
   ,.noc2mcif_axi_r_rvalid (noc2mcif_axi_r_rvalid) //|< i

@@ -50,7 +50,7 @@ input nvdla_core_rstn;
 input average_pooling_en;
 input cur_datin_disable;
 input last_out_en;
-input [2*(8 +3)+8:0] pdma2pdp_pd;
+input [1*(8 +3)+8:0] pdma2pdp_pd;
 input pdma2pdp_pvld;
 input pdp_din_lc_f;
 input pooling_din_1st;
@@ -61,7 +61,7 @@ input pooling_unit_en;
 //input reg2dp_int16_en;
 //input reg2dp_int8_en;
 output pdma2pdp_prdy;
-output [2*(8 +3)+3:0] pooling_out;
+output [1*(8 +3)+3:0] pooling_out;
 output pooling_out_pvld;
 //////////////////////////////////////////////////////////////////////////////////
 wire add_out_rdy;
@@ -75,8 +75,8 @@ wire cur_datin_disable_sync_use;
 wire cur_datin_disable_sync_use_d4;
 wire data_buf_lc;
 wire data_buf_lc_d4;
-wire [2*(8 +3)-1:0] datain_ext;
-wire [2*(8 +3)-1:0] datain_ext_sync;
+wire [1*(8 +3)-1:0] datain_ext;
+wire [1*(8 +3)-1:0] datain_ext_sync;
 //wire [16:0] fp16_pool_sum_0;
 //wire [16:0] fp16_pool_sum_1;
 //wire [16:0] fp16_pool_sum_2;
@@ -97,10 +97,10 @@ wire [2*(8 +3)-1:0] datain_ext_sync;
 //wire [87:0] fp_pool_sum_use1;
 //wire [87:0] fp_pool_sum_use2;
 //wire [87:0] fp_pool_sum_use3;
-wire [2*(8 +3)-1:0] int_pool_cur_dat;
-wire [2*(8 +3)-1:0] int_pool_datin_ext;
-wire [2*(8 +3)-1:0] int_pooling;
-wire [2*(8 +3)-1:0] int_pooling_sync;
+wire [1*(8 +3)-1:0] int_pool_cur_dat;
+wire [1*(8 +3)-1:0] int_pool_datin_ext;
+wire [1*(8 +3)-1:0] int_pooling;
+wire [1*(8 +3)-1:0] int_pooling_sync;
 wire load_din;
 wire pdma2pdp_prdy_f;
 wire [4:0] pdp_din_cpos;
@@ -119,8 +119,8 @@ wire [2:0] pooling_out_size_sync;
 wire [2:0] pooling_out_size_sync_use;
 wire [2:0] pooling_out_size_sync_use_d4;
 wire pooling_out_vld;
-wire [2*(8 +3)-1:0] pooling_result;
-reg [2*(8 +3)-1:0] cur_pooling_dat;
+wire [1*(8 +3)-1:0] pooling_result;
+reg [1*(8 +3)-1:0] cur_pooling_dat;
 //reg [67:0] fp_pool_sum_result0_d3;
 //reg [67:0] fp_pool_sum_result0_d4;
 //reg [67:0] fp_pool_sum_result1_d3;
@@ -129,8 +129,8 @@ reg [2*(8 +3)-1:0] cur_pooling_dat;
 //reg [67:0] fp_pool_sum_result2_d4;
 //reg [67:0] fp_pool_sum_result3_d3;
 //reg [67:0] fp_pool_sum_result3_d4;
-//: my $bw = 2*(8 +3);
-//: my $k = int(16 / 2);
+//: my $bw = 1*(8 +3);
+//: my $k = int(8 / 1);
 //: foreach my $m (0..$k-1) {
 //: print "reg     [${bw}-1:0] latch_result${m}_d3; \n";
 //: print "reg     [${bw}+3:0] flush_out${m}; \n";
@@ -139,7 +139,7 @@ reg [2*(8 +3)-1:0] cur_pooling_dat;
 //: print "wire    [${bw}-1:0] latch_result${m}_d4; \n";
 //: }
 reg [4:0] pooling_cnt;
-reg [2*(8 +3)+3:0] pooling_out;
+reg [1*(8 +3)+3:0] pooling_out;
 reg [2:0] pooling_size;
 //////////////////////////////////////////////////////////////////////////////////
 //=======================================================
@@ -147,8 +147,8 @@ reg [2:0] pooling_size;
 //-------------------------------------------------------
 //assign fp_mean_pool_cfg = (reg2dp_fp16_en & average_pooling_en);
 // interface
-assign pdp_din_wpos = pdma2pdp_pd[2*(8 +3)+3:2*(8 +3)];
-assign pdp_din_cpos = pdma2pdp_pd[2*(8 +3)+8:2*(8 +3)+4];
+assign pdp_din_wpos = pdma2pdp_pd[1*(8 +3)+3:1*(8 +3)];
+assign pdp_din_cpos = pdma2pdp_pd[1*(8 +3)+8:1*(8 +3)+4];
 assign buf_sel = pdp_din_cpos;
 assign load_din = pdma2pdp_pvld & pdma2pdp_prdy_f & (~cur_datin_disable) & pooling_unit_en;
 assign pdma2pdp_prdy_f = pipe_in_rdy;
@@ -194,7 +194,7 @@ assign pdma2pdp_prdy = pdma2pdp_prdy_f;
   end
  endfunction
 //pooling result
-//: my $k = 2*(8 +3);
+//: my $k = 1*(8 +3);
 //: print qq(
 //: function [${k}-1:0] pooling_fun;
 //: input[${k}-1:0] data0;
@@ -208,7 +208,7 @@ assign pdma2pdp_prdy = pdma2pdp_prdy_f;
      min_pooling = (pooling_type== 2'h2 );
      max_pooling = (pooling_type== 2'h1 );
      mean_pooling = (pooling_type== 2'h0 );
-//: my $K = 2;
+//: my $K = 1;
 //: my $P = (8 +3);
 //: foreach my $m (0..$K-1) {
 //: print qq(
@@ -240,10 +240,10 @@ assign pooling_out_size = pooling_size;
 //// pooling data 
 ////
 ////--------------------------------------------------------------------
-assign datain_ext = pdma2pdp_pd[2*(8 +3)-1:0];
+assign datain_ext = pdma2pdp_pd[1*(8 +3)-1:0];
 always @(*) begin
     case(buf_sel)
-//: my $k = int(16 / 2);
+//: my $k = int(8 / 1);
 //: foreach my $m (0..$k-1) {
 //: print "5'd${m}:   cur_pooling_dat = data_buf${m}; \n";
 //: }
@@ -282,7 +282,7 @@ end
 ////////////////////
 //below value 4 means NVDLA_HLS_ADD17_LATENCY
 //: my $STAGE = 4;
-//: my $WID = 2*(8 +3)*2 + 12;
+//: my $WID = 1*(8 +3)*2 + 12;
 //: print qq(
 //: wire [${WID}-1:0] pipe_out_pd;
 //: wire [${WID}-1:0] pipe_dp_0;
@@ -333,14 +333,14 @@ assign pipe_out_rdy = add_out_rdy;
 assign add_out_vld = pipe_out_vld;
 assign add_out_rdy = ~pooling_out_vld | pooling_out_prdy;
 ////////////////////
-assign int_pooling_sync = pipe_out_pd[2*(8 +3)-1:0];
-assign datain_ext_sync = pipe_out_pd[2*(8 +3)*2-1:2*(8 +3)];
-assign pooling_din_1st_sync = pipe_out_pd[2*(8 +3)*2];
-assign pdp_din_lc_f_sync = pipe_out_pd[2*(8 +3)*2+1];
-assign buf_sel_sync = pipe_out_pd[2*(8 +3)*2+6:2*(8 +3)*2+2];
-assign cur_datin_disable_sync= pipe_out_pd[2*(8 +3)*2+7];
-assign pooling_out_size_sync = pipe_out_pd[2*(8 +3)*2+10:2*(8 +3)*2+8];
-assign pooling_din_last_sync = pipe_out_pd[2*(8 +3)*2+11];
+assign int_pooling_sync = pipe_out_pd[1*(8 +3)-1:0];
+assign datain_ext_sync = pipe_out_pd[1*(8 +3)*2-1:1*(8 +3)];
+assign pooling_din_1st_sync = pipe_out_pd[1*(8 +3)*2];
+assign pdp_din_lc_f_sync = pipe_out_pd[1*(8 +3)*2+1];
+assign buf_sel_sync = pipe_out_pd[1*(8 +3)*2+6:1*(8 +3)*2+2];
+assign cur_datin_disable_sync= pipe_out_pd[1*(8 +3)*2+7];
+assign pooling_out_size_sync = pipe_out_pd[1*(8 +3)*2+10:1*(8 +3)*2+8];
+assign pooling_din_last_sync = pipe_out_pd[1*(8 +3)*2+11];
 ////////////////////
 ////for NVDLA_HLS_ADD17_LATENCY==3
 //always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -429,20 +429,20 @@ assign pooling_result = (pooling_din_1st_sync ? datain_ext_sync : int_pooling_sy
 //for NVDLA_HLS_ADD17_LATENCY==3
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-//: my $k = int(16 / 2);
+//: my $k = int(8 / 1);
 //: foreach my $m (0..$k-1) {
 //: print "latch_result${m}_d3 <= 0; \n";
 //: }
   end else begin
     if(add_out_vld & add_out_rdy) begin
         case(buf_sel_sync)
-//: my $k = int(16 / 2);
+//: my $k = int(8 / 1);
 //: foreach my $m (0..$k-1) {
 //: print "5'd${m}: latch_result${m}_d3 <= pooling_result; \n";
 //: }
 //VCS coverage off
             default: begin
-//: my $k = int(16 / 2);
+//: my $k = int(8 / 1);
 //: foreach my $m (0..$k-1) {
 //: print "latch_result${m}_d3 <= latch_result${m}_d3; \n";
 //: }
@@ -458,7 +458,7 @@ assign pooling_din_last_sync_use_d4 = pooling_din_last_sync;
 assign buf_sel_sync_use_d4 = buf_sel_sync;
 assign cur_datin_disable_sync_use_d4 = cur_datin_disable_sync;
 assign data_buf_lc_d4 = pdp_din_lc_f_sync;
-//: my $k = int(16 / 2);
+//: my $k = int(8 / 1);
 //: foreach my $m (0..$k-1) {
 //: print "assign latch_result${m}_d4 = (buf_sel_sync==5'd$m)? pooling_result : latch_result${m}_d3; \n";
 //: print "assign latch_result$m = latch_result${m}_d4; \n";
@@ -489,7 +489,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     pooling_cnt <= 0;
   end else begin
     if(pooling_out_vld & pooling_out_prdy & ((pooling_din_last_sync_use & (~cur_datin_disable_sync_use)) | last_out_en))begin
-//: my $k = int(16 / 2);
+//: my $k = int(8 / 1);
 //: print qq(
 //: if(pooling_cnt==(5'd${k} -1))
 //: );
@@ -502,7 +502,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 always @(*) begin
     if(last_out_en) begin
         case(pooling_cnt)
-//: my $k = int(16 / 2);
+//: my $k = int(8 / 1);
 //: foreach my $m (0..$k-1) {
 //: print "5'd${m}:    pooling_out = flush_out$m; \n";
 //: }
@@ -510,7 +510,7 @@ always @(*) begin
         endcase
     end else begin
         case(pooling_cnt)
-//: my $k = int(16 / 2);
+//: my $k = int(8 / 1);
 //: foreach my $m (0..$k-1) {
 //: print "5'd${m}:    pooling_out = {data_buf_lc,pooling_out_size_sync_use,data_buf${m}}; \n";
 //: }
@@ -522,20 +522,20 @@ end
 //output latch in line end for flush
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-//: my $k = int(16 / 2);
+//: my $k = int(8 / 1);
 //: foreach my $m (0..$k-1) {
 //: print "flush_out$m <= 0; \n";
 //: }
   end else begin
     if(pooling_din_last_sync_use & (~cur_datin_disable_sync_use)) begin
         case(buf_sel_sync_use)
-//: my $k = int(16 / 2);
+//: my $k = int(8 / 1);
 //: foreach my $m (0..$k-1) {
 //: print "5'd${m}: flush_out$m <= {data_buf_lc,pooling_out_size_sync_use,data_buf${m}}; \n";
 //: }
 //VCS coverage off
         default: begin
-//: my $k = int(16 / 2);
+//: my $k = int(8 / 1);
 //: foreach my $m (0..$k-1) {
 //: print "flush_out$m <= flush_out${m}; \n";
 //: }

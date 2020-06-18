@@ -35,12 +35,12 @@ module NV_NVDLA_CDP_DP_bufferin_tp1 (
   ,normalz_buf_data_pvld
   );
 //////////////////////////////////////////////
-parameter buf2sq_data_bw = (8 +1)*(2 +8);
+parameter buf2sq_data_bw = (8 +1)*(1 +8);
 parameter buf2sq_dp_bw = buf2sq_data_bw + 17;
 //////////////////////////////////////////////
 input nvdla_core_clk;
 input nvdla_core_rstn;
-input [2*(8 +1)+17-1:0] cdp_rdma2dp_pd;
+input [1*(8 +1)+17-1:0] cdp_rdma2dp_pd;
 input cdp_rdma2dp_valid;
 input normalz_buf_data_prdy;
 output cdp_rdma2dp_ready;
@@ -62,7 +62,7 @@ reg [3:0] buffer_pos_w;
 reg [3:0] buffer_width;
 wire cdp_rdma2dp_ready;
 reg [3:0] cube_end_width_cnt;
-//: my $tp = 2;
+//: my $tp = 1;
 //: my $bpe = (8 +1);
 //: my $reg_num = int(8/$tp + 1);
 //: my $reg_1stc_num = int(4/$tp);
@@ -95,7 +95,7 @@ reg [3:0] last_width;
 reg less2more_dly;
 reg less2more_dly2;
 reg more2less_dly;
-reg [2*(8 +1)+17-1:0] nvdla_cdp_rdma2dp_pd;
+reg [1*(8 +1)+17-1:0] nvdla_cdp_rdma2dp_pd;
 reg nvdla_cdp_rdma2dp_valid;
 reg [4:0] pos_c_align;
 reg [4:0] pos_c_dly1;
@@ -124,7 +124,7 @@ wire data_shift_load;
 wire data_shift_load_all;
 wire data_shift_ready;
 wire dp_b_sync;
-wire [2*(8 +1)-1:0] dp_data;
+wire [1*(8 +1)-1:0] dp_data;
 wire dp_last_c;
 wire dp_last_h;
 wire dp_last_w;
@@ -166,7 +166,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn)
-    nvdla_cdp_rdma2dp_pd <= {2*(8 +1)+17{1'b0}};
+    nvdla_cdp_rdma2dp_pd <= {1*(8 +1)+17{1'b0}};
   else if(cdp_rdma2dp_valid & cdp_rdma2dp_ready)
     nvdla_cdp_rdma2dp_pd <= cdp_rdma2dp_pd;
 end
@@ -174,14 +174,14 @@ end
 //==============
 // INPUT UNPACK: from RDMA
 //==============
-assign dp_data[2*(8 +1)-1:0] = nvdla_cdp_rdma2dp_pd[2*(8 +1)-1:0];
-assign dp_pos_w[3:0] = nvdla_cdp_rdma2dp_pd[2*(8 +1)+3:2*(8 +1)];
-assign dp_width[3:0] = nvdla_cdp_rdma2dp_pd[2*(8 +1)+7:2*(8 +1)+4];
-assign dp_pos_c[4:0] = nvdla_cdp_rdma2dp_pd[2*(8 +1)+12:2*(8 +1)+8];
-assign dp_b_sync = nvdla_cdp_rdma2dp_pd[2*(8 +1)+13];
-assign dp_last_w = nvdla_cdp_rdma2dp_pd[2*(8 +1)+14];
-assign dp_last_h = nvdla_cdp_rdma2dp_pd[2*(8 +1)+15];
-assign dp_last_c = nvdla_cdp_rdma2dp_pd[2*(8 +1)+16];
+assign dp_data[1*(8 +1)-1:0] = nvdla_cdp_rdma2dp_pd[1*(8 +1)-1:0];
+assign dp_pos_w[3:0] = nvdla_cdp_rdma2dp_pd[1*(8 +1)+3:1*(8 +1)];
+assign dp_width[3:0] = nvdla_cdp_rdma2dp_pd[1*(8 +1)+7:1*(8 +1)+4];
+assign dp_pos_c[4:0] = nvdla_cdp_rdma2dp_pd[1*(8 +1)+12:1*(8 +1)+8];
+assign dp_b_sync = nvdla_cdp_rdma2dp_pd[1*(8 +1)+13];
+assign dp_last_w = nvdla_cdp_rdma2dp_pd[1*(8 +1)+14];
+assign dp_last_h = nvdla_cdp_rdma2dp_pd[1*(8 +1)+15];
+assign dp_last_c = nvdla_cdp_rdma2dp_pd[1*(8 +1)+16];
 assign is_pos_w = dp_pos_w;
 assign is_width_f = dp_width[3:0];
 assign is_width[3:0] = is_width_f - 1'b1;
@@ -199,8 +199,8 @@ assign load_din_full = rdma2dp_valid_rebuild & rdma2dp_ready_normal;
 ///////////////////////////////////////////////////
 wire is_4ele_here;
 wire is_posc_end;
-//: my $atmm = 16;
-//: my $tp = 2;
+//: my $atmm = 8;
+//: my $tp = 1;
 //: my $m = int(4/$tp+0.99) -1;
 //: if($tp < 4){
 //: print "assign is_4ele_here = (is_pos_c == ${m});  \n";
@@ -221,7 +221,7 @@ always @(*) begin
     casez (stat_cur)
       WAIT: begin
         if (is_b_sync & is_4ele_here & load_din) begin
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: if($atmm == 4) {
 //: print qq(
 //: if(is_posc_end & is_last_c & is_last_h & is_last_w) begin
@@ -251,7 +251,7 @@ always @(*) begin
       FIRST_C: begin
         if ((is_4ele_here & (is_pos_w == is_width) & (~more2less) & load_din)
                 || (more2less & (width_pre_cnt == width_pre) & is_hold_4ele_done & hold_here & rdma2dp_ready_normal)) begin
-//: my $atmm = 16;
+//: my $atmm = 8;
 //: if($atmm == 4) {
 //: print qq(
 //: if(is_posc_end & is_last_c & is_last_h & is_last_w)
@@ -307,7 +307,7 @@ assign data_shift_load = data_shift_load_all & ((~hold_here_dly) | (stat_cur_dly
 /////////////////////////////////
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
-//: my $tp = 2;
+//: my $tp = 1;
 //: my $bpe = (8 +1);
 //: my $reg_num = int(8/$tp + 1);
 //: my $reg_1stc_num = int(4/$tp);
@@ -329,7 +329,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   case(stat_cur)
       WAIT: begin
           if(load_din) begin
-//: my $tp = 2;
+//: my $tp = 1;
 //: my $bpe = (8 +1);
 //: my $reg_num = int(8/$tp + 1);
 //: foreach my $m (0..7) {
@@ -369,7 +369,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
       end end
       NORMAL_C: begin
           if(load_din) begin
-//: my $tp = 2;
+//: my $tp = 1;
 //: my $bpe = (8 +1);
 //: my $reg_num = int(8/$tp + 1);
 //: foreach my $m (0..7) {
@@ -389,7 +389,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 //: }
       end end
       FIRST_C: begin
-//: my $tp = 2;
+//: my $tp = 1;
 //: my $bpe = (8 +1);
 //: my $reg_num = int(8/$tp + 1);
 //: my $reg_1stc_num = int(4/$tp);
@@ -432,7 +432,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
       end
       SECOND_C: begin
           if(load_din) begin
-//: my $tp = 2;
+//: my $tp = 1;
 //: my $bpe = (8 +1);
 //: my $reg_num = int(8/$tp + 1);
 //: my $reg_1stc_num = int(4/$tp);
@@ -460,7 +460,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
       end end
       CUBE_END: begin
           if(rdma2dp_ready_normal) begin
-//: my $tp = 2;
+//: my $tp = 1;
 //: my $bpe = (8 +1);
 //: my $reg_num = int(8/$tp + 1);
 //: my $reg_1stc_num = int(4/$tp);
@@ -481,7 +481,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 //: }
       end end
       default: begin
-//: my $tp = 2;
+//: my $tp = 1;
 //: my $bpe = (8 +1);
 //: my $reg_num = int(8/$tp + 1);
 //: my $reg_1stc_num = int(4/$tp);
@@ -568,8 +568,8 @@ begin
         hold_4ele_cnt <= hold_4ele_cnt + 1'b1;
   end
 end
-//: my $atomm = 16;
-//: my $tp = 2;
+//: my $atomm = 8;
+//: my $tp = 1;
 //: my $m = int(4/$tp+0.99) -1;
 //: print "assign is_hold_4ele_done = (hold_4ele_cnt == ${m});  ";
 //the last block data need to be output in cube end
@@ -604,14 +604,14 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     if(stat_cur==CUBE_END) begin
         if(rdma2dp_ready_normal) begin
             if(cube_end_width_cnt == last_width)
-//cube_end_c_cnt <= cube_end_c_cnt + 2;
+//cube_end_c_cnt <= cube_end_c_cnt + 1;
                 cube_end_c_cnt <= cube_end_c_cnt + 1'b1;
         end
     end else
         cube_end_c_cnt <= 3'd0;
   end
 end
-//: my $tp = 2;
+//: my $tp = 1;
 //: if( $tp >= 4 ) {
 //: print " assign cube_done = (stat_cur==CUBE_END) & (cube_end_width_cnt == last_width) & rdma2dp_ready_normal;    \n";
 //: } elsif( $tp == 2 ) {
@@ -692,7 +692,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
     buffer_data <= {buf2sq_data_bw{1'b0}};
   end else begin
   if(((stat_cur_dly==NORMAL_C) || (stat_cur_dly==SECOND_C) || (stat_cur_dly==CUBE_END)) & data_shift_load) begin
-//: if(2 == 1) {
+//: if(1 == 1) {
 //: foreach my $m (0..7) {
 //: print qq(
 //: if(is_pos_w_dly == 4'd${m})
@@ -700,7 +700,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 //: data_shift_4${m},data_shift_5${m},data_shift_6${m},data_shift_7${m},data_shift_8${m}};
 //: );
 //: }
-//: } elsif(2 == 2) {
+//: } elsif(1 == 2) {
 //: foreach my $m (0..7) {
 //: print qq(
 //: if(is_pos_w_dly == 4'd${m})
@@ -711,7 +711,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   end else if(stat_cur_dly==FIRST_C) begin
       if(more2less_dly) begin
           if(data_shift_load) begin
-//: if(2 == 1) {
+//: if(1 == 1) {
 //: foreach my $m (0..7) {
 //: print qq(
 //: if(is_pos_w_dly == 4'd${m})
@@ -719,7 +719,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 //: data_shift_4${m},data_shift_5${m},data_shift_6${m},data_shift_7${m},data_shift_8${m}};
 //: );
 //: }
-//: } elsif(2 == 2) {
+//: } elsif(1 == 2) {
 //: foreach my $m (0..7) {
 //: print qq(
 //: if(is_pos_w_dly == 4'd${m})
@@ -728,7 +728,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 //: }
 //: }
           end else if(hold_here_dly & data_shift_ready) begin
-//: if(2 == 1) {
+//: if(1 == 1) {
 //: foreach my $m (0..7) {
 //: print qq(
 //: if(width_pre_cnt_dly == 4'd${m})
@@ -736,7 +736,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 //: data_shift_4${m},data_shift_5${m},data_shift_6${m},data_shift_7${m},data_shift_8${m}};
 //: );
 //: }
-//: } elsif(2 == 2) {
+//: } elsif(1 == 2) {
 //: foreach my $m (0..7) {
 //: print qq(
 //: if(width_pre_cnt_dly == 4'd${m})
@@ -747,7 +747,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
           end
       end else begin
           if((is_pos_w_dly<=width_pre_dly) & data_shift_load) begin
-//: if(2 == 1) {
+//: if(1 == 1) {
 //: foreach my $m (0..7) {
 //: print qq(
 //: if(is_pos_w_dly == 4'd${m})
@@ -755,7 +755,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 //: data_shift_4${m},data_shift_5${m},data_shift_6${m},data_shift_7${m},data_shift_8${m}};
 //: );
 //: }
-//: } elsif(2 == 2) {
+//: } elsif(1 == 2) {
 //: foreach my $m (0..7) {
 //: print qq(
 //: if(is_pos_w_dly == 4'd${m})
@@ -1041,7 +1041,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 /////////////////////////////////////////
 //: my $icvto = (8 +1);
-//: my $tp = 2;
+//: my $tp = 1;
 //: my $k = (${tp}+8)*${icvto};
 //: print qq(
 //: assign buffer_pd[${k}-1:0] = buffer_data;
@@ -1057,7 +1057,7 @@ end
 assign buffer_valid = buffer_data_vld;
 /////////////////////////////////////////
 //: my $icvto = (8 +1);
-//: my $tp = 2;
+//: my $tp = 1;
 //: my $k = (${tp}+8)*${icvto}+17;
 //: &eperl::pipe(" -is -wid $k -do normalz_buf_data -vo normalz_buf_data_pvld -ri normalz_buf_data_prdy -di buffer_pd -vi buffer_valid -ro buffer_ready ");
 assign buf_dat_rdy = buffer_ready;

@@ -63,22 +63,22 @@ input nvdla_core_rstn;
 output [1:0] sdp2glb_done_intr_pd;
 output sdp2mcif_wr_req_valid;
 input sdp2mcif_wr_req_ready;
-output [130 -1:0] sdp2mcif_wr_req_pd;
+output [66 -1:0] sdp2mcif_wr_req_pd;
 input mcif2sdp_wr_rsp_complete;
 input sdp_dp2wdma_valid;
 output sdp_dp2wdma_ready;
-input [16*8 -1:0] sdp_dp2wdma_pd;
+input [8*8 -1:0] sdp_dp2wdma_pd;
 input dla_clk_ovr_on_sync;
 input global_clk_ovr_on_sync;
 input [31:0] pwrbus_ram_pd;
 input [4:0] reg2dp_batch_number;
 input [12:0] reg2dp_channel;
 input [31:0] reg2dp_dst_base_addr_high;
-input [31-4:0] reg2dp_dst_base_addr_low;
-input [31-4:0] reg2dp_dst_batch_stride;
-input [31-4:0] reg2dp_dst_line_stride;
+input [31-3:0] reg2dp_dst_base_addr_low;
+input [31-3:0] reg2dp_dst_batch_stride;
+input [31-3:0] reg2dp_dst_line_stride;
 input reg2dp_dst_ram_type;
-input [31-4:0] reg2dp_dst_surface_stride;
+input [31-3:0] reg2dp_dst_surface_stride;
 input [1:0] reg2dp_ew_alu_algo;
 input reg2dp_ew_alu_bypass;
 input reg2dp_ew_bypass;
@@ -98,13 +98,13 @@ output [31:0] dp2reg_status_nan_output_num;
 output dp2reg_status_unequal;
 output [31:0] dp2reg_wdma_stall;
 reg processing;
-wire [64 -4 +13 +1:0] cmd2dat_dma_pd;
+wire [32 -3 +13 +1:0] cmd2dat_dma_pd;
 wire cmd2dat_dma_prdy;
 wire cmd2dat_dma_pvld;
 wire [14:0] cmd2dat_spt_pd;
 wire cmd2dat_spt_prdy;
 wire cmd2dat_spt_pvld;
-wire [130 -1:0] dma_wr_req_pd;
+wire [66 -1:0] dma_wr_req_pd;
 wire dma_wr_req_rdy;
 wire dma_wr_req_type;
 wire dma_wr_req_vld;
@@ -145,14 +145,14 @@ NV_NVDLA_SDP_WDMA_cmd u_cmd (
   ,.cmd2dat_spt_pd (cmd2dat_spt_pd[14:0]) //|> w
   ,.cmd2dat_dma_pvld (cmd2dat_dma_pvld) //|> w
   ,.cmd2dat_dma_prdy (cmd2dat_dma_prdy) //|< w
-  ,.cmd2dat_dma_pd (cmd2dat_dma_pd[64 -4 +13 +1:0]) //|> w
+  ,.cmd2dat_dma_pd (cmd2dat_dma_pd[32 -3 +13 +1:0]) //|> w
   ,.reg2dp_batch_number (reg2dp_batch_number[4:0]) //|< i
   ,.reg2dp_channel (reg2dp_channel[12:0]) //|< i
   ,.reg2dp_dst_base_addr_high (reg2dp_dst_base_addr_high[31:0]) //|< i
-  ,.reg2dp_dst_base_addr_low (reg2dp_dst_base_addr_low[31-4:0]) //|< i
-  ,.reg2dp_dst_batch_stride (reg2dp_dst_batch_stride[31-4:0]) //|< i
-  ,.reg2dp_dst_line_stride (reg2dp_dst_line_stride[31-4:0]) //|< i
-  ,.reg2dp_dst_surface_stride (reg2dp_dst_surface_stride[31-4:0]) //|< i
+  ,.reg2dp_dst_base_addr_low (reg2dp_dst_base_addr_low[31-3:0]) //|< i
+  ,.reg2dp_dst_batch_stride (reg2dp_dst_batch_stride[31-3:0]) //|< i
+  ,.reg2dp_dst_line_stride (reg2dp_dst_line_stride[31-3:0]) //|< i
+  ,.reg2dp_dst_surface_stride (reg2dp_dst_surface_stride[31-3:0]) //|< i
   ,.reg2dp_ew_alu_algo (reg2dp_ew_alu_algo[1:0]) //|< i
   ,.reg2dp_ew_alu_bypass (reg2dp_ew_alu_bypass) //|< i
   ,.reg2dp_ew_bypass (reg2dp_ew_bypass) //|< i
@@ -172,15 +172,15 @@ NV_NVDLA_SDP_WDMA_dat u_dat (
   ,.op_load (op_load) //|< w
   ,.cmd2dat_dma_pvld (cmd2dat_dma_pvld) //|< w
   ,.cmd2dat_dma_prdy (cmd2dat_dma_prdy) //|> w
-  ,.cmd2dat_dma_pd (cmd2dat_dma_pd[64 -4 +13 +1:0]) //|< w
+  ,.cmd2dat_dma_pd (cmd2dat_dma_pd[32 -3 +13 +1:0]) //|< w
   ,.cmd2dat_spt_pvld (cmd2dat_spt_pvld) //|< w
   ,.cmd2dat_spt_prdy (cmd2dat_spt_prdy) //|> w
   ,.cmd2dat_spt_pd (cmd2dat_spt_pd[14:0]) //|< w
   ,.sdp_dp2wdma_valid (sdp_dp2wdma_valid) //|< i
   ,.sdp_dp2wdma_ready (sdp_dp2wdma_ready) //|> o
-  ,.sdp_dp2wdma_pd (sdp_dp2wdma_pd[16*8 -1:0]) //|< i
+  ,.sdp_dp2wdma_pd (sdp_dp2wdma_pd[8*8 -1:0]) //|< i
   ,.dma_wr_req_rdy (dma_wr_req_rdy) //|< w
-  ,.dma_wr_req_pd (dma_wr_req_pd[130 -1:0]) //|> w
+  ,.dma_wr_req_pd (dma_wr_req_pd[66 -1:0]) //|> w
   ,.dma_wr_req_vld (dma_wr_req_vld) //|> w
   ,.reg2dp_batch_number (reg2dp_batch_number[4:0]) //|< i
   ,.reg2dp_ew_alu_algo (reg2dp_ew_alu_algo[1:0]) //|< i

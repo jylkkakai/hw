@@ -54,24 +54,24 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input mcif2cdp_rd_rsp_valid; /* data valid */
 output mcif2cdp_rd_rsp_ready; /* data return handshake */
-//: my $k=128;
-//: my $jx = 16*8; ##atomic_m BW
+//: my $k=64;
+//: my $jx = 8*8; ##atomic_m BW
 //: my $M = $k/$jx; ##atomic_m number per dma transaction
 //: print "input [${k}+${M}-1:0] mcif2cdp_rd_rsp_pd;  \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-input [128+1-1:0] mcif2cdp_rd_rsp_pd;  
+input [64+1-1:0] mcif2cdp_rd_rsp_pd;  
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 output cdp2mcif_rd_cdt_lat_fifo_pop;
 output cdp_rdma2dp_valid; /* data valid */
 input cdp_rdma2dp_ready; /* data return handshake */
-output [2*8 +24:0] cdp_rdma2dp_pd;
+output [1*8 +24:0] cdp_rdma2dp_pd;
 input cq_rd_pvld; /* data valid */
 output cq_rd_prdy; /* data return handshake */
 input [6:0] cq_rd_pd;
 input [31:0] pwrbus_ram_pd;
 /////////////////////////////////////////////////////////////////////////////////////////
-//: my $Mnum = 128/16/8;
+//: my $Mnum = 64/8/8;
 //: my $Mnumbit= int( log($Mnum)/log(2) );
 //: if($Mnum > 1){
 //: print " reg      [${Mnumbit}-1:0] beat_align; \n";
@@ -84,14 +84,14 @@ input [31:0] pwrbus_ram_pd;
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 reg [3:0] beat_cnt;
 reg cdp2mcif_rd_cdt_lat_fifo_pop;
-wire [2*8 +24:0] cdp_rdma2dp_pd;
+wire [1*8 +24:0] cdp_rdma2dp_pd;
 //reg cdp_rdma2dp_valid_f;
 wire dp2reg_done_flag;
-reg [2*8 -1:0] dp_data;
+reg [1*8 -1:0] dp_data;
 wire dp_rdy;
 reg dp_vld;
 wire eg2ig_done_flag;
-reg [2 -1:0] invalid_flag;
+reg [1 -1:0] invalid_flag;
 reg is_last_c;
 reg is_last_h;
 reg is_last_w;
@@ -115,13 +115,13 @@ wire [7:0] dp_invalid;
 wire dp_last_c;
 wire dp_last_h;
 wire dp_last_w;
-wire [2*8 +24:0] dp_pd;
+wire [1*8 +24:0] dp_pd;
 wire [4:0] dp_pos_c;
 wire [3:0] dp_pos_w;
 wire [3:0] dp_width;
 wire eg2ig_done_f;
-//: my $kx = 2*8;
-//: my $k = 128/$kx;
+//: my $kx = 1*8;
+//: my $k = 64/$kx;
 //: print " wire     [${k}-1:0] fifo_rd_pvld;  \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
  wire     [8-1:0] fifo_rd_pvld;  
@@ -138,8 +138,8 @@ wire is_b_sync;
 wire is_cube_end;
 wire is_last_beat;
 wire is_last_tran;
-//: my $k=128;
-//: my $jx = 16*8; ##atomic_m BW
+//: my $k=64;
+//: my $jx = 8*8; ##atomic_m BW
 //: my $M = $k/$jx; ##atomic_m number per dma transaction
 //: ##print "wire [${k}+${M}-1:0] cv_dma_rd_rsp_pd;  \n";
 //: ##print "wire [${k}+${M}-1:0] cv_int_rd_rsp_pd;  \n";
@@ -150,13 +150,13 @@ wire is_last_tran;
 //: ##print "wire [${k}+${M}-1:0] mc_int_rd_rsp_pd;  \n";
 //: ##print "wire [${k}+${M}-1:0] mcif2cdp_rd_rsp_pd_d0;  \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-wire [128+1-1:0] dma_rd_rsp_pd;  
-wire [128+1-1:0] lat_rd_pd;  
+wire [64+1-1:0] dma_rd_rsp_pd;  
+wire [64+1-1:0] lat_rd_pd;  
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-wire [128 -1:0] lat_rd_data;
-//: my $jx = 16*8; ##atomic_m BW
-//: my $M = 128/$jx; ##atomic_m number per dma transaction
+wire [64 -1:0] lat_rd_data;
+//: my $jx = 8*8; ##atomic_m BW
+//: my $M = 64/$jx; ##atomic_m number per dma transaction
 //: print "wire     [${M}-1:0] lat_rd_mask; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 wire     [1-1:0] lat_rd_mask; 
@@ -170,10 +170,10 @@ wire lat_rd_pvld;
 //wire mcif2cdp_rd_rsp_ready_d0;
 //wire mcif2cdp_rd_rsp_valid_d0;
 wire [5:0] rest_channel;
-//: my $kx = 2*8; ##throughput BW
-//: my $jx = 16*8; ##atomic_m BW
-//: my $k = 128/$kx; ##total fifo num
-//: my $M = 128/$jx; ##atomic_m number per dma transaction
+//: my $kx = 1*8; ##throughput BW
+//: my $jx = 8*8; ##atomic_m BW
+//: my $k = 64/$kx; ##total fifo num
+//: my $M = 64/$jx; ##atomic_m number per dma transaction
 //: my $F = $k/$M; ##how many fifo contribute to one atomic_m
 //: foreach my $m (0..$k-1) {
 //: print qq(
@@ -196,45 +196,45 @@ wire [5:0] rest_channel;
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 
-wire [16-1:0] ro0_rd_pd;
+wire [8-1:0] ro0_rd_pd;
 wire ro0_rd_prdy;
 wire ro0_rd_pvld;
-wire [16-1:0] ro0_wr_pd;
+wire [8-1:0] ro0_wr_pd;
 
-wire [16-1:0] ro1_rd_pd;
+wire [8-1:0] ro1_rd_pd;
 wire ro1_rd_prdy;
 wire ro1_rd_pvld;
-wire [16-1:0] ro1_wr_pd;
+wire [8-1:0] ro1_wr_pd;
 
-wire [16-1:0] ro2_rd_pd;
+wire [8-1:0] ro2_rd_pd;
 wire ro2_rd_prdy;
 wire ro2_rd_pvld;
-wire [16-1:0] ro2_wr_pd;
+wire [8-1:0] ro2_wr_pd;
 
-wire [16-1:0] ro3_rd_pd;
+wire [8-1:0] ro3_rd_pd;
 wire ro3_rd_prdy;
 wire ro3_rd_pvld;
-wire [16-1:0] ro3_wr_pd;
+wire [8-1:0] ro3_wr_pd;
 
-wire [16-1:0] ro4_rd_pd;
+wire [8-1:0] ro4_rd_pd;
 wire ro4_rd_prdy;
 wire ro4_rd_pvld;
-wire [16-1:0] ro4_wr_pd;
+wire [8-1:0] ro4_wr_pd;
 
-wire [16-1:0] ro5_rd_pd;
+wire [8-1:0] ro5_rd_pd;
 wire ro5_rd_prdy;
 wire ro5_rd_pvld;
-wire [16-1:0] ro5_wr_pd;
+wire [8-1:0] ro5_wr_pd;
 
-wire [16-1:0] ro6_rd_pd;
+wire [8-1:0] ro6_rd_pd;
 wire ro6_rd_prdy;
 wire ro6_rd_pvld;
-wire [16-1:0] ro6_wr_pd;
+wire [8-1:0] ro6_wr_pd;
 
-wire [16-1:0] ro7_rd_pd;
+wire [8-1:0] ro7_rd_pd;
 wire ro7_rd_prdy;
 wire ro7_rd_pvld;
-wire [16-1:0] ro7_wr_pd;
+wire [8-1:0] ro7_wr_pd;
 
 wire ro0_wr_pvld;
 wire ro0_wr_rdy;
@@ -272,14 +272,14 @@ assign dma_rd_rsp_type = reg2dp_src_ram_type;
 //==============
 // Latency FIFO to buffer return DATA
 //==============
-//: my $k=128;
-//: my $jx = 16*8; ##atomic_m BW
+//: my $k=64;
+//: my $jx = 8*8; ##atomic_m BW
 //: my $M = $k/$jx; ##atomic_m number per dma transaction
 //: my $s = $k + $M;
-//: my $depth = 128;
+//: my $depth = 8;
 //: print " NV_NVDLA_CDP_RDMA_lat_fifo_${s}x${depth} u_lat_fifo (  \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
- NV_NVDLA_CDP_RDMA_lat_fifo_129x128 u_lat_fifo (  
+ NV_NVDLA_CDP_RDMA_lat_fifo_65x8 u_lat_fifo (  
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
    .nvdla_core_clk (nvdla_core_clk) //|< i
@@ -292,8 +292,8 @@ assign dma_rd_rsp_type = reg2dp_src_ram_type;
   ,.lat_rd_pd (lat_rd_pd) //|> w
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0]) //|< i
   );
-assign lat_rd_data[128 -1:0] = lat_rd_pd[128 -1:0];
-assign lat_rd_mask[1 -1:0] = lat_rd_pd[129 -1: 128];
+assign lat_rd_data[64 -1:0] = lat_rd_pd[64 -1:0];
+assign lat_rd_mask[1 -1:0] = lat_rd_pd[65 -1: 64];
 assign dma_rd_cdt_lat_fifo_pop = lat_rd_pvld & lat_rd_prdy;
 //==============
 // Re-Order FIFO to send data to CDP-core in DP order(read NVDLA PP uARCH for details)
@@ -305,9 +305,9 @@ assign lat_rd_prdy = lat_rd_pvld
 //: }
 //: print " ; \n";
 //:
-//: my $tp = 2*8; ## throughput
-//: my $atmm = 16*8; ## atomic_m
-//: my $M = 128/$atmm; ## atomic_m number per dma transaction
+//: my $tp = 1*8; ## throughput
+//: my $atmm = 8*8; ## atomic_m
+//: my $M = 64/$atmm; ## atomic_m number per dma transaction
 //: my $F = $atmm/$tp; ## how many fifo contribute to one atomic_m
 //:
 //:
@@ -374,10 +374,10 @@ assign lat_rd_prdy = lat_rd_pvld
 //: print " assign ro${r}_rd_prdy = dp_rdy & (fifo_sel==$r) & (~tran_cnt_idle);  \n";
 //: }
 //: }
-//: my $kx = 2*8; ##throughput BW
-//: my $jx = 16*8; ##atomic_m BW
-//: my $k = 128/$kx; ##total fifo num
-//: my $M = 128/$jx; ##atomic_m number per dma trans
+//: my $kx = 1*8; ##throughput BW
+//: my $jx = 8*8; ##atomic_m BW
+//: my $k = 64/$kx; ##total fifo num
+//: my $M = 64/$jx; ##atomic_m number per dma trans
 //: my $F = $k/$M; ##how many fifo contribute to one atomic_m
 //: print "always @(*)      \n";
 //: print "begin      \n";
@@ -396,8 +396,8 @@ assign lat_rd_prdy = lat_rd_pvld
     assign ro0_wr_pvld = lat_rd_pvld & (lat_rd_mask[0] & ro0_wr_rdy)  
  ;  
    assign ro0_wr_rdy = &ro0_wr_rdys;  
- assign ro0_wr_pd  = lat_rd_data[16*0+16-1:16*0];  
- NV_NVDLA_CDP_RDMA_ro_fifo_32x16 u_ro0_fifo(     
+ assign ro0_wr_pd  = lat_rd_data[8*0+8-1:8*0];  
+ NV_NVDLA_CDP_RDMA_ro_fifo_32x8 u_ro0_fifo(     
   .nvdla_core_clk      (nvdla_core_clk)       
  ,.nvdla_core_rstn     (nvdla_core_rstn)      
  ,.ro_wr_prdy          (ro0_wr_rdys[0])   
@@ -408,8 +408,8 @@ assign lat_rd_prdy = lat_rd_pvld
  ,.ro_rd_pd            (ro0_rd_pd)         
  ,.pwrbus_ram_pd       (pwrbus_ram_pd[31:0])  
  ); 
- assign ro1_wr_pd  = lat_rd_data[16*1+16-1:16*1];  
- NV_NVDLA_CDP_RDMA_ro_fifo_32x16 u_ro1_fifo(     
+ assign ro1_wr_pd  = lat_rd_data[8*1+8-1:8*1];  
+ NV_NVDLA_CDP_RDMA_ro_fifo_32x8 u_ro1_fifo(     
   .nvdla_core_clk      (nvdla_core_clk)       
  ,.nvdla_core_rstn     (nvdla_core_rstn)      
  ,.ro_wr_prdy          (ro0_wr_rdys[1])   
@@ -420,8 +420,8 @@ assign lat_rd_prdy = lat_rd_pvld
  ,.ro_rd_pd            (ro1_rd_pd)         
  ,.pwrbus_ram_pd       (pwrbus_ram_pd[31:0])  
  ); 
- assign ro2_wr_pd  = lat_rd_data[16*2+16-1:16*2];  
- NV_NVDLA_CDP_RDMA_ro_fifo_32x16 u_ro2_fifo(     
+ assign ro2_wr_pd  = lat_rd_data[8*2+8-1:8*2];  
+ NV_NVDLA_CDP_RDMA_ro_fifo_32x8 u_ro2_fifo(     
   .nvdla_core_clk      (nvdla_core_clk)       
  ,.nvdla_core_rstn     (nvdla_core_rstn)      
  ,.ro_wr_prdy          (ro0_wr_rdys[2])   
@@ -432,8 +432,8 @@ assign lat_rd_prdy = lat_rd_pvld
  ,.ro_rd_pd            (ro2_rd_pd)         
  ,.pwrbus_ram_pd       (pwrbus_ram_pd[31:0])  
  ); 
- assign ro3_wr_pd  = lat_rd_data[16*3+16-1:16*3];  
- NV_NVDLA_CDP_RDMA_ro_fifo_32x16 u_ro3_fifo(     
+ assign ro3_wr_pd  = lat_rd_data[8*3+8-1:8*3];  
+ NV_NVDLA_CDP_RDMA_ro_fifo_32x8 u_ro3_fifo(     
   .nvdla_core_clk      (nvdla_core_clk)       
  ,.nvdla_core_rstn     (nvdla_core_rstn)      
  ,.ro_wr_prdy          (ro0_wr_rdys[3])   
@@ -444,8 +444,8 @@ assign lat_rd_prdy = lat_rd_pvld
  ,.ro_rd_pd            (ro3_rd_pd)         
  ,.pwrbus_ram_pd       (pwrbus_ram_pd[31:0])  
  ); 
- assign ro4_wr_pd  = lat_rd_data[16*4+16-1:16*4];  
- NV_NVDLA_CDP_RDMA_ro_fifo_32x16 u_ro4_fifo(     
+ assign ro4_wr_pd  = lat_rd_data[8*4+8-1:8*4];  
+ NV_NVDLA_CDP_RDMA_ro_fifo_32x8 u_ro4_fifo(     
   .nvdla_core_clk      (nvdla_core_clk)       
  ,.nvdla_core_rstn     (nvdla_core_rstn)      
  ,.ro_wr_prdy          (ro0_wr_rdys[4])   
@@ -456,8 +456,8 @@ assign lat_rd_prdy = lat_rd_pvld
  ,.ro_rd_pd            (ro4_rd_pd)         
  ,.pwrbus_ram_pd       (pwrbus_ram_pd[31:0])  
  ); 
- assign ro5_wr_pd  = lat_rd_data[16*5+16-1:16*5];  
- NV_NVDLA_CDP_RDMA_ro_fifo_32x16 u_ro5_fifo(     
+ assign ro5_wr_pd  = lat_rd_data[8*5+8-1:8*5];  
+ NV_NVDLA_CDP_RDMA_ro_fifo_32x8 u_ro5_fifo(     
   .nvdla_core_clk      (nvdla_core_clk)       
  ,.nvdla_core_rstn     (nvdla_core_rstn)      
  ,.ro_wr_prdy          (ro0_wr_rdys[5])   
@@ -468,8 +468,8 @@ assign lat_rd_prdy = lat_rd_pvld
  ,.ro_rd_pd            (ro5_rd_pd)         
  ,.pwrbus_ram_pd       (pwrbus_ram_pd[31:0])  
  ); 
- assign ro6_wr_pd  = lat_rd_data[16*6+16-1:16*6];  
- NV_NVDLA_CDP_RDMA_ro_fifo_32x16 u_ro6_fifo(     
+ assign ro6_wr_pd  = lat_rd_data[8*6+8-1:8*6];  
+ NV_NVDLA_CDP_RDMA_ro_fifo_32x8 u_ro6_fifo(     
   .nvdla_core_clk      (nvdla_core_clk)       
  ,.nvdla_core_rstn     (nvdla_core_rstn)      
  ,.ro_wr_prdy          (ro0_wr_rdys[6])   
@@ -480,8 +480,8 @@ assign lat_rd_prdy = lat_rd_pvld
  ,.ro_rd_pd            (ro6_rd_pd)         
  ,.pwrbus_ram_pd       (pwrbus_ram_pd[31:0])  
  ); 
- assign ro7_wr_pd  = lat_rd_data[16*7+16-1:16*7];  
- NV_NVDLA_CDP_RDMA_ro_fifo_32x16 u_ro7_fifo(     
+ assign ro7_wr_pd  = lat_rd_data[8*7+8-1:8*7];  
+ NV_NVDLA_CDP_RDMA_ro_fifo_32x8 u_ro7_fifo(     
   .nvdla_core_clk      (nvdla_core_clk)       
  ,.nvdla_core_rstn     (nvdla_core_rstn)      
  ,.ro_wr_prdy          (ro0_wr_rdys[7])   
@@ -537,30 +537,30 @@ always @(*)
 begin      
 case(fifo_sel)     
    6'd0: begin      
-               dp_data  = ro0_rd_pd[16-1:0];      
+               dp_data  = ro0_rd_pd[8-1:0];      
    end      
    6'd1: begin      
-               dp_data  = ro1_rd_pd[16-1:0];      
+               dp_data  = ro1_rd_pd[8-1:0];      
    end      
    6'd2: begin      
-               dp_data  = ro2_rd_pd[16-1:0];      
+               dp_data  = ro2_rd_pd[8-1:0];      
    end      
    6'd3: begin      
-               dp_data  = ro3_rd_pd[16-1:0];      
+               dp_data  = ro3_rd_pd[8-1:0];      
    end      
    6'd4: begin      
-               dp_data  = ro4_rd_pd[16-1:0];      
+               dp_data  = ro4_rd_pd[8-1:0];      
    end      
    6'd5: begin      
-               dp_data  = ro5_rd_pd[16-1:0];      
+               dp_data  = ro5_rd_pd[8-1:0];      
    end      
    6'd6: begin      
-               dp_data  = ro6_rd_pd[16-1:0];      
+               dp_data  = ro6_rd_pd[8-1:0];      
    end      
    6'd7: begin      
-               dp_data  = ro7_rd_pd[16-1:0];      
+               dp_data  = ro7_rd_pd[8-1:0];      
    end      
-default: dp_data = {16{1'b0}};      
+default: dp_data = {8{1'b0}};      
 endcase      
 end      
 
@@ -568,10 +568,10 @@ end
 //////////////////////
 //replacd by 0 value in invalid position
 //////////////////////
-//: my $tp = 2;
-//: my $atmm = 16;
-//: my $tt_fifo_num = 128/8/$tp;
-//: my $M = 128/8/$atmm;
+//: my $tp = 1;
+//: my $atmm = 8;
+//: my $tt_fifo_num = 64/8/$tp;
+//: my $M = 64/8/$atmm;
 //: my $F = $atmm/$tp;
 //:
 //: my $tpbw = int(log($tp)/log(2));
@@ -619,115 +619,99 @@ end
 //: print "endcase  \n";
 //: print "end  \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
- assign ele_in_channel = {{(5-4){1'b0}},reg2dp_channel[4-1:0]};   
- assign rest_channel=(6'd8-ele_in_channel[4-1:1]);  
+ assign ele_in_channel = {{(5-3){1'b0}},reg2dp_channel[3-1:0]};   
+ assign rest_channel=(6'd8-ele_in_channel[3-1:0]);  
  always @(*)  begin 
  case(fifo_sel)  
    6'd0: begin  
        if(is_last_c) begin  
            if(tran_cnt < rest_channel)  
-               invalid_flag  = {2{1'b1}};  
+               invalid_flag  = {1{1'b1}};  
            else if(tran_cnt > rest_channel)  
-               invalid_flag  = {2{1'b0}};  
+               invalid_flag  = {1{1'b0}};  
            else  
-               invalid_flag = {2{ele_in_channel[1-1:0]==1'd0}} & {{(2-1){1'b1}},1'b0}  
-             | {2{ele_in_channel[1-1:0]==1'd1}} & {2'b0}  
-     ;  
+               invalid_flag  = {1{1'b0}};  
        end else  
-           invalid_flag  = {2{1'b0}};  
+           invalid_flag  = {1{1'b0}};  
    end  
    6'd1: begin  
        if(is_last_c) begin  
            if(tran_cnt < rest_channel)  
-               invalid_flag  = {2{1'b1}};  
+               invalid_flag  = {1{1'b1}};  
            else if(tran_cnt > rest_channel)  
-               invalid_flag  = {2{1'b0}};  
+               invalid_flag  = {1{1'b0}};  
            else  
-               invalid_flag = {2{ele_in_channel[1-1:0]==1'd0}} & {{(2-1){1'b1}},1'b0}  
-             | {2{ele_in_channel[1-1:0]==1'd1}} & {2'b0}  
-     ;  
+               invalid_flag  = {1{1'b0}};  
        end else  
-           invalid_flag  = {2{1'b0}};  
+           invalid_flag  = {1{1'b0}};  
    end  
    6'd2: begin  
        if(is_last_c) begin  
            if(tran_cnt < rest_channel)  
-               invalid_flag  = {2{1'b1}};  
+               invalid_flag  = {1{1'b1}};  
            else if(tran_cnt > rest_channel)  
-               invalid_flag  = {2{1'b0}};  
+               invalid_flag  = {1{1'b0}};  
            else  
-               invalid_flag = {2{ele_in_channel[1-1:0]==1'd0}} & {{(2-1){1'b1}},1'b0}  
-             | {2{ele_in_channel[1-1:0]==1'd1}} & {2'b0}  
-     ;  
+               invalid_flag  = {1{1'b0}};  
        end else  
-           invalid_flag  = {2{1'b0}};  
+           invalid_flag  = {1{1'b0}};  
    end  
    6'd3: begin  
        if(is_last_c) begin  
            if(tran_cnt < rest_channel)  
-               invalid_flag  = {2{1'b1}};  
+               invalid_flag  = {1{1'b1}};  
            else if(tran_cnt > rest_channel)  
-               invalid_flag  = {2{1'b0}};  
+               invalid_flag  = {1{1'b0}};  
            else  
-               invalid_flag = {2{ele_in_channel[1-1:0]==1'd0}} & {{(2-1){1'b1}},1'b0}  
-             | {2{ele_in_channel[1-1:0]==1'd1}} & {2'b0}  
-     ;  
+               invalid_flag  = {1{1'b0}};  
        end else  
-           invalid_flag  = {2{1'b0}};  
+           invalid_flag  = {1{1'b0}};  
    end  
    6'd4: begin  
        if(is_last_c) begin  
            if(tran_cnt < rest_channel)  
-               invalid_flag  = {2{1'b1}};  
+               invalid_flag  = {1{1'b1}};  
            else if(tran_cnt > rest_channel)  
-               invalid_flag  = {2{1'b0}};  
+               invalid_flag  = {1{1'b0}};  
            else  
-               invalid_flag = {2{ele_in_channel[1-1:0]==1'd0}} & {{(2-1){1'b1}},1'b0}  
-             | {2{ele_in_channel[1-1:0]==1'd1}} & {2'b0}  
-     ;  
+               invalid_flag  = {1{1'b0}};  
        end else  
-           invalid_flag  = {2{1'b0}};  
+           invalid_flag  = {1{1'b0}};  
    end  
    6'd5: begin  
        if(is_last_c) begin  
            if(tran_cnt < rest_channel)  
-               invalid_flag  = {2{1'b1}};  
+               invalid_flag  = {1{1'b1}};  
            else if(tran_cnt > rest_channel)  
-               invalid_flag  = {2{1'b0}};  
+               invalid_flag  = {1{1'b0}};  
            else  
-               invalid_flag = {2{ele_in_channel[1-1:0]==1'd0}} & {{(2-1){1'b1}},1'b0}  
-             | {2{ele_in_channel[1-1:0]==1'd1}} & {2'b0}  
-     ;  
+               invalid_flag  = {1{1'b0}};  
        end else  
-           invalid_flag  = {2{1'b0}};  
+           invalid_flag  = {1{1'b0}};  
    end  
    6'd6: begin  
        if(is_last_c) begin  
            if(tran_cnt < rest_channel)  
-               invalid_flag  = {2{1'b1}};  
+               invalid_flag  = {1{1'b1}};  
            else if(tran_cnt > rest_channel)  
-               invalid_flag  = {2{1'b0}};  
+               invalid_flag  = {1{1'b0}};  
            else  
-               invalid_flag = {2{ele_in_channel[1-1:0]==1'd0}} & {{(2-1){1'b1}},1'b0}  
-             | {2{ele_in_channel[1-1:0]==1'd1}} & {2'b0}  
-     ;  
+               invalid_flag  = {1{1'b0}};  
        end else  
-           invalid_flag  = {2{1'b0}};  
+           invalid_flag  = {1{1'b0}};  
    end  
    6'd7: begin  
        if(is_last_c) begin  
            if(tran_cnt < rest_channel)  
-               invalid_flag  = {2{1'b1}};  
+               invalid_flag  = {1{1'b1}};  
            else if(tran_cnt > rest_channel)  
-               invalid_flag  = {2{1'b0}};  
+               invalid_flag  = {1{1'b0}};  
            else  
-               invalid_flag = {2{ele_in_channel[1-1:0]==1'd0}} & {{(2-1){1'b1}},1'b0}  
-             | {2{ele_in_channel[1-1:0]==1'd1}} & {2'b0}  
-     ;  
+               invalid_flag  = {1{1'b0}};  
        end else  
-           invalid_flag  = {2{1'b0}};  
+           invalid_flag  = {1{1'b0}};  
    end  
-default: invalid_flag = {2{1'b0}};  
+default: invalid_flag = {1{1'b0}};  
 endcase  
 end  
 
@@ -747,10 +731,10 @@ assign tran_num[3:0] = ig2eg_width + 1;
 assign tran_cnt_idle = (tran_cnt==0);
 assign is_last_tran = (tran_cnt==1);
 assign is_last_beat = (beat_cnt==1);
-//: my $kx = 2*8; ##throughput BW
-//: my $jx = 16*8; ##atomic_m BW
-//: my $k = 128/$kx; ##total fifo num
-//: my $M = 128/$jx; ##atomic_m number per dma trans
+//: my $kx = 1*8; ##throughput BW
+//: my $jx = 8*8; ##atomic_m BW
+//: my $k = 64/$kx; ##total fifo num
+//: my $M = 64/$jx; ##atomic_m number per dma trans
 //: my $F = $k/$M; ##how many fifo contribute to one atomic_m
 //: foreach my $r (0..$k-1) {
 //: print " assign fifo_rd_pvld[$r] = (fifo_sel==${r}) & ro${r}_rd_pvld;  \n";
@@ -782,7 +766,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
             beat_cnt <= 0;
     end else if(tran_rdy) begin
         if (tran_vld) begin
-//: my $F = 16/2;
+//: my $F = 8/1;
 //: print " tran_cnt    <= 6'd${F}; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
  tran_cnt    <= 6'd8; 
@@ -898,8 +882,8 @@ assign is_b_sync = is_last_beat;
 assign dp_pos_w[3:0] = width_cnt - beat_cnt; //spyglass disable W484
 assign dp_width[3:0] = width_cnt; //spyglass disable W484
 wire mon_dp_pos_c;
-//: my $tp = 2*8;
-//: my $atmm = 16*8;
+//: my $tp = 1*8;
+//: my $atmm = 8*8;
 //: my $F = $atmm/$tp;
 //: print " assign {mon_dp_pos_c,dp_pos_c[4:0]} = 6'd${F} - tran_cnt; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
@@ -917,46 +901,46 @@ assign eg2ig_done_f = is_cube_end & tran_rdy;
 // OUTPUT PACK and PIPE: To Data Processor
 //==============
 // PD Pack
-//: my $tp = 2;
+//: my $tp = 1;
 //: if($tp ==8) {
 //: print " assign dp_invalid = {invalid_flag}; \n";
 //: } else {
 //: print " assign dp_invalid = {{(8-${tp}){1'b0}},invalid_flag}; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
- assign dp_invalid = {{(8-2){1'b0}},invalid_flag}; 
+ assign dp_invalid = {{(8-1){1'b0}},invalid_flag}; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-//assign dp_invalid = {{(8-2){1'b0}},invalid_flag};
+//assign dp_invalid = {{(8-1){1'b0}},invalid_flag};
 // PKT_PACK_WIRE( cdp_rdma2dp , dp_ , dp_pd )
-assign dp_pd[2*8 -1:0] = dp_data[2*8 -1:0];
-assign dp_pd[2*8 +3:2*8] = dp_pos_w[3:0];
-assign dp_pd[2*8 +7:2*8 +4] = dp_width[3:0];
-assign dp_pd[2*8 +12:2*8 +8] = dp_pos_c[4:0];
-assign dp_pd[2*8 +13] = dp_b_sync ;
-assign dp_pd[2*8 +14] = dp_last_w ;
-assign dp_pd[2*8 +15] = dp_last_h ;
-assign dp_pd[2*8 +16] = dp_last_c ;
-assign dp_pd[2*8 +24:2*8 +17] = dp_invalid[7:0];
-wire [2*8 +27-1:0] cdp_rdma2dp_pd_i;
+assign dp_pd[1*8 -1:0] = dp_data[1*8 -1:0];
+assign dp_pd[1*8 +3:1*8] = dp_pos_w[3:0];
+assign dp_pd[1*8 +7:1*8 +4] = dp_width[3:0];
+assign dp_pd[1*8 +12:1*8 +8] = dp_pos_c[4:0];
+assign dp_pd[1*8 +13] = dp_b_sync ;
+assign dp_pd[1*8 +14] = dp_last_w ;
+assign dp_pd[1*8 +15] = dp_last_h ;
+assign dp_pd[1*8 +16] = dp_last_c ;
+assign dp_pd[1*8 +24:1*8 +17] = dp_invalid[7:0];
+wire [1*8 +27-1:0] cdp_rdma2dp_pd_i;
 assign cdp_rdma2dp_pd_i = {dp_pd,dp2reg_done_f,eg2ig_done_f};
-//: my $k=2*8 +27;
+//: my $k=1*8 +27;
 //: &eperl::pipe(" -wid $k -is -do cdp_rdma2dp_pd_o -vo cdp_rdma2dp_valid_f -ri cdp_rdma2dp_ready -di cdp_rdma2dp_pd_i  -vi dp_vld -ro dp_rdy_f ");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 // Reg
 reg dp_rdy_f;
 reg skid_flop_dp_rdy_f;
 reg skid_flop_dp_vld;
-reg [43-1:0] skid_flop_cdp_rdma2dp_pd_i;
+reg [35-1:0] skid_flop_cdp_rdma2dp_pd_i;
 reg pipe_skid_dp_vld;
-reg [43-1:0] pipe_skid_cdp_rdma2dp_pd_i;
+reg [35-1:0] pipe_skid_cdp_rdma2dp_pd_i;
 // Wire
 wire skid_dp_vld;
-wire [43-1:0] skid_cdp_rdma2dp_pd_i;
+wire [35-1:0] skid_cdp_rdma2dp_pd_i;
 wire skid_dp_rdy_f;
 wire pipe_skid_dp_rdy_f;
 wire cdp_rdma2dp_valid_f;
-wire [43-1:0] cdp_rdma2dp_pd_o;
+wire [35-1:0] cdp_rdma2dp_pd_o;
 // Code
 // SKID READY
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -984,10 +968,10 @@ assign skid_dp_vld = (skid_flop_dp_rdy_f) ? dp_vld : skid_flop_dp_vld;
 // SKID DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_flop_dp_rdy_f & dp_vld) begin
-        skid_flop_cdp_rdma2dp_pd_i[43-1:0] <= cdp_rdma2dp_pd_i[43-1:0];
+        skid_flop_cdp_rdma2dp_pd_i[35-1:0] <= cdp_rdma2dp_pd_i[35-1:0];
     end
 end
-assign skid_cdp_rdma2dp_pd_i[43-1:0] = (skid_flop_dp_rdy_f) ? cdp_rdma2dp_pd_i[43-1:0] : skid_flop_cdp_rdma2dp_pd_i[43-1:0];
+assign skid_cdp_rdma2dp_pd_i[35-1:0] = (skid_flop_dp_rdy_f) ? cdp_rdma2dp_pd_i[35-1:0] : skid_flop_cdp_rdma2dp_pd_i[35-1:0];
 
 
 // PIPE READY
@@ -1007,7 +991,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_dp_rdy_f && skid_dp_vld) begin
-        pipe_skid_cdp_rdma2dp_pd_i[43-1:0] <= skid_cdp_rdma2dp_pd_i[43-1:0];
+        pipe_skid_cdp_rdma2dp_pd_i[35-1:0] <= skid_cdp_rdma2dp_pd_i[35-1:0];
     end
 end
 

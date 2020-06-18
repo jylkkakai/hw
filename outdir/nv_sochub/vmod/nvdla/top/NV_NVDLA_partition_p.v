@@ -30,7 +30,6 @@
 // this distribution for more information.
 // ================================================================
 // File Name: NV_NVDLA_CMAC.h
-`define DESIGNWARE_NOEXIST 1
 `include "NV_HWACC_NVDLA_tick_defines.vh"
 module NV_NVDLA_partition_p (
    cacc2sdp_pd //|< i
@@ -52,13 +51,6 @@ module NV_NVDLA_partition_p (
   ,mcif2sdp_b_rd_rsp_pd //|< i
   ,mcif2sdp_b_rd_rsp_valid //|< i
   ,mcif2sdp_b_rd_rsp_ready //|> o
-  ,sdp_e2mcif_rd_cdt_lat_fifo_pop //|> o
-  ,sdp_e2mcif_rd_req_pd //|> o
-  ,sdp_e2mcif_rd_req_valid //|> o
-  ,sdp_e2mcif_rd_req_ready //|< i
-  ,mcif2sdp_e_rd_rsp_pd //|< i
-  ,mcif2sdp_e_rd_rsp_valid //|< i
-  ,mcif2sdp_e_rd_rsp_ready //|> o
   ,sdp_n2mcif_rd_cdt_lat_fifo_pop //|> o
   ,sdp_n2mcif_rd_req_pd //|> o
   ,sdp_n2mcif_rd_req_valid //|> o
@@ -100,7 +92,7 @@ input global_clk_ovr_on;
 input tmc2slcg_disable_clock_gating;
 input cacc2sdp_valid; /* data valid */
 output cacc2sdp_ready; /* data return handshake */
-input [4*32+2-1:0] cacc2sdp_pd;
+input [1*32+2-1:0] cacc2sdp_pd;
 input csb2sdp_rdma_req_pvld; /* data valid */
 output csb2sdp_rdma_req_prdy; /* data return handshake */
 input [62:0] csb2sdp_rdma_req_pd;
@@ -114,38 +106,31 @@ output [1:0] sdp2glb_done_intr_pd;
 output sdp_b2mcif_rd_cdt_lat_fifo_pop;
 output sdp_b2mcif_rd_req_valid; /* data valid */
 input sdp_b2mcif_rd_req_ready; /* data return handshake */
-output [64 +14:0] sdp_b2mcif_rd_req_pd;
+output [32 +14:0] sdp_b2mcif_rd_req_pd;
 input mcif2sdp_b_rd_rsp_valid; /* data valid */
 output mcif2sdp_b_rd_rsp_ready; /* data return handshake */
-input [128 +(128/8/16)-1:0] mcif2sdp_b_rd_rsp_pd;
-output sdp_e2mcif_rd_cdt_lat_fifo_pop;
-output sdp_e2mcif_rd_req_valid; /* data valid */
-input sdp_e2mcif_rd_req_ready; /* data return handshake */
-output [64 +14:0] sdp_e2mcif_rd_req_pd;
-input mcif2sdp_e_rd_rsp_valid; /* data valid */
-output mcif2sdp_e_rd_rsp_ready; /* data return handshake */
-input [128 +(128/8/16)-1:0] mcif2sdp_e_rd_rsp_pd;
+input [64 +(64/8/8)-1:0] mcif2sdp_b_rd_rsp_pd;
 output sdp_n2mcif_rd_cdt_lat_fifo_pop;
 output sdp_n2mcif_rd_req_valid; /* data valid */
 input sdp_n2mcif_rd_req_ready; /* data return handshake */
-output [64 +14:0] sdp_n2mcif_rd_req_pd;
+output [32 +14:0] sdp_n2mcif_rd_req_pd;
 input mcif2sdp_n_rd_rsp_valid; /* data valid */
 output mcif2sdp_n_rd_rsp_ready; /* data return handshake */
-input [128 +(128/8/16)-1:0] mcif2sdp_n_rd_rsp_pd;
+input [64 +(64/8/8)-1:0] mcif2sdp_n_rd_rsp_pd;
 output sdp2mcif_rd_cdt_lat_fifo_pop;
 input mcif2sdp_rd_rsp_valid;
 output mcif2sdp_rd_rsp_ready;
-input [128 +(128/8/16)-1:0] mcif2sdp_rd_rsp_pd;
+input [64 +(64/8/8)-1:0] mcif2sdp_rd_rsp_pd;
 output sdp2mcif_rd_req_valid;
 input sdp2mcif_rd_req_ready;
-output [64 +14:0] sdp2mcif_rd_req_pd;
+output [32 +14:0] sdp2mcif_rd_req_pd;
 output sdp2mcif_wr_req_valid;
 input sdp2mcif_wr_req_ready;
-output [128 +(128/8/16):0] sdp2mcif_wr_req_pd;
+output [64 +(64/8/8):0] sdp2mcif_wr_req_pd;
 input mcif2sdp_wr_rsp_complete;
 output sdp2pdp_valid;
 input sdp2pdp_ready;
-output [4*8 -1:0] sdp2pdp_pd;
+output [1*8 -1:0] sdp2pdp_pd;
 output sdp_rdma2csb_resp_valid;
 output [33:0] sdp_rdma2csb_resp_pd;
 //input la_r_clk;
@@ -202,13 +187,6 @@ NV_NVDLA_sdp u_NV_NVDLA_sdp (
   ,.mcif2sdp_b_rd_rsp_valid (mcif2sdp_b_rd_rsp_valid)
   ,.mcif2sdp_b_rd_rsp_ready (mcif2sdp_b_rd_rsp_ready)
   ,.mcif2sdp_b_rd_rsp_pd (mcif2sdp_b_rd_rsp_pd)
-  ,.sdp_e2mcif_rd_cdt_lat_fifo_pop (sdp_e2mcif_rd_cdt_lat_fifo_pop)
-  ,.sdp_e2mcif_rd_req_valid (sdp_e2mcif_rd_req_valid)
-  ,.sdp_e2mcif_rd_req_ready (sdp_e2mcif_rd_req_ready)
-  ,.sdp_e2mcif_rd_req_pd (sdp_e2mcif_rd_req_pd)
-  ,.mcif2sdp_e_rd_rsp_valid (mcif2sdp_e_rd_rsp_valid)
-  ,.mcif2sdp_e_rd_rsp_ready (mcif2sdp_e_rd_rsp_ready)
-  ,.mcif2sdp_e_rd_rsp_pd (mcif2sdp_e_rd_rsp_pd)
   ,.sdp_n2mcif_rd_cdt_lat_fifo_pop (sdp_n2mcif_rd_cdt_lat_fifo_pop)
   ,.sdp_n2mcif_rd_req_valid (sdp_n2mcif_rd_req_valid)
   ,.sdp_n2mcif_rd_req_ready (sdp_n2mcif_rd_req_ready)

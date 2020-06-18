@@ -78,7 +78,7 @@ input nvdla_core_rstn;
 input datin_src_cfg;
 input dp2reg_done;
 input [2:0] padding_h_cfg;
-input [2*8 +13:0] pdp_rdma2dp_pd;
+input [1*8 +13:0] pdp_rdma2dp_pd;
 input pdp_rdma2dp_valid;
 input pooling1d_prdy;
 input [12:0] pooling_channel_cfg;
@@ -112,14 +112,14 @@ input [18:0] reg2dp_pad_value_4x_cfg;
 input [18:0] reg2dp_pad_value_5x_cfg;
 input [18:0] reg2dp_pad_value_6x_cfg;
 input [18:0] reg2dp_pad_value_7x_cfg;
-input [2*8 +13:0] sdp2pdp_pd;
+input [1*8 +13:0] sdp2pdp_pd;
 input sdp2pdp_valid;
 output pdp_op_start;
 output pdp_rdma2dp_ready;
-//: my $m = 2*(8 +6);
+//: my $m = 1*(8 +6);
 //: print " output [$m-1:0] pooling1d_pd; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
- output [28-1:0] pooling1d_pd; 
+ output [14-1:0] pooling1d_pd; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 output pooling1d_pvld;
@@ -134,8 +134,8 @@ wire [2:0] bubble_num_dec;
 wire [12:0] cube_out_channel;
 wire [3:0] cube_width_in;
 wire cur_datin_disable_sync;
-wire [2*(8 +3)-1:0] datain_ext;
-wire [2*(8 +3)+10:0] datin_buf;
+wire [1*(8 +3)-1:0] datain_ext;
+wire [1*(8 +3)+10:0] datin_buf;
 wire [2:0] first_out_num_dec2;
 wire first_splitw;
 wire first_splitw_en;
@@ -195,10 +195,10 @@ wire [2:0] padding_stride4_num;
 wire [10:0] partial_w_last;
 wire pdp_cube_end;
 wire pdp_cube_sync;
-wire [2*(8 +3) + 14:0] pdp_datin_pd;
-wire [2*(8 +3) + 14:0] pdp_datin_pd_f0;
-wire [2*8 +13:0] pdp_datin_pd_f_0;
-wire [2*8 +13:0] pdp_datin_pd_f_mux0;
+wire [1*(8 +3) + 14:0] pdp_datin_pd;
+wire [1*(8 +3) + 14:0] pdp_datin_pd_f0;
+wire [1*8 +13:0] pdp_datin_pd_f_0;
+wire [1*8 +13:0] pdp_datin_pd_f_mux0;
 wire pdp_datin_prdy;
 wire pdp_datin_prdy_0;
 wire pdp_datin_prdy_1;
@@ -207,14 +207,13 @@ wire pdp_datin_prdy_mux0;
 wire pdp_datin_pvld;
 wire pdp_datin_pvld_f;
 wire pdp_datin_pvld_mux0;
-//: my $k = 2;
+//: my $k = 1;
 //: my $b = 8;
 //: foreach my $m (0..$k-1) {
 //: print "wire    [$b+2:0] pdp_din_$m; \n";
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 wire    [8+2:0] pdp_din_0; 
-wire    [8+2:0] pdp_din_1; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire pdp_din_lc;
@@ -260,13 +259,13 @@ wire stride_end;
 wire strip_recieve_done;
 wire strip_width_end;
 wire [2:0] strip_xcnt_offset;
-//: my $m = 16;
+//: my $m = 8;
 //: my $k = int(log($m)/log(2));
 //: print "wire     [12-${k}:0] surface_num; \n";
 //: print "reg     [12-${k}:0] surface_cnt_rd; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-wire     [12-4:0] surface_num; 
-reg     [12-4:0] surface_cnt_rd; 
+wire     [12-3:0] surface_num; 
+reg     [12-3:0] surface_cnt_rd; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 wire sync_switch_in_vld_d0;
@@ -282,7 +281,7 @@ wire sync_switch_out_vld;
 //wire [21:0] unit1d_actv_data_16bit_2_ff;
 //wire [21:0] unit1d_actv_data_16bit_3;
 //wire [21:0] unit1d_actv_data_16bit_3_ff;
-//: my $k = 2;
+//: my $k = 1;
 //: my $b = 8;
 //: foreach my $m (0..$k-1) {
 //: print "wire    [$b+2:0] unit1d_actv_data_8bit_${m}; \n";
@@ -295,24 +294,20 @@ wire    [8+2:0] unit1d_actv_data_8bit_0;
 wire    [8+2:0] unit1d_actv_data_8bit_0_ff; 
 wire    [1:0]    mon_unit1d_actv_data_8bit_0; 
 wire    [1:0]    mon_unit1d_actv_data_8bit_0_ff; 
-wire    [8+2:0] unit1d_actv_data_8bit_1; 
-wire    [8+2:0] unit1d_actv_data_8bit_1_ff; 
-wire    [1:0]    mon_unit1d_actv_data_8bit_1; 
-wire    [1:0]    mon_unit1d_actv_data_8bit_1_ff; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
-wire [2*(8 +3)+3:0] unit1d_actv_out;
+wire [1*(8 +3)+3:0] unit1d_actv_out;
 wire unit1d_actv_out_prdy;
 wire unit1d_actv_out_pvld;
 wire [7:0] unit1d_clr;
-wire [2*(8 +3)+3:0] unit1d_out_0;
-wire [2*(8 +3)+3:0] unit1d_out_1;
-wire [2*(8 +3)+3:0] unit1d_out_2;
-wire [2*(8 +3)+3:0] unit1d_out_3;
-wire [2*(8 +3)+3:0] unit1d_out_4;
-wire [2*(8 +3)+3:0] unit1d_out_5;
-wire [2*(8 +3)+3:0] unit1d_out_6;
-wire [2*(8 +3)+3:0] unit1d_out_7;
+wire [1*(8 +3)+3:0] unit1d_out_0;
+wire [1*(8 +3)+3:0] unit1d_out_1;
+wire [1*(8 +3)+3:0] unit1d_out_2;
+wire [1*(8 +3)+3:0] unit1d_out_3;
+wire [1*(8 +3)+3:0] unit1d_out_4;
+wire [1*(8 +3)+3:0] unit1d_out_5;
+wire [1*(8 +3)+3:0] unit1d_out_6;
+wire [1*(8 +3)+3:0] unit1d_out_7;
 wire [7:0] unit1d_out_prdy;
 wire unit1d_out_prdy_use;
 wire [7:0] unit1d_out_pvld;
@@ -343,7 +338,7 @@ reg [2:0] padding_left;
 reg [2:0] padding_stride_num;
 reg pdp_op_pending;
 reg pdpw_active_en;
-reg [2*(8 +6)-1:0] pooling1d_data_pad;
+reg [1*(8 +6)-1:0] pooling1d_data_pad;
 reg pooling1d_data_pad_vld;
 reg pooling_din_1st_0;
 reg pooling_din_1st_1;
@@ -363,7 +358,7 @@ reg [2:0] strip_xcnt_psize;
 reg [3:0] strip_xcnt_stride;
 reg [3:0] strip_xcnt_stride_f;
 reg subcube_end_flag;
-reg [2*(8 +3)+3:0] unit1d_actv_out_f;
+reg [1*(8 +3)+3:0] unit1d_actv_out_f;
 reg [2:0] unit1d_cnt_pooling;
 reg [2:0] unit1d_cnt_stride;
 reg [7:0] unit1d_en;
@@ -405,10 +400,10 @@ assign pdp_datin_pvld_f = pdp_datin_pvld_mux0;
 // 1 cycle pipeline for DW timing closure inside unit1d sub modudle
 // DW has replaced by normal hls fp17 adder, this pipeline keep here
 //---------------------------------------------------------------
-//: my $dbw = 2*8;
-//: my $Enum = 16/2 -1;
+//: my $dbw = 1*8;
+//: my $Enum = 8/1 -1;
 //: print " assign posc_last = (pdp_datin_pd_f_0[${dbw}+8:${dbw}+4]==${Enum}); \n";
-//: my $k = 2;
+//: my $k = 1;
 //: my $b = 8;
 //: foreach my $m (0..$k-1) {
 //: print qq(
@@ -416,15 +411,13 @@ assign pdp_datin_pvld_f = pdp_datin_pvld_mux0;
 //: );
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
- assign posc_last = (pdp_datin_pd_f_0[16+8:16+4]==7); 
+ assign posc_last = (pdp_datin_pd_f_0[8+8:8+4]==7); 
 
 assign pdp_din_0 = {{3{pdp_datin_pd_f_0[8*0+8-1]}},pdp_datin_pd_f_0[8*0+8-1:8*0]};
 
-assign pdp_din_1 = {{3{pdp_datin_pd_f_0[8*1+8-1]}},pdp_datin_pd_f_0[8*1+8-1:8*1]};
-
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign datain_ext = {
-//: my $k = 2;
+//: my $k = 1;
 //: if($k>1) {
 //: foreach my $m (0..$k-2) {
 //: my $i = $k - $m -1;
@@ -432,27 +425,27 @@ assign datain_ext = {
 //: }
 //: }
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-pdp_din_1, 
+
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 pdp_din_0};
-assign pdp_datin_pd_f0 = {posc_last,pdp_datin_pd_f_0[2*8 +13:2*8],datain_ext};
-//: my $k = 2*(8 +3) + 15;
+assign pdp_datin_pd_f0 = {posc_last,pdp_datin_pd_f_0[1*8 +13:1*8],datain_ext};
+//: my $k = 1*(8 +3) + 15;
 //: &eperl::pipe(" -wid $k -is -do pdp_datin_pd0 -vo pdp_datin_pvld0 -ri pdp_datin_prdy -di pdp_datin_pd_f0 -vi pdp_datin_pvld_f -ro pdp_datin_prdy_f0 ");
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 // Reg
 reg pdp_datin_prdy_f0;
 reg skid_flop_pdp_datin_prdy_f0;
 reg skid_flop_pdp_datin_pvld_f;
-reg [37-1:0] skid_flop_pdp_datin_pd_f0;
+reg [26-1:0] skid_flop_pdp_datin_pd_f0;
 reg pipe_skid_pdp_datin_pvld_f;
-reg [37-1:0] pipe_skid_pdp_datin_pd_f0;
+reg [26-1:0] pipe_skid_pdp_datin_pd_f0;
 // Wire
 wire skid_pdp_datin_pvld_f;
-wire [37-1:0] skid_pdp_datin_pd_f0;
+wire [26-1:0] skid_pdp_datin_pd_f0;
 wire skid_pdp_datin_prdy_f0;
 wire pipe_skid_pdp_datin_prdy_f0;
 wire pdp_datin_pvld0;
-wire [37-1:0] pdp_datin_pd0;
+wire [26-1:0] pdp_datin_pd0;
 // Code
 // SKID READY
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -480,10 +473,10 @@ assign skid_pdp_datin_pvld_f = (skid_flop_pdp_datin_prdy_f0) ? pdp_datin_pvld_f 
 // SKID DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_flop_pdp_datin_prdy_f0 & pdp_datin_pvld_f) begin
-        skid_flop_pdp_datin_pd_f0[37-1:0] <= pdp_datin_pd_f0[37-1:0];
+        skid_flop_pdp_datin_pd_f0[26-1:0] <= pdp_datin_pd_f0[26-1:0];
     end
 end
-assign skid_pdp_datin_pd_f0[37-1:0] = (skid_flop_pdp_datin_prdy_f0) ? pdp_datin_pd_f0[37-1:0] : skid_flop_pdp_datin_pd_f0[37-1:0];
+assign skid_pdp_datin_pd_f0[26-1:0] = (skid_flop_pdp_datin_prdy_f0) ? pdp_datin_pd_f0[26-1:0] : skid_flop_pdp_datin_pd_f0[26-1:0];
 
 
 // PIPE READY
@@ -503,7 +496,7 @@ end
 // PIPE DATA
 always @(posedge nvdla_core_clk) begin
     if (skid_pdp_datin_prdy_f0 && skid_pdp_datin_pvld_f) begin
-        pipe_skid_pdp_datin_pd_f0[37-1:0] <= skid_pdp_datin_pd_f0[37-1:0];
+        pipe_skid_pdp_datin_pd_f0[26-1:0] <= skid_pdp_datin_pd_f0[26-1:0];
     end
 end
 
@@ -522,9 +515,9 @@ assign pdp_datin_prdy_0 = ~ cur_datin_disable;
 //==============================================================
 //new splitw
 //---------------------------------------------------------------
-assign bsync = pdp_datin_pd[2*(8 +3)+9];
-assign splitw_end_sync = load_din ? pdp_datin_pd[2*(8 +3)+12] : 1'b0;
-assign pdp_cube_sync = pdp_datin_pd[2*(8 +3)+13];
+assign bsync = pdp_datin_pd[1*(8 +3)+9];
+assign splitw_end_sync = load_din ? pdp_datin_pd[1*(8 +3)+12] : 1'b0;
+assign pdp_cube_sync = pdp_datin_pd[1*(8 +3)+13];
 assign pdp_cube_end = pdp_cube_sync & bsync & load_din;
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   if (!nvdla_core_rstn) begin
@@ -755,7 +748,7 @@ assign load_din = pdp_datin_prdy & pdp_datin_pvld;
 assign pooling_size_h[3:0] = pooling_size_h_cfg[2:0] + 3'd1;
 assign strip_recieve_done = load_din & pdp_din_lc;
 //assign pdp_din_lc = pdp_datin_pd[100];
-assign pdp_din_lc = pdp_datin_pd[2*(8 +3)+14];
+assign pdp_din_lc = pdp_datin_pd[1*(8 +3)+14];
 assign stride_end = strip_recieve_done & (strip_xcnt_stride==pooling_stride_h_cfg[3:0]);
 assign init_cnt = line_last_stripe_done | pdp_op_start;
 always @(*) begin
@@ -1119,7 +1112,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
         channel_cnt <= 5'd0;
   end
 end
-//: my $Enum = 16/2 -1;
+//: my $Enum = 8/1 -1;
 //: print " assign last_c = (channel_cnt==5'd${Enum}) & pdp_datin_prdy_1;   \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
  assign last_c = (channel_cnt==5'd7) & pdp_datin_prdy_1;   
@@ -1546,7 +1539,7 @@ end
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 //////////////////////////////////////////////////////////////////////////////////////
-assign datin_buf = pdp_datin_pd[2*(8 +3)+10:0];
+assign datin_buf = pdp_datin_pd[1*(8 +3)+10:0];
 assign pdp_datin_prdy_1 = &unit1d_prdy & pdp_info_in_prdy;
 assign pdp_full_pvld = pdp_datin_pvld | cur_datin_disable;
 assign unit1d_pvld[0] = pdp_full_pvld & pdp_info_in_prdy & (&{unit1d_prdy[7:1]});
@@ -1589,7 +1582,7 @@ assign {pdp_din_lc_sync,last_c_sync, last_out_en_sync,cur_datin_disable_sync,poo
 //: ,.average_pooling_en (average_pooling_en) //|< w
 //: ,.cur_datin_disable (cur_datin_disable) //|< r
 //: ,.last_out_en ((last_out_en_sync | cur_datin_disable_sync)) //|< ?
-//: ,.pdma2pdp_pd (datin_buf[2*(8 +3)+8:0]) //|< w
+//: ,.pdma2pdp_pd (datin_buf[1*(8 +3)+8:0]) //|< w
 //: ,.pdma2pdp_pvld (unit1d_pvld[$i]) //|< w
 //: ,.pdp_din_lc_f (pdp_din_lc) //|< w
 //: ,.pooling_din_1st ((pooling_din_1st_$i )) //|< r
@@ -1615,7 +1608,7 @@ NV_NVDLA_PDP_CORE_unit1d unit1d_0 (
 ,.average_pooling_en (average_pooling_en) //|< w
 ,.cur_datin_disable (cur_datin_disable) //|< r
 ,.last_out_en ((last_out_en_sync | cur_datin_disable_sync)) //|< ?
-,.pdma2pdp_pd (datin_buf[2*(8 +3)+8:0]) //|< w
+,.pdma2pdp_pd (datin_buf[1*(8 +3)+8:0]) //|< w
 ,.pdma2pdp_pvld (unit1d_pvld[0]) //|< w
 ,.pdp_din_lc_f (pdp_din_lc) //|< w
 ,.pooling_din_1st ((pooling_din_1st_0 )) //|< r
@@ -1638,7 +1631,7 @@ NV_NVDLA_PDP_CORE_unit1d unit1d_1 (
 ,.average_pooling_en (average_pooling_en) //|< w
 ,.cur_datin_disable (cur_datin_disable) //|< r
 ,.last_out_en ((last_out_en_sync | cur_datin_disable_sync)) //|< ?
-,.pdma2pdp_pd (datin_buf[2*(8 +3)+8:0]) //|< w
+,.pdma2pdp_pd (datin_buf[1*(8 +3)+8:0]) //|< w
 ,.pdma2pdp_pvld (unit1d_pvld[1]) //|< w
 ,.pdp_din_lc_f (pdp_din_lc) //|< w
 ,.pooling_din_1st ((pooling_din_1st_1 )) //|< r
@@ -1661,7 +1654,7 @@ NV_NVDLA_PDP_CORE_unit1d unit1d_2 (
 ,.average_pooling_en (average_pooling_en) //|< w
 ,.cur_datin_disable (cur_datin_disable) //|< r
 ,.last_out_en ((last_out_en_sync | cur_datin_disable_sync)) //|< ?
-,.pdma2pdp_pd (datin_buf[2*(8 +3)+8:0]) //|< w
+,.pdma2pdp_pd (datin_buf[1*(8 +3)+8:0]) //|< w
 ,.pdma2pdp_pvld (unit1d_pvld[2]) //|< w
 ,.pdp_din_lc_f (pdp_din_lc) //|< w
 ,.pooling_din_1st ((pooling_din_1st_2 )) //|< r
@@ -1684,7 +1677,7 @@ NV_NVDLA_PDP_CORE_unit1d unit1d_3 (
 ,.average_pooling_en (average_pooling_en) //|< w
 ,.cur_datin_disable (cur_datin_disable) //|< r
 ,.last_out_en ((last_out_en_sync | cur_datin_disable_sync)) //|< ?
-,.pdma2pdp_pd (datin_buf[2*(8 +3)+8:0]) //|< w
+,.pdma2pdp_pd (datin_buf[1*(8 +3)+8:0]) //|< w
 ,.pdma2pdp_pvld (unit1d_pvld[3]) //|< w
 ,.pdp_din_lc_f (pdp_din_lc) //|< w
 ,.pooling_din_1st ((pooling_din_1st_3 )) //|< r
@@ -1707,7 +1700,7 @@ NV_NVDLA_PDP_CORE_unit1d unit1d_4 (
 ,.average_pooling_en (average_pooling_en) //|< w
 ,.cur_datin_disable (cur_datin_disable) //|< r
 ,.last_out_en ((last_out_en_sync | cur_datin_disable_sync)) //|< ?
-,.pdma2pdp_pd (datin_buf[2*(8 +3)+8:0]) //|< w
+,.pdma2pdp_pd (datin_buf[1*(8 +3)+8:0]) //|< w
 ,.pdma2pdp_pvld (unit1d_pvld[4]) //|< w
 ,.pdp_din_lc_f (pdp_din_lc) //|< w
 ,.pooling_din_1st ((pooling_din_1st_4 )) //|< r
@@ -1730,7 +1723,7 @@ NV_NVDLA_PDP_CORE_unit1d unit1d_5 (
 ,.average_pooling_en (average_pooling_en) //|< w
 ,.cur_datin_disable (cur_datin_disable) //|< r
 ,.last_out_en ((last_out_en_sync | cur_datin_disable_sync)) //|< ?
-,.pdma2pdp_pd (datin_buf[2*(8 +3)+8:0]) //|< w
+,.pdma2pdp_pd (datin_buf[1*(8 +3)+8:0]) //|< w
 ,.pdma2pdp_pvld (unit1d_pvld[5]) //|< w
 ,.pdp_din_lc_f (pdp_din_lc) //|< w
 ,.pooling_din_1st ((pooling_din_1st_5 )) //|< r
@@ -1753,7 +1746,7 @@ NV_NVDLA_PDP_CORE_unit1d unit1d_6 (
 ,.average_pooling_en (average_pooling_en) //|< w
 ,.cur_datin_disable (cur_datin_disable) //|< r
 ,.last_out_en ((last_out_en_sync | cur_datin_disable_sync)) //|< ?
-,.pdma2pdp_pd (datin_buf[2*(8 +3)+8:0]) //|< w
+,.pdma2pdp_pd (datin_buf[1*(8 +3)+8:0]) //|< w
 ,.pdma2pdp_pvld (unit1d_pvld[6]) //|< w
 ,.pdp_din_lc_f (pdp_din_lc) //|< w
 ,.pooling_din_1st ((pooling_din_1st_6 )) //|< r
@@ -1776,7 +1769,7 @@ NV_NVDLA_PDP_CORE_unit1d unit1d_7 (
 ,.average_pooling_en (average_pooling_en) //|< w
 ,.cur_datin_disable (cur_datin_disable) //|< r
 ,.last_out_en ((last_out_en_sync | cur_datin_disable_sync)) //|< ?
-,.pdma2pdp_pd (datin_buf[2*(8 +3)+8:0]) //|< w
+,.pdma2pdp_pd (datin_buf[1*(8 +3)+8:0]) //|< w
 ,.pdma2pdp_pvld (unit1d_pvld[7]) //|< w
 ,.pdp_din_lc_f (pdp_din_lc) //|< w
 ,.pooling_din_1st ((pooling_din_1st_7 )) //|< r
@@ -1846,11 +1839,11 @@ assign cube_out_channel[12:0]= pooling_channel_cfg[12:0];
 ////8bits: INT8
 //assign surface_num_1[9:0] = {1'b0,cube_out_channel[13:5]} + (|cube_out_channel[4:0]);
 //assign surface_num = (reg2dp_input_data[1:0] == 2'h0 )? surface_num_1 : surface_num_0;
-//: my $m = 16;
+//: my $m = 8;
 //: my $k = int(log($m)/log(2));
 //: print "assign surface_num = cube_out_channel[12:${k}]; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-assign surface_num = cube_out_channel[12:4]; 
+assign surface_num = cube_out_channel[12:3]; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
@@ -1940,7 +1933,7 @@ always @(*) begin
 end
 assign loading_en = unit1d_actv_out_pvld & unit1d_actv_out_prdy;
 //: my $s = "\$signed";
-//: my $k = 2;
+//: my $k = 1;
 //: my $b = 8;
 //: foreach my $m (0..$k-1) {
 //: print "assign {mon_unit1d_actv_data_8bit_${m}_ff[1:0],unit1d_actv_data_8bit_${m}_ff} = $s({{1{unit1d_actv_out[(${b}+3)*${m}+(${b}+3)-1]}},unit1d_actv_out[(${b}+3)*${m}+(${b}+3)-1:(${b}+3)*${m}] }) + $s({pad_table_out[10], pad_table_out[10:0]}); \n";
@@ -1950,13 +1943,11 @@ assign loading_en = unit1d_actv_out_pvld & unit1d_actv_out_prdy;
 //| eperl: generated_beg (DO NOT EDIT BELOW)
 assign {mon_unit1d_actv_data_8bit_0_ff[1:0],unit1d_actv_data_8bit_0_ff} = $signed({{1{unit1d_actv_out[(8+3)*0+(8+3)-1]}},unit1d_actv_out[(8+3)*0+(8+3)-1:(8+3)*0] }) + $signed({pad_table_out[10], pad_table_out[10:0]}); 
 assign {mon_unit1d_actv_data_8bit_0[1:0],unit1d_actv_data_8bit_0} = padding_here_int8 ? {mon_unit1d_actv_data_8bit_0_ff[1:0],unit1d_actv_data_8bit_0_ff} : {2'd0,unit1d_actv_out[(8+3)*0+(8+3)-1:(8+3)*0] }; 
-assign {mon_unit1d_actv_data_8bit_1_ff[1:0],unit1d_actv_data_8bit_1_ff} = $signed({{1{unit1d_actv_out[(8+3)*1+(8+3)-1]}},unit1d_actv_out[(8+3)*1+(8+3)-1:(8+3)*1] }) + $signed({pad_table_out[10], pad_table_out[10:0]}); 
-assign {mon_unit1d_actv_data_8bit_1[1:0],unit1d_actv_data_8bit_1} = padding_here_int8 ? {mon_unit1d_actv_data_8bit_1_ff[1:0],unit1d_actv_data_8bit_1_ff} : {2'd0,unit1d_actv_out[(8+3)*1+(8+3)-1:(8+3)*1] }; 
-assign padding_here = (pooling_type_cfg== 2'h0 ) & (unit1d_actv_out[2*(8+3)+2:2*(8+3)] != pooling_size_h_cfg); 
+assign padding_here = (pooling_type_cfg== 2'h0 ) & (unit1d_actv_out[1*(8+3)+2:1*(8+3)] != pooling_size_h_cfg); 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)
 assign padding_here_int8 = padding_here;
-assign {mon_pad_table_index[0],pad_table_index[2:0]} = pooling_size_h_cfg - unit1d_actv_out[2*(8 +3)+2:2*(8 +3)];
+assign {mon_pad_table_index[0],pad_table_index[2:0]} = pooling_size_h_cfg - unit1d_actv_out[1*(8 +3)+2:1*(8 +3)];
 `ifdef SPYGLASS_ASSERT_ON
 `else
 // spyglass disable_block NoWidthInBasedNum-ML
@@ -2008,7 +1999,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
   end else begin
    if(loading_en) begin
           pooling1d_data_pad <= {
-//: my $k = 2;
+//: my $k = 1;
 //: my $b = 8;
 //: if($k > 1) {
 //: foreach my $m (0..$k-2) {
@@ -2018,7 +2009,6 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 //: }
 //: print "{{3{unit1d_actv_data_8bit_0[${b}+2]}}, unit1d_actv_data_8bit_0[${b}+2:0]}}; \n";
 //| eperl: generated_beg (DO NOT EDIT BELOW)
-{{3{unit1d_actv_data_8bit_1[8+2]}}, unit1d_actv_data_8bit_1[8+2:0]}, 
 {{3{unit1d_actv_data_8bit_0[8+2]}}, unit1d_actv_data_8bit_0[8+2:0]}}; 
 
 //| eperl: generated_end (DO NOT EDIT ABOVE)

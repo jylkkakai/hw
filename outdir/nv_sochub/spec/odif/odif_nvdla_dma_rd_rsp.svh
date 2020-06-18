@@ -5,7 +5,7 @@
 `ifndef SV_STRUCT_DEFINED_DMA_READ_RSP
 `define SV_STRUCT_DEFINED_DMA_READ_RSP
 typedef struct packed {
-  bit [127:0] data;
+  bit [63:0] data;
   bit [0:0] mask;
 } DMA_READ_RSP_struct;
 `endif

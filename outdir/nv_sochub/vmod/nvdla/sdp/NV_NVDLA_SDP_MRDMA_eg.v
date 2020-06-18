@@ -51,11 +51,11 @@ input [13:0] cq2eg_pd;
 input cq2eg_pvld;
 output cq2eg_prdy;
 output dma_rd_rsp_ram_type;
-input [129 -1:0] dma_rd_rsp_pd;
+input [65 -1:0] dma_rd_rsp_pd;
 input dma_rd_rsp_vld;
 output dma_rd_rsp_rdy;
 output dma_rd_cdt_lat_fifo_pop;
-output [32*16 +1:0] sdp_mrdma2cmux_pd;
+output [32*8 +1:0] sdp_mrdma2cmux_pd;
 output sdp_mrdma2cmux_valid;
 input sdp_mrdma2cmux_ready;
 input reg2dp_src_ram_type;
@@ -72,16 +72,16 @@ wire cmd2dat_dma_pvld;
 wire [12:0] cmd2dat_spt_pd;
 wire cmd2dat_spt_prdy;
 wire cmd2dat_spt_pvld;
-wire [16*8 -1:0] pfifo0_rd_pd;
+wire [8*8 -1:0] pfifo0_rd_pd;
 wire pfifo0_rd_prdy;
 wire pfifo0_rd_pvld;
-wire [16*8 -1:0] pfifo1_rd_pd;
+wire [8*8 -1:0] pfifo1_rd_pd;
 wire pfifo1_rd_prdy;
 wire pfifo1_rd_pvld;
-wire [16*8 -1:0] pfifo2_rd_pd;
+wire [8*8 -1:0] pfifo2_rd_pd;
 wire pfifo2_rd_prdy;
 wire pfifo2_rd_pvld;
-wire [16*8 -1:0] pfifo3_rd_pd;
+wire [8*8 -1:0] pfifo3_rd_pd;
 wire pfifo3_rd_prdy;
 wire pfifo3_rd_pvld;
 NV_NVDLA_SDP_MRDMA_EG_cmd u_cmd (
@@ -109,23 +109,23 @@ NV_NVDLA_SDP_MRDMA_EG_din u_din (
   ,.pwrbus_ram_pd (pwrbus_ram_pd[31:0])
   ,.reg2dp_src_ram_type (reg2dp_src_ram_type)
   ,.dma_rd_rsp_ram_type (dma_rd_rsp_ram_type)
-  ,.dma_rd_rsp_pd (dma_rd_rsp_pd[129 -1:0])
+  ,.dma_rd_rsp_pd (dma_rd_rsp_pd[65 -1:0])
   ,.dma_rd_rsp_vld (dma_rd_rsp_vld)
   ,.dma_rd_rsp_rdy (dma_rd_rsp_rdy)
   ,.dma_rd_cdt_lat_fifo_pop (dma_rd_cdt_lat_fifo_pop)
   ,.cmd2dat_spt_pd (cmd2dat_spt_pd[12:0])
   ,.cmd2dat_spt_pvld (cmd2dat_spt_pvld)
   ,.cmd2dat_spt_prdy (cmd2dat_spt_prdy)
-  ,.pfifo0_rd_pd (pfifo0_rd_pd[16*8 -1:0])
+  ,.pfifo0_rd_pd (pfifo0_rd_pd[8*8 -1:0])
   ,.pfifo0_rd_pvld (pfifo0_rd_pvld)
   ,.pfifo0_rd_prdy (pfifo0_rd_prdy)
-  ,.pfifo1_rd_pd (pfifo1_rd_pd[16*8 -1:0])
+  ,.pfifo1_rd_pd (pfifo1_rd_pd[8*8 -1:0])
   ,.pfifo1_rd_pvld (pfifo1_rd_pvld)
   ,.pfifo1_rd_prdy (pfifo1_rd_prdy)
-  ,.pfifo2_rd_pd (pfifo2_rd_pd[16*8 -1:0])
+  ,.pfifo2_rd_pd (pfifo2_rd_pd[8*8 -1:0])
   ,.pfifo2_rd_pvld (pfifo2_rd_pvld)
   ,.pfifo2_rd_prdy (pfifo2_rd_prdy)
-  ,.pfifo3_rd_pd (pfifo3_rd_pd[16*8 -1:0])
+  ,.pfifo3_rd_pd (pfifo3_rd_pd[8*8 -1:0])
   ,.pfifo3_rd_pvld (pfifo3_rd_pvld)
   ,.pfifo3_rd_prdy (pfifo3_rd_prdy)
   );
@@ -139,19 +139,19 @@ NV_NVDLA_SDP_MRDMA_EG_dout u_dout (
   ,.cmd2dat_dma_pd (cmd2dat_dma_pd[14:0])
   ,.pfifo0_rd_pvld (pfifo0_rd_pvld)
   ,.pfifo0_rd_prdy (pfifo0_rd_prdy)
-  ,.pfifo0_rd_pd (pfifo0_rd_pd[16*8 -1:0])
+  ,.pfifo0_rd_pd (pfifo0_rd_pd[8*8 -1:0])
   ,.pfifo1_rd_pvld (pfifo1_rd_pvld)
   ,.pfifo1_rd_prdy (pfifo1_rd_prdy)
-  ,.pfifo1_rd_pd (pfifo1_rd_pd[16*8 -1:0])
+  ,.pfifo1_rd_pd (pfifo1_rd_pd[8*8 -1:0])
   ,.pfifo2_rd_pvld (pfifo2_rd_pvld)
   ,.pfifo2_rd_prdy (pfifo2_rd_prdy)
-  ,.pfifo2_rd_pd (pfifo2_rd_pd[16*8 -1:0])
+  ,.pfifo2_rd_pd (pfifo2_rd_pd[8*8 -1:0])
   ,.pfifo3_rd_pvld (pfifo3_rd_pvld)
   ,.pfifo3_rd_prdy (pfifo3_rd_prdy)
-  ,.pfifo3_rd_pd (pfifo3_rd_pd[16*8 -1:0])
+  ,.pfifo3_rd_pd (pfifo3_rd_pd[8*8 -1:0])
   ,.sdp_mrdma2cmux_valid (sdp_mrdma2cmux_valid)
   ,.sdp_mrdma2cmux_ready (sdp_mrdma2cmux_ready)
-  ,.sdp_mrdma2cmux_pd (sdp_mrdma2cmux_pd[32*16 +1:0])
+  ,.sdp_mrdma2cmux_pd (sdp_mrdma2cmux_pd[32*8 +1:0])
   ,.reg2dp_height (reg2dp_height[12:0])
   ,.reg2dp_width (reg2dp_width[12:0])
   ,.reg2dp_in_precision (reg2dp_in_precision[1:0])

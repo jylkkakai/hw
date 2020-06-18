@@ -20,8 +20,8 @@ module NV_NVDLA_DMAIF_rdrsp (
 //////////////////////////////////////////////
 input nvdla_core_clk;
 input nvdla_core_rstn;
-//: my $dmaif = 128;
-//: my $mask = int($dmaif/16/8);
+//: my $dmaif = 64;
+//: my $mask = int($dmaif/8/8);
 //: my $maskbw;
 //: $maskbw = $mask;
 //: my $dmabw = ( $dmaif + $maskbw );
@@ -34,8 +34,8 @@ input dmaif_rd_rsp_prdy;
 //////////////////////////////////////////////
 wire dma_rd_rsp_rdy;
 wire dma_rd_rsp_vld;
-//: my $dmaif = 128;
-//: my $mask = int($dmaif/16/8);
+//: my $dmaif = 64;
+//: my $mask = int($dmaif/8/8);
 //: my $maskbw;
 //: $maskbw = $mask;
 //: my $dmabw = ( $dmaif + $maskbw );
@@ -44,8 +44,8 @@ wire dma_rd_rsp_vld;
 ///////////////////////////////////////
 // pipe before mux
 ///////////////////////////////////////
-//: my $dmaif = 128;
-//: my $mask = int($dmaif/16/8);
+//: my $dmaif = 64;
+//: my $mask = int($dmaif/8/8);
 //: my $maskbw;
 //: $maskbw = $mask;
 //: my $dmabw = ( $dmaif + $maskbw );
@@ -54,8 +54,8 @@ wire dma_rd_rsp_vld;
 //mux
 ///////////////////////////////////////
 assign dma_rd_rsp_vld = mcif_rd_rsp_valid_d0;
-//: my $dmaif = 128;
-//: my $mask = int($dmaif/16/8);
+//: my $dmaif = 64;
+//: my $mask = int($dmaif/8/8);
 //: my $maskbw;
 //: $maskbw = $mask;
 //: my $dmabw = ( $dmaif + $maskbw );
@@ -66,8 +66,8 @@ assign dma_rd_rsp_vld = mcif_rd_rsp_valid_d0;
 ///////////////////////////////////////
 // pipe after mux
 ///////////////////////////////////////
-//: my $dmaif = 128;
-//: my $mask = int($dmaif/16/8);
+//: my $dmaif = 64;
+//: my $mask = int($dmaif/8/8);
 //: my $maskbw;
 //: $maskbw = $mask;
 //: my $dmabw = ( $dmaif + $maskbw );

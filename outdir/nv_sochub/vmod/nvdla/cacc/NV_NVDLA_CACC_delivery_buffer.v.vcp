@@ -35,26 +35,26 @@ module NV_NVDLA_CACC_delivery_buffer (
 input nvdla_core_clk;
 input nvdla_core_rstn;
 input cacc2sdp_ready;
-input [4 +1 -1:0] dbuf_rd_addr;
+input [3 +1 -1:0] dbuf_rd_addr;
 input dbuf_rd_en;
 input dbuf_rd_layer_end;
-input [4 +1 -1:0] dbuf_wr_addr;
-input [32*16 -1:0] dbuf_wr_data;
+input [3 +1 -1:0] dbuf_wr_addr;
+input [32*8 -1:0] dbuf_wr_data;
 input dbuf_wr_en;
 input [31:0] pwrbus_ram_pd;
 output [1:0] cacc2glb_done_intr_pd;
-output [32*4 +2 -1:0] cacc2sdp_pd;
+output [32*1 +2 -1:0] cacc2sdp_pd;
 output cacc2sdp_valid;
 output dbuf_rd_ready;
 output [2:0] accu2sc_credit_size;
 output accu2sc_credit_vld;
 // Instance RAMs
-wire [32*16 -1:0] dbuf_rd_data;
-reg [(32*16)/(32*4)-1:0] data_left_mask;
+wire [32*8 -1:0] dbuf_rd_data;
+reg [(32*8)/(32*1)-1:0] data_left_mask;
 wire dbuf_rd_en_new = ~(|data_left_mask) & dbuf_rd_en;
 // spyglass disable_block NoWidthInBasedNum-ML
-//: my $dep= 16*2;
-//: my $wid= 32*16;
+//: my $dep= 8*2;
+//: my $wid= 32*8;
 //: print qq(
 //: nv_ram_rws_${dep}x${wid} u_accu_dbuf (
 //: .clk (nvdla_core_clk) //|< i
@@ -69,7 +69,7 @@ wire dbuf_rd_en_new = ~(|data_left_mask) & dbuf_rd_en;
 //: );
 //get signal for SDP
 //: &eperl::flop("-q  dbuf_rd_valid  -d \"dbuf_rd_en_new\" -clk nvdla_core_clk -rst nvdla_core_rstn ");
-//: my $kk=(32*16)/(32*4);
+//: my $kk=(32*8)/(32*1);
 //: print qq(
 //: reg [${kk}-1:0] rd_data_mask; //which data to be fetched by sdp.
 //: wire [${kk}-1:0] rd_data_mask_pre; );
@@ -86,9 +86,9 @@ wire dbuf_rd_en_new = ~(|data_left_mask) & dbuf_rd_en;
 wire cacc2sdp_valid = (|data_left_mask);
 wire dbuf_rd_ready = ~(|data_left_mask);
 //: my $t1="";
-//: my $kk= 32*4;
+//: my $kk= 32*1;
 //: print "wire [${kk}-1:0] cacc2sdp_pd_data= ";
-//: for (my $i=0; $i<(32*16)/(32*4); $i++){
+//: for (my $i=0; $i<(32*8)/(32*1); $i++){
 //: $t1 .= "dbuf_rd_data[($i+1)*${kk}-1:$i*${kk}]&{${kk}{rd_data_mask[${i}]}} |";
 //: }
 //: my $t2= "{${kk}{1'b0}}";
@@ -104,9 +104,9 @@ wire dbuf_rd_layer_end_latch_w = dbuf_rd_layer_end? 1'b1 : ~(|data_left_mask) ? 
 wire last_data;
 wire cacc2sdp_batch_end = 1'b0;
 wire cacc2sdp_layer_end = dbuf_rd_layer_end_latch&last_data&cacc2sdp_valid&cacc2sdp_ready; //data_left_mask=0;
-assign cacc2sdp_pd[32*4 -1:0] = cacc2sdp_pd_data;
-assign cacc2sdp_pd[32*4 +2 -2] = cacc2sdp_batch_end;
-assign cacc2sdp_pd[32*4 +2 -1] = cacc2sdp_layer_end;
+assign cacc2sdp_pd[32*1 -1:0] = cacc2sdp_pd_data;
+assign cacc2sdp_pd[32*1 +2 -2] = cacc2sdp_batch_end;
+assign cacc2sdp_pd[32*1 +2 -1] = cacc2sdp_layer_end;
 // generate CACC done interrupt
 wire [1:0] cacc_done_intr_w;
 reg intr_sel;
@@ -119,7 +119,7 @@ wire intr_sel_w = cacc_done ? ~intr_sel : intr_sel;
 assign cacc2glb_done_intr_pd = cacc_done_intr;
 ///// generate credit signal
 assign accu2sc_credit_size = 3'h1;
-assign last_data = (data_left_mask=={1'b1,{(32*16)/(32*4)-1{1'b0}}});
+assign last_data = (data_left_mask=={1'b1,{(32*8)/(32*1)-1{1'b0}}});
 //: &eperl::flop(" -q  accu2sc_credit_vld  -d \"cacc2sdp_valid & cacc2sdp_ready & last_data\" -clk nvdla_core_clk -rst nvdla_core_rstn -rval 0");
 // spyglass enable_block NoWidthInBasedNum-ML
 endmodule // NV_NVDLA_CACC_delivery_buffer

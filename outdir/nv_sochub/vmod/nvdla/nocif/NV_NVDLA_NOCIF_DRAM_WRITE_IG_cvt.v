@@ -57,10 +57,10 @@ input nvdla_core_clk;
 input nvdla_core_rstn;
 input spt2cvt_cmd_valid; /* data valid */
 output spt2cvt_cmd_ready; /* data return handshake */
-input [64 +12:0] spt2cvt_cmd_pd;
+input [32 +12:0] spt2cvt_cmd_pd;
 input spt2cvt_dat_valid; /* data valid */
 output spt2cvt_dat_ready; /* data return handshake */
-input [128 +1:0] spt2cvt_dat_pd;
+input [64 +1:0] spt2cvt_dat_pd;
 output cq_wr_pvld; /* data valid */
 input cq_wr_prdy; /* data return handshake */
 output [3:0] cq_wr_thread_id;
@@ -69,7 +69,7 @@ output mcif2noc_axi_aw_awvalid; /* data valid */
 input mcif2noc_axi_aw_awready; /* data return handshake */
 output [7:0] mcif2noc_axi_aw_awid;
 output [3:0] mcif2noc_axi_aw_awlen;
-output [64 -1:0] mcif2noc_axi_aw_awaddr;
+output [32 -1:0] mcif2noc_axi_aw_awaddr;
 output mcif2noc_axi_w_wvalid; /* data valid */
 input mcif2noc_axi_w_wready; /* data return handshake */
 output [64 -1:0] mcif2noc_axi_w_wdata;
@@ -90,11 +90,11 @@ reg [10:0] os_cnt_mod;
 reg [10:0] os_cnt_new;
 reg [10:0] os_cnt_nxt;
 wire all_downs_rdy;
-wire [64 -1:0] axi_addr;
-wire [64 +5:0] axi_aw_pd;
+wire [32 -1:0] axi_addr;
+wire [32 +5:0] axi_aw_pd;
 wire [3:0] axi_axid;
 wire axi_both_rdy;
-wire [64 +5:0] axi_cmd_pd;
+wire [32 +5:0] axi_cmd_pd;
 wire axi_cmd_rdy;
 wire axi_cmd_vld;
 wire axi_dat_rdy;
@@ -103,9 +103,9 @@ wire [64 -1:0] axi_data;
 wire axi_last;
 wire [1:0] axi_len;
 wire [64/8-1:0] axi_strb;
-//wire [64 +12:0] axi_w_pd;
+//wire [32 +12:0] axi_w_pd;
 wire [7:0] cfg_wr_os_cnt;
-wire [64 -1:0] cmd_addr;
+wire [32 -1:0] cmd_addr;
 wire [3:0] cmd_axid;
 wire cmd_ftran;
 wire cmd_ftran_NC;
@@ -113,19 +113,19 @@ wire cmd_inc;
 wire cmd_ltran;
 wire cmd_odd;
 wire cmd_odd_NC;
-wire [64 +12:0] cmd_pd;
+wire [32 +12:0] cmd_pd;
 wire cmd_rdy;
 wire cmd_require_ack;
 wire [2:0] cmd_size;
 wire cmd_swizzle;
 wire cmd_swizzle_NC;
 //wire cmd_vld;
-wire [64 +12:0] cmd_vld_pd;
+wire [32 +12:0] cmd_vld_pd;
 wire [1:0] cq_wr_len;
 wire cq_wr_require_ack;
-wire [128 -1:0] dat_data;
+wire [64 -1:0] dat_data;
 wire [1:0] dat_mask;
-wire [128 +1:0] dat_pd;
+wire [64 +1:0] dat_pd;
 wire dat_rdy;
 wire dat_vld;
 wire [2:0] end_offset;
@@ -137,9 +137,9 @@ wire is_single_beat;
 wire mon_axi_len_c;
 wire mon_end_pos_c;
 wire [0:0] mon_thread_id_c;
-wire [64 -1:0] opipe_axi_addr;
+wire [32 -1:0] opipe_axi_addr;
 wire [3:0] opipe_axi_axid;
-wire [128 -1:0] opipe_axi_data;
+wire [64 -1:0] opipe_axi_data;
 wire opipe_axi_last;
 wire [1:0] opipe_axi_len;
 wire [64/8-1:0] opipe_axi_strb;
@@ -173,21 +173,21 @@ NV_NVDLA_NOCIF_DRAM_WRITE_IG_CVT_pipe_p1 pipe_p1 (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.cmd_rdy (cmd_rdy) //|< w
-  ,.spt2cvt_cmd_pd (spt2cvt_cmd_pd[64 +12:0]) //|< i
+  ,.spt2cvt_cmd_pd (spt2cvt_cmd_pd[32 +12:0]) //|< i
   ,.spt2cvt_cmd_valid (spt2cvt_cmd_valid) //|< i
-  ,.cmd_pd (cmd_pd[64 +12:0]) //|> w
+  ,.cmd_pd (cmd_pd[32 +12:0]) //|> w
   ,.cmd_vld (cmd_vld) //|> w
   ,.spt2cvt_cmd_ready (spt2cvt_cmd_ready) //|> o
   );
-//my $dw = eval(128 +2);
+//my $dw = eval(64 +2);
 //&eperl::pipe(" -wid $dw -do dat_pd -vo dat_vld  -ri spt2cvt_dat_ready -di spt2cvt_dat_pd -vi spt2cvt_dat_valid -ro dat_rdy");
 NV_NVDLA_NOCIF_DRAM_WRITE_IG_CVT_pipe_p2 pipe_p2 (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
   ,.dat_rdy (dat_rdy) //|< w
-  ,.spt2cvt_dat_pd (spt2cvt_dat_pd[128 +1:0]) //|< i
+  ,.spt2cvt_dat_pd (spt2cvt_dat_pd[64 +1:0]) //|< i
   ,.spt2cvt_dat_valid (spt2cvt_dat_valid) //|< i
-  ,.dat_pd (dat_pd[128 +1:0]) //|> w
+  ,.dat_pd (dat_pd[64 +1:0]) //|> w
   ,.dat_vld (dat_vld) //|> w
   ,.spt2cvt_dat_ready (spt2cvt_dat_ready) //|> o
   );
@@ -197,23 +197,23 @@ assign dat_rdy = is_first_beat ? (os_cmd_vld & all_downs_rdy) : axi_dat_rdy;
 //IG_cvt=== will release cmd on the acception of last beat of data
 assign cmd_rdy = is_first_beat & dat_vld & all_downs_rdy & !os_cnt_full;
 //IG_cvt===UNPACK after ipipe
-assign cmd_vld_pd = {64 +13{cmd_vld}} & cmd_pd;
+assign cmd_vld_pd = {32 +13{cmd_vld}} & cmd_pd;
 // PKT_UNPACK_WIRE( cvt_write_cmd , cmd_ , cmd_vld_pd )
 assign cmd_axid[3:0] = cmd_vld_pd[3:0];
 assign cmd_require_ack = cmd_vld_pd[4];
-assign cmd_addr[64 -1:0] = cmd_vld_pd[64 +4:5];
-assign cmd_size[2:0] = cmd_vld_pd[(64 +7):(64 +5)];
-assign cmd_swizzle = cmd_vld_pd[64 +8];
-assign cmd_odd = cmd_vld_pd[64 +9];
-assign cmd_inc = cmd_vld_pd[64 +10];
-assign cmd_ltran = cmd_vld_pd[64 +11];
-assign cmd_ftran = cmd_vld_pd[64 +12];
+assign cmd_addr[32 -1:0] = cmd_vld_pd[32 +4:5];
+assign cmd_size[2:0] = cmd_vld_pd[(32 +7):(32 +5)];
+assign cmd_swizzle = cmd_vld_pd[32 +8];
+assign cmd_odd = cmd_vld_pd[32 +9];
+assign cmd_inc = cmd_vld_pd[32 +10];
+assign cmd_ltran = cmd_vld_pd[32 +11];
+assign cmd_ftran = cmd_vld_pd[32 +12];
 assign cmd_ftran_NC = cmd_ftran;
 assign cmd_swizzle_NC = cmd_swizzle;
 assign cmd_odd_NC = cmd_odd;
 // PKT_UNPACK_WIRE( cvt_write_data , dat_ , dat_pd )
-assign dat_data[128 -1:0] = dat_pd[128 -1:0];
-assign dat_mask[1:0] = dat_pd[128 +1:128];
+assign dat_data[64 -1:0] = dat_pd[64 -1:0];
+assign dat_mask[1:0] = dat_pd[64 +1:64];
 // NOTE: this is for write strobe
 // IG_cvt===address calculation
 assign stt_offset = cmd_addr[7:5]; // start position within a 256B block
@@ -548,15 +548,15 @@ end
 // addr+streamid+user_size
 //stepheng.
 assign axi_cmd_vld = is_first_cmd_dat_vld & cq_wr_prdy & axi_dat_rdy;
-//my $w = eval(64 +6);
+//my $w = eval(32 +6);
 //&eperl::pipe(" -wid $w -do axi_aw_pd -vo mcif2noc_axi_aw_awvalid  -ri axi_cmd_rdy -di axi_cmd_pd -vi axi_cmd_vld -ro mcif2noc_axi_aw_awready");
 NV_NVDLA_NOCIF_DRAM_WRITE_IG_CVT_pipe_p3 pipe_p3 (
    .nvdla_core_clk (nvdla_core_clk) //|< i
   ,.nvdla_core_rstn (nvdla_core_rstn) //|< i
-  ,.axi_cmd_pd (axi_cmd_pd[64 +5:0]) //|< w
+  ,.axi_cmd_pd (axi_cmd_pd[32 +5:0]) //|< w
   ,.axi_cmd_vld (axi_cmd_vld) //|< w
   ,.mcif2noc_axi_aw_awready (mcif2noc_axi_aw_awready) //|< i
-  ,.axi_aw_pd (axi_aw_pd[64 +5:0]) //|> w
+  ,.axi_aw_pd (axi_aw_pd[32 +5:0]) //|> w
   ,.axi_cmd_rdy (axi_cmd_rdy) //|> w
   ,.mcif2noc_axi_aw_awvalid (mcif2noc_axi_aw_awvalid) //|> o
   );
@@ -615,7 +615,7 @@ assign cq_wr_len = axi_len;
 assign cq_wr_pd[0] = cq_wr_require_ack ;
 assign cq_wr_pd[2:1] = cq_wr_len[1:0];
 //:my $i;
-//:my @dma_index = (0, 1,1, 1,1, 0, 0, 0, 0,0,0,0,0,0,0);
+//:my @dma_index = (0, 1,1, 1,0, 0, 0, 0, 0,0,0,0,0,0,0);
 //:my @client_id = (0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0);
 //:my @remap_clientid = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 //:my $nindex = 0;
@@ -674,14 +674,14 @@ module NV_NVDLA_NOCIF_DRAM_WRITE_IG_CVT_pipe_p1 (
 input nvdla_core_clk;
 input nvdla_core_rstn;
 input cmd_rdy;
-input [64 +12:0] spt2cvt_cmd_pd;
+input [32 +12:0] spt2cvt_cmd_pd;
 input spt2cvt_cmd_valid;
-output [64 +12:0] cmd_pd;
+output [32 +12:0] cmd_pd;
 output cmd_vld;
 output spt2cvt_cmd_ready;
-reg [64 +12:0] cmd_pd;
+reg [32 +12:0] cmd_pd;
 reg cmd_vld;
-reg [64 +12:0] p1_pipe_data;
+reg [32 +12:0] p1_pipe_data;
 reg p1_pipe_ready;
 reg p1_pipe_ready_bc;
 reg p1_pipe_valid;
@@ -702,7 +702,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk) begin
 // VCS sop_coverage_off start
-  p1_pipe_data <= (p1_pipe_ready_bc && spt2cvt_cmd_valid)? spt2cvt_cmd_pd[64 +12:0] : p1_pipe_data;
+  p1_pipe_data <= (p1_pipe_ready_bc && spt2cvt_cmd_valid)? spt2cvt_cmd_pd[32 +12:0] : p1_pipe_data;
 // VCS sop_coverage_off end
 end
 always @(
@@ -991,22 +991,22 @@ module NV_NVDLA_NOCIF_DRAM_WRITE_IG_CVT_pipe_p3 (
   );
 input nvdla_core_clk;
 input nvdla_core_rstn;
-input [64 +5:0] axi_cmd_pd;
+input [32 +5:0] axi_cmd_pd;
 input axi_cmd_vld;
 input mcif2noc_axi_aw_awready;
-output [64 +5:0] axi_aw_pd;
+output [32 +5:0] axi_aw_pd;
 output axi_cmd_rdy;
 output mcif2noc_axi_aw_awvalid;
-reg [64 +5:0] axi_aw_pd;
+reg [32 +5:0] axi_aw_pd;
 reg axi_cmd_rdy;
 reg mcif2noc_axi_aw_awvalid;
-reg [64 +5:0] p3_pipe_data;
+reg [32 +5:0] p3_pipe_data;
 reg p3_pipe_ready;
 reg p3_pipe_ready_bc;
 reg p3_pipe_valid;
 reg p3_skid_catch;
-reg [64 +5:0] p3_skid_data;
-reg [64 +5:0] p3_skid_pipe_data;
+reg [32 +5:0] p3_skid_data;
+reg [32 +5:0] p3_skid_pipe_data;
 reg p3_skid_pipe_ready;
 reg p3_skid_pipe_valid;
 reg p3_skid_ready;
@@ -1035,7 +1035,7 @@ always @(posedge nvdla_core_clk or negedge nvdla_core_rstn) begin
 end
 always @(posedge nvdla_core_clk) begin
 // VCS sop_coverage_off start
-  p3_skid_data <= (p3_skid_catch)? axi_cmd_pd[64 +5:0] : p3_skid_data;
+  p3_skid_data <= (p3_skid_catch)? axi_cmd_pd[32 +5:0] : p3_skid_data;
 // VCS sop_coverage_off end
 end
 always @(
@@ -1047,7 +1047,7 @@ always @(
   ) begin
   p3_skid_pipe_valid = (p3_skid_ready_flop)? axi_cmd_vld : p3_skid_valid;
 // VCS sop_coverage_off start
-  p3_skid_pipe_data = (p3_skid_ready_flop)? axi_cmd_pd[64 +5:0] : p3_skid_data;
+  p3_skid_pipe_data = (p3_skid_ready_flop)? axi_cmd_pd[32 +5:0] : p3_skid_data;
 // VCS sop_coverage_off end
 end
 //## pipe (3) valid-ready-bubble-collapse

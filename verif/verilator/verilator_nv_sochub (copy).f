@@ -1,0 +1,120 @@
+-I../../outdir/nv_sochub/vmod/nvdla/bdma
+-I../../outdir/nv_sochub/vmod/nvdla/cacc
+-I../../outdir/nv_sochub/vmod/nvdla/car
+-I../../outdir/nv_sochub/vmod/nvdla/cbuf
+-I../../outdir/nv_sochub/vmod/nvdla/cdma
+-I../../outdir/nv_sochub/vmod/nvdla/cdp
+-I../../outdir/nv_sochub/vmod/nvdla/cmac
+-I../../outdir/nv_sochub/vmod/nvdla/csc
+-I../../outdir/nv_sochub/vmod/nvdla/glb
+-I../../outdir/nv_sochub/vmod/nvdla/nocif
+-I../../outdir/nv_sochub/vmod/nvdla/pdp
+-I../../outdir/nv_sochub/vmod/nvdla/retiming
+-I../../outdir/nv_sochub/vmod/nvdla/rubik
+-I../../outdir/nv_sochub/vmod/nvdla/sdp
+-I../../outdir/nv_sochub/vmod/nvdla/top
+-I../../outdir/nv_sochub/vmod/nvdla/csb_master
+-I../../outdir/nv_sochub/vmod/nvdla/cfgrom
+-I../../outdir/nv_sochub/vmod/rams/synth
+-I../../outdir/nv_sochub/vmod/vlibs
+-I../../outdir/nv_sochub/vmod/include
+-v ../../outdir/nv_sochub/vmod/vlibs/RANDFUNC.vlib
+-v ../../outdir/nv_sochub/vmod/vlibs/nv_assert_no_x.vlib
+-v ../../outdir/nv_sochub/vmod/nvdla/nocif/NV_NVDLA_XXIF_libs.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_248X82_GL_M2_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_32X192_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_32X224_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_256X80_GL_M2_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_80X256_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_160X82_GL_M2_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_80X226_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_256X144_GL_M2_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_32X288_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_32X256_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_20X288_GL_M1_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_248X144_GL_M2_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_80X15_GL_M2_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_60X168_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_20X80_GL_M1_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_64X226_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_64X288_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_32X32_GL_M1_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_128X6_GL_M2_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_128X11_GL_M2_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_64X10_GL_M2_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_16X256_GL_M1_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_80X72_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_256X4_GL_M2_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_256X7_GL_M2_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_256X8_GL_M2_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_64X116_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_32X16_GL_M1_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_256X11_GL_M4_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_160X16_GL_M2_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_80X14_GL_M2_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_80X16_GL_M2_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_160X144_GL_M2_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_80X288_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_80X66_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_160X65_GL_M2_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_60X22_GL_M1_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_80X9_GL_M2_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_64X66_GL_M1_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_128X18_GL_M2_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_16X272_GL_M1_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMDP_16X64_GL_M1_E2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_512X64_GL_M4_D2.v
+-v ../../outdir/nv_sochub/vmod/rams/model/RAMPDP_256X64_GL_M2_D2.v
+-v ../../vmod/rams/model/RAMPDP_80X17_GL_M2_D2.v
+-v ../../vmod/fifos/NV_NVDLA_SDP_MRDMA_EG_lat_fifo_lib.v
+-v ../../vmod/rams/model/RAMDP_8X66_GL_M1_E2.v
+-v ../../vmod/fifos/NV_NVDLA_SDP_NRDMA_cq_lib.v
+-v ../../vmod/rams/model/RAMDP_16X16_GL_M1_E2.v
+-v ../../vmod/fifos/NV_NVDLA_SDP_NRDMA_lat_fifo_lib.v
+-v ../../vmod/rams/model/RAMDP_16X66_GL_M1_E2.v
+-v ../../vmod/fifos/NV_NVDLA_SDP_BRDMA_cq_lib.v
+-v ../../vmod/fifos/NV_NVDLA_SDP_BRDMA_lat_fifo_lib.v
+-v ../../vmod/fifos/NV_NVDLA_SDP_MRDMA_cq_lib.v
+-v ../../vmod/fifos/NV_NVDLA_SDP_MRDMA_EG_lat_fifo_lib.v
+-v ../../vmod/rams/model/RAMDP_16X14_GL_M1_E2.v
+-v ../../vmod/fifos/NV_NVDLA_CDMA_WT_8ATMM_fifo.v
+-v ../../vmod/fifos/NV_NVDLA_CDP_DP_data_fifo.v
+-v ../../vmod/fifos/NV_NVDLA_CDP_DP_intpinfo_fifo
+-v ../../vmod/fifos/NV_NVDLA_CDP_DP_sumpd_fifo
+-v ../../vmod/fifos/NV_NVDLA_CDP_RDMA_lat_fifo
+-v ../../vmod/fifos/NV_NVDLA_CDP_RDMA_ro_fifo
+-v ../../vmod/fifos/NV_NVDLA_CDP_WDMA_dat_fifo
+-v ../../vmod/fifos/NV_NVDLA_PDP_RDMA_lat_fifo
+-v ../../vmod/fifos/NV_NVDLA_PDP_RDMA_ro_fifo
+-v ../../vmod/fifos/NV_NVDLA_PDP_SDPIN_ro_fifo
+-v ../../vmod/fifos/NV_NVDLA_PDP_WDMA_DAT_fifo
+-v ../../vmod/rams/model/RAMPDP_60X42_GL_M1_D2.v
+-v ../../vmod/rams/model/RAMDP_20X8_GL_M1_E2.v
+-v ../../vmod/rams/model/RAMDP_80X18_GL_M1_E2.v
+-v ../../vmod/own_fifos/NV_NVDLA_SDP_MRDMA_EG_lat_fifo_128x129.v
+-v ../../vmod/own_fifos/nv_ram_rwsp_128x129.v
+-v ../../vmod/rams/model/RAMPDP_128X32_GL_M2_D2.v
+-v ../../vmod/rams/model/RAMDP_8X130_GL_M1_E2.v
+-v ../../vmod/rams/model/RAMDP_16X128_GL_M1_E2.v
+-v ../../vmod/own_fifos/NV_NVDLA_SDP_NRDMA_cq_128x16.v
+-v ../../vmod/own_fifos/nv_ram_rwsp_128x16.v
+-v ../../vmod/own_fifos/NV_NVDLA_SDP_NRDMA_lat_fifo_128x129.v
+-v ../../vmod/own_fifos/NV_NVDLA_SDP_BRDMA_cq_128x16.v
+-v ../../vmod/own_fifos/NV_NVDLA_SDP_BRDMA_lat_fifo_128x129.v
+-v ../../vmod/own_fifos/NV_NVDLA_SDP_MRDMA_cq_128x14.v
+-v ../../vmod/own_fifos/nv_ram_rwsp_128x14.v
+-v ../../vmod/rams/model/RAMPDP_128X128_GL_M1_D2.v
+-v ../../vmod/own_fifos/NV_NVDLA_PDP_RDMA_lat_fifo_129x128.v
+-v ../../vmod/own_fifos/NV_NVDLA_CDP_RDMA_lat_fifo_129x128.v
+-v ../../vmod/rams/model/RAMPDP_128X258_GL_M1_D2.v
+
+
+
+-DNO_PLI_OR_EMU
+-DNO_PLI
+-DDESIGNWARE_NOEXIST
+-DSYNTHESIS
+-Wno-moddup
+-Wno-fatal
+--top-module NV_nvdla
+../../outdir/nv_sochub/vmod/nvdla/top/NV_nvdla.v

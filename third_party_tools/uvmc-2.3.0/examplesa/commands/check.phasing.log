@@ -1,0 +1,208 @@
+# vsim -c -do "run -all; quit -f" -t 1ps -L /opt/mentor/questa/questasim/uvm-1.1d -L ../../lib/uvmc_lib -l questa.log "+PHASING_ON" sc_main sv_main 
+# Start time: 10:01:46 on Jun 18,2020
+# Loading /tmp/student@ballast_dpi_68379/linux_gcc-5.3.0/export_tramp.so
+# ** Note: (vsim-3812) Design is being optimized...
+# //  Questa Sim
+# //  Version 10.7c linux Aug 17 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading /home/student/git/hw/third_party_tools/uvmc-2.3.0/examplesa/commands/work/_sc/linux_gcc-5.3.0/systemc.so
+# Loading /home/student/git/hw/third_party_tools/uvmc-2.3.0/examplesa/commands/work.sc_main
+# Connecting an SC-side proxy port for 'sc_main/top/consumer/in' with lookup string 'foo' for later connection with SV
+# Connecting an SC-side proxy chan for 'sc_main/top/consumer/analysis_out' with lookup string 'bar' for later connection with SV
+# ** Warning: (vsim-6667) The declared name and constructor argument for instance 'sc_main.top' are different. To enable debug support of simulation objects created by sc_main() the declared name and the constructor argument have to be the same.
+# Loading sv_std.std
+# Loading /opt/mentor/questa/questasim/uvm-1.1d.uvm_pkg
+# Loading ../../lib/uvmc_lib.uvmc_pkg
+# Loading work.sv_main_sv_unit(fast)
+# Loading work.sv_main(fast)
+# Loading /opt/mentor/questa/questasim/uvm-1.1d.questa_uvm_pkg(fast)
+# Compiling /tmp/student@ballast_dpi_68379/linux_gcc-5.3.0/exportwrapper.c
+# Loading /tmp/student@ballast_dpi_68379/linux_gcc-5.3.0/vsim_auto_compile.so
+# Loading /opt/mentor/questa/questasim/uvm-1.1d/linux/uvm_dpi.so
+# ** Warning: (vsim-4025) The port '/sc_main/top/uvmc_registry/UVMC_PORT_FOR_sc_main_top_consumer_in' is of an undebuggable type.
+# ** Warning: (vsim-4025) The export '/sc_main/top/consumer/in' is of an undebuggable type.
+# run -all
+# ----------------------------------------------------------------
+# UVM-1.1d
+# (C) 2007-2013 Mentor Graphics Corporation
+# (C) 2007-2013 Cadence Design Systems, Inc.
+# (C) 2006-2013 Synopsys, Inc.
+# (C) 2011-2013 Cypress Semiconductor Corp.
+# ----------------------------------------------------------------
+# 
+#   ***********       IMPORTANT RELEASE NOTES         ************
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_NO_DEPRECATED undefined.
+#   See http://www.eda.org/svdb/view.php?id=3313 for more details.
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+#   See http://www.eda.org/svdb/view.php?id=3770 for more details.
+# 
+#       (Specify +UVM_NO_RELNOTES to turn off this notice)
+# 
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(215) @ 0: reporter [Questa UVM] QUESTA_UVM-1.2.3
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(216) @ 0: reporter [Questa UVM]  questa_uvm::init(+struct)
+# ----------------------------------------------------------------
+# UVMC-2.3
+# (C) 2009-2014 Mentor Graphics Corporation
+# ----------------------------------------------------------------
+# Registering SV-side 'e.prod_out' and lookup string 'foo' for later connection with SC
+# Registering SV-side 'e.sb_actual_in' and lookup string 'bar' for later connection with SC
+# UVM_INFO @ 0 ns: reporter [RNTST] Running test ...
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase build to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'build' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase connect to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'connect' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase end_of_elaboration to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'end_of_elaboration' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase start_of_simulation to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'start_of_simulation' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase run to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'run' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase extract to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'extract' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase check to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'check' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase report to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'report' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase pre_reset to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'pre_reset' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase reset to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'reset' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase post_reset to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'post_reset' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase pre_configure to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'pre_configure' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase configure to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'configure' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase post_configure to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'post_configure' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase pre_main to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'pre_main' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase main to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'main' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase post_main to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'post_main' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase pre_shutdown to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'pre_shutdown' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase shutdown to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'shutdown' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(165) @ 0 ns: reporter [SC_TOP/WAITING] Waiting for phase post_shutdown to start...
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'post_shutdown' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO ex_phase_control.cpp(170) @ 0 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase build has started
+# UVM_INFO sv_main.sv(137) @ 0 ns: e.prod [UVMC_PHASING] BUILD Started
+# UVM_INFO ex_phase_control.cpp(170) @ 0 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase connect has started
+# UVM_INFO sv_main.sv(141) @ 0 ns: e.prod [UVMC_PHASING] CONNECT Started
+# Connected SC-side 'sc_main/top/consumer/in' to SV-side 'e.prod_out'
+# Connected SC-side 'sc_main/top/consumer/analysis_out' to SV-side 'e.sb_actual_in'
+# UVM_INFO ex_phase_control.cpp(170) @ 0 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase end_of_elaboration has started
+# UVM_INFO sv_main.sv(145) @ 0 ns: e.prod [UVMC_PHASING] END_OF_ELABORATION Started
+# UVM_INFO ex_phase_control.cpp(170) @ 0 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase start_of_simulation has started
+# UVM_INFO sv_main.sv(149) @ 0 ns: e.prod [UVMC_PHASING] START_OF_SIMULATION Started
+# UVM_INFO ex_phase_control.cpp(170) @ 0 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase run has started
+# UVM_INFO ex_phase_control.cpp(178) @ 0 ns: reporter [SC_TOP/RAISE_OBJ] sc_main/top raising objection in phase run
+# UVM_INFO ../src/connect/sv/uvmc_commands.sv(210) @ 0 ns: reporter [UVMC_WAIT_FOR_PHASE] Waiting for phase 'post_shutdown' to be 'UVM_EQ' to state 'UVM_PHASE_STARTED'. Currently its state is 'UVM_PHASE_DORMANT'
+# UVM_INFO sv_main.sv(309) @ 0 ns: e.prod [UVMC_PHASING] RUN Started
+# UVM_INFO ex_phase_control.cpp(170) @ 0 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase pre_reset has started
+# UVM_INFO ex_phase_control.cpp(178) @ 0 ns: reporter [SC_TOP/RAISE_OBJ] sc_main/top raising objection in phase pre_reset
+# UVM_INFO sv_main.sv(153) @ 0 ns: e.prod [UVMC_PHASING] PRE_RESET Started
+# UVM_INFO ex_phase_control.cpp(191) @ 10 ns: reporter [SC_TOP/DROP_OBJ] sc_main/top dropping objection in phase pre_reset
+# UVM_INFO ex_phase_control.cpp(170) @ 10 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase reset has started
+# UVM_INFO ex_phase_control.cpp(178) @ 10 ns: reporter [SC_TOP/RAISE_OBJ] sc_main/top raising objection in phase reset
+# UVM_INFO sv_main.sv(157) @ 10 ns: e.prod [UVMC_PHASING] RESET Started
+# UVM_INFO ex_phase_control.cpp(191) @ 20 ns: reporter [SC_TOP/DROP_OBJ] sc_main/top dropping objection in phase reset
+# UVM_INFO ex_phase_control.cpp(170) @ 20 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase post_reset has started
+# UVM_INFO ex_phase_control.cpp(178) @ 20 ns: reporter [SC_TOP/RAISE_OBJ] sc_main/top raising objection in phase post_reset
+# UVM_INFO sv_main.sv(161) @ 20 ns: e.prod [UVMC_PHASING] POST_RESET Started
+# UVM_INFO ex_phase_control.cpp(191) @ 30 ns: reporter [SC_TOP/DROP_OBJ] sc_main/top dropping objection in phase post_reset
+# UVM_INFO ex_phase_control.cpp(170) @ 30 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase pre_configure has started
+# UVM_INFO ex_phase_control.cpp(178) @ 30 ns: reporter [SC_TOP/RAISE_OBJ] sc_main/top raising objection in phase pre_configure
+# UVM_INFO sv_main.sv(165) @ 30 ns: e.prod [UVMC_PHASING] PRE_CONFIGURE Started
+# UVM_INFO ex_phase_control.cpp(191) @ 40 ns: reporter [SC_TOP/DROP_OBJ] sc_main/top dropping objection in phase pre_configure
+# UVM_INFO ex_phase_control.cpp(170) @ 40 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase configure has started
+# UVM_INFO ex_phase_control.cpp(178) @ 40 ns: reporter [SC_TOP/RAISE_OBJ] sc_main/top raising objection in phase configure
+# UVM_INFO sv_main.sv(169) @ 40 ns: e.prod [UVMC_PHASING] CONFIGURE Started
+# UVM_INFO ex_phase_control.cpp(191) @ 50 ns: reporter [SC_TOP/DROP_OBJ] sc_main/top dropping objection in phase configure
+# UVM_INFO ex_phase_control.cpp(170) @ 50 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase post_configure has started
+# UVM_INFO ex_phase_control.cpp(178) @ 50 ns: reporter [SC_TOP/RAISE_OBJ] sc_main/top raising objection in phase post_configure
+# UVM_INFO sv_main.sv(173) @ 50 ns: e.prod [UVMC_PHASING] POST_CONFIGURE Started
+# UVM_INFO ex_phase_control.cpp(191) @ 60 ns: reporter [SC_TOP/DROP_OBJ] sc_main/top dropping objection in phase post_configure
+# UVM_INFO ex_phase_control.cpp(170) @ 60 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase pre_main has started
+# UVM_INFO ex_phase_control.cpp(178) @ 60 ns: reporter [SC_TOP/RAISE_OBJ] sc_main/top raising objection in phase pre_main
+# UVM_INFO sv_main.sv(177) @ 60 ns: e.prod [UVMC_PHASING] PRE_MAIN Started
+# UVM_INFO ex_phase_control.cpp(191) @ 70 ns: reporter [SC_TOP/DROP_OBJ] sc_main/top dropping objection in phase pre_main
+# UVM_INFO ex_phase_control.cpp(170) @ 70 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase main has started
+# UVM_INFO ex_phase_control.cpp(178) @ 70 ns: reporter [SC_TOP/RAISE_OBJ] sc_main/top raising objection in phase main
+# UVM_INFO sv_main.sv(181) @ 70 ns: e.prod [UVMC_PHASING] MAIN Started
+# UVM_INFO ex_phase_control.cpp(191) @ 80 ns: reporter [SC_TOP/DROP_OBJ] sc_main/top dropping objection in phase main
+# UVM_INFO ex_phase_control.cpp(170) @ 80 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase post_main has started
+# UVM_INFO ex_phase_control.cpp(178) @ 80 ns: reporter [SC_TOP/RAISE_OBJ] sc_main/top raising objection in phase post_main
+# UVM_INFO sv_main.sv(185) @ 80 ns: e.prod [UVMC_PHASING] POST_MAIN Started
+# UVM_INFO ex_phase_control.cpp(191) @ 90 ns: reporter [SC_TOP/DROP_OBJ] sc_main/top dropping objection in phase post_main
+# UVM_INFO ex_phase_control.cpp(170) @ 90 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase pre_shutdown has started
+# UVM_INFO ex_phase_control.cpp(178) @ 90 ns: reporter [SC_TOP/RAISE_OBJ] sc_main/top raising objection in phase pre_shutdown
+# UVM_INFO sv_main.sv(189) @ 90 ns: e.prod [UVMC_PHASING] PRE_SHUTDOWN Started
+# UVM_INFO ex_phase_control.cpp(191) @ 100 ns: reporter [SC_TOP/DROP_OBJ] sc_main/top dropping objection in phase pre_shutdown
+# UVM_INFO ex_phase_control.cpp(170) @ 100 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase shutdown has started
+# UVM_INFO ex_phase_control.cpp(178) @ 100 ns: reporter [SC_TOP/RAISE_OBJ] sc_main/top raising objection in phase shutdown
+# UVM_INFO sv_main.sv(193) @ 100 ns: e.prod [UVMC_PHASING] SHUTDOWN Started
+# UVM_INFO ex_phase_control.cpp(191) @ 110 ns: reporter [SC_TOP/DROP_OBJ] sc_main/top dropping objection in phase shutdown
+# UVM_INFO ex_phase_control.cpp(170) @ 110 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase post_shutdown has started
+# UVM_INFO ex_phase_control.cpp(178) @ 110 ns: reporter [SC_TOP/RAISE_OBJ] sc_main/top raising objection in phase post_shutdown
+# UVM_INFO sv_main.sv(197) @ 110 ns: e.prod [UVMC_PHASING] POST_SHUTDOWN Started
+# UVM_INFO ex_phase_control.cpp(191) @ 120 ns: reporter [SC_TOP/DROP_OBJ] sc_main/top dropping objection in phase post_shutdown
+# UVM_INFO ex_phase_control.cpp(191) @ 120 ns: reporter [SC_TOP/DROP_OBJ] sc_main/top dropping objection in phase run
+# UVM_INFO sv_main.sv(342) @ 1000 ns: e.prod [PRODUCER/STOP_TEST] Stopping the test
+# UVM_INFO verilog_src/uvm-1.1d/src/base/uvm_objection.svh(1267) @ 1000 ns: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+# UVM_INFO ex_phase_control.cpp(170) @ 1000 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase extract has started
+# UVM_INFO sv_main.sv(201) @ 1000 ns: e.prod [UVMC_PHASING] EXTRACT Started
+# UVM_INFO ex_phase_control.cpp(170) @ 1000 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase check has started
+# UVM_INFO sv_main.sv(205) @ 1000 ns: e.prod [UVMC_PHASING] CHECK Started
+# UVM_INFO ex_phase_control.cpp(170) @ 1000 ns: reporter [SC_TOP/PH_STARTED] sc_main/top: Phase report has started
+# UVM_INFO sv_main.sv(209) @ 1000 ns: e.prod [UVMC_PHASING] REPORT Started
+# 
+# --- UVM Report catcher Summary ---
+# 
+# 
+# Number of demoted UVM_FATAL reports  :    0
+# Number of demoted UVM_ERROR reports  :    0
+# Number of demoted UVM_WARNING reports:    0
+# Number of caught UVM_FATAL reports   :    0
+# Number of caught UVM_ERROR reports   :    0
+# Number of caught UVM_WARNING reports :    0
+# 
+# --- UVM Report Summary ---
+# 
+# ** Report counts by severity
+# UVM_INFO :  112
+# UVM_WARNING :    0
+# UVM_ERROR :    0
+# UVM_FATAL :    0
+# ** Report counts by id
+# [PRODUCER/STOP_TEST]     1
+# [Questa UVM]     2
+# [RNTST]     1
+# [SC_TOP/DROP_OBJ]    13
+# [SC_TOP/PH_STARTED]    20
+# [SC_TOP/RAISE_OBJ]    13
+# [SC_TOP/WAITING]    20
+# [TEST_DONE]     1
+# [UVMC_PHASING]    20
+# [UVMC_WAIT_FOR_PHASE]    21
+# ** Note: $finish    : /opt/mentor/questa/questasim/linux/../verilog_src/uvm-1.1d/src/base/uvm_root.svh(430)
+#    Time: 1 us  Iteration: 58  Instance: /sv_main
+# End time: 10:01:50 on Jun 18,2020, Elapsed time: 0:00:04
+# Errors: 0, Warnings: 3

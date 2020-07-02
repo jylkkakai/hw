@@ -1,0 +1,212 @@
+# vsim -c -do "run -all; quit -f" -t 1ps -L /opt/mentor/questa/questasim/uvm-1.1d -L ../../lib/uvmc_lib -l questa.log sc_main sv_main 
+# Start time: 10:01:33 on Jun 18,2020
+# Loading /tmp/student@ballast_dpi_68062/linux_gcc-5.3.0/export_tramp.so
+# ** Note: (vsim-3812) Design is being optimized...
+# //  Questa Sim
+# //  Version 10.7c linux Aug 17 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading /home/student/git/hw/third_party_tools/uvmc-2.3.0/examplesa/commands/work/_sc/linux_gcc-5.3.0/systemc.so
+# Loading /home/student/git/hw/third_party_tools/uvmc-2.3.0/examplesa/commands/work.sc_main
+# Connecting an SC-side proxy port for 'sc_main/top/consumer/in' with lookup string 'foo' for later connection with SV
+# Connecting an SC-side proxy chan for 'sc_main/top/consumer/analysis_out' with lookup string 'bar' for later connection with SV
+# ** Warning: (vsim-6667) The declared name and constructor argument for instance 'sc_main.top' are different. To enable debug support of simulation objects created by sc_main() the declared name and the constructor argument have to be the same.
+# Loading sv_std.std
+# Loading /opt/mentor/questa/questasim/uvm-1.1d.uvm_pkg
+# Loading ../../lib/uvmc_lib.uvmc_pkg
+# Loading work.sv_main_sv_unit(fast)
+# Loading work.sv_main(fast)
+# Loading /opt/mentor/questa/questasim/uvm-1.1d.questa_uvm_pkg(fast)
+# Compiling /tmp/student@ballast_dpi_68062/linux_gcc-5.3.0/exportwrapper.c
+# Loading /tmp/student@ballast_dpi_68062/linux_gcc-5.3.0/vsim_auto_compile.so
+# Loading /opt/mentor/questa/questasim/uvm-1.1d/linux/uvm_dpi.so
+# ** Warning: (vsim-4025) The port '/sc_main/top/uvmc_registry/UVMC_PORT_FOR_sc_main_top_consumer_in' is of an undebuggable type.
+# ** Warning: (vsim-4025) The export '/sc_main/top/consumer/in' is of an undebuggable type.
+# run -all
+# ----------------------------------------------------------------
+# UVM-1.1d
+# (C) 2007-2013 Mentor Graphics Corporation
+# (C) 2007-2013 Cadence Design Systems, Inc.
+# (C) 2006-2013 Synopsys, Inc.
+# (C) 2011-2013 Cypress Semiconductor Corp.
+# ----------------------------------------------------------------
+# 
+#   ***********       IMPORTANT RELEASE NOTES         ************
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_NO_DEPRECATED undefined.
+#   See http://www.eda.org/svdb/view.php?id=3313 for more details.
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+#   See http://www.eda.org/svdb/view.php?id=3770 for more details.
+# 
+#       (Specify +UVM_NO_RELNOTES to turn off this notice)
+# 
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(215) @ 0: reporter [Questa UVM] QUESTA_UVM-1.2.3
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(216) @ 0: reporter [Questa UVM]  questa_uvm::init(+struct)
+# ----------------------------------------------------------------
+# UVMC-2.3
+# (C) 2009-2014 Mentor Graphics Corporation
+# ----------------------------------------------------------------
+# Registering SV-side 'e.prod_out' and lookup string 'foo' for later connection with SC
+# Registering SV-side 'e.sb_actual_in' and lookup string 'bar' for later connection with SC
+# UVM_INFO @ 0 ns: reporter [RNTST] Running test ...
+# 
+#### Factory Configuration (*)
+# 
+#   No instance or type overrides are registered with this factory
+# 
+# All types registered with the factory: 44 total
+# (types without type names will not be printed)
+# 
+#   Type Name
+#   ---------
+#   env
+#   prod_cfg
+#   producer
+#   producer_ext
+#   questa_uvm_recorder
+#   scoreboard
+#   scoreboard_ext
+#   uvmc_xl_config_base
+# (*) Types with no associated type name will be printed as <unknown>
+# 
+####
+# 
+# UVM_INFO ex_factory.cpp(127) @ 0 ns: reporter [SHOW_FACTORY] Factory override for type 'producer' in context 'e.prod' is producer
+# 
+#### Factory Override Information (*)
+# 
+# Given a request for an object of type 'producer' with an instance
+# path of 'e.prod', the factory encountered
+# no relevant overrides.
+# 
+# Result:
+# 
+#   The factory will produce an object of type 'producer'
+# 
+# (*) Types with no associated type name will be printed as <unknown>
+# 
+####
+# 
+# 
+#### Factory Configuration (*)
+# 
+# Instance Overrides:
+# 
+#   Requested Type  Override Path  Override Type 
+#   --------------  -------------  --------------
+#   scoreboard      e.*            scoreboard_ext
+# 
+# Type Overrides:
+# 
+#   Requested Type  Override Type
+#   --------------  -------------
+#   producer        producer_ext
+# 
+# All types registered with the factory: 44 total
+# (types without type names will not be printed)
+# 
+#   Type Name
+#   ---------
+#   env
+#   prod_cfg
+#   producer
+#   producer_ext
+#   questa_uvm_recorder
+#   scoreboard
+#   scoreboard_ext
+#   uvmc_xl_config_base
+# (*) Types with no associated type name will be printed as <unknown>
+# 
+####
+# 
+# 
+#### Factory Override Information (*)
+# 
+# Given a request for an object of type 'producer' with an instance
+# path of 'e.prod', the factory encountered
+# the following relevant overrides. An 'x' next to a match indicates a
+# match that was ignored.
+# 
+#   Original Type  Instance Path  Override Type
+#   -------------  -------------  -------------
+#   producer       *              producer_ext   <type override>
+#  
+# Result:
+# 
+#   The factory will produce an object of type 'producer_ext'
+# 
+# (*) Types with no associated type name will be printed as <unknown>
+# 
+####
+# 
+# 
+#### Factory Override Information (*)
+# 
+# Given a request for an object of type 'scoreboard' with an instance
+# path of 'e.sb', the factory encountered
+# the following relevant overrides. An 'x' next to a match indicates a
+# match that was ignored.
+# 
+#   Original Type  Instance Path  Override Type 
+#   -------------  -------------  --------------
+#   scoreboard     e.*            scoreboard_ext 
+#  
+# Result:
+# 
+#   The factory will produce an object of type 'scoreboard_ext'
+# 
+# (*) Types with no associated type name will be printed as <unknown>
+# 
+####
+# 
+# UVM_INFO ex_factory.cpp(148) @ 0 ns: reporter [SHOW_FACTORY] Factory override for type 'producer' with context 'e.prod' is producer_ext
+# UVM_INFO ex_factory.cpp(156) @ 0 ns: reporter [SHOW_FACTORY] Factory override for type 'scoreboard' given a context 'e.*' is scoreboard_ext
+# UVM_INFO sv_main.sv(365) @ 0 ns: e.prod [PRODUCER_EXTENSION] Derived producer created!
+# UVM_INFO sv_main.sv(443) @ 0 ns: e.sb [SCOREBOARD_EXTENSION] Derived scoreboard created!
+# Connected SC-side 'sc_main/top/consumer/in' to SV-side 'e.prod_out'
+# Connected SC-side 'sc_main/top/consumer/analysis_out' to SV-side 'e.sb_actual_in'
+# UVM_INFO sv_main.sv(342) @ 1000 ns: e.prod [PRODUCER/STOP_TEST] Stopping the test
+# UVM_INFO verilog_src/uvm-1.1d/src/base/uvm_objection.svh(1267) @ 1000 ns: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+# 
+# --- UVM Report catcher Summary ---
+# 
+# 
+# Number of demoted UVM_FATAL reports  :    0
+# Number of demoted UVM_ERROR reports  :    0
+# Number of demoted UVM_WARNING reports:    0
+# Number of caught UVM_FATAL reports   :    0
+# Number of caught UVM_ERROR reports   :    0
+# Number of caught UVM_WARNING reports :    0
+# 
+# --- UVM Report Summary ---
+# 
+# ** Report counts by severity
+# UVM_INFO :   10
+# UVM_WARNING :    0
+# UVM_ERROR :    0
+# UVM_FATAL :    0
+# ** Report counts by id
+# [PRODUCER/STOP_TEST]     1
+# [PRODUCER_EXTENSION]     1
+# [Questa UVM]     2
+# [RNTST]     1
+# [SCOREBOARD_EXTENSION]     1
+# [SHOW_FACTORY]     3
+# [TEST_DONE]     1
+# ** Note: $finish    : /opt/mentor/questa/questasim/linux/../verilog_src/uvm-1.1d/src/base/uvm_root.svh(430)
+#    Time: 1 us  Iteration: 55  Instance: /sv_main
+# End time: 10:01:37 on Jun 18,2020, Elapsed time: 0:00:04
+# Errors: 0, Warnings: 3
